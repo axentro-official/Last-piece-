@@ -1,3 +1,15 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Last Piece</title>
+
+  <link rel="stylesheet" href="./assets/css/style.css" />
+</head>
+<body>
+
+<!-- HEADER -->
 <header class="header">
   <div class="brand">
     <img src="./assets/images/logo.png" class="logo"/>
@@ -6,15 +18,31 @@
   <div class="cart">🛒</div>
 </header>
 
+<!-- HERO -->
+<section class="hero">
+  <img id="heroImage" />
+  <div class="hero-overlay">
+    <h2>العروض الخاصة</h2>
+    <p>منتجات حصرية بأسعار قبل الخصم</p>
+  </div>
+</section>
 
+<!-- PRODUCTS -->
+<section class="products">
+  <h2 class="section-title">منتجات مختارة</h2>
+  <div id="products" class="grid"></div>
+</section>
+
+<!-- FOOTER -->
 <footer class="footer">
 
-  <!-- BRAND FOOTER (يمين) -->
-  <div class="brand-footer">
-    © 2026 Last piece, Inc.
+  <!-- TOP -->
+  <div class="top-footer">
+    <p>Axentro – All Rights Reserved 2024 ©</p>
+    <p>By Axentro Team</p>
   </div>
 
-  <!-- AXENTRO CENTER -->
+  <!-- CENTER -->
   <div class="axentro">
     <p class="ax-title">Axentro</p>
 
@@ -25,10 +53,13 @@
     <p class="scan-text">Scan Me / Click On Me</p>
   </div>
 
-  <!-- TOP FOOTER -->
-  <div class="top-footer">
-    <p>Axentro – All Rights Reserved 2024 ©</p>
-    <p>By Axentro Team</p>
+  <!-- RIGHT -->
+  <div class="brand-footer">
+    © 2026 Last piece, Inc.
   </div>
 
 </footer>
+
+<script src="./assets/js/app.js"></script>
+</body>
+</html>
