@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Last Piece</title>
+
+  <link rel="stylesheet" href="./assets/css/style.css" />
+</head>
+<body>
+
+<header class="header">
+  <div class="brand">
+    <img src="./assets/images/logo.png" class="logo"/>
+    <span class="brand-name">LAST PIECE</span>
+  </div>
+  <div class="cart">🛒</div>
+</header>
+
+<section class="hero">
+  <button class="arrow left" onclick="prevHero()">‹</button>
+  <img id="heroImage" />
+  <button class="arrow right" onclick="nextHero()">›</button>
+</section>
+
+<section class="products" id="products"></section>
+
+<footer class="footer">
+  <div class="footer-top">
+    <a href="#" target="_blank">
+      <img src="./assets/images/qr.png" class="qr"/>
+    </a>
+  </div>
+
+  <div class="footer-bottom">
+    <p>Last Piece — Style in Every Piece</p>
+    <p class="since">Since 2020</p>
+  </div>
+</footer>
+
+<script src="./assets/js/app.js"></script>
+</body>
+</html>
