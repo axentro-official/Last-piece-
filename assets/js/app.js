@@ -1,8 +1,9 @@
-// HERO
-let heroImages = [
-  "./assets/images/hero01.webp",
-  "./assets/images/hero02.webp"
-];
+// HERO AUTO LOAD
+let heroImages = [];
+
+for (let i = 1; i <= 10; i++) {
+  heroImages.push(`./assets/images/hero0${i}.webp`);
+}
 
 let heroIndex = 0;
 
@@ -10,15 +11,23 @@ function showHero() {
   document.getElementById("heroImage").src = heroImages[heroIndex];
 }
 
-setInterval(() => {
+function nextHero() {
   heroIndex = (heroIndex + 1) % heroImages.length;
   showHero();
-}, 4000);
+}
+
+function prevHero() {
+  heroIndex = (heroIndex - 1 + heroImages.length) % heroImages.length;
+  showHero();
+}
+
+// slow auto
+setInterval(nextHero, 6000);
 
 showHero();
 
 
-// PRODUCTS
+// PRODUCTS (TEMP)
 const products = [
   {
     name: "تيشيرت أوفر سايز",
@@ -41,11 +50,9 @@ const products = [
 const container = document.getElementById("products");
 
 products.forEach(p => {
-
   container.innerHTML += `
     <div class="card">
       <img src="${p.image}" />
-
       <h4>${p.name}</h4>
       <small>${p.code}</small>
 
