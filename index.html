@@ -9,7 +9,7 @@
 <body>
 
 <header class="header">
-  <div class="cart">🛒</div>
+  <div class="cart" onclick="openCart()">🛒 <span id="cartCount">0</span></div>
 
   <div class="brand">
     <span class="brand-name">LAST PIECE</span>
@@ -17,34 +17,52 @@
   </div>
 </header>
 
-<!-- HERO -->
 <section class="hero">
   <button class="hero-btn left" onclick="prevHero()">‹</button>
   <img id="heroImage" />
   <button class="hero-btn right" onclick="nextHero()">›</button>
-
-  <div class="hero-overlay">
-    <h2>العروض الخاصة</h2>
-    <p>منتجات حصرية بأسعار قبل الخصم</p>
-  </div>
-
-  <!-- DOTS -->
   <div id="heroDots" class="hero-dots"></div>
 </section>
 
 <section class="products">
-  <h2 class="section-title">منتجات مختارة</h2>
+  <h2 class="section-title">المنتجات</h2>
   <div id="products" class="grid"></div>
 </section>
 
-<footer class="footer">
+<section class="products">
+  <h2 class="section-title">العروض 🔥</h2>
+  <div id="offers" class="grid"></div>
+</section>
 
-  <!-- BRAND LEFT (أعلى) -->
-  <div class="brand-footer">
-    © 2026 Last piece, Inc.
+<!-- CART -->
+<div id="cartModal" class="modal">
+  <div class="modal-content">
+    <h3>السلة</h3>
+    <div id="cartItems"></div>
+    <h4 id="total"></h4>
+    <button onclick="goCheckout()">إتمام الطلب</button>
+    <button onclick="closeCart()">إغلاق</button>
   </div>
+</div>
 
-  <!-- COMPANY (أسفل/وسط) -->
+<!-- CHECKOUT -->
+<div id="checkoutModal" class="modal">
+  <div class="modal-content">
+    <h3>إتمام الطلب</h3>
+
+    <input id="name" placeholder="الاسم" />
+    <input id="phone" placeholder="رقم الموبايل" />
+    <input id="address" placeholder="العنوان" />
+    <textarea id="notes" placeholder="ملاحظات"></textarea>
+
+    <button onclick="submitOrder()">تأكيد الطلب</button>
+    <button onclick="closeCheckout()">إلغاء</button>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="brand-footer">© 2026 Last piece, Inc.</div>
+
   <div class="company-footer">
     <p>Axentro – All Rights Reserved 2024 ©</p>
     <p>By Axentro Team</p>
@@ -55,7 +73,6 @@
 
     <p class="scan-text">Scan Me / Click On Me</p>
   </div>
-
 </footer>
 
 <script src="./assets/js/app.js"></script>
