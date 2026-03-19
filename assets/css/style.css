@@ -1,112 +1,153 @@
 body {
   margin: 0;
-  font-family: "Segoe UI", sans-serif;
-  background: #fff;
-  color: #000;
+  font-family: "Cairo", sans-serif;
+  background: #f6f6f6;
 }
 
 /* HEADER */
 .header {
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  padding: 25px 40px;
-  border-bottom: 1px solid #eee;
+  padding: 15px 20px;
+  background: #fff;
 }
 
 .brand {
   display: flex;
   align-items: center;
-  gap: 15px;
+  gap: 10px;
 }
 
 .logo {
-  width: 60px;
+  width: 100px;
 }
 
 .brand-name {
-  font-size: 22px;
-  font-weight: 600;
-  letter-spacing: 2px;
   color: #C9A24A;
-}
-
-.cart {
-  font-size: 24px;
+  font-size: 20px;
 }
 
 /* HERO */
 .hero {
   position: relative;
-  height: 400px;
+  margin: 15px;
+  border-radius: 15px;
+  overflow: hidden;
 }
 
 .hero img {
   width: 100%;
-  height: 100%;
+  height: 250px;
   object-fit: cover;
 }
 
-.arrow {
+.hero-overlay {
   position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  background: #000;
+  bottom: 20px;
+  right: 20px;
   color: #fff;
-  border: none;
-  padding: 10px;
 }
 
-.left { left: 10px; }
-.right { right: 10px; }
+/* SECTION */
+.section-title {
+  padding: 0 20px;
+}
 
-/* PRODUCTS */
-.products {
+/* GRID */
+.grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 20px;
-  padding: 20px;
+  grid-template-columns: repeat(2,1fr);
+  gap: 15px;
+  padding: 15px;
 }
 
-.product {
-  border: 1px solid #eee;
+/* CARD */
+.card {
+  background: #fff;
+  border-radius: 15px;
   padding: 10px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.05);
 }
 
-.product img {
+.card img {
   width: 100%;
+  border-radius: 10px;
 }
 
-.price-old {
+.old {
   text-decoration: line-through;
-  color: gray;
+  color: #999;
+  font-size: 12px;
 }
 
-.price-new {
+.new {
   color: #C9A24A;
+  font-weight: bold;
+}
+
+/* SIZES */
+.sizes span {
+  border: 1px solid #ddd;
+  padding: 5px 8px;
+  margin: 3px;
+  display: inline-block;
+  font-size: 12px;
+  border-radius: 5px;
 }
 
 /* BUTTON */
-.order-btn {
+.btn {
   width: 100%;
-  padding: 10px;
-  background: #C9A24A;
-  color: #fff;
+  background: linear-gradient(135deg,#C9A24A,#E5C97A);
   border: none;
+  padding: 10px;
+  border-radius: 8px;
+  color: #fff;
+  margin-top: 10px;
 }
 
 /* FOOTER */
 .footer {
-  text-align: center;
-  padding: 30px;
   background: #000;
   color: #fff;
+  padding: 30px 20px;
+  position: relative;
+  text-align: center;
+}
+
+/* TOP */
+.top-footer {
+  font-size: 12px;
+  opacity: 0.7;
+  margin-bottom: 15px;
+}
+
+/* CENTER */
+.axentro {
+  text-align: center;
+}
+
+.ax-title {
+  font-size: 16px;
+  margin-bottom: 10px;
 }
 
 .qr {
-  width: 120px;
+  width: 100px;
+  cursor: pointer;
 }
 
-.since {
+.scan-text {
+  font-size: 12px;
+  margin-top: 5px;
   color: #C9A24A;
+}
+
+/* RIGHT */
+.brand-footer {
+  position: absolute;
+  right: 15px;
+  bottom: 10px;
+  font-size: 12px;
+  opacity: 0.7;
 }
