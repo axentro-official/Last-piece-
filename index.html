@@ -11,16 +11,20 @@
 
 <!-- HEADER -->
 <header class="header">
-  <div class="brand">
-    <img src="./assets/images/logo.png" class="logo"/>
-    <span class="brand-name">LAST PIECE</span>
-  </div>
   <div class="cart">🛒</div>
+
+  <div class="brand">
+    <span class="brand-name">LAST PIECE</span>
+    <img src="./assets/images/logo.png" class="logo"/>
+  </div>
 </header>
 
 <!-- HERO -->
 <section class="hero">
+  <button class="hero-btn left" onclick="prevHero()">‹</button>
   <img id="heroImage" />
+  <button class="hero-btn right" onclick="nextHero()">›</button>
+
   <div class="hero-overlay">
     <h2>العروض الخاصة</h2>
     <p>منتجات حصرية بأسعار قبل الخصم</p>
@@ -36,13 +40,11 @@
 <!-- FOOTER -->
 <footer class="footer">
 
-  <!-- TOP -->
   <div class="top-footer">
     <p>Axentro – All Rights Reserved 2024 ©</p>
     <p>By Axentro Team</p>
   </div>
 
-  <!-- CENTER -->
   <div class="axentro">
     <p class="ax-title">Axentro</p>
 
@@ -53,7 +55,6 @@
     <p class="scan-text">Scan Me / Click On Me</p>
   </div>
 
-  <!-- RIGHT -->
   <div class="brand-footer">
     © 2026 Last piece, Inc.
   </div>
