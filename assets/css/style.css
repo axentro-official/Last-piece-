@@ -9,21 +9,21 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 15px 20px;
+  padding: 20px;
   background: #fff;
 }
 
 .logo {
-  width: 150px;
+  width: 160px;
 }
 
 .brand-name {
-  font-size: 22px;
+  font-size: 24px;
   color: #C9A24A;
 }
 
 .cart {
-  font-size: 30px;
+  font-size: 34px;
 }
 
 /* HERO */
@@ -32,14 +32,16 @@ body {
   margin: 15px;
   border-radius: 20px;
   overflow: hidden;
+  background: #eee;
 }
 
 .hero img {
   width: 100%;
-  height: 70vh; /* الحل الاحترافي */
-  object-fit: cover;
+  height: 65vh;
+  object-fit: contain; /* يمنع القص */
 }
 
+/* BUTTONS */
 .hero-btn {
   position: absolute;
   top: 50%;
@@ -47,27 +49,54 @@ body {
   background: rgba(0,0,0,0.5);
   color: #fff;
   border: none;
-  padding: 10px;
-  font-size: 20px;
+  padding: 12px;
+  font-size: 22px;
   cursor: pointer;
 }
 
 .left { left: 10px; }
 .right { right: 10px; }
 
+/* OVERLAY */
 .hero-overlay {
   position: absolute;
-  bottom: 30px;
+  bottom: 25px;
   right: 20px;
   color: #fff;
-  background: rgba(0,0,0,0.3);
-  padding: 10px 15px;
+  background: rgba(0,0,0,0.4);
+  padding: 12px;
   border-radius: 10px;
+  font-size: 16px;
+}
+
+/* DOTS */
+.hero-dots {
+  position: absolute;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.hero-dots span {
+  width: 10px;
+  height: 10px;
+  background: #fff;
+  opacity: 0.5;
+  margin: 3px;
+  display: inline-block;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.hero-dots .active {
+  opacity: 1;
+  background: #C9A24A;
 }
 
 /* PRODUCTS */
 .section-title {
   padding: 0 20px;
+  font-size: 20px;
 }
 
 .grid {
@@ -81,23 +110,18 @@ body {
   background: #fff;
   border-radius: 15px;
   padding: 10px;
-  box-shadow: 0 5px 15px rgba(0,0,0,0.05);
-  transition: 0.3s;
-}
-
-.card:hover {
-  transform: translateY(-5px);
 }
 
 .card img {
   width: 100%;
-  border-radius: 10px;
+  height: 200px;
+  object-fit: contain;
+  background: #f2f2f2;
 }
 
 .old {
   text-decoration: line-through;
   color: #999;
-  font-size: 12px;
 }
 
 .new {
@@ -109,8 +133,8 @@ body {
   border: 1px solid #ddd;
   padding: 5px 8px;
   margin: 3px;
-  display: inline-block;
   border-radius: 5px;
+  font-size: 14px;
 }
 
 .btn {
@@ -121,7 +145,7 @@ body {
   border-radius: 8px;
   color: #fff;
   margin-top: 10px;
-  cursor: pointer;
+  font-size: 14px;
 }
 
 /* FOOTER */
@@ -130,38 +154,31 @@ body {
   color: #fff;
   padding: 30px 20px;
   position: relative;
-  text-align: center;
-}
-
-.top-footer {
-  font-size: 12px;
-  opacity: 0.7;
-}
-
-.qr {
-  width: 100px;
-  transition: 0.3s;
-}
-
-.qr:hover {
-  transform: scale(1.1);
-}
-
-.scan-text {
-  color: #C9A24A;
-  font-size: 12px;
 }
 
 .brand-footer {
   position: absolute;
-  right: 10px;
-  bottom: 10px;
+  left: 15px;
+  top: 10px;
   font-size: 12px;
 }
 
-/* MOBILE */
+.company-footer {
+  text-align: center;
+  margin-top: 30px;
+}
+
+.qr {
+  width: 110px;
+  margin-top: 10px;
+}
+
+.scan-text {
+  color: #C9A24A;
+}
+
+/* RESPONSIVE */
 @media (max-width: 600px) {
-  .hero img {
-    height: 50vh;
-  }
+  .logo { width: 130px; }
+  .hero img { height: 50vh; }
 }
