@@ -1,33 +1,44 @@
-// HERO AUTO LOAD
+// HERO AUTO DETECT (Smart)
 let heroImages = [];
 
 for (let i = 1; i <= 10; i++) {
-  heroImages.push(`./assets/images/hero0${i}.webp`);
+  let img = new Image();
+  let path = `./assets/images/hero0${i}.webp`;
+
+  img.src = path;
+
+  img.onload = () => {
+    heroImages.push(path);
+  };
 }
 
 let heroIndex = 0;
 
 function showHero() {
+  if (heroImages.length === 0) return;
   document.getElementById("heroImage").src = heroImages[heroIndex];
 }
 
 function nextHero() {
+  if (heroImages.length === 0) return;
   heroIndex = (heroIndex + 1) % heroImages.length;
   showHero();
 }
 
 function prevHero() {
+  if (heroImages.length === 0) return;
   heroIndex = (heroIndex - 1 + heroImages.length) % heroImages.length;
   showHero();
 }
 
-// slow auto
-setInterval(nextHero, 6000);
+// delay start لحد ما الصور تتحمل
+setTimeout(() => {
+  showHero();
+  setInterval(nextHero, 6000);
+}, 1000);
 
-showHero();
 
-
-// PRODUCTS (TEMP)
+// PRODUCTS (زي ما هو)
 const products = [
   {
     name: "تيشيرت أوفر سايز",
