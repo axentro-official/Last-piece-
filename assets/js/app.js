@@ -1,110 +1,93 @@
 const API = "https://script.google.com/macros/s/AKfycbyuLyCqPmG1a2w7Vpgu2hGFFG44tlmW4N9AuNwa-YHRupXRPhxBF-_mEOhPgjpSBwM9/exec";
 
-let cart = [];
+let products = [];
+let currentFilter = "all";
 
-async function loadProducts() {
-  const res = await fetch(API + "?type=products");
-  const data = await res.json();
+/* LOAD */
+fetch(API)
+.then(r=>r.json())
+.then(data=>{
+  products = data;
+  renderProducts();
+  initSlider();
+});
 
-  render(data.filter(p=>!p.discount_price),"productsContainer");
-  render(data.filter(p=>p.discount_price),"offersContainer");
-}
+/* PRODUCTS */
+function renderProducts(){
+  let html = "";
 
-function render(list,id){
-  const container=document.getElementById(id);
-  container.innerHTML="";
+  products
+  .filter(p=>{
+    if(currentFilter==="sale") return p.discount_price;
+    return true;
+  })
+  .forEach(p=>{
 
-  list.forEach(p=>{
-    const img=`https://raw.githubusercontent.com/axentro-official/Last-piece-/main/assets/images/${p.id}-1.webp`;
+    html += `
+      <div class="card">
 
-    container.innerHTML+=`
-    <div class="card">
-      <img src="${img}">
-      <div style="padding:10px">
+        <img src="assets/images/${p.id}_1.webp">
+
         <h4>${p.name}</h4>
 
-        ${
-          p.discount_price
-          ? `<span class="old">${p.price}</span> <span class="price">${p.discount_price}</span>`
-          : `<span class="price">${p.price}</span>`
+        ${p.discount_price
+          ? `<p><del>${p.price}</del> ${p.discount_price}</p>`
+          : `<p>${p.price}</p>`
         }
 
-        <button onclick='addToCart(${JSON.stringify(p)})'>اضف للسلة</button>
+        <div class="colors">
+          ${p.colors.map(c=>`<span class="color" style="background:${c}"></span>`).join("")}
+        </div>
+
+        <div class="sizes">
+          ${["S","M","L","XL"].map(s=>`
+            <span class="${p.sizes.includes(s)?'':'size-disabled'}">${s}</span>
+          `).join("")}
+        </div>
+
+        <button class="btn" onclick="addToCart('${p.id}')">اضف للسلة</button>
+
       </div>
-    </div>`;
-  });
-}
-
-/* CART */
-function addToCart(p){
-  cart.push(p);
-  document.getElementById("cartCount").innerText=cart.length;
-}
-
-function openCart(){
-  document.getElementById("cartModal").style.display="block";
-  renderCart();
-}
-
-function closeCart(){
-  document.getElementById("cartModal").style.display="none";
-}
-
-function renderCart(){
-  const c=document.getElementById("cartItems");
-  c.innerHTML="";
-
-  cart.forEach(p=>{
-    c.innerHTML+=`<p>${p.name}</p>`;
+    `;
   });
 
-  c.innerHTML+=`
-  <input placeholder="الاسم" id="name">
-  <input placeholder="الموبايل" id="phone">
-  <input placeholder="العنوان" id="address">
-  `;
+  document.getElementById("products").innerHTML = html;
 }
 
-/* CHECKOUT */
-async function checkout(){
-
-  const order={
-    name:document.getElementById("name").value,
-    phone:document.getElementById("phone").value,
-    address:document.getElementById("address").value,
-    items:cart
-  };
-
-  await fetch(API,{
-    method:"POST",
-    body:JSON.stringify(order)
-  });
-
-  localStorage.setItem("lastOrder",JSON.stringify(cart));
-
-  window.location="thanks.html";
+/* FILTER */
+function filterProducts(type){
+  currentFilter = type;
+  renderProducts();
 }
 
-/* HERO */
-const hero=["hero01.webp","hero02.webp","hero03.webp"];
+/* SLIDER */
+function initSlider(){
+  const container = document.getElementById("slider");
+  const dots = document.getElementById("dots");
 
-let i=0;
+  let slides = "";
+  let dotsHtml = "";
 
-function loadHero(){
-  const s=document.getElementById("heroSlider");
+  for(let i=1;i<=7;i++){
+    slides += `<img class="slide ${i===1?'active':''}" src="assets/images/hero0${i}.webp">`;
+    dotsHtml += `<span class="dot ${i===1?'active':''}"></span>`;
+  }
 
-  hero.forEach((h,index)=>{
-    s.innerHTML+=`<img src="assets/images/${h}" class="${index==0?'active':''}">`;
-  });
+  container.innerHTML = slides;
+  dots.innerHTML = dotsHtml;
+
+  let current = 0;
+  const allSlides = document.querySelectorAll(".slide");
+  const allDots = document.querySelectorAll(".dot");
 
   setInterval(()=>{
-    const imgs=document.querySelectorAll(".slider img");
-    imgs[i].classList.remove("active");
-    i=(i+1)%imgs.length;
-    imgs[i].classList.add("active");
-  },4000);
-}
+    allSlides[current].classList.remove("active");
+    allDots[current].classList.remove("active");
 
-/* INIT */
-loadProducts();
-loadHero();
+    current = (current+1)%allSlides.length;
+
+    allSlides[current].classList.add("active");
+    allDots[current].classList.add("active");
+
+  },2000);
+}
