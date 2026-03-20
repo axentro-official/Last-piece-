@@ -17,21 +17,14 @@
   </div>
 </header>
 
-<section class="hero">
-  <button class="hero-btn left" onclick="prevHero()">‹</button>
-  <img id="heroImage" />
-  <button class="hero-btn right" onclick="nextHero()">›</button>
-  <div id="heroDots" class="hero-dots"></div>
+<section class="filter">
+  <button onclick="filterCategory('all')">الكل</button>
+  <button onclick="filterCategory('tshirt')">تيشيرت</button>
+  <button onclick="filterCategory('jeans')">جينز</button>
 </section>
 
 <section class="products">
-  <h2 class="section-title">المنتجات</h2>
   <div id="products" class="grid"></div>
-</section>
-
-<section class="products">
-  <h2 class="section-title">العروض 🔥</h2>
-  <div id="offers" class="grid"></div>
 </section>
 
 <!-- CART -->
@@ -48,32 +41,12 @@
 <!-- CHECKOUT -->
 <div id="checkoutModal" class="modal">
   <div class="modal-content">
-    <h3>إتمام الطلب</h3>
-
     <input id="name" placeholder="الاسم" />
     <input id="phone" placeholder="رقم الموبايل" />
     <input id="address" placeholder="العنوان" />
-    <textarea id="notes" placeholder="ملاحظات"></textarea>
-
-    <button onclick="submitOrder()">تأكيد الطلب</button>
-    <button onclick="closeCheckout()">إلغاء</button>
+    <button onclick="submitOrder()">تأكيد</button>
   </div>
 </div>
-
-<footer class="footer">
-  <div class="brand-footer">© 2026 Last piece, Inc.</div>
-
-  <div class="company-footer">
-    <p>Axentro – All Rights Reserved 2024 ©</p>
-    <p>By Axentro Team</p>
-
-    <a href="https://axentro-official.github.io/axentro-website/links.html" target="_blank">
-      <img src="./assets/images/qr.png" class="qr"/>
-    </a>
-
-    <p class="scan-text">Scan Me / Click On Me</p>
-  </div>
-</footer>
 
 <script src="./assets/js/app.js"></script>
 </body>
