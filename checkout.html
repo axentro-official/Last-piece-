@@ -1,49 +1,38 @@
-let cart = JSON.parse(localStorage.getItem("cart")) || [];
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="assets/css/style.css">
+<title>إتمام الطلب</title>
+</head>
 
-function toggleCart(){
-  document.getElementById("cart").classList.toggle("active");
-  renderCart();
-}
+<body>
 
-function addToCart(id){
-  const item = products.find(p=>p.id==id);
-  cart.push({...item, qty:1});
-  localStorage.setItem("cart", JSON.stringify(cart));
-}
+<div class="container">
 
-function renderCart(){
-  let html = "<h3>السلة</h3>";
+<h2>إتمام الطلب</h2>
 
-  cart.forEach((item,i)=>{
-    html += `
-      <div>
-        <img src="assets/images/${item.id}_1.webp" width="50">
-        <p>${item.name}</p>
-        <button onclick="removeItem(${i})">حذف</button>
-      </div>
-    `;
-  });
+<div id="summary"></div>
 
-  html += `
-    <button class="btn" onclick="goCheckout()">اتمام الطلب</button>
-    <button class="btn" onclick="clearCart()">تفريغ</button>
-  `;
+<form id="form">
 
-  document.getElementById("cart").innerHTML = html;
-}
+<input id="name" placeholder="الاسم" required>
+<input id="phone" placeholder="رقم الموبايل" required>
+<textarea id="address" placeholder="العنوان" required></textarea>
 
-function removeItem(i){
-  cart.splice(i,1);
-  localStorage.setItem("cart", JSON.stringify(cart));
-  renderCart();
-}
+<select id="payment">
+  <option value="COD">كاش عند الاستلام</option>
+  <option value="instapay">Instapay</option>
+</select>
 
-function clearCart(){
-  cart=[];
-  localStorage.removeItem("cart");
-  renderCart();
-}
+<button class="btn">تأكيد الطلب</button>
 
-function goCheckout(){
-  window.location.href="checkout.html";
-}
+</form>
+
+</div>
+
+<script src="assets/js/checkout.js"></script>
+
+</body>
+</html>
