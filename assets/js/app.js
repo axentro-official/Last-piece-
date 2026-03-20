@@ -1,90 +1,139 @@
-const API_URL = "PUT_YOUR_SCRIPT_URL";
+const API_URL = "https://script.google.com/macros/s/AKfycbxdlkIFb_G3t80dP184DH2joRVQ6XTkyJuL7QxZj3QLSHeBPwL-TJLzJy0qplraTWCwIA/exec";
 
 let cart = [];
 let selected = {};
+let productsData = [];
 
-// ================= PRODUCTS =================
+// ================= LOAD PRODUCTS =================
 fetch(API_URL + "?action=products")
-.then(r=>r.json())
-.then(products=>{
-  const c = document.getElementById("products");
+.then(res => res.json())
+.then(products => {
+
+  productsData = products;
+
+  const container = document.getElementById("products");
   const offers = document.getElementById("offers");
 
-  products.forEach(p=>{
+  container.innerHTML = "";
+  offers.innerHTML = "";
+
+  products.forEach(p => {
+
     let images = [];
     for(let i=1;i<=p.image_count;i++){
       images.push(`./assets/images/${p.id}-${i}.webp`);
     }
 
-    let html = `
+    let priceHTML = p.has_discount
+      ? `<span class="old">${p.price}</span> <span class="new">${p.discount_price}</span>`
+      : `<span class="new">${p.price}</span>`;
+
+    let card = `
     <div class="card">
 
-      <img id="img-${p.id}" src="${images[0]}"/>
-
-      <button onclick="nextImg('${p.id}',${JSON.stringify(images)})">›</button>
+      <div class="img-box">
+        <button onclick="prevImg('${p.id}')">‹</button>
+        <img id="img-${p.id}" src="${images[0]}"/>
+        <button onclick="nextImg('${p.id}')">›</button>
+      </div>
 
       <h4>${p.name}</h4>
+      <small>${p.id}</small>
 
-      <div>
+      <div>${priceHTML}</div>
+
+      <div class="sizes">
         ${p.sizes.map(s=>`<span onclick="pickSize('${p.id}',this,'${s}')">${s}</span>`).join("")}
       </div>
 
-      <div>
-        ${p.colors.map(c=>`<span onclick="pickColor('${p.id}',this,'${c}')" style="background:${c};width:15px;height:15px;display:inline-block"></span>`).join("")}
+      <div class="colors">
+        ${p.colors.map(c=>`<span onclick="pickColor('${p.id}',this,'${c}')" style="background:${c}"></span>`).join("")}
       </div>
 
-      <input type="number" value="1" id="q-${p.id}" min="1"/>
+      <input type="number" value="1" min="1" id="q-${p.id}"/>
 
-      <button onclick='addToCart(${JSON.stringify(p)})' class="btn">أضف للسلة</button>
+      <button onclick="addToCart('${p.id}')" class="btn">أضف للسلة</button>
 
     </div>`;
 
-    c.innerHTML += html;
+    container.innerHTML += card;
 
-    if(p.has_discount) offers.innerHTML += html;
+    if(p.has_discount) offers.innerHTML += card;
   });
 });
 
+
 // ================= IMAGE SLIDER =================
-function nextImg(id, imgs){
-  let img = document.getElementById("img-"+id);
-  let i = imgs.indexOf(img.src.split("/").pop());
-  i = (i+1)%imgs.length;
-  img.src = imgs[i];
+let imgIndex = {};
+
+function nextImg(id){
+  let p = productsData.find(x=>x.id===id);
+
+  imgIndex[id] = (imgIndex[id] || 0) + 1;
+  if(imgIndex[id] >= p.image_count) imgIndex[id] = 0;
+
+  document.getElementById("img-"+id).src =
+    `./assets/images/${id}-${imgIndex[id]+1}.webp`;
 }
+
+function prevImg(id){
+  let p = productsData.find(x=>x.id===id);
+
+  imgIndex[id] = (imgIndex[id] || 0) - 1;
+  if(imgIndex[id] < 0) imgIndex[id] = p.image_count-1;
+
+  document.getElementById("img-"+id).src =
+    `./assets/images/${id}-${imgIndex[id]+1}.webp`;
+}
+
 
 // ================= SELECT =================
 function pickSize(id,el,val){
   selected[id] = selected[id] || {};
   selected[id].size = val;
+
+  el.parentElement.querySelectorAll("span").forEach(s=>s.classList.remove("selected"));
   el.classList.add("selected");
 }
 
 function pickColor(id,el,val){
   selected[id] = selected[id] || {};
   selected[id].color = val;
+
+  el.parentElement.querySelectorAll("span").forEach(s=>s.classList.remove("selected"));
   el.classList.add("selected");
 }
 
-// ================= CART =================
-function addToCart(p){
 
-  let size = selected[p.id]?.size;
-  let color = selected[p.id]?.color;
+// ================= CART =================
+function addToCart(id){
+
+  let p = productsData.find(x=>x.id===id);
+
+  let size = selected[id]?.size;
+  let color = selected[id]?.color;
 
   if(!size || !color){
     alert("اختار المقاس واللون");
     return;
   }
 
-  let qty = document.getElementById("q-"+p.id).value;
+  let qty = document.getElementById("q-"+id).value;
 
-  cart.push({...p,size,color,qty});
+  cart.push({
+    ...p,
+    size,
+    color,
+    qty
+  });
 
   document.getElementById("cartCount").innerText = cart.length;
 }
 
+
+// ================= CART VIEW =================
 function openCart(){
+
   let c = document.getElementById("cartItems");
   c.innerHTML = "";
 
@@ -92,7 +141,7 @@ function openCart(){
 
   cart.forEach((i,idx)=>{
     let price = i.discount_price || i.price;
-    total += price*i.qty;
+    total += price * i.qty;
 
     c.innerHTML += `
       <div>
@@ -101,7 +150,8 @@ function openCart(){
       </div>`;
   });
 
-  document.getElementById("total").innerText = "الإجمالي: "+total;
+  document.getElementById("total").innerText = "الإجمالي: " + total;
+
   document.getElementById("cartModal").style.display="block";
 }
 
@@ -114,6 +164,7 @@ function closeCart(){
   document.getElementById("cartModal").style.display="none";
 }
 
+
 // ================= CHECKOUT =================
 function goCheckout(){
   closeCart();
@@ -124,11 +175,18 @@ function closeCheckout(){
   document.getElementById("checkoutModal").style.display="none";
 }
 
+
 // ================= ORDER =================
 function submitOrder(){
 
   let name = document.getElementById("name").value;
   let phone = document.getElementById("phone").value;
+  let address = document.getElementById("address").value;
+
+  if(!name || !phone || !address){
+    alert("اكمل البيانات");
+    return;
+  }
 
   cart.forEach(item=>{
     fetch(API_URL,{
@@ -138,10 +196,10 @@ function submitOrder(){
         product_name:item.name,
         size:item.size,
         color:item.color,
-        price:item.price,
+        price:item.discount_price || item.price,
         customer_name:name,
         phone:phone,
-        address:document.getElementById("address").value,
+        address:address,
         notes:document.getElementById("notes").value
       })
     });
