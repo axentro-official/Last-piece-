@@ -26,7 +26,6 @@
 <!-- HERO -->
 <section class="hero">
   <div id="heroSlider" class="slider"></div>
-  <div id="heroDots" class="dots"></div>
 </section>
 
 <!-- PRODUCTS -->
@@ -40,29 +39,40 @@
 <!-- CART -->
 <div id="cartModal" class="cart-modal">
   <div class="cart-box">
+
     <h3>سلة المشتريات</h3>
+
     <div id="cartItems"></div>
+
+    <div class="form">
+      <input id="name" placeholder="الاسم">
+      <input id="phone" placeholder="رقم الموبايل">
+      <input id="address" placeholder="العنوان بالتفصيل">
+    </div>
 
     <button onclick="checkout()">إتمام الطلب</button>
     <button onclick="closeCart()" class="close-btn">إغلاق</button>
+
   </div>
 </div>
 
 <!-- FOOTER -->
 <footer class="footer">
 
-  <div class="brand-footer">
+  <div>
     <img src="assets/images/logo.png">
     <p>Last Piece © 2026</p>
   </div>
 
-  <div class="axentro-footer">
-    <img src="assets/images/qr.png" class="qr">
+  <div>
+    <img src="assets/images/qr.png" class="qr"
+      onclick="window.open('https://axentro.com','_blank')">
     <p>Scan Me</p>
   </div>
 
 </footer>
 
 <script src="assets/js/app.js"></script>
+
 </body>
 </html>
