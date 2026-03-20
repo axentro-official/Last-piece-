@@ -1,55 +1,61 @@
 <!DOCTYPE html>
-<html lang="ar">
+<html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="stylesheet" href="assets/css/style.css">
 <title>تم الطلب</title>
+<link rel="stylesheet" href="assets/css/style.css">
 </head>
 
 <body>
 
-<div class="container">
+<div class="container thanks">
 
-<h2>تم استلام طلبك بنجاح</h2>
+  <h2>تم استلام طلبك بنجاح 🎉</h2>
 
-<div id="summary"></div>
+  <div id="summary" class="summary"></div>
+
+  <h3 id="total"></h3>
+
+  <a href="index.html" class="btn primary">العودة للرئيسية</a>
 
 </div>
 
-<footer>
-  <div>Last Piece © 2026</div>
+<footer class="footer">
+  <div class="footer-left">Last Piece © 2026</div>
 
   <div class="footer-center">
-    © 2024 Axentro – All Rights Reserved <br>
+    © 2024 Axentro – All Rights Reserved<br>
     By Axentro Team
     <br>
-    <img src="assets/images/qr.png"
-    onclick="window.open('https://axentro-official.github.io/axentro-website/links.html')">
-    <p>Scan Me / Click On Me</p>
+    <img class="qr"
+      src="assets/images/qr.png"
+      onclick="window.open('https://axentro-official.github.io/axentro-website/links.html','_blank')">
+    <p class="scan">Scan Me / Click On Me</p>
   </div>
 </footer>
 
 <script>
-let order = JSON.parse(localStorage.getItem("lastOrder"));
+const order = JSON.parse(localStorage.getItem("lastOrder") || "null");
 
 if(!order){
-  document.getElementById("summary").innerHTML = "<p>لا يوجد طلب</p>";
+  document.getElementById("summary").innerHTML = "لا يوجد طلب";
 }else{
-
-  let html = `
-    <h3>رقم الطلب: ${order.order_id}</h3>
-    <p>الاسم: ${order.customer_name}</p>
-    <p>الإجمالي: ${order.total} جنيه</p>
-    <p>الدفع: ${order.payment}</p>
-    <hr>
-  `;
+  let html = "";
+  let total = 0;
 
   order.items.forEach(p=>{
-    html += `<p>${p.name} × ${p.qty}</p>`;
+    total += p.price * p.qty;
+    html += `
+      <div class="row">
+        <span>${p.name}</span>
+        <span>${p.qty} × ${p.price}</span>
+      </div>
+    `;
   });
 
   document.getElementById("summary").innerHTML = html;
+  document.getElementById("total").innerText = "الإجمالي: " + total + " ج";
 }
 </script>
 
