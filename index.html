@@ -1,55 +1,75 @@
 <!DOCTYPE html>
-<html lang="ar">
+<html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="stylesheet" href="assets/css/style.css">
 <title>Last Piece</title>
+<link rel="stylesheet" href="assets/css/style.css">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
 </head>
 
 <body>
 
-<header class="container">
+<header class="header container">
   <img src="assets/images/logo.png" class="logo">
-  <div class="cart-icon" onclick="toggleCart()">🛒</div>
+
+  <div class="cart-icon" onclick="toggleCart()">
+    <i class="fa-solid fa-cart-shopping"></i>
+    <span id="cartCount">0</span>
+  </div>
 </header>
 
 <div class="container">
 
-<!-- HERO -->
-<div class="slider" id="slider"></div>
-<div class="dots" id="dots"></div>
+  <!-- HERO -->
+  <section class="hero">
+    <div id="heroSlider" class="slider"></div>
+    <div id="heroDots" class="dots"></div>
+  </section>
 
-<!-- SWITCH -->
-<div class="tabs">
-  <button onclick="filterProducts('all')" class="active">المنتجات</button>
-  <button onclick="filterProducts('sale')">العروض</button>
+  <!-- TABS -->
+  <div class="tabs">
+    <button id="tabProducts" class="active" onclick="setTab('products')">المنتجات</button>
+    <button id="tabOffers" onclick="setTab('offers')">العروض</button>
+  </div>
+
+  <!-- GRID -->
+  <div id="products" class="grid"></div>
+
 </div>
 
-<!-- PRODUCTS -->
-<div id="products" class="products"></div>
+<!-- CART DRAWER -->
+<aside id="cartDrawer" class="cart-drawer">
+  <div class="cart-header">
+    <h3>السلة</h3>
+    <button class="icon-btn" onclick="toggleCart()">✕</button>
+  </div>
 
-</div>
+  <div id="cartItems" class="cart-items"></div>
 
-<!-- CART -->
-<div class="cart" id="cart"></div>
+  <div class="cart-footer">
+    <div id="cartTotal" class="total"></div>
+    <button class="btn primary" onclick="goCheckout()">إتمام الطلب</button>
+    <button class="btn ghost" onclick="clearCart()">تفريغ السلة</button>
+  </div>
+</aside>
 
 <!-- FOOTER -->
-<footer>
-  <div>Last Piece © 2026</div>
+<footer class="footer">
+  <div class="footer-left">Last Piece © 2026</div>
 
   <div class="footer-center">
-    © 2024 Axentro – All Rights Reserved <br>
+    © 2024 Axentro – All Rights Reserved<br>
     By Axentro Team
     <br>
-    <img src="assets/images/qr.png"
-    onclick="window.open('https://axentro-official.github.io/axentro-website/links.html')">
-    <p>Scan Me / Click On Me</p>
+    <img class="qr"
+      src="assets/images/qr.png"
+      onclick="window.open('https://axentro-official.github.io/axentro-website/links.html','_blank')">
+    <p class="scan">Scan Me / Click On Me</p>
   </div>
 </footer>
 
 <script src="assets/js/app.js"></script>
 <script src="assets/js/cart.js"></script>
-
 </body>
-</html>  
+</html>
