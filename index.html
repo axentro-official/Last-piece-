@@ -1,75 +1,94 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Last Piece</title>
-<link rel="stylesheet" href="assets/css/style.css">
-<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Last Piece</title>
+
+  <link rel="stylesheet" href="assets/css/style.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet">
 </head>
 
 <body>
 
-<header class="header container">
-  <img src="assets/images/logo.png" class="logo">
-
-  <div class="cart-icon" onclick="toggleCart()">
-    <i class="fa-solid fa-cart-shopping"></i>
-    <span id="cartCount">0</span>
+<!-- NAV -->
+<header class="nav">
+  <div class="logo">Last Piece</div>
+  <div class="cart-icon">
+    🛒 <span id="cart-count">0</span>
   </div>
 </header>
 
-<div class="container">
-
-  <!-- HERO -->
-  <section class="hero">
-    <div id="heroSlider" class="slider"></div>
-    <div id="heroDots" class="dots"></div>
-  </section>
-
-  <!-- TABS -->
-  <div class="tabs">
-    <button id="tabProducts" class="active" onclick="setTab('products')">المنتجات</button>
-    <button id="tabOffers" onclick="setTab('offers')">العروض</button>
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-slider">
+    <img src="assets/images/hero01.webp">
+    <img src="assets/images/hero02.webp">
+    <img src="assets/images/hero03.webp">
+    <img src="assets/images/hero04.webp">
   </div>
 
-  <!-- GRID -->
-  <div id="products" class="grid"></div>
+  <div class="dots"></div>
+</section>
 
-</div>
-
-<!-- CART DRAWER -->
-<aside id="cartDrawer" class="cart-drawer">
-  <div class="cart-header">
-    <h3>السلة</h3>
-    <button class="icon-btn" onclick="toggleCart()">✕</button>
-  </div>
-
-  <div id="cartItems" class="cart-items"></div>
-
-  <div class="cart-footer">
-    <div id="cartTotal" class="total"></div>
-    <button class="btn primary" onclick="goCheckout()">إتمام الطلب</button>
-    <button class="btn ghost" onclick="clearCart()">تفريغ السلة</button>
-  </div>
-</aside>
+<!-- PRODUCTS -->
+<section class="products-section">
+  <h2>المنتجات</h2>
+  <div id="products-container" class="products-grid"></div>
+</section>
 
 <!-- FOOTER -->
 <footer class="footer">
-  <div class="footer-left">Last Piece © 2026</div>
+
+  <div class="footer-left">
+    Last Piece © 2026
+  </div>
 
   <div class="footer-center">
-    © 2024 Axentro – All Rights Reserved<br>
-    By Axentro Team
-    <br>
-    <img class="qr"
-      src="assets/images/qr.png"
-      onclick="window.open('https://axentro-official.github.io/axentro-website/links.html','_blank')">
-    <p class="scan">Scan Me / Click On Me</p>
+    <p>© 2024 Axentro – All Rights Reserved</p>
+    <p>By Axentro Team</p>
+
+    <a href="https://axentro-official.github.io/axentro-website/links.html" target="_blank">
+      <img src="assets/images/qr.png" class="qr"/>
+      <p>Scan Me / Click On Me</p>
+    </a>
   </div>
+
 </footer>
 
 <script src="assets/js/app.js"></script>
-<script src="assets/js/cart.js"></script>
+
+<script>
+/* HERO AUTO SLIDER */
+const slides = document.querySelectorAll(".hero-slider img");
+const dotsContainer = document.querySelector(".dots");
+
+let index = 0;
+
+slides.forEach((_, i) => {
+  const dot = document.createElement("span");
+  dot.onclick = () => showSlide(i);
+  dotsContainer.appendChild(dot);
+});
+
+function showSlide(i) {
+  slides.forEach(s => s.style.display = "none");
+  slides[i].style.display = "block";
+
+  document.querySelectorAll(".dots span").forEach(d => d.classList.remove("active"));
+  document.querySelectorAll(".dots span")[i].classList.add("active");
+
+  index = i;
+}
+
+function autoSlide() {
+  index = (index + 1) % slides.length;
+  showSlide(index);
+}
+
+setInterval(autoSlide, 2000);
+showSlide(0);
+</script>
+
 </body>
 </html>
