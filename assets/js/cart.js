@@ -1,49 +1,50 @@
-let cart = JSON.parse(localStorage.getItem("cart")) || [];
+let cart = JSON.parse(localStorage.getItem("cart"))||[];
 
 function toggleCart(){
-  document.getElementById("cart").classList.toggle("active");
+  document.getElementById("cartDrawer").classList.toggle("active");
   renderCart();
 }
 
 function addToCart(id){
-  const item = products.find(p=>p.id==id);
-  cart.push({...item, qty:1});
-  localStorage.setItem("cart", JSON.stringify(cart));
+  const p=products.find(x=>x.id==id);
+  const s=selected[id];
+
+  if(!s||!s.size||!s.color){
+    alert("اختار المقاس واللون");
+    return;
+  }
+
+  cart.push({...p,...s});
+  localStorage.setItem("cart",JSON.stringify(cart));
+  updateCount();
 }
+
+function updateCount(){
+  document.getElementById("cartCount").innerText=cart.length;
+}
+updateCount();
 
 function renderCart(){
-  let html = "<h3>السلة</h3>";
+  let html="",total=0;
 
-  cart.forEach((item,i)=>{
-    html += `
-      <div>
-        <img src="assets/images/${item.id}_1.webp" width="50">
-        <p>${item.name}</p>
-        <button onclick="removeItem(${i})">حذف</button>
-      </div>
-    `;
+  cart.forEach((i,idx)=>{
+    total+=i.price*(i.qty||1);
+    html+=`
+      <div class="row">
+        <span>${i.name}</span>
+        <span>${i.qty}</span>
+      </div>`;
   });
 
-  html += `
-    <button class="btn" onclick="goCheckout()">اتمام الطلب</button>
-    <button class="btn" onclick="clearCart()">تفريغ</button>
-  `;
-
-  document.getElementById("cart").innerHTML = html;
-}
-
-function removeItem(i){
-  cart.splice(i,1);
-  localStorage.setItem("cart", JSON.stringify(cart));
-  renderCart();
+  document.getElementById("cartItems").innerHTML=html;
+  document.getElementById("cartTotal").innerText="الإجمالي: "+total+" ج";
 }
 
 function clearCart(){
-  cart=[];
-  localStorage.removeItem("cart");
-  renderCart();
+  cart=[];localStorage.removeItem("cart");renderCart();updateCount();
 }
 
 function goCheckout(){
-  window.location.href="checkout.html";
+  localStorage.setItem("cart",JSON.stringify(cart));
+  window.location="checkout.html";
 }
