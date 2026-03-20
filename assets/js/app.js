@@ -1,86 +1,131 @@
-const API = "https://script.google.com/macros/s/AKfycbyuLyCqPmG1a2w7Vpgu2hGFFG44tlmW4N9AuNwa-YHRupXRPhxBF-_mEOhPgjpSBwM9/exec";
+const API_URL = "https://script.google.com/macros/s/AKfycbyuLyCqPmG1a2w7Vpgu2hGFFG44tlmW4N9AuNwa-YHRupXRPhxBF-_mEOhPgjpSBwM9/exec";
 
-let products=[],selected={},currentTab="products";
+const IMAGE_BASE = "https://raw.githubusercontent.com/axentro-official/Last-piece/main/assets/images/";
 
-fetch(API).then(r=>r.json()).then(d=>{
-  products=d;
-  render();
-  initHero();
-});
+let products = [];
+let cart = JSON.parse(localStorage.getItem("cart")) || [];
 
-function setTab(t){
-  currentTab=t;
-  document.getElementById("tabProducts").classList.toggle("active",t==="products");
-  document.getElementById("tabOffers").classList.toggle("active",t==="offers");
-  render();
+async function fetchProducts() {
+  try {
+    const res = await fetch(API_URL);
+    const data = await res.json();
+
+    products = data.filter(p => p.active);
+
+    renderProducts();
+  } catch (err) {
+    console.error("Error fetching products:", err);
+  }
 }
 
-function render(){
-  const container=document.getElementById("products");
-  container.innerHTML="";
+function renderProducts() {
+  const container = document.getElementById("products-container");
+  if (!container) return;
 
-  products.filter(p=> currentTab==="offers"?p.discount_price:!p.discount_price)
-  .forEach(p=>{
-    container.innerHTML+=`
-    <div class="card">
+  container.innerHTML = "";
 
-      <img src="assets/images/${p.id}-1.webp">
+  products.forEach(product => {
+    const sizes = product.sizes || [];
+    const colors = product.colors || [];
 
-      <h4>${p.name}</h4>
+    const card = document.createElement("div");
+    card.className = "product-card";
 
-      ${p.discount_price
-        ? `<p><del>${p.price}</del> ${p.discount_price}</p>`
-        : `<p>${p.price}</p>`}
-
-      <div class="colors">
-        ${p.colors.map(c=>`
-          <span class="color ${selected[p.id]?.color===c?'active':''}"
-          style="background:${c}"
-          onclick="selectColor('${p.id}','${c}')"></span>`).join("")}
+    card.innerHTML = `
+      <div class="product-image">
+        <img src="${IMAGE_BASE + product.id}_1.webp" alt="${product.name}">
       </div>
 
-      <div class="sizes">
-        ${["S","M","L","XL"].map(s=>`
-          <span class="${p.sizes.includes(s)?'':'size-disabled'} 
-          ${selected[p.id]?.size===s?'size-active':''}"
-          onclick="selectSize('${p.id}','${s}')">${s}</span>`).join("")}
+      <div class="product-info">
+        <h3>${product.name}</h3>
+
+        <div class="price">
+          ${
+            product.discount_price
+              ? `<span class="old">${product.price} EGP</span>
+                 <span class="new">${product.discount_price} EGP</span>`
+              : `<span class="new">${product.price} EGP</span>`
+          }
+        </div>
+
+        <div class="colors">
+          ${colors.map(c => `
+            <span class="color-circle" style="background:${c}" data-color="${c}"></span>
+          `).join("")}
+        </div>
+
+        <div class="sizes">
+          ${["XS","S","M","L","XL","XXL"].map(size => `
+            <span class="size ${sizes.includes(size) ? "active" : "disabled"}" data-size="${size}">
+              ${size}
+            </span>
+          `).join("")}
+        </div>
+
+        <button class="add-to-cart">Add To Cart</button>
       </div>
+    `;
 
-      <div class="qty">
-        <button onclick="qty('${p.id}',-1)">-</button>
-        ${selected[p.id]?.qty||1}
-        <button onclick="qty('${p.id}',1)">+</button>
-      </div>
+    const selected = {
+      color: null,
+      size: null
+    };
 
-      <button class="btn primary" onclick="addToCart('${p.id}')">أضف</button>
+    // اختيار لون
+    card.querySelectorAll(".color-circle").forEach(el => {
+      el.addEventListener("click", () => {
+        card.querySelectorAll(".color-circle").forEach(e => e.classList.remove("selected"));
+        el.classList.add("selected");
+        selected.color = el.dataset.color;
+      });
+    });
 
-    </div>`;
+    // اختيار مقاس
+    card.querySelectorAll(".size.active").forEach(el => {
+      el.addEventListener("click", () => {
+        card.querySelectorAll(".size").forEach(e => e.classList.remove("selected"));
+        el.classList.add("selected");
+        selected.size = el.dataset.size;
+      });
+    });
+
+    // إضافة للسلة
+    card.querySelector(".add-to-cart").addEventListener("click", () => {
+      if (!selected.color || !selected.size) {
+        alert("اختار المقاس واللون");
+        return;
+      }
+
+      addToCart(product, selected);
+    });
+
+    container.appendChild(card);
   });
 }
 
-/* selection */
-function selectColor(id,c){selected[id]=selected[id]||{};selected[id].color=c;render()}
-function selectSize(id,s){selected[id]=selected[id]||{};selected[id].size=s;render()}
-function qty(id,d){
-  selected[id]=selected[id]||{qty:1};
-  selected[id].qty=Math.max(1,(selected[id].qty||1)+d);
-  render();
+function addToCart(product, selected) {
+  const item = {
+    id: product.id,
+    name: product.name,
+    price: product.discount_price || product.price,
+    image: IMAGE_BASE + product.id + "_1.webp",
+    color: selected.color,
+    size: selected.size,
+    qty: 1
+  };
+
+  cart.push(item);
+  localStorage.setItem("cart", JSON.stringify(cart));
+
+  updateCartUI();
 }
 
-/* HERO */
-function initHero(){
-  let html="",dots="";
-  for(let i=1;i<=7;i++){
-    html+=`<img class="${i==1?'active':''}" src="assets/images/hero0${i}.webp">`;
-    dots+=`<span class="dot ${i==1?'active':''}"></span>`;
-  }
-  heroSlider.innerHTML=html;
-  heroDots.innerHTML=dots;
+function updateCartUI() {
+  const count = document.getElementById("cart-count");
+  if (!count) return;
 
-  let i=0,imgs=document.querySelectorAll(".slider img"),d=document.querySelectorAll(".dot");
-  setInterval(()=>{
-    imgs[i].classList.remove("active");d[i].classList.remove("active");
-    i=(i+1)%imgs.length;
-    imgs[i].classList.add("active");d[i].classList.add("active");
-  },2000);
+  count.innerText = cart.length;
 }
+
+fetchProducts();
+updateCartUI();
