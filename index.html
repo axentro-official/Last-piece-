@@ -1,53 +1,68 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Last Piece</title>
-  <link rel="stylesheet" href="./assets/css/style.css" />
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Last Piece</title>
+
+<link rel="stylesheet" href="assets/css/style.css">
+
+<!-- Icons -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+
 </head>
+
 <body>
 
 <header class="header">
-  <div class="cart" onclick="openCart()">🛒 <span id="cartCount">0</span></div>
+  <img src="assets/images/logo.png" class="logo">
 
-  <div class="brand">
-    <span class="brand-name">LAST PIECE</span>
-    <img src="./assets/images/logo.png" class="logo"/>
+  <div class="cart-icon" onclick="openCart()">
+    <i class="fa-solid fa-cart-shopping"></i>
+    <span id="cartCount">0</span>
   </div>
 </header>
 
-<section class="filter">
-  <button onclick="filterCategory('all')">الكل</button>
-  <button onclick="filterCategory('tshirt')">تيشيرت</button>
-  <button onclick="filterCategory('jeans')">جينز</button>
+<!-- HERO -->
+<section class="hero">
+  <div id="heroSlider" class="slider"></div>
+  <div id="heroDots" class="dots"></div>
 </section>
 
-<section class="products">
-  <div id="products" class="grid"></div>
-</section>
+<!-- PRODUCTS -->
+<h2 class="title">المنتجات</h2>
+<div id="productsContainer" class="grid"></div>
+
+<!-- OFFERS -->
+<h2 class="title">العروض</h2>
+<div id="offersContainer" class="grid"></div>
 
 <!-- CART -->
-<div id="cartModal" class="modal">
-  <div class="modal-content">
-    <h3>السلة</h3>
+<div id="cartModal" class="cart-modal">
+  <div class="cart-box">
+    <h3>سلة المشتريات</h3>
     <div id="cartItems"></div>
-    <h4 id="total"></h4>
-    <button onclick="goCheckout()">إتمام الطلب</button>
-    <button onclick="closeCart()">إغلاق</button>
+
+    <button onclick="checkout()">إتمام الطلب</button>
+    <button onclick="closeCart()" class="close-btn">إغلاق</button>
   </div>
 </div>
 
-<!-- CHECKOUT -->
-<div id="checkoutModal" class="modal">
-  <div class="modal-content">
-    <input id="name" placeholder="الاسم" />
-    <input id="phone" placeholder="رقم الموبايل" />
-    <input id="address" placeholder="العنوان" />
-    <button onclick="submitOrder()">تأكيد</button>
-  </div>
-</div>
+<!-- FOOTER -->
+<footer class="footer">
 
-<script src="./assets/js/app.js"></script>
+  <div class="brand-footer">
+    <img src="assets/images/logo.png">
+    <p>Last Piece © 2026</p>
+  </div>
+
+  <div class="axentro-footer">
+    <img src="assets/images/qr.png" class="qr">
+    <p>Scan Me</p>
+  </div>
+
+</footer>
+
+<script src="assets/js/app.js"></script>
 </body>
 </html>
