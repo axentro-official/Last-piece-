@@ -6,92 +6,103 @@ async function loadProducts() {
   const res = await fetch(API + "?type=products");
   const data = await res.json();
 
-  const normal = data.filter(p => !p.discount_price);
-  const offers = data.filter(p => p.discount_price);
-
-  render(normal, "productsContainer");
-  render(offers, "offersContainer");
+  render(data.filter(p=>!p.discount_price),"productsContainer");
+  render(data.filter(p=>p.discount_price),"offersContainer");
 }
 
-function render(list, id) {
-  const container = document.getElementById(id);
-  container.innerHTML = "";
+function render(list,id){
+  const container=document.getElementById(id);
+  container.innerHTML="";
 
-  list.forEach(p => {
+  list.forEach(p=>{
+    const img=`https://raw.githubusercontent.com/axentro-official/Last-piece-/main/assets/images/${p.id}-1.webp`;
 
-    const img = `https://raw.githubusercontent.com/axentro-official/Last-piece-/main/assets/images/${p.id}-1.webp`;
-
-    container.innerHTML += `
-      <div class="card fade">
-        <img src="${img}">
+    container.innerHTML+=`
+    <div class="card">
+      <img src="${img}">
+      <div style="padding:10px">
         <h4>${p.name}</h4>
 
         ${
           p.discount_price
-          ? `<div><span class="old">${p.price}</span> <span class="price">${p.discount_price}</span></div>`
-          : `<div class="price">${p.price}</div>`
+          ? `<span class="old">${p.price}</span> <span class="price">${p.discount_price}</span>`
+          : `<span class="price">${p.price}</span>`
         }
 
         <button onclick='addToCart(${JSON.stringify(p)})'>اضف للسلة</button>
       </div>
-    `;
+    </div>`;
   });
 }
 
 /* CART */
-function addToCart(p) {
+function addToCart(p){
   cart.push(p);
-  document.getElementById("cartCount").innerText = cart.length;
+  document.getElementById("cartCount").innerText=cart.length;
 }
 
-function openCart() {
-  document.getElementById("cartModal").style.display = "block";
+function openCart(){
+  document.getElementById("cartModal").style.display="block";
   renderCart();
 }
 
-function closeCart() {
-  document.getElementById("cartModal").style.display = "none";
+function closeCart(){
+  document.getElementById("cartModal").style.display="none";
 }
 
-function renderCart() {
-  const container = document.getElementById("cartItems");
-  container.innerHTML = "";
+function renderCart(){
+  const c=document.getElementById("cartItems");
+  c.innerHTML="";
 
-  cart.forEach(p => {
-    container.innerHTML += `<p>${p.name}</p>`;
+  cart.forEach(p=>{
+    c.innerHTML+=`<p>${p.name}</p>`;
   });
+
+  c.innerHTML+=`
+  <input placeholder="الاسم" id="name">
+  <input placeholder="الموبايل" id="phone">
+  <input placeholder="العنوان" id="address">
+  `;
 }
 
 /* CHECKOUT */
-function checkout() {
-  localStorage.setItem("lastOrder", JSON.stringify(cart));
-  window.location.href = "thanks.html";
+async function checkout(){
+
+  const order={
+    name:document.getElementById("name").value,
+    phone:document.getElementById("phone").value,
+    address:document.getElementById("address").value,
+    items:cart
+  };
+
+  await fetch(API,{
+    method:"POST",
+    body:JSON.stringify(order)
+  });
+
+  localStorage.setItem("lastOrder",JSON.stringify(cart));
+
+  window.location="thanks.html";
 }
 
 /* HERO */
-const heroImages = [
-  "hero01.webp",
-  "hero02.webp",
-  "hero03.webp"
-];
+const hero=["hero01.webp","hero02.webp","hero03.webp"];
 
-let current = 0;
+let i=0;
 
-function loadHero() {
-  const slider = document.getElementById("heroSlider");
+function loadHero(){
+  const s=document.getElementById("heroSlider");
 
-  heroImages.forEach((img, i) => {
-    slider.innerHTML += `<img src="assets/images/${img}" class="${i===0?'active':''}">`;
+  hero.forEach((h,index)=>{
+    s.innerHTML+=`<img src="assets/images/${h}" class="${index==0?'active':''}">`;
   });
 
-  setInterval(() => {
-    const imgs = document.querySelectorAll(".slider img");
-    imgs[current].classList.remove("active");
-
-    current = (current+1)%imgs.length;
-
-    imgs[current].classList.add("active");
-  }, 3000);
+  setInterval(()=>{
+    const imgs=document.querySelectorAll(".slider img");
+    imgs[i].classList.remove("active");
+    i=(i+1)%imgs.length;
+    imgs[i].classList.add("active");
+  },4000);
 }
 
 /* INIT */
