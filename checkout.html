@@ -1,38 +1,49 @@
 <!DOCTYPE html>
-<html lang="ar">
+<html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Checkout</title>
 <link rel="stylesheet" href="assets/css/style.css">
-<title>إتمام الطلب</title>
 </head>
 
 <body>
 
-<div class="container">
+<div class="container checkout">
 
-<h2>إتمام الطلب</h2>
+  <h2>إتمام الطلب</h2>
 
-<div id="summary"></div>
+  <div id="orderSummary" class="summary"></div>
 
-<form id="form">
+  <form id="form" class="form">
+    <input id="name" placeholder="الاسم" required>
+    <input id="phone" placeholder="رقم الموبايل" required>
+    <input id="address" placeholder="العنوان بالتفصيل" required>
 
-<input id="name" placeholder="الاسم" required>
-<input id="phone" placeholder="رقم الموبايل" required>
-<textarea id="address" placeholder="العنوان" required></textarea>
+    <select id="payment">
+      <option value="COD">كاش عند الاستلام</option>
+      <option value="instapay">Instapay</option>
+    </select>
 
-<select id="payment">
-  <option value="COD">كاش عند الاستلام</option>
-  <option value="instapay">Instapay</option>
-</select>
-
-<button class="btn">تأكيد الطلب</button>
-
-</form>
+    <button class="btn primary">تأكيد الطلب</button>
+  </form>
 
 </div>
 
-<script src="assets/js/checkout.js"></script>
+<footer class="footer">
+  <div class="footer-left">Last Piece © 2026</div>
 
+  <div class="footer-center">
+    © 2024 Axentro – All Rights Reserved<br>
+    By Axentro Team
+    <br>
+    <img class="qr"
+      src="assets/images/qr.png"
+      onclick="window.open('https://axentro-official.github.io/axentro-website/links.html','_blank')">
+    <p class="scan">Scan Me / Click On Me</p>
+  </div>
+</footer>
+
+<script src="assets/js/checkout.js"></script>
 </body>
 </html>
