@@ -1,32 +1,29 @@
-const API = "https://script.google.com/macros/s/AKfycbyuLyCqPmG1a2w7Vpgu2hGFFG44tlmW4N9AuNwa-YHRupXRPhxBF-_mEOhPgjpSBwM9/exec";
+const API_URL = "https://script.google.com/macros/s/AKfycbyuLyCqPmG1a2w7Vpgu2hGFFG44tlmW4N9AuNwa-YHRupXRPhxBF-_mEOhPgjpSBwM9/exec";
 
-let cart = JSON.parse(localStorage.getItem("cart"))||[];
+let cart = JSON.parse(localStorage.getItem("cart")) || [];
 
-function render(){
-  let html="";
-  cart.forEach(p=>{
-    html+=`<div class="row"><span>${p.name}</span><span>${p.qty}</span></div>`;
+function submitOrder() {
+  const name = document.getElementById("name").value;
+  const phone = document.getElementById("phone").value;
+  const address = document.getElementById("address").value;
+
+  if (!name || !phone || !address) {
+    alert("كمل البيانات");
+    return;
+  }
+
+  fetch(API_URL, {
+    method: "POST",
+    body: JSON.stringify({
+      customer_name: name,
+      phone,
+      address,
+      items: cart
+    })
+  })
+  .then(res => res.json())
+  .then(data => {
+    localStorage.removeItem("cart");
+    window.location.href = "thanks.html";
   });
-  orderSummary.innerHTML=html;
 }
-render();
-
-form.onsubmit=async(e)=>{
-  e.preventDefault();
-
-  const order={
-    order_id:"ORD-"+Date.now(),
-    customer_name:name.value,
-    phone:phone.value,
-    address:address.value,
-    payment:payment.value,
-    items:cart
-  };
-
-  await fetch(API,{method:"POST",body:JSON.stringify(order)});
-
-  localStorage.setItem("lastOrder",JSON.stringify(order));
-  localStorage.removeItem("cart");
-
-  window.location="thanks.html";
-};
