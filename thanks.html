@@ -1,74 +1,40 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html>
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>تم الطلب بنجاح</title>
-
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="assets/css/style.css">
-
 </head>
 
 <body>
 
-<div class="thanks-container">
+<div class="container">
 
-  <h1>🎉 تم استلام طلبك</h1>
-  <p>سيتم التواصل معك خلال وقت قصير لتأكيد الطلب</p>
+<h2>تم استلام طلبك بنجاح</h2>
 
-  <div id="orderSummary" class="grid"></div>
-
-  <h2 id="totalPrice"></h2>
-
-  <a href="index.html" class="back-btn">العودة للرئيسية</a>
+<div id="summary"></div>
 
 </div>
 
-<!-- FOOTER -->
-<footer class="footer">
+<footer>
+  <div>Last Piece © 2026</div>
 
-  <div>
-    <img src="assets/images/logo.png">
-    <p>Last Piece © 2026</p>
+  <div class="footer-center">
+    © 2024 Axentro – All Rights Reserved <br>
+    By Axentro Team
+    <br>
+    <img src="assets/images/qr.png"
+    onclick="window.open('https://axentro-official.github.io/axentro-website/links.html')">
+    <p>Scan Me / Click On Me</p>
   </div>
-
-  <div>
-    <img src="assets/images/qr.png" class="qr"
-      onclick="window.open('https://axentro.com','_blank')">
-    <p>Scan Me</p>
-  </div>
-
 </footer>
 
 <script>
-
-const data = JSON.parse(localStorage.getItem("lastOrder") || "[]");
-
-let total = 0;
-
-const container = document.getElementById("orderSummary");
-
-data.forEach(p => {
-
-  const img = `https://raw.githubusercontent.com/axentro-official/Last-piece-/main/assets/images/${p.id}-1.webp`;
-
-  const price = p.discount_price || p.price;
-
-  total += price;
-
-  container.innerHTML += `
-    <div class="card">
-      <img src="${img}">
-      <div style="padding:10px">
-        <h4>${p.name}</h4>
-        <p>${price} ج</p>
-      </div>
-    </div>
-  `;
+let cart = JSON.parse(localStorage.getItem("cart"))||[];
+let html="";
+cart.forEach(p=>{
+  html+=`<p>${p.name}</p>`;
 });
-
-document.getElementById("totalPrice").innerText = "الإجمالي: " + total + " ج";
-
+document.getElementById("summary").innerHTML=html;
 </script>
 
 </body>
