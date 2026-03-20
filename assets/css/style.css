@@ -1,4 +1,4 @@
-/* RESET */
+/* ================= RESET ================= */
 * {
   margin: 0;
   padding: 0;
@@ -10,17 +10,28 @@ body {
   background: #f5f5f5;
 }
 
-/* HEADER */
+/* ================= HEADER ================= */
 .header {
   display: flex;
   justify-content: space-between;
-  padding: 20px;
-  background: #fff;
   align-items: center;
+  padding: 15px 20px;
+  background: #fff;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
 .logo {
-  width: 150px;
+  width: 140px;
+}
+
+.brand-name {
+  font-size: 20px;
+  color: #C9A24A;
 }
 
 .cart {
@@ -28,7 +39,12 @@ body {
   cursor: pointer;
 }
 
-/* FILTER */
+#cartCount {
+  color: #C9A24A;
+  font-weight: bold;
+}
+
+/* ================= FILTER ================= */
 .filter {
   display: flex;
   gap: 10px;
@@ -36,67 +52,227 @@ body {
 }
 
 .filter button {
-  padding: 8px;
+  padding: 8px 12px;
   border: none;
   background: #000;
   color: #fff;
+  border-radius: 6px;
+  cursor: pointer;
 }
 
-/* GRID */
+.filter button:hover {
+  background: #C9A24A;
+}
+
+/* ================= GRID ================= */
 .grid {
   display: grid;
-  grid-template-columns: repeat(2,1fr);
-  gap: 10px;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
   padding: 10px;
 }
 
-/* CARD */
+/* ================= CARD ================= */
 .card {
   background: #fff;
+  border-radius: 15px;
   padding: 10px;
+  transition: 0.3s;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+}
+
+.card:hover {
+  transform: translateY(-5px);
+}
+
+/* ================= IMAGE ================= */
+.img-box {
+  position: relative;
+}
+
+.img-box img {
+  width: 100%;
+  height: 220px;
+  object-fit: contain;
+  background: #f2f2f2;
   border-radius: 10px;
 }
 
-.card img {
-  width: 100%;
-  height: 180px;
-  object-fit: contain;
+/* ================= SLIDER BUTTON ================= */
+.img-box button {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(0,0,0,0.5);
+  color: #fff;
+  border: none;
+  padding: 8px;
+  cursor: pointer;
+  border-radius: 5px;
 }
 
-/* BUTTON */
+.img-box button:hover {
+  background: #C9A24A;
+}
+
+.img-box button:first-child {
+  left: 5px;
+}
+
+.img-box button:last-child {
+  right: 5px;
+}
+
+/* ================= TEXT ================= */
+.card h4 {
+  margin: 8px 0;
+  font-size: 15px;
+}
+
+/* ================= PRICE ================= */
+.old {
+  text-decoration: line-through;
+  color: #999;
+  font-size: 13px;
+}
+
+.new {
+  color: #C9A24A;
+  font-weight: bold;
+}
+
+/* ================= SIZE ================= */
+.sizes span {
+  display: inline-block;
+  padding: 5px 8px;
+  margin: 3px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.selected {
+  border: 2px solid #C9A24A !important;
+  color: #C9A24A;
+}
+
+/* ================= COLORS ================= */
+.colors span {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  display: inline-block;
+  margin: 3px;
+  cursor: pointer;
+  border: 1px solid #ccc;
+}
+
+/* ================= INPUT ================= */
+input[type="number"] {
+  width: 60px;
+  padding: 5px;
+  margin-top: 5px;
+}
+
+/* ================= BUTTON ================= */
 .btn {
   width: 100%;
   padding: 10px;
-  background: #C9A24A;
-  color: #fff;
+  background: linear-gradient(135deg,#C9A24A,#E5C97A);
   border: none;
+  border-radius: 8px;
+  color: #fff;
+  margin-top: 8px;
+  cursor: pointer;
 }
 
-/* MODAL */
+.btn:hover {
+  opacity: 0.9;
+}
+
+/* ================= MODAL ================= */
 .modal {
   position: fixed;
-  top:0;
-  width:100%;
-  height:100%;
-  display:none;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: none;
+  justify-content: center;
+  align-items: center;
   background: rgba(0,0,0,0.6);
+  z-index: 10;
 }
 
 .modal-content {
-  background:#fff;
-  padding:20px;
-  margin:50px auto;
-  width:90%;
+  background: #fff;
+  padding: 20px;
+  width: 90%;
+  max-width: 400px;
+  border-radius: 10px;
 }
 
-/* FOOTER */
+/* ================= INPUTS ================= */
+.modal-content input,
+.modal-content textarea {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+/* ================= CART ================= */
+.cart-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+#total {
+  margin-top: 10px;
+  color: #C9A24A;
+}
+
+/* ================= FOOTER ================= */
 .footer {
-  background:#000;
-  color:#fff;
-  padding:20px;
-  text-align:center;
+  background: #000;
+  color: #fff;
+  padding: 30px 20px;
+  text-align: center;
+  margin-top: 20px;
 }
 
 .qr {
-  width:100px;
+  width: 100px;
+  margin-top: 10px;
+  transition: 0.3s;
+}
+
+.qr:hover {
+  transform: scale(1.1);
+}
+
+/* ================= RESPONSIVE ================= */
+@media (max-width: 768px) {
+  .logo {
+    width: 110px;
+  }
+
+  .grid {
+    grid-template-columns: repeat(2,1fr);
+  }
+
+  .img-box img {
+    height: 180px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .grid {
+    grid-template-columns: repeat(4,1fr);
+  }
+
+  .img-box img {
+    height: 260px;
+  }
 }
