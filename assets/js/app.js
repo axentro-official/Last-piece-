@@ -1,13 +1,14 @@
 const API_URL = "https://script.google.com/macros/s/AKfycbxdlkIFb_G3t80dP184DH2joRVQ6XTkyJuL7QxZj3QLSHeBPwL-TJLzJy0qplraTWCwIA/exec";
 
 let cart = JSON.parse(localStorage.getItem("cart")) || [];
-let wishlist = JSON.parse(localStorage.getItem("wishlist")) || [];
 let productsData = [];
+let selected = {};
+let imgIndex = {};
 
-// ================= LOAD PRODUCTS =================
+// ================= LOAD =================
 fetch(API_URL + "?action=products")
-.then(r=>r.json())
-.then(products=>{
+.then(r => r.json())
+.then(products => {
   productsData = products;
   renderProducts(products);
   updateCartCount();
@@ -15,43 +16,124 @@ fetch(API_URL + "?action=products")
 
 // ================= RENDER =================
 function renderProducts(products){
-  const c = document.getElementById("products");
-  c.innerHTML = "";
 
-  products.forEach(p=>{
-    c.innerHTML += `
-    <div class="card">
+  const container = document.getElementById("products");
+  container.innerHTML = "";
 
-      <img src="./assets/images/${p.id}-1.webp" onclick="goProduct('${p.id}')"/>
+  products.forEach(p => {
 
-      <h4>${p.name}</h4>
+    imgIndex[p.id] = 0;
 
-      <button onclick="addToWishlist('${p.id}')">❤️</button>
+    let priceHTML = p.has_discount
+      ? `<span class="old">${p.price}</span> <span class="new">${p.discount_price}</span>`
+      : `<span class="new">${p.price}</span>`;
 
-      <button onclick="goProduct('${p.id}')">عرض</button>
+    container.innerHTML += `
+      <div class="card">
 
-    </div>`;
+        <div class="img-box">
+          <button onclick="prevImg('${p.id}')">‹</button>
+          <img id="img-${p.id}" src="./assets/images/${p.id}-1.webp" onerror="this.src='./assets/images/fallback.webp'">
+          <button onclick="nextImg('${p.id}')">›</button>
+        </div>
+
+        <h4>${p.name}</h4>
+
+        <div>${priceHTML}</div>
+
+        <div class="sizes">
+          ${p.sizes.map(s => `<span onclick="selectSize('${p.id}',this,'${s}')">${s}</span>`).join("")}
+        </div>
+
+        <div class="colors">
+          ${p.colors.map(c => `<span onclick="selectColor('${p.id}',this,'${c}')" style="background:${c}"></span>`).join("")}
+        </div>
+
+        <input type="number" value="1" min="1" id="q-${p.id}"/>
+
+        <button class="btn" onclick="addToCart('${p.id}')">أضف للسلة</button>
+
+      </div>
+    `;
   });
 }
 
-// ================= FILTER =================
-function filterCategory(cat){
-  if(cat==="all") return renderProducts(productsData);
-  renderProducts(productsData.filter(p=>p.category===cat));
+// ================= SLIDER =================
+function nextImg(id){
+  let p = productsData.find(x=>x.id===id);
+
+  imgIndex[id]++;
+  if(imgIndex[id] >= p.image_count) imgIndex[id] = 0;
+
+  updateImg(id);
+}
+
+function prevImg(id){
+  let p = productsData.find(x=>x.id===id);
+
+  imgIndex[id]--;
+  if(imgIndex[id] < 0) imgIndex[id] = p.image_count-1;
+
+  updateImg(id);
+}
+
+function updateImg(id){
+  document.getElementById("img-"+id).src =
+    `./assets/images/${id}-${imgIndex[id]+1}.webp`;
+}
+
+// ================= SELECT =================
+function selectSize(id,el,val){
+  selected[id] = selected[id] || {};
+  selected[id].size = val;
+
+  el.parentElement.querySelectorAll("span").forEach(s=>s.classList.remove("selected"));
+  el.classList.add("selected");
+}
+
+function selectColor(id,el,val){
+  selected[id] = selected[id] || {};
+  selected[id].color = val;
+
+  el.parentElement.querySelectorAll("span").forEach(s=>s.classList.remove("selected"));
+  el.classList.add("selected");
 }
 
 // ================= CART =================
-function addToCart(item){
-  cart.push(item);
-  localStorage.setItem("cart",JSON.stringify(cart));
+function addToCart(id){
+
+  let p = productsData.find(x=>x.id===id);
+
+  let size = selected[id]?.size;
+  let color = selected[id]?.color;
+
+  if(!size || !color){
+    alert("اختار المقاس واللون");
+    return;
+  }
+
+  let qty = Number(document.getElementById("q-"+id).value);
+
+  cart.push({
+    id:p.id,
+    name:p.name,
+    price:p.discount_price || p.price,
+    size,
+    color,
+    qty
+  });
+
+  localStorage.setItem("cart", JSON.stringify(cart));
   updateCartCount();
 }
 
+// ================= CART VIEW =================
 function updateCartCount(){
   document.getElementById("cartCount").innerText = cart.length;
 }
 
 function openCart(){
+
   let c = document.getElementById("cartItems");
   let total = 0;
 
@@ -61,19 +143,21 @@ function openCart(){
     total += i.price * i.qty;
 
     c.innerHTML += `
-      <div>
-        ${i.name} x${i.qty}
+      <div class="cart-row">
+        ${i.name} (${i.size}) x${i.qty}
         <button onclick="removeItem(${idx})">❌</button>
-      </div>`;
+      </div>
+    `;
   });
 
-  document.getElementById("total").innerText = total;
-  document.getElementById("cartModal").style.display="block";
+  document.getElementById("total").innerText = "الإجمالي: " + total;
+
+  document.getElementById("cartModal").style.display="flex";
 }
 
 function removeItem(i){
   cart.splice(i,1);
-  localStorage.setItem("cart",JSON.stringify(cart));
+  localStorage.setItem("cart", JSON.stringify(cart));
   openCart();
 }
 
@@ -84,7 +168,7 @@ function closeCart(){
 // ================= CHECKOUT =================
 function goCheckout(){
   closeCart();
-  document.getElementById("checkoutModal").style.display="block";
+  document.getElementById("checkoutModal").style.display="flex";
 }
 
 function submitOrder(){
@@ -92,6 +176,11 @@ function submitOrder(){
   let name = document.getElementById("name").value;
   let phone = document.getElementById("phone").value;
   let address = document.getElementById("address").value;
+
+  if(!name || !phone || !address){
+    alert("اكمل البيانات");
+    return;
+  }
 
   cart.forEach(item=>{
     fetch(API_URL,{
@@ -109,22 +198,11 @@ function submitOrder(){
     });
   });
 
-  window.open(`https://wa.me/201000000000?text=طلب من ${name}`);
+  window.open(`https://wa.me/201000000000?text=طلب جديد من ${name}`);
 
-  cart=[];
+  cart = [];
   localStorage.removeItem("cart");
+
+  alert("تم الطلب بنجاح");
   location.reload();
-}
-
-// ================= WISHLIST =================
-function addToWishlist(id){
-  if(!wishlist.includes(id)){
-    wishlist.push(id);
-    localStorage.setItem("wishlist",JSON.stringify(wishlist));
-  }
-}
-
-// ================= NAV =================
-function goProduct(id){
-  window.location.href = "product.html?id="+id;
 }
