@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>شكراً لطلبك</title>
+
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+
+<body>
+
+<div class="thanks-container">
+
+  <h1>🎉 تم استلام طلبك بنجاح</h1>
+  <p>سيتم مراجعة الطلب والتواصل معك قريباً</p>
+
+  <div id="orderSummary" class="grid"></div>
+
+  <h2 id="totalPrice"></h2>
+
+  <a href="index.html" class="back-btn">العودة للرئيسية</a>
+
+</div>
+
+<footer class="footer">
+  <div class="brand-footer">
+    <img src="assets/images/logo.png">
+    <p>Last Piece © 2026</p>
+  </div>
+
+  <div class="axentro-footer">
+    <img src="assets/images/qr.png" class="qr">
+    <p>Scan Me</p>
+  </div>
+</footer>
+
+<script>
+const data = JSON.parse(localStorage.getItem("lastOrder") || "[]");
+
+let total = 0;
+
+const container = document.getElementById("orderSummary");
+
+data.forEach(p => {
+  const img = `https://raw.githubusercontent.com/axentro-official/Last-piece-/main/assets/images/${p.id}-1.webp`;
+
+  const price = p.discount_price || p.price;
+  total += price;
+
+  container.innerHTML += `
+    <div class="card">
+      <img src="${img}">
+      <h4>${p.name}</h4>
+      <p>${price} ج</p>
+    </div>
+  `;
+});
+
+document.getElementById("totalPrice").innerText = "الإجمالي: " + total + " ج";
+</script>
+
+</body>
+</html>
