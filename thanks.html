@@ -1,8 +1,10 @@
 <!DOCTYPE html>
-<html>
+<html lang="ar">
 <head>
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="stylesheet" href="assets/css/style.css">
+<title>تم الطلب</title>
 </head>
 
 <body>
@@ -29,12 +31,26 @@
 </footer>
 
 <script>
-let cart = JSON.parse(localStorage.getItem("cart"))||[];
-let html="";
-cart.forEach(p=>{
-  html+=`<p>${p.name}</p>`;
-});
-document.getElementById("summary").innerHTML=html;
+let order = JSON.parse(localStorage.getItem("lastOrder"));
+
+if(!order){
+  document.getElementById("summary").innerHTML = "<p>لا يوجد طلب</p>";
+}else{
+
+  let html = `
+    <h3>رقم الطلب: ${order.order_id}</h3>
+    <p>الاسم: ${order.customer_name}</p>
+    <p>الإجمالي: ${order.total} جنيه</p>
+    <p>الدفع: ${order.payment}</p>
+    <hr>
+  `;
+
+  order.items.forEach(p=>{
+    html += `<p>${p.name} × ${p.qty}</p>`;
+  });
+
+  document.getElementById("summary").innerHTML = html;
+}
 </script>
 
 </body>
