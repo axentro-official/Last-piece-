@@ -1,62 +1,60 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>تم الطلب</title>
-<link rel="stylesheet" href="assets/css/style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>تم الطلب</title>
+
+  <link rel="stylesheet" href="assets/css/style.css">
 </head>
 
 <body>
 
-<div class="container thanks">
+<div class="thanks-container">
+  <div class="card">
 
-  <h2>تم استلام طلبك بنجاح 🎉</h2>
+    <h1>تم استلام طلبك بنجاح ✔</h1>
+    <p>سيتم التواصل معك قريبًا</p>
 
-  <div id="summary" class="summary"></div>
+    <div id="order-items"></div>
 
-  <h3 id="total"></h3>
+    <a href="index.html" class="btn">الرجوع للرئيسية</a>
 
-  <a href="index.html" class="btn primary">العودة للرئيسية</a>
-
+  </div>
 </div>
 
 <footer class="footer">
-  <div class="footer-left">Last Piece © 2026</div>
+  <div class="footer-left">
+    Last Piece © 2026
+  </div>
 
   <div class="footer-center">
-    © 2024 Axentro – All Rights Reserved<br>
-    By Axentro Team
-    <br>
-    <img class="qr"
-      src="assets/images/qr.png"
-      onclick="window.open('https://axentro-official.github.io/axentro-website/links.html','_blank')">
-    <p class="scan">Scan Me / Click On Me</p>
+    <p>© 2024 Axentro – All Rights Reserved</p>
+    <p>By Axentro Team</p>
+
+    <a href="https://axentro-official.github.io/axentro-website/links.html" target="_blank">
+      <img src="assets/images/qr.png" class="qr"/>
+      <p>Scan Me / Click On Me</p>
+    </a>
   </div>
 </footer>
 
 <script>
-const order = JSON.parse(localStorage.getItem("lastOrder") || "null");
+const cart = JSON.parse(localStorage.getItem("cart")) || [];
+const container = document.getElementById("order-items");
 
-if(!order){
-  document.getElementById("summary").innerHTML = "لا يوجد طلب";
-}else{
-  let html = "";
-  let total = 0;
-
-  order.items.forEach(p=>{
-    total += p.price * p.qty;
-    html += `
-      <div class="row">
-        <span>${p.name}</span>
-        <span>${p.qty} × ${p.price}</span>
+cart.forEach(item => {
+  container.innerHTML += `
+    <div class="order-item">
+      <img src="${item.image}">
+      <div>
+        <h4>${item.name}</h4>
+        <p>${item.color} - ${item.size}</p>
+        <p>${item.price} EGP</p>
       </div>
-    `;
-  });
-
-  document.getElementById("summary").innerHTML = html;
-  document.getElementById("total").innerText = "الإجمالي: " + total + " ج";
-}
+    </div>
+  `;
+});
 </script>
 
 </body>
