@@ -2,31 +2,27 @@ const API = "https://script.google.com/macros/s/AKfycbyuLyCqPmG1a2w7Vpgu2hGFFG44
 
 let cart = JSON.parse(localStorage.getItem("cart")) || [];
 
-/* ================== VALIDATION ================== */
-function validate(){
-  if(!name.value || !phone.value || !address.value){
-    alert("من فضلك أكمل البيانات");
-    return false;
-  }
+/* عرض الطلب */
+function renderSummary(){
+  let html = "";
 
-  if(phone.value.length < 10){
-    alert("رقم الموبايل غير صحيح");
-    return false;
-  }
+  cart.forEach(p=>{
+    html += `
+      <div style="margin:10px 0;">
+        <b>${p.name}</b> × ${p.qty || 1}
+      </div>
+    `;
+  });
 
-  if(cart.length === 0){
-    alert("السلة فارغة");
-    return false;
-  }
-
-  return true;
+  document.getElementById("summary").innerHTML = html;
 }
 
-/* ================== BUILD ORDER ================== */
+renderSummary();
+
+/* إنشاء الطلب */
 function buildOrder(){
   return {
     order_id: "ORD-" + Date.now(),
-
     customer_name: name.value,
     phone: phone.value,
     address: address.value,
@@ -47,33 +43,30 @@ function buildOrder(){
   };
 }
 
-/* ================== SUBMIT ================== */
+/* إرسال */
 document.getElementById("form").addEventListener("submit", async (e)=>{
   e.preventDefault();
 
-  if(!validate()) return;
+  if(cart.length === 0){
+    alert("السلة فارغة");
+    return;
+  }
 
   const order = buildOrder();
 
   try{
-    const res = await fetch(API,{
+    await fetch(API,{
       method:"POST",
       body: JSON.stringify(order)
     });
 
-    const result = await res.text();
-
-    /* حفظ للـ Thanks */
     localStorage.setItem("lastOrder", JSON.stringify(order));
-
-    /* تفريغ السلة */
     localStorage.removeItem("cart");
 
-    /* تحويل */
     window.location.href = "thanks.html";
 
   }catch(err){
-    alert("حصل خطأ، حاول تاني");
+    alert("خطأ في الطلب");
     console.error(err);
   }
 });
