@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width,initial-scale=1, maximum-scale=1, user-scalable=no" />
   <title>إدارة الفواتير - Last Piece</title>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
   <style>
     :root{
       --bg:#FAF9F6; 
@@ -14,12 +13,9 @@
       --muted:#64748b;
       --stroke:rgba(15,23,42,.10);
       --shadow:0 18px 50px rgba(2,6,23,.12);
-      
-      /* Branding */
       --gold:#D4AF37;
       --gold-dark:#B8860B;
       --black-deep:#0d0d0d;
-
       --radius:20px;
     }
 
@@ -119,7 +115,7 @@
     .totalLine{ display:flex; justify-content:space-between; padding:8px 0; border-bottom:1px dashed #eee; }
     .totalLine.primary{ border-bottom:none; font-size:20px; color:var(--gold-dark); font-weight:900; }
 
-    /* === MAIN FOOTER (Last Piece Style) === */
+    /* === MAIN FOOTER === */
     .site-footer{
       background: var(--black-deep);
       padding: 40px 20px;
@@ -205,7 +201,6 @@
       <button type="submit" class="btn btn-gold">دخول</button>
     </form>
 
-    <!-- Login Footer -->
     <div class="loginFooter">
       <div class="copy-text">© 2024 Axentro – All Rights Reserved</div>
       <div class="team-text">By Axentro Team</div>
@@ -231,7 +226,6 @@
     <button class="btn btn-outline" onclick="logout()" style="padding: 8px 20px;">🔒 خروج</button>
   </div>
 
-  <!-- Search Card -->
   <div class="card">
     <h2>استعلام طلب</h2>
     <div class="grid-4">
@@ -242,63 +236,30 @@
     </div>
   </div>
 
-  <!-- Invoice Data -->
   <div class="card">
     <h2>بيانات الفاتورة</h2>
     <div class="grid-4">
-      <div>
-        <label>رقم الفاتورة</label>
-        <input type="text" id="invNo" readonly>
-      </div>
-      <div>
-        <label>التاريخ</label>
-        <input type="text" id="invDate" readonly>
-      </div>
-      <div>
-        <label>الوقت</label>
-        <input type="text" id="invTime" readonly>
-      </div>
-      <div>
-        <label>طريقة الدفع</label>
-        <input type="text" id="payMethod" readonly>
-      </div>
+      <div><label>رقم الفاتورة</label><input type="text" id="invNo" readonly></div>
+      <div><label>التاريخ</label><input type="text" id="invDate" readonly></div>
+      <div><label>الوقت</label><input type="text" id="invTime" readonly></div>
+      <div><label>طريقة الدفع</label><input type="text" id="payMethod" readonly></div>
     </div>
     <div style="height:15px"></div>
     <div class="grid-4">
-      <div>
-        <label>اسم العميل</label>
-        <input type="text" id="custName" readonly>
-      </div>
-      <div>
-        <label>الهاتف</label>
-        <input type="text" id="custPhone" readonly>
-      </div>
-      <div>
-        <label>العنوان</label>
-        <input type="text" id="custAddress" readonly>
-      </div>
-      <div>
-        <label>ملاحظات</label>
-        <input type="text" id="custNotes" readonly>
-      </div>
+      <div><label>اسم العميل</label><input type="text" id="custName" readonly></div>
+      <div><label>الهاتف</label><input type="text" id="custPhone" readonly></div>
+      <div><label>العنوان</label><input type="text" id="custAddress" readonly></div>
+      <div><label>ملاحظات</label><input type="text" id="custNotes" readonly></div>
     </div>
   </div>
 
-  <!-- Items Table -->
   <div class="card">
     <h2>المنتجات</h2>
     <div class="table-wrap">
       <table id="itemsTable">
         <thead>
           <tr>
-            <th>#</th>
-            <th>صورة</th>
-            <th>المنتج</th>
-            <th>المقاس</th>
-            <th>اللون</th>
-            <th>الكمية</th>
-            <th>السعر</th>
-            <th>الإجمالي</th>
+            <th>#</th><th>صورة</th><th>المنتج</th><th>المقاس</th><th>اللون</th><th>الكمية</th><th>السعر</th><th>الإجمالي</th>
           </tr>
         </thead>
         <tbody id="itemsBody">
@@ -312,17 +273,19 @@
     </div>
   </div>
 
-  <!-- Actions -->
   <div class="card">
-    <h2>الطباعة</h2>
+    <h2>الطباعة والتصدير</h2>
     <div class="grid-2">
       <button class="btn btn-outline" onclick="printInvoice('A4')">🖨️ طباعة A4</button>
-      <button class="btn btn-dark" onclick="savePdf()">📄 حفظ PDF</button>
+      <button class="btn btn-dark" onclick="savePdf()">📄 حفظ كـ PDF</button>
     </div>
     <div class="grid-2" style="margin-top:10px;">
        <button class="btn btn-outline" onclick="printInvoice('Thermal80')">🧾 طباعة حراري 80mm</button>
        <button class="btn btn-outline" onclick="printInvoice('Thermal58')">🧾 طباعة حراري 58mm</button>
     </div>
+    <p style="font-size:12px; color:#888; margin-top:15px; text-align:center;">
+      💡 نصيحة: لحفظ PDF تلقائياً، اضغط "حفظ كـ PDF" ثم اختر "Save as PDF" أو "Microsoft Print to PDF" من قائمة الطابعة
+    </p>
   </div>
 
 </div>
@@ -330,24 +293,19 @@
 <!-- Main Footer -->
 <footer class="site-footer" id="mainFooter" style="display:none;">
   <div class="footer-grid">
-    
     <div class="footer-col-right-spacer"></div>
-
     <div class="footer-col-center">
       <div class="copyright-text">© 2024 Axentro – All Rights Reserved</div>
       <div class="team-text-footer">By Axentro Team</div>
-      
       <a href="https://axentro-official.github.io/axentro-website/links.html" target="_blank" class="qr-link">
         <img src="https://axentro-official.github.io/Last-piece-/images/qr.png" alt="QR">
       </a>
       <div class="scan-text">Scan Me > Click On Me</div>
     </div>
-
     <div class="footer-col-left">
       <div class="footer-logo-text">Last Piece</div>
       <div class="footer-inc">2026 Last-Piece, Inc.</div>
     </div>
-
   </div>
 </footer>
 
@@ -356,7 +314,7 @@ const ADMIN_PASSWORD = "1407";
 const API_URL = 'https://script.google.com/macros/s/AKfycbyuLyCqPmG1a2w7Vpgu2hGFFG44tlmW4N9AuNwa-YHRupXRPhxBF-_mEOhPgjpSBwM9/exec';
 const IMG_URL = 'https://axentro-official.github.io/Last-piece-/images/';
 
-/* === LOGIN LOGIC === */
+/* === LOGIN === */
 const loginForm = document.getElementById('loginForm');
 const passInput = document.getElementById('passInput');
 
@@ -390,7 +348,7 @@ if(sessionStorage.getItem('LP_ADMIN') === '1'){
   initInvoice();
 }
 
-/* === INVOICE LOGIC ===*/
+/* === INVOICE ===*/
 function generateInvoiceID(){
   const d = new Date();
   const y = d.getFullYear().toString().substr(-2);
@@ -414,12 +372,8 @@ async function fetchOrder(){
   try {
     const res = await fetch(`${API_URL}?action=getOrder&orderId=${oid}`);
     const data = await res.json();
-    
-    if(data.ok && data.order){
-      fillForm(data.order);
-    } else {
-      alert('لم يتم العثور على الطلب');
-    }
+    if(data.ok && data.order) fillForm(data.order);
+    else alert('لم يتم العثور على الطلب');
   } catch(e){ alert('خطأ في الاتصال'); console.error(e); }
 }
 
@@ -428,9 +382,7 @@ function fillForm(order){
   document.getElementById('custPhone').value = order.phone || '-';
   document.getElementById('payMethod').value = order.payment_method || '-';
   document.getElementById('custNotes').value = order.notes || '-';
-  
-  const fullAddress = `${order.governorate || ''} - ${order.area || ''} - ${order.address || ''}`;
-  document.getElementById('custAddress').value = fullAddress;
+  document.getElementById('custAddress').value = `${order.governorate || ''} - ${order.area || ''} - ${order.address || ''}`;
 
   if(order.date){
     let dt = new Date(order.date);
@@ -447,12 +399,10 @@ function fillForm(order){
   order.items.forEach((item, i) => {
     const subtotal = item.qty * item.price;
     total += subtotal;
-    const imgSrc = `${IMG_URL}${item.product_id}.webp`;
-    
     tbody.innerHTML += `
       <tr>
         <td data-label="#">${i+1}</td>
-        <td data-label="صورة"><img class="thumbMini" src="${imgSrc}" onerror="this.src='https://via.placeholder.com/40'"></td>
+        <td data-label="صورة"><img class="thumbMini" src="${IMG_URL}${item.product_id}.webp" onerror="this.src='https://via.placeholder.com/40'"></td>
         <td data-label="المنتج">${item.product_name}<br><small style="color:#999">${item.product_id}</small></td>
         <td data-label="المقاس">${item.size}</td>
         <td data-label="اللون">${item.color}</td>
@@ -463,12 +413,7 @@ function fillForm(order){
     `;
   });
 
-  document.getElementById('totalsBox').innerHTML = `
-    <div class="totalLine primary">
-      <span>الإجمالي</span>
-      <span>${total.toFixed(2)} ج.م</span>
-    </div>
-  `;
+  document.getElementById('totalsBox').innerHTML = `<div class="totalLine primary"><span>الإجمالي</span><span>${total.toFixed(2)} ج.م</span></div>`;
   document.getElementById('amountWords').textContent = numberToArabicWords(total);
 }
 
@@ -484,7 +429,7 @@ function numberToArabicWords(n){
   return s+" جنيه مصري فقط لا غير";
 }
 
-/* === PRINTING & PDF ===*/
+/* === PRINTING ===*/
 function getInvoiceData(){
   return {
     invNo: document.getElementById('invNo').value,
@@ -511,79 +456,95 @@ function getInvoiceData(){
 
 function buildA4Html(d){
   return `
-    <html dir="rtl">
+    <!DOCTYPE html>
+    <html lang="ar" dir="rtl">
     <head>
-    <style>
-      body{font-family:'Tajawal',Arial;background:#fff;color:#333;margin:0;padding:40px;}
-      .box{max-width:800px;margin:auto;border:2px solid #D4AF37;padding:30px;border-radius:15px;}
-      .header{text-align:center;border-bottom:2px solid #D4AF37;padding-bottom:15px;margin-bottom:25px;}
-      .logo{width:90px;height:90px;border-radius:50%;border:3px solid #D4AF37;margin-bottom:10px;}
-      h1{font-family:'Playfair Display',serif;color:#D4AF37;margin:5px 0 0;font-size:28px;}
-      .sub-header{color:#666;font-size:14px;}
-      .info-grid{display:flex;justify-content:space-between;margin-bottom:20px;font-size:14px;}
-      .info-box{background:#FAF9F6;padding:10px;border-radius:8px;border:1px solid #eee;width:48%;}
-      .info-label{color:#D4AF37;font-weight:700;font-size:12px;margin-bottom:5px;display:block;}
-      table{width:100%;border-collapse:collapse;margin-top:15px;font-size:14px;}
-      th,td{border:1px solid #eee;padding:10px;text-align:center;}
-      th{background:#D4AF37;color:#fff;font-weight:700;}
-      .totals{text-align:right;margin-top:25px;font-size:18px;font-weight:700;background:#FAF9F4;padding:15px;border-radius:10px;border:1px dashed #D4AF37;}
-      .footer-print{text-align:center;margin-top:30px;padding-top:20px;border-top:1px solid #eee; position:relative;}
-      .qr-print{width:100px;height:100px;margin:10px auto;}
-      .copy-print{font-size:12px;color:#888;margin-top:10px;}
-      .brand-print-footer{position:absolute; left:0; bottom:0; font-size:12px; color:#888; font-weight:700;}
-    </style>
+      <meta charset="UTF-8">
+      <title>فاتورة ${d.invNo}</title>
+      <style>
+        @page { size: A4; margin: 10mm; }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Segoe UI', Tahoma, Arial, sans-serif; background: #fff; color: #333; direction: rtl; }
+        .page { width: 210mm; min-height: 297mm; padding: 15mm; margin: 0 auto; background: white; }
+        .header { text-align: center; border-bottom: 3px solid #D4AF37; padding-bottom: 20px; margin-bottom: 25px; }
+        .logo { width: 100px; height: 100px; border-radius: 50%; border: 3px solid #D4AF37; margin: 0 auto 15px; display: block; }
+        h1 { font-size: 32px; color: #D4AF37; margin-bottom: 5px; }
+        .subtitle { color: #666; font-size: 14px; }
+        .info-section { display: flex; justify-content: space-between; margin-bottom: 25px; gap: 20px; }
+        .info-box { flex: 1; background: #fafafa; padding: 15px; border-radius: 10px; border: 1px solid #eee; }
+        .info-label { color: #D4AF37; font-weight: bold; font-size: 12px; margin-bottom: 5px; }
+        .info-value { font-size: 14px; line-height: 1.6; }
+        table { width: 100%; border-collapse: collapse; margin-bottom: 25px; }
+        th, td { border: 1px solid #ddd; padding: 12px; text-align: center; }
+        th { background: #D4AF37; color: white; font-weight: bold; }
+        tr:nth-child(even) { background: #fafafa; }
+        .totals { background: #fffbe6; border: 2px solid #D4AF37; border-radius: 10px; padding: 20px; margin-bottom: 25px; }
+        .total-row { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px dashed #ddd; }
+        .total-row:last-child { border-bottom: none; font-size: 20px; font-weight: bold; color: #B8860B; }
+        .amount-words { text-align: center; font-weight: bold; color: #555; margin-bottom: 25px; }
+        .footer { text-align: center; padding-top: 20px; border-top: 1px solid #eee; }
+        .qr { width: 100px; height: 100px; margin: 15px auto; }
+        .footer-text { font-size: 12px; color: #888; line-height: 1.8; }
+        .brand-footer { position: absolute; bottom: 15mm; left: 15mm; font-size: 11px; color: #888; }
+      </style>
     </head>
     <body>
-      <div class="box">
+      <div class="page">
         <div class="header">
-          <img src="${IMG_URL}logo.png" class="logo"><br>
+          <img src="${IMG_URL}logo.png" class="logo" alt="Logo">
           <h1>Last Piece</h1>
-          <div class="sub-header">أناقة لا تُنسى</div>
+          <div class="subtitle">أناقة لا تُنسى</div>
         </div>
         
-        <div class="info-grid">
+        <div class="info-section">
           <div class="info-box">
-            <span class="info-label">فاتورة رقم</span>
-            ${d.invNo}<br>
-            <span class="info-label" style="margin-top:5px">تاريخ / وقت</span>
-            ${d.date} - ${d.time}
+            <div class="info-label">معلومات الفاتورة</div>
+            <div class="info-value">
+              <strong>رقم الفاتورة:</strong> ${d.invNo}<br>
+              <strong>التاريخ:</strong> ${d.date}<br>
+              <strong>الوقت:</strong> ${d.time}
+            </div>
           </div>
           <div class="info-box">
-            <span class="info-label">العميل</span>
-            ${d.customer}<br>
-            <span class="info-label" style="margin-top:5px">الهاتف</span>
-            ${d.phone}
+            <div class="info-label">بيانات العميل</div>
+            <div class="info-value">
+              <strong>الاسم:</strong> ${d.customer}<br>
+              <strong>الهاتف:</strong> ${d.phone}<br>
+              <strong>الدفع:</strong> ${d.payment}
+            </div>
           </div>
         </div>
-
-        <div class="info-box" style="width:100%; margin-bottom:20px;">
-             <span class="info-label">العنوان</span> ${d.address}
+        
+        <div class="info-box" style="margin-bottom: 25px;">
+          <div class="info-label">العنوان</div>
+          <div class="info-value">${d.address}</div>
         </div>
 
         <table>
-          <thead><tr><th>#</th><th>المنتج</th><th>المقاس</th><th>اللون</th><th>الكمية</th><th>السعر</th><th>الإجمالي</th></tr></thead>
+          <thead>
+            <tr><th>#</th><th>المنتج</th><th>المقاس</th><th>اللون</th><th>الكمية</th><th>السعر</th><th>الإجمالي</th></tr>
+          </thead>
           <tbody>
-            ${d.items.map((it,i)=>`<tr><td>${i+1}</td><td>${it.name}</td><td>${it.size}</td><td>${it.color}</td><td>${it.qty}</td><td>${it.price}</td><td>${it.total}</td></tr>`).join('')}
+            ${d.items.map((it,i) => `<tr><td>${i+1}</td><td>${it.name}</td><td>${it.size}</td><td>${it.color}</td><td>${it.qty}</td><td>${it.price}</td><td><strong>${it.total}</strong></td></tr>`).join('')}
           </tbody>
         </table>
 
         <div class="totals">
-          <div style="display:flex;justify-content:space-between;">
-            <span>الإجمالي:</span>
-            <span style="color:#B8860B">${d.grandTotal}</span>
-          </div>
-          <div style="font-size:14px; font-weight:normal; margin-top:5px; color:#555;">${d.words}</div>
+          <div class="total-row"><span>الإجمالي</span><span>${d.grandTotal}</span></div>
         </div>
+        
+        <div class="amount-words">${d.words}</div>
 
-        <div class="footer-print">
-          <div class="brand-print-footer">Last Piece 2026</div>
-          <img src="${IMG_URL}qr.png" class="qr-print">
-          <div style="font-weight:700; color:#333;">Scan Me > Click On Me</div>
-          <div class="copy-print">
+        <div class="footer">
+          <img src="${IMG_URL}qr.png" class="qr" alt="QR">
+          <div style="font-weight: bold;">Scan Me > Click On Me</div>
+          <div class="footer-text">
             © 2024 Axentro – All Rights Reserved<br>
             By Axentro Team
           </div>
         </div>
+        
+        <div class="brand-footer">Last Piece 2026</div>
       </div>
     </body>
     </html>
@@ -593,78 +554,65 @@ function buildA4Html(d){
 function buildThermalHtml(d, mm){
   const w = mm === 58 ? '58mm' : '80mm';
   return `
-    <html dir="rtl">
+    <!DOCTYPE html>
+    <html lang="ar" dir="rtl">
     <head>
-    <style>
-      body{font-family:'Tajawal', Tahoma, Arial;width:${w};margin:0;font-size:12px;background:#fff; color:#000;}
-      .center{text-align:center;} 
-      .b{font-weight:bold;} 
-      .sep{border-top:1px dashed #000;margin:8px 0;}
-      table{width:100%;} 
-      .r{text-align:left;}
-      .logo{width:60px;height:auto;margin:5px auto;}
-      .qr{width:80px;height:80px;margin:5px auto;}
-      .item-row{margin-bottom:5px;}
-      .item-name{font-weight:bold; font-size:13px;}
-      .meta{font-size:11px; color:#444;}
-      .total-area{font-size:14px; font-weight:bold; background:#f9f9f9; padding:5px;}
-      .footer-text{font-size:10px; color:#333; line-height:1.4;}
-    </style>
+      <meta charset="UTF-8">
+      <title>فاتورة ${d.invNo}</title>
+      <style>
+        @page { size: ${w} auto; margin: 2mm; }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Segoe UI', Tahoma, Arial; width: ${w}; background: #fff; color: #000; direction: rtl; }
+        .center { text-align: center; }
+        .bold { font-weight: bold; }
+        .sep { border-top: 1px dashed #000; margin: 8px 0; }
+        .logo { width: 60px; height: 60px; margin: 10px auto; display: block; }
+        .qr { width: 80px; height: 80px; margin: 10px auto; display: block; }
+        .item { margin: 8px 0; padding-bottom: 5px; border-bottom: 1px dotted #ccc; }
+        .total-box { background: #f5f5f5; padding: 8px; margin: 10px 0; }
+      </style>
     </head>
     <body>
       <div class="center">
-        <img src="${IMG_URL}logo.png" class="logo"><br>
-        <div class="b" style="font-size:18px;">Last Piece</div>
-        <div style="font-size:11px; color:#555;">أناقة لا تُنسى</div>
+        <img src="${IMG_URL}logo.png" class="logo" alt="Logo">
+        <div class="bold" style="font-size: 18px;">Last Piece</div>
+        <div style="font-size: 11px; color: #555;">أناقة لا تُنسى</div>
       </div>
       <div class="sep"></div>
-      
-      <div style="line-height:1.6;">
-        <div><b>فاتورة:</b> ${d.invNo}</div>
-        <div><b>التاريخ:</b> ${d.date} - ${d.time}</div>
-        <div class="sep"></div>
-        <div><b>العميل:</b> ${d.customer}</div>
-        <div><b>الهاتف:</b> ${d.phone}</div>
-        <div><b>العنوان:</b> ${d.address}</div>
+      <div style="font-size: 12px; line-height: 1.6;">
+        <div><span class="bold">فاتورة:</span> ${d.invNo}</div>
+        <div><span class="bold">التاريخ:</span> ${d.date} - ${d.time}</div>
       </div>
-      
       <div class="sep"></div>
-      
+      <div style="font-size: 12px; line-height: 1.6;">
+        <div><span class="bold">العميل:</span> ${d.customer}</div>
+        <div><span class="bold">الهاتف:</span> ${d.phone}</div>
+        <div><span class="bold">العنوان:</span> ${d.address}</div>
+      </div>
+      <div class="sep"></div>
       <div>
-        ${d.items.map(it=>`
-          <div class="item-row">
-            <div class="item-name">${it.name}</div>
-            <div class="meta">
-              <span>${it.size} / ${it.color}</span> | 
-              <span>x${it.qty}</span>
-            </div>
-            <div class="r" style="font-weight:bold;">${it.total}</div>
+        ${d.items.map(it => `
+          <div class="item">
+            <div class="bold">${it.name}</div>
+            <div style="font-size: 11px; color: #444;">${it.size} / ${it.color} × ${it.qty}</div>
+            <div style="text-align: left;" class="bold">${it.total}</div>
           </div>
         `).join('')}
       </div>
-
       <div class="sep"></div>
-      
-      <div class="total-area">
-        <div style="display:flex; justify-content:space-between;">
-          <span>الإجمالي:</span>
-          <span>${d.grandTotal}</span>
-        </div>
-        <div style="font-size:10px; text-align:center; margin-top:4px; font-weight:normal;">${d.words}</div>
+      <div class="total-box center">
+        <div style="font-size: 16px;" class="bold">الإجمالي: ${d.grandTotal}</div>
+        <div style="font-size: 10px;">${d.words}</div>
       </div>
-
       <div class="sep"></div>
-      
       <div class="center">
-        <img src="${IMG_URL}qr.png" class="qr"><br>
-        <div style="font-weight:700; font-size:11px;">Scan Me > Click On Me</div>
-        <div class="footer-text" style="margin-top:5px;">
+        <img src="${IMG_URL}qr.png" class="qr" alt="QR">
+        <div class="bold" style="font-size: 11px;">Scan Me > Click On Me</div>
+        <div style="font-size: 10px; margin: 5px 0;">
           © 2024 Axentro – All Rights Reserved<br>
           By Axentro Team
         </div>
-        <div style="margin-top:5px; font-weight:bold;">
-          Last Piece © 2026
-        </div>
+        <div class="bold" style="margin-top: 5px;">Last Piece © 2026</div>
       </div>
     </body>
     </html>
@@ -673,83 +621,41 @@ function buildThermalHtml(d, mm){
 
 function printInvoice(type){
   const data = getInvoiceData();
-  let html = '';
-  
-  if(type === 'A4') html = buildA4Html(data);
-  else html = buildThermalHtml(data, type === 'Thermal80' ? 80 : 58);
+  const html = type === 'A4' ? buildA4Html(data) : buildThermalHtml(data, type === 'Thermal80' ? 80 : 58);
   
   const win = window.open('', '_blank');
-  if(!win){ alert("الرجاء السماح بالنوافذ المنبثقة (Pop-ups) للطباعة"); return; }
+  if(!win){ alert("الرجاء السماح بالنوافذ المنبثقة"); return; }
   
   win.document.write(html);
   win.document.close();
-  win.focus();
-  setTimeout(() => win.print(), 500);
+  
+  // اسم الملف سيكون عنوان الصفحة
+  win.document.title = `فاتورة_${data.invNo}`;
+  
+  setTimeout(() => {
+    win.focus();
+    win.print();
+  }, 500);
 }
 
 function savePdf(){
   const data = getInvoiceData();
-  const htmlContent = buildA4Html(data);
+  const html = buildA4Html(data);
   
-  // Generate unique filename with timestamp
-  const now = new Date();
-  const timestamp = now.getFullYear().toString() + 
-                    String(now.getMonth()+1).padStart(2,'0') + 
-                    String(now.getDate()).padStart(2,'0') + '_' + 
-                    String(now.getHours()).padStart(2,'0') + 
-                    String(now.getMinutes()).padStart(2,'0') + 
-                    String(now.getSeconds()).padStart(2,'0');
+  const win = window.open('', '_blank');
+  if(!win){ alert("الرجاء السماح بالنوافذ المنبثقة"); return; }
   
-  const filename = `Invoice_${data.invNo}_${timestamp}.pdf`;
+  win.document.write(html);
+  win.document.close();
   
-  const parser = new DOMParser();
-  const doc = parser.parseFromString(htmlContent, "text/html");
+  // اسم الملف من عنوان الصفحة
+  win.document.title = `فاتورة_${data.invNo}`;
   
-  // 1. Extract Styles
-  const styleTag = doc.querySelector('style');
-  let styleElement = null;
-  if(styleTag){
-      styleElement = document.createElement('style');
-      styleElement.textContent = styleTag.textContent;
-      document.head.appendChild(styleElement);
-  }
-
-  // 2. Extract Content
-  const element = doc.body.querySelector('.box');
-  
-  // 3. Setup for rendering
-  element.style.position = 'absolute';
-  element.style.left = '-9999px';
-  element.style.top = '0';
-  element.style.display = 'block'; 
-  
-  document.body.appendChild(element);
-
-  const opt = {
-    margin: 10,
-    filename: filename,
-    image: { type: 'jpeg', quality: 0.98 },
-    html2canvas: { 
-        scale: 2, 
-        useCORS: true, 
-        scrollY: 0, 
-        scrollX: 0,
-        windowWidth: 1200 
-    },
-    jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
-  };
-
-  html2pdf().set(opt).from(element).save().then(()=>{
-      if(element.parentNode) element.parentNode.removeChild(element);
-      if(styleElement && styleElement.parentNode) styleElement.parentNode.removeChild(styleElement);
-  }).catch(err => {
-      console.error(err);
-      if(element.parentNode) element.parentNode.removeChild(element);
-      if(styleElement && styleElement.parentNode) styleElement.parentNode.removeChild(styleElement);
-      alert('حدث خطأ أثناء حفظ PDF.\n\nالحل البديل: استخدم زر "طباعة A4" ثم اختر "Save as PDF" من قائمة الطابعة.');
-  });
+  setTimeout(() => {
+    win.focus();
+    win.print();
+  }, 500);
 }
-
 </script>
 </body>
 </html>
