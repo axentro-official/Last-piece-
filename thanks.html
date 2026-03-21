@@ -1,22 +1,59 @@
 <!DOCTYPE html>
 <html lang="ar">
 <head>
-  <meta charset="UTF-8" />
-  <title>شكراً</title>
-  <link rel="stylesheet" href="css/style.css" />
+  <meta charset="UTF-8">
+  <title>شكراً - Last Piece</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<div class="container">
-  <h2>تم إرسال طلبك بنجاح</h2>
-  <p id="orderId"></p>
-</div>
+<!-- HEADER -->
+<header class="header">
+  <div class="logo">
+    <img src="images/logo.png">
+  </div>
 
-<script>
-  const params = new URLSearchParams(window.location.search);
-  document.getElementById("orderId").innerText =
-    "رقم الطلب: " + params.get("id");
-</script>
+  <div class="center">
+    <h1>LAST PIECE</h1>
+    <p class="slogan">Elegance Defined, One Piece at a Time</p>
+  </div>
+
+  <div class="cart">🛒</div>
+</header>
+
+<!-- THANK YOU -->
+<section class="thanks">
+
+  <div class="box">
+
+    <h2>تم استلام طلبك بنجاح ✅</h2>
+
+    <p>شكراً لثقتك في Last Piece</p>
+
+    <p class="order-id">رقم الطلب: ORD-XXXX</p>
+
+    <a href="index.html" class="btn-primary">
+      العودة إلى المتجر
+    </a>
+
+  </div>
+
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="left">© 2026 Last-Piece, Inc.</div>
+
+  <div class="center">
+    <p>© 2024 Axentro – All Rights Reserved</p>
+    <p>By Axentro Team</p>
+
+    <a href="https://axentro-official.github.io/axentro-website/links.html" target="_blank">
+      <img src="images/qr.png" class="qr">
+      <p>Scan me > Click On Me</p>
+    </a>
+  </div>
+</footer>
 
 </body>
 </html>
