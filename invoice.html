@@ -74,7 +74,7 @@
     .loginFooter{ margin-top:25px; padding-top:20px; border-top:1px solid #eee; }
     .copy-text{ color:#333; font-size:13px; font-weight:700; margin-bottom:5px; }
     .team-text{ color:#888; font-size:12px; margin-bottom:15px; }
-    .qr-container{ display:inline-block; padding:8px; background:#fff; border-radius:10px; border:2px solid var(--gold); box-shadow:0 5px 15px rgba(0,0,0,0.1); transition:0.3s; }
+    .qr-container{ display:inline-block; padding:8px; background:#fff; border-radius:10px; border:2px solid var(--gold); box-shadow:0 5px 15px rgba(0,0,0, 0.1); transition:0.3s; }
     .qr-container:hover{ transform:scale(1.05); }
     .qr-container img{ width:100px; height:100px; display:block; }
     .scan-text{ margin-top:8px; font-size:11px; color:#666; font-weight:700; }
@@ -273,18 +273,23 @@
     </div>
   </div>
 
+  <!-- Modified Actions Card -->
   <div class="card">
     <h2>الطباعة والتصدير</h2>
-    <div class="grid-2">
-      <button class="btn btn-outline" onclick="printInvoice('A4')">🖨️ طباعة A4</button>
-      <button class="btn btn-dark" onclick="savePdf()">📄 حفظ كـ PDF</button>
-    </div>
-    <div class="grid-2" style="margin-top:10px;">
+    
+    <!-- Single Button for A4 -->
+    <button class="btn btn-dark" onclick="printInvoice('A4')" style="width: 100%; padding: 15px; font-size: 17px;">
+      🖨️ طباعة A4 / حفظ PDF
+    </button>
+    
+    <!-- Thermal Buttons -->
+    <div class="grid-2" style="margin-top:15px;">
        <button class="btn btn-outline" onclick="printInvoice('Thermal80')">🧾 طباعة حراري 80mm</button>
        <button class="btn btn-outline" onclick="printInvoice('Thermal58')">🧾 طباعة حراري 58mm</button>
     </div>
+    
     <p style="font-size:12px; color:#888; margin-top:15px; text-align:center;">
-      💡 نصيحة: لحفظ PDF تلقائياً، اضغط "حفظ كـ PDF" ثم اختر "Save as PDF" أو "Microsoft Print to PDF" من قائمة الطابعة
+      💡 نصيحة: من نافذة الطباعة، اختر "Save as PDF" أو "Microsoft Print to PDF" لحفظ الفاتورة.
     </p>
   </div>
 
@@ -630,25 +635,6 @@ function printInvoice(type){
   win.document.close();
   
   // اسم الملف سيكون عنوان الصفحة
-  win.document.title = `فاتورة_${data.invNo}`;
-  
-  setTimeout(() => {
-    win.focus();
-    win.print();
-  }, 500);
-}
-
-function savePdf(){
-  const data = getInvoiceData();
-  const html = buildA4Html(data);
-  
-  const win = window.open('', '_blank');
-  if(!win){ alert("الرجاء السماح بالنوافذ المنبثقة"); return; }
-  
-  win.document.write(html);
-  win.document.close();
-  
-  // اسم الملف من عنوان الصفحة
   win.document.title = `فاتورة_${data.invNo}`;
   
   setTimeout(() => {
