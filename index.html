@@ -1,18 +1,103 @@
 <!DOCTYPE html>
 <html lang="ar">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8">
   <title>Last Piece</title>
-  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
+<!-- HEADER -->
 <header class="header">
-  <h1>Last Piece</h1>
+  <div class="logo">
+    <img src="images/logo.png">
+  </div>
+
+  <div class="center">
+    <h1>LAST PIECE</h1>
+    <p class="slogan">Elegance Defined, One Piece at a Time</p>
+
+    <nav>
+      <a href="#">المنتجات</a>
+      <a href="#">التخفيضات</a>
+    </nav>
+  </div>
+
+  <div class="cart">
+    🛒
+  </div>
 </header>
 
-<section class="products" id="products"></section>
+<!-- HERO -->
+<section class="hero">
+  <div class="slider">
+    <img src="images/hero1.webp" class="active">
+    <img src="images/hero2.webp">
+    <img src="images/hero3.webp">
+    <img src="images/hero4.webp">
+    <img src="images/hero5.webp">
+    <img src="images/hero6.webp">
 
-<script src="js/app.js"></script>
+    <button class="prev">‹</button>
+    <button class="next">›</button>
+
+    <div class="dots"></div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="left">© 2026 Last-Piece, Inc.</div>
+
+  <div class="center">
+    <p>© 2024 Axentro – All Rights Reserved</p>
+    <p>By Axentro Team</p>
+
+    <a href="https://axentro-official.github.io/axentro-website/links.html" target="_blank">
+      <img src="images/qr.png" class="qr">
+      <p>Scan me > Click On Me</p>
+    </a>
+  </div>
+</footer>
+
+<script>
+const slides = document.querySelectorAll(".slider img");
+const next = document.querySelector(".next");
+const prev = document.querySelector(".prev");
+const dotsContainer = document.querySelector(".dots");
+
+let index = 0;
+
+// dots
+slides.forEach((_, i) => {
+  const dot = document.createElement("span");
+  dot.onclick = () => go(i);
+  dotsContainer.appendChild(dot);
+});
+
+function show(i){
+  slides.forEach(s => s.classList.remove("active"));
+  dotsContainer.querySelectorAll("span").forEach(d => d.classList.remove("active"));
+
+  slides[i].classList.add("active");
+  dotsContainer.children[i].classList.add("active");
+}
+
+function go(i){
+  index = i;
+  show(index);
+}
+
+next.onclick = () => go((index+1)%slides.length);
+prev.onclick = () => go((index-1+slides.length)%slides.length);
+
+// auto
+setInterval(()=>{
+  go((index+1)%slides.length);
+},2000);
+
+show(0);
+</script>
+
 </body>
 </html>
