@@ -1,6 +1,5 @@
 const API = "https://script.google.com/macros/s/AKfycbyuLyCqPmG1a2w7Vpgu2hGFFG44tlmW4N9AuNwa-YHRupXRPhxBF-_mEOhPgjpSBwM9/exec";
 
-// ================= LOAD PRODUCTS =================
 if (document.getElementById("products")) {
   fetch(API + "?type=products")
     .then(res => res.json())
@@ -12,7 +11,7 @@ if (document.getElementById("products")) {
         div.className = "card";
 
         div.innerHTML = `
-          <img src="https://via.placeholder.com/300">
+          <img src="${p.image}" onerror="this.src='https://via.placeholder.com/300'">
           <h3>${p.name}</h3>
           <p>${p.price} ج</p>
           <button onclick="order('${p.id}','${p.name}',${p.price},'${p.sizes}','${p.colors}')">
@@ -25,7 +24,6 @@ if (document.getElementById("products")) {
     });
 }
 
-// ================= GO TO ORDER =================
 function order(id, name, price, sizes, colors) {
   localStorage.setItem("product", JSON.stringify({
     id, name, price, sizes, colors
@@ -34,7 +32,6 @@ function order(id, name, price, sizes, colors) {
   window.location.href = "order.html";
 }
 
-// ================= ORDER PAGE =================
 if (document.getElementById("orderForm")) {
   const product = JSON.parse(localStorage.getItem("product"));
 
