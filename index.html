@@ -87,7 +87,6 @@
             .prod-carousel-btn { width: 30px; height: 30px; }
             .product-card { border-radius: 15px; }
             .btn-gold { padding: 12px 20px; }
-            /* Fix for mobile cart buttons */
             .cart-sidebar .flex-col { height: 100%; }
             .cart-sidebar .flex-1 { min-height: 0; overflow-y: auto; }
         }
@@ -142,14 +141,21 @@
                     </div>
                     <div>
                         <div class="hero-carousel mx-auto" id="heroCarousel">
-                            <button class="carousel-btn prev" onclick="prevSlide()"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"></polyline></svg></button>
-                            <button class="carousel-btn next" onclick="nextSlide()"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg></button>
+                            <button class="carousel-btn prev" onclick="heroPrev()"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"></polyline></svg></button>
+                            <button class="carousel-btn next" onclick="heroNext()"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg></button>
                         </div>
                         <div class="carousel-dots" id="carouselDots"></div>
                     </div>
                 </div>
             </section>
-            <!-- Removed Featured Products Section as requested -->
+            
+            <!-- Featured Products Section -->
+            <section class="py-16 px-4 bg-white" id="featuredSection" style="display:none;">
+                <div class="max-w-7xl mx-auto text-center">
+                    <h2 class="font-display text-4xl font-bold mb-10 text-gold-gradient">منتجات مميزة</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6" id="homeFeatured"></div>
+                </div>
+            </section>
         </div>
 
         <!-- Products Page -->
@@ -251,11 +257,10 @@
         </div>
     </main>
 
-    <!-- Footer (Corrected Layout) -->
+    <!-- Footer -->
     <footer class="bg-[var(--black-deep)] text-white py-16 px-4 mt-20">
         <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-10 items-center">
             
-            <!-- Right Column (Visual Left due to RTL): Last Piece & Socials -->
             <div class="text-center md:text-right order-1 md:order-1">
                 <h3 class="text-3xl text-gold-gradient font-bold mb-2">Last Piece</h3>
                 <p class="text-gray-400 mb-6">2026 Last-Piece, Inc.</p>
@@ -266,7 +271,6 @@
                 </div>
             </div>
 
-            <!-- Center Column: Axentro & QR -->
             <div class="text-center order-2 md:order-2">
                 <p class="text-[var(--gold)] text-sm mb-1">© 2024 Axentro – All Rights Reserved</p>
                 <p class="text-gray-500 text-xs mb-4">By Axentro Team</p>
@@ -278,7 +282,6 @@
                 </a>
             </div>
 
-            <!-- Left Column (Visual Right): Empty for Balance -->
             <div class="hidden md:block order-3"></div>
         </div>
     </footer>
@@ -309,17 +312,23 @@
         function renderProducts() {
             if(!products.length) return;
             
-            // Main Products List: Show ALL products
+            // 1. Featured Products (Unlimited)
+            const featuredProds = products.filter(p => p.featured);
+            if(featuredProds.length > 0) {
+                document.getElementById('homeFeatured').innerHTML = featuredProds.map(p => createCard(p, 'home')).join('');
+                document.getElementById('featuredSection').style.display = 'block';
+            }
+            
+            // 2. Main Products List: Show ALL products
             document.getElementById('productsList').innerHTML = products.map(p => createCard(p, 'prod')).join('');
             
-            // Discounts List: Show ONLY products that have discount_price
+            // 3. Discounts List: Show ONLY products that have discount_price
             document.getElementById('discountsList').innerHTML = products.filter(p => p.discount_price).map(p => createCard(p, 'disc')).join('');
             
             checkAllProductImages();
         }
 
         // ================= CARD CREATION =================
-        // Added unique contextId to prevent ID duplication
         function createCard(p, context) {
             const isFav = favorites.includes(p.id);
             const sizeBtns = p.sizes.map(s => `<button class="size-btn available" onclick="selectSize(this,'${p.id}','${s}')">${s}</button>`).join('');
@@ -327,7 +336,6 @@
             const isActive = p.active !== false;
             const soldOut = !isActive ? `<div class="sold-out-overlay"><span class="bg-gray-800 text-white px-6 py-2 rounded-full font-bold">غير متوفر</span></div>` : '';
             
-            // Unique IDs for elements
             const cardId = `card-${context}-${p.id}`;
             const imgBoxId = `img-box-${context}-${p.id}`;
             const prevId = `prev-${context}-${p.id}`;
@@ -374,10 +382,9 @@
         // ================= PRODUCT CAROUSEL LOGIC =================
         function checkAllProductImages() {
             products.forEach(p => {
-                // Check for products page
                 checkImagesForContext(p, 'prod');
-                // Check for discounts page
                 if(p.discount_price) checkImagesForContext(p, 'disc');
+                if(p.featured) checkImagesForContext(p, 'home');
             });
         }
 
@@ -453,7 +460,7 @@
             let curr = productSlideData[key] ? productSlideData[key].index : 0;
             let next = (curr + 1) % slides.length;
             goToProdSlide(id, context, next);
-            startProdAutoSlide(id, context); // Reset timer
+            startProdAutoSlide(id, context);
         }
         
         function prodPrev(id, context) {
@@ -464,67 +471,105 @@
             let curr = productSlideData[key] ? productSlideData[key].index : 0;
             let prev = (curr - 1 + slides.length) % slides.length;
             goToProdSlide(id, context, prev);
-            startProdAutoSlide(id, context); // Reset timer
+            startProdAutoSlide(id, context);
         }
         
-        // ================= HERO CAROUSEL =================
+        // ================= HERO CAROUSEL (Fixed Logic) =================
         function initHero() {
             const c=document.getElementById('heroCarousel'), d=document.getElementById('carouselDots'); let h='';
             for(let i=1;i<=6;i++){ h+=`<div class="carousel-slide ${i===1?'active':''}"><img src="${IMG_URL}hero${i}.webp" onerror="this.parentElement.style.display='none'"></div>`; d.innerHTML+=`<button class="carousel-dot ${i===1?'active':''}" onclick="goHero(${i-1})"></button>`; }
             c.innerHTML=h+c.innerHTML;
-            clearInterval(heroInterval); heroInterval=setInterval(()=>{ goHero((heroSlide+1)%document.querySelectorAll('.carousel-slide').length); }, 3000);
+            startHeroAutoSlide();
         }
-        function goHero(n){ const s=document.querySelectorAll('.carousel-slide'), d=document.querySelectorAll('.carousel-dot'); s[heroSlide]?.classList.remove('active'); d[heroSlide]?.classList.remove('active'); heroSlide=n; s[heroSlide]?.classList.add('active'); d[heroSlide]?.classList.add('active'); }
+
+        function startHeroAutoSlide() {
+            clearInterval(heroInterval);
+            heroInterval = setInterval(() => {
+                const slides = document.querySelectorAll('.carousel-slide');
+                if(slides.length === 0) return;
+                goHero((heroSlide + 1) % slides.length);
+            }, 3000);
+        }
+
+        function goHero(n) { 
+            const s=document.querySelectorAll('.carousel-slide'), d=document.querySelectorAll('.carousel-dot'); 
+            s[heroSlide]?.classList.remove('active'); 
+            d[heroSlide]?.classList.remove('active'); 
+            heroSlide=n; 
+            s[heroSlide]?.classList.add('active'); 
+            d[heroSlide]?.classList.add('active'); 
+            startHeroAutoSlide(); // Reset timer
+        }
+
+        function heroNext() {
+            const slides = document.querySelectorAll('.carousel-slide');
+            let next = (heroSlide + 1) % slides.length;
+            goHero(next);
+        }
+
+        function heroPrev() {
+            const slides = document.querySelectorAll('.carousel-slide');
+            let prev = (heroSlide - 1 + slides.length) % slides.length;
+            goHero(prev);
+        }
         
-        // ================= HELPERS =================
+        // ================= HELPERS (Massive Color Map) =================
         function getColorCode(c) {
             if(!c) return '#ccc'; 
             if(c.startsWith('#')) return c; 
             
-            // Comprehensive Color Map
             const map={
-                // English
-                'black':'#222','white':'#fff','red':'#e74c3c','blue':'#3498db','beige':'#d4b896','brown':'#795548','gray':'#95a5a6','navy':'#2c3e50','green':'#27ae60','yellow':'#f1c40f','pink':'#e91e63','purple':'#9b59b6','orange':'#e67e22','darkblue':'#1a237e','skyblue':'#81d4fa','offwhite':'#f8f7f4', 'gold':'#D4AF37', 'silver':'#c0c0c0',
+                // English Standard
+                'black':'#000000','white':'#ffffff','red':'#ff0000','green':'#008000','blue':'#0000ff','yellow':'#ffff00','cyan':'#00ffff','magenta':'#ff00ff',
+                'gray':'#808080','grey':'#808080','silver':'#c0c0c0','gold':'#ffd700','beige':'#f5f5dc','brown':'#a52a2a','navy':'#000080','purple':'#800080',
+                'pink':'#ffc0cb','orange':'#ffa500','violet':'#ee82ee','indigo':'#4b0082','turquoise':'#40e0d0','maroon':'#800000','olive':'#808000','lime':'#00ff00',
+                'aqua':'#00ffff','teal':'#008080','coral':'#ff7f50','salmon':'#fa8072','khaki':'#f0e68c','lavender':'#e6e6fa','tan':'#d2b48c','crimson':'#dc143c',
+                'chocolate':'#d2691e','plum':'#dda0dd','orchid':'#da70d6','sienna':'#a0522d','tomato':'#ff6347','wheat':'#f5deb3','ivory':'#fffff0',
                 
-                // Arabic (Common)
-                'اسود':'#222','أبيض':'#fff','ابيض':'#fff','احمر':'#e74c3c','ازرق':'#3498db','اخضر':'#27ae60','اصفر':'#f1c40f','وردي':'#e91e63','بنفسجي':'#9b59b0','برتقالي':'#e67e22','بني':'#795548','رمادي':'#95a5a6','كحلي':'#1a237e','بيج':'#d4b896','ذهبي':'#D4AF37','سماوي':'#81d4fa','نيلي':'#3f51b5','عسلي':'#d4b896','فضي':'#c0c0c0','زيتي':'#808000','عنابي':'#800000','خاكي':'#f0e68c','موف':'#9c27b0','تركي':'#40e0d0',
-                
-                // Arabic with AL (The) - Normalized
-                'السواد':'#222','الأسود':'#222','الاسود':'#222',
-                'الأبيض':'#fff','الابيض':'#fff',
-                'الأحمر':'#e74c3c','الاحمر':'#e74c3c',
-                'الأزرق':'#3498db','الازرق':'#3498db',
-                'الأخضر':'#27ae60','الاخضر':'#27ae60',
-                'الأصفر':'#f1c40f','الاصفر':'#f1c40f',
-                'الوردي':'#e91e63',
-                'البنفسجي':'#9b59b0',
-                'البرتقالي':'#e67e22',
-                'البني':'#795548',
-                'الرمادي':'#95a5a6',
-                'الكحلي':'#1a237e',
-                'البيج':'#d4b896',
-                'الذهبي':'#D4AF37',
-                'السماوي':'#81d4fa',
-                'النيلي':'#3f51b5',
-                'العسلي':'#d4b896',
-                'الفضي':'#c0c0c0',
-                'الزيتي':'#808000',
-                'العنابي':'#800000',
-                'الخاكي':'#f0e68c',
-                'الموف':'#9c27b0',
-                'التركي':'#40e0d0'
+                // Shades
+                'darkblue':'#00008b','darkred':'#8b0000','darkgreen':'#006400','darkgray':'#a9a9a9','darkgrey':'#a9a9a9','darkorange':'#ff8c00','darkviolet':'#9400d3','darkcyan':'#008b8b',
+                'lightblue':'#add8e6','lightred':'#ffcccb','lightgreen':'#90ee90','lightgray':'#d3d3d3','lightgrey':'#d3d3d3','lightyellow':'#ffffe0','lightpink':'#ffb6c1',
+                'skyblue':'#87ceeb','deepskyblue':'#00bfff','dodgerblue':'#1e90ff','royalblue':'#4169e1','midnightblue':'#191970','steelblue':'#4682b4','slateblue':'#6a5acd',
+                'forestgreen':'#228b22','seagreen':'#2e8b57','springgreen':'#00ff7f','palegreen':'#98fb98','limegreen':'#32cd32','yellowgreen':'#9acd32',
+                'hotpink':'#ff69b4','deeppink':'#ff1493',' palevioletred':'#db7093','mediumvioletred':'#c71585',
+                'sandybrown':'#f4a460','goldenrod':'#daa520','darkgoldenrod':'#b8860b','rosybrown':'#bc8f8f','saddlebrown':'#8b4513',
+                'mistyrose':'#ffe4e1','antiquewhite':'#faebd7','linen':'#faf0e6','seashell':'#fff5ee','floralwhite':'#fffaf0','ghostwhite':'#f8f8ff','mintcream':'#f5fffa','azure':'#f0ffff','aliceblue':'#f0f8ff','snow':'#fffafa',
+
+                // Arabic Standard
+                'اسود':'#000000','أسود':'#000000','الاسود':'#000000','الأسود':'#000000','سواد':'#000000','السواد':'#000000',
+                'ابيض':'#ffffff','أبيض':'#ffffff','الابيض':'#ffffff','الأبيض':'#ffffff','بياض':'#ffffff','البياض':'#ffffff',
+                'احمر':'#ff0000','أحمر':'#ff0000','الاحمر':'#ff0000','الأحمر':'#ff0000','حمرة':'#ff0000','الحمرة':'#ff0000',
+                'ازرق':'#0000ff','أزرق':'#0000ff','الازرق':'#0000ff','الأزرق':'#0000ff','زرقة':'#0000ff','الزرقة':'#0000ff',
+                'اخضر':'#008000','أخضر':'#008000','الاخضر':'#008000','الأخضر':'#008000','خضرة':'#008000','الخضرة':'#008000',
+                'اصفر':'#ffff00','أصفر':'#ffff00','الاصفر':'#ffff00','الأصفر':'#ffff00','صفرة':'#ffff00','الصفرة':'#ffff00',
+                'برتقالي':'#ffa500','البرتقالي':'#ffa500','برتقالى':'#ffa500','البرتقالى':'#ffa500',
+                'بنفسجي':'#800080','البنفسجي':'#800080','بنفسجى':'#800080','البنفسجى':'#800080','موف':'#800080','الموف':'#800080',
+                'وردي':'#ffc0cb','الوردي':'#ffc0cb','وردى':'#ffc0cb','الوردى':'#ffc0cb','روز':'#ffc0cb','الروز':'#ffc0cb',
+                'بني':'#a52a2a','البنى':'#a52a2a','البني':'#a52a2a','بنى':'#a52a2a','سكني':'#d2b48c','السكني':'#d2b48c',
+                'رمادي':'#808080','الرمادي':'#808080','رصاصي':'#708090','الرصاصي':'#708090',
+                'كحلي':'#000080','الكحلي':'#000080','كحلى':'#000080','نيلي':'#000080','النيلي':'#000080',
+                'بيج':'#f5f5dc','البيج':'#f5f5dc','عسلي':'#d4b896','العسلي':'#d4b896',
+                'ذهبي':'#ffd700','الذهبي':'#ffd700','ذهب':'#ffd700',
+                'فضي':'#c0c0c0','الفضي':'#c0c0c0','فضة':'#c0c0c0',
+                'سماوي':'#87ceeb','السماوي':'#87ceeb','تركي':'#40e0d0','التركي':'#40e0d0','تركواز':'#40e0d0','التركواز':'#40e0d0',
+                'عنابي':'#800000','العنابي':'#800000','خمري':'#800000','الخمري':'#800000',
+                'زيتي':'#808000','الزيتي':'#808000','زيتوني':'#808000','الزيتوني':'#808000',
+                'خاكي':'#f0e68c','الخاكي':'#f0e68c','كاكي':'#f0e68c','الكاكي':'#f0e68c',
+                'نحاسي':'#b87333','النحاسي':'#b87333','برونزي':'#cd7f32','البرونزي':'#cd7f32',
+                'جينز':'#1560bd','الجينز':'#1560bd','جين':'#1560bd','الجين':'#1560bd'
             };
             
-            // Normalize input: lowercase, remove spaces
-            const key = c.trim().toLowerCase().replace(/\s/g, '');
-            return map[key] || '#ccc'; // Default to gray if not found
+            // Normalize input
+            let key = c.trim().toLowerCase();
+            key = key.replace(/اللون/g, '').replace(/\s/g, ''); // Remove "اللون" and spaces
+            
+            return map[key] || '#cccccc'; // Default to a visible gray
         }
         
         function toggleFav(id, el){ const i=favorites.indexOf(id); if(i>-1){favorites.splice(i,1);el.classList.remove('active');}else{favorites.push(id);el.classList.add('active');} localStorage.setItem('lp_fav',JSON.stringify(favorites)); }
         function selectSize(b,id,s){ [...b.parentElement.children].forEach(x=>x.classList.remove('selected')); b.classList.add('selected'); selections[id]={...selections[id], size:s}; }
         function selectColor(b,id,c){ [...b.parentElement.children].forEach(x=>x.classList.remove('selected')); b.classList.add('selected'); selections[id]={...selections[id], color:c}; }
         
-        // Updated to use specific context ID
         function changeQty(id, d, context){ 
             const el=document.getElementById(`qty-${context}-${id}`); 
             if(el) el.textContent=Math.max(1,parseInt(el.textContent)+d); 
