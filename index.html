@@ -23,9 +23,7 @@
     </nav>
   </div>
 
-  <div class="cart">
-    🛒
-  </div>
+  <div class="cart" onclick="toggleCart()">🛒</div>
 </header>
 
 <!-- HERO -->
@@ -40,19 +38,41 @@
 
     <button class="prev">‹</button>
     <button class="next">›</button>
-
     <div class="dots"></div>
   </div>
 </section>
 
+<!-- PRODUCTS -->
+<section class="products-section">
+  <h2 class="section-title">المنتجات</h2>
+  <div id="products" class="products-grid"></div>
+
+  <h2 class="section-title">التخفيضات</h2>
+  <div id="offers" class="products-grid"></div>
+</section>
+
+<!-- CART -->
+<div id="cartPanel" class="cart-panel">
+  <div class="cart-header">
+    <h2>السلة</h2>
+    <span onclick="toggleCart()">✖</span>
+  </div>
+
+  <div id="cartItems"></div>
+
+  <div class="cart-footer">
+    <h3 id="cartTotal">الإجمالي: 0 ج</h3>
+    <button onclick="clearCart()" class="btn-danger">تفريغ السلة</button>
+    <button onclick="goCheckout()" class="btn-primary">إتمام الطلب</button>
+  </div>
+</div>
+
 <!-- FOOTER -->
 <footer class="footer">
-  <div class="left">© 2026 Last-Piece, Inc.</div>
-
+  <div>© 2026 Last-Piece, Inc.</div>
   <div class="center">
     <p>© 2024 Axentro – All Rights Reserved</p>
     <p>By Axentro Team</p>
-
     <a href="https://axentro-official.github.io/axentro-website/links.html" target="_blank">
       <img src="images/qr.png" class="qr">
       <p>Scan me > Click On Me</p>
@@ -60,41 +80,40 @@
   </div>
 </footer>
 
+<script src="app.js"></script>
+
+<!-- HERO SCRIPT -->
 <script>
 const slides = document.querySelectorAll(".slider img");
 const next = document.querySelector(".next");
 const prev = document.querySelector(".prev");
-const dotsContainer = document.querySelector(".dots");
+const dots = document.querySelector(".dots");
 
 let index = 0;
 
-// dots
-slides.forEach((_, i) => {
-  const dot = document.createElement("span");
-  dot.onclick = () => go(i);
-  dotsContainer.appendChild(dot);
+slides.forEach((_, i)=>{
+  const d = document.createElement("span");
+  d.onclick = ()=>go(i);
+  dots.appendChild(d);
 });
 
 function show(i){
-  slides.forEach(s => s.classList.remove("active"));
-  dotsContainer.querySelectorAll("span").forEach(d => d.classList.remove("active"));
+  slides.forEach(s=>s.classList.remove("active"));
+  dots.querySelectorAll("span").forEach(d=>d.classList.remove("active"));
 
   slides[i].classList.add("active");
-  dotsContainer.children[i].classList.add("active");
+  dots.children[i].classList.add("active");
 }
 
 function go(i){
-  index = i;
-  show(index);
+  index=i;
+  show(i);
 }
 
-next.onclick = () => go((index+1)%slides.length);
-prev.onclick = () => go((index-1+slides.length)%slides.length);
+next.onclick=()=>go((index+1)%slides.length);
+prev.onclick=()=>go((index-1+slides.length)%slides.length);
 
-// auto
-setInterval(()=>{
-  go((index+1)%slides.length);
-},2000);
+setInterval(()=>go((index+1)%slides.length),2000);
 
 show(0);
 </script>
