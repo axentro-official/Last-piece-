@@ -691,6 +691,17 @@ function savePdf(){
   const data = getInvoiceData();
   const htmlContent = buildA4Html(data);
   
+  // Generate unique filename with timestamp
+  const now = new Date();
+  const timestamp = now.getFullYear().toString() + 
+                    String(now.getMonth()+1).padStart(2,'0') + 
+                    String(now.getDate()).padStart(2,'0') + '_' + 
+                    String(now.getHours()).padStart(2,'0') + 
+                    String(now.getMinutes()).padStart(2,'0') + 
+                    String(now.getSeconds()).padStart(2,'0');
+  
+  const filename = `Invoice_${data.invNo}_${timestamp}.pdf`;
+  
   const parser = new DOMParser();
   const doc = parser.parseFromString(htmlContent, "text/html");
   
@@ -704,7 +715,7 @@ function savePdf(){
   }
 
   // 2. Extract Content
-  const element = doc.body.querySelector('.box'); // Target .box specifically
+  const element = doc.body.querySelector('.box');
   
   // 3. Setup for rendering
   element.style.position = 'absolute';
@@ -716,7 +727,7 @@ function savePdf(){
 
   const opt = {
     margin: 10,
-    filename: `Invoice-${data.invNo}.pdf`,
+    filename: filename,
     image: { type: 'jpeg', quality: 0.98 },
     html2canvas: { 
         scale: 2, 
@@ -729,15 +740,13 @@ function savePdf(){
   };
 
   html2pdf().set(opt).from(element).save().then(()=>{
-      // Cleanup
       if(element.parentNode) element.parentNode.removeChild(element);
       if(styleElement && styleElement.parentNode) styleElement.parentNode.removeChild(styleElement);
   }).catch(err => {
       console.error(err);
-      // Cleanup on error
       if(element.parentNode) element.parentNode.removeChild(element);
       if(styleElement && styleElement.parentNode) styleElement.parentNode.removeChild(styleElement);
-      alert('حدث خطأ أثناء حفظ PDF، يرجى استخدام طباعة A4 ثم حفظ كـ PDF');
+      alert('حدث خطأ أثناء حفظ PDF.\n\nالحل البديل: استخدم زر "طباعة A4" ثم اختر "Save as PDF" من قائمة الطابعة.');
   });
 }
 
