@@ -62,7 +62,7 @@
         .color-dot { width: 28px; height: 28px; border-radius: 50%; border: 2px solid #eee; cursor: pointer; transition: 0.2s; }
         .color-dot.selected { border-color: #333; box-shadow: 0 0 0 3px white, 0 0 0 5px var(--gold); }
         .qty-counter { display: flex; align-items: center; background: #f0f0f0; border-radius: 30px; padding: 5px; }
-        .qty-btn { width: 32px; height: 32px; border-radius: 50%; background: white; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; font-weight: bold; }
+        .qty-btn { width: 32px; height: 32px; border-radius: 50%; background: white; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; font-weight: bold; transition: 0.2s; }
         .qty-btn:hover { background: var(--gold); color: white; }
         .fav-btn { position: absolute; top: 15px; left: 15px; z-index: 15; width: 40px; height: 40px; background: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 2px 8px rgba(0,0,0,0.1); transition: 0.3s; }
         .fav-btn svg { transition: 0.3s; }
@@ -81,10 +81,15 @@
         .qr-container:hover { transform: scale(1.05); }
         
         @media (max-width: 768px) {
-            .hero-carousel { height: 50vh; border-radius: 15px; }
+            .hero-carousel { height: 50vh; border-radius: 15px; min-height: 300px; }
             .carousel-btn { width: 45px; height: 45px; }
             .cart-sidebar { width: 100%; left: -100%; }
             .prod-carousel-btn { width: 30px; height: 30px; }
+            .product-card { border-radius: 15px; }
+            .btn-gold { padding: 12px 20px; }
+            /* Fix for mobile cart buttons */
+            .cart-sidebar .flex-col { height: 100%; }
+            .cart-sidebar .flex-1 { min-height: 0; overflow-y: auto; }
         }
     </style>
 </head>
@@ -97,7 +102,7 @@
             <button onclick="closeCart()" class="p-2 hover:bg-gray-100 rounded-full"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></button>
         </div>
         <div class="flex-1 overflow-y-auto p-5" id="cartItems"></div>
-        <div class="p-5 border-t bg-gray-50">
+        <div class="p-5 border-t bg-gray-50 mt-auto">
             <div class="flex justify-between mb-4"><span class="text-gray-600">الإجمالي</span><span class="text-2xl font-bold text-gold-gradient" id="cartTotal">0 ج.م</span></div>
             <div class="flex gap-2">
                 <button onclick="clearCart()" class="flex-1 py-3 border rounded-full hover:bg-gray-100">تفريغ</button>
@@ -144,13 +149,7 @@
                     </div>
                 </div>
             </section>
-
-            <section class="py-20 px-4 bg-white">
-                <div class="max-w-7xl mx-auto">
-                    <h2 class="font-display text-4xl font-bold text-center mb-12 text-gold-gradient">منتجات مميزة</h2>
-                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="featuredProducts"></div>
-                </div>
-            </section>
+            <!-- Removed Featured Products Section as requested -->
         </div>
 
         <!-- Products Page -->
@@ -252,15 +251,15 @@
         </div>
     </main>
 
-    <!-- Footer (Layout Updated) -->
+    <!-- Footer (Corrected Layout) -->
     <footer class="bg-[var(--black-deep)] text-white py-16 px-4 mt-20">
         <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-10 items-center">
             
-            <!-- Left Column: Last Piece & Socials -->
-            <div class="text-center md:text-left order-1 md:order-1">
+            <!-- Right Column (Visual Left due to RTL): Last Piece & Socials -->
+            <div class="text-center md:text-right order-1 md:order-1">
                 <h3 class="text-3xl text-gold-gradient font-bold mb-2">Last Piece</h3>
                 <p class="text-gray-400 mb-6">2026 Last-Piece, Inc.</p>
-                <div class="flex justify-center md:justify-start gap-4">
+                <div class="flex justify-center md:justify-end gap-4">
                     <a href="#" class="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center hover:bg-[var(--gold)] transition-colors"><svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg></a>
                     <a href="#" class="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center hover:bg-[var(--gold)] transition-colors"><svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg></a>
                     <a href="#" class="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center hover:bg-[var(--gold)] transition-colors"><svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/></svg></a>
@@ -279,7 +278,7 @@
                 </a>
             </div>
 
-            <!-- Right Column: Empty for Balance -->
+            <!-- Left Column (Visual Right): Empty for Balance -->
             <div class="hidden md:block order-3"></div>
         </div>
     </footer>
@@ -309,38 +308,45 @@
 
         function renderProducts() {
             if(!products.length) return;
-            // Featured: Show latest 3 products (regardless of discount)
-            document.getElementById('featuredProducts').innerHTML = products.slice(0,3).map(createCard).join('');
             
-            // Main Products List: Show ALL products (removed filter for discounts)
-            document.getElementById('productsList').innerHTML = products.map(createCard).join('');
+            // Main Products List: Show ALL products
+            document.getElementById('productsList').innerHTML = products.map(p => createCard(p, 'prod')).join('');
             
             // Discounts List: Show ONLY products that have discount_price
-            document.getElementById('discountsList').innerHTML = products.filter(p => p.discount_price).map(createCard).join('');
+            document.getElementById('discountsList').innerHTML = products.filter(p => p.discount_price).map(p => createCard(p, 'disc')).join('');
             
             checkAllProductImages();
         }
 
         // ================= CARD CREATION =================
-        function createCard(p) {
+        // Added unique contextId to prevent ID duplication
+        function createCard(p, context) {
             const isFav = favorites.includes(p.id);
             const sizeBtns = p.sizes.map(s => `<button class="size-btn available" onclick="selectSize(this,'${p.id}','${s}')">${s}</button>`).join('');
             const colorBtns = p.colors.map(c => `<button class="color-dot" style="background-color:${getColorCode(c)}" onclick="selectColor(this,'${p.id}','${c}')"></button>`).join('');
             const isActive = p.active !== false;
             const soldOut = !isActive ? `<div class="sold-out-overlay"><span class="bg-gray-800 text-white px-6 py-2 rounded-full font-bold">غير متوفر</span></div>` : '';
+            
+            // Unique IDs for elements
+            const cardId = `card-${context}-${p.id}`;
+            const imgBoxId = `img-box-${context}-${p.id}`;
+            const prevId = `prev-${context}-${p.id}`;
+            const nextId = `next-${context}-${p.id}`;
+            const dotsId = `dots-${context}-${p.id}`;
+            const qtyId = `qty-${context}-${p.id}`;
 
             return `
-                <div class="product-card" id="card-${p.id}">
+                <div class="product-card" id="${cardId}">
                     ${soldOut}
                     <div class="fav-btn ${isFav?'active':''}" onclick="toggleFav('${p.id}',this)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg></div>
                     
-                    <div class="prod-img-container" id="img-box-${p.id}">
-                        <div class="prod-slide active" id="slide-${p.id}-0"><img src="${IMG_URL}${p.id}.webp" onerror="this.src='https://via.placeholder.com/400x600?text=No+Image'"></div>
+                    <div class="prod-img-container" id="${imgBoxId}">
+                        <div class="prod-slide active" id="slide-${context}-${p.id}-0"><img src="${IMG_URL}${p.id}.webp" onerror="this.src='https://via.placeholder.com/400x600?text=No+Image'"></div>
                         
-                        <button id="prev-${p.id}" class="prod-carousel-btn prev" onclick="prodPrev('${p.id}')"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="15 18 9 12 15 6"></polyline></svg></button>
-                        <button id="next-${p.id}" class="prod-carousel-btn next" onclick="prodNext('${p.id}')"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="9 18 15 12 9 6"></polyline></svg></button>
+                        <button id="${prevId}" class="prod-carousel-btn prev" onclick="prodPrev('${p.id}', '${context}')"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="15 18 9 12 15 6"></polyline></svg></button>
+                        <button id="${nextId}" class="prod-carousel-btn next" onclick="prodNext('${p.id}', '${context}')"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="9 18 15 12 9 6"></polyline></svg></button>
                         
-                        <div class="prod-dots" id="dots-${p.id}"><button class="prod-dot active" onclick="goToProdSlide('${p.id}',0)"></button></div>
+                        <div class="prod-dots" id="${dotsId}"><button class="prod-dot active" onclick="goToProdSlide('${p.id}', '${context}', 0)"></button></div>
                         
                         ${p.discount_price ? `<span class="absolute top-4 right-4 bg-red-500 text-white px-4 py-1 rounded-full text-sm font-bold shadow-lg z-10">خصم</span>` : ''}
                     </div>
@@ -356,9 +362,9 @@
                         ${p.colors.length?`<div class="mb-5"><p class="text-sm text-gray-500 mb-2">الألوان</p><div class="flex gap-3">${colorBtns}</div></div>`:''}
                         <div class="flex gap-3 items-center mt-auto">
                             <div class="qty-counter">
-                                <button class="qty-btn" onclick="changeQty('${p.id}',-1)">-</button><span class="w-8 text-center font-bold" id="qty-${p.id}">1</span><button class="qty-btn" onclick="changeQty('${p.id}',1)">+</button>
+                                <button class="qty-btn" onclick="changeQty('${p.id}', -1, '${context}')">-</button><span class="w-8 text-center font-bold" id="${qtyId}">1</span><button class="qty-btn" onclick="changeQty('${p.id}', 1, '${context}')">+</button>
                             </div>
-                            <button class="flex-1 btn-gold py-3 text-lg ${!isActive?'disabled':''}" onclick="${isActive?`addToCart('${p.id}')`:'return false'}">${isActive?'أضف للسلة':'غير متوفر'}</button>
+                            <button class="flex-1 btn-gold py-3 text-lg ${!isActive?'disabled':''}" onclick="${isActive?`addToCart('${p.id}', '${context}')`:'return false'}">${isActive?'أضف للسلة':'غير متوفر'}</button>
                         </div>
                     </div>
                 </div>
@@ -368,81 +374,97 @@
         // ================= PRODUCT CAROUSEL LOGIC =================
         function checkAllProductImages() {
             products.forEach(p => {
-                for(let i=2; i<=4; i++) {
-                    const img = new Image();
-                    img.src = `${IMG_URL}${p.id}-${i}.webp`;
-                    img.onload = () => addProdSlide(p.id, i-1, img.src);
-                }
+                // Check for products page
+                checkImagesForContext(p, 'prod');
+                // Check for discounts page
+                if(p.discount_price) checkImagesForContext(p, 'disc');
             });
         }
-        
-        function addProdSlide(id, index, src) {
-            const container = document.getElementById(`img-box-${id}`);
-            const dots = document.getElementById(`dots-${id}`);
-            if(!container) return;
-            
-            // Add Slide
-            const slide = document.createElement('div');
-            slide.className = 'prod-slide';
-            slide.id = `slide-${id}-${index}`;
-            slide.innerHTML = `<img src="${src}">`;
-            container.insertBefore(slide, dots);
-            
-            // Add Dot
-            const dot = document.createElement('button');
-            dot.className = 'prod-dot';
-            dot.onclick = () => goToProdSlide(id, index);
-            dots.appendChild(dot);
-            
-            // Show Arrows & Start Auto-slide ONLY when second image is added
-            if(index === 1) {
-                document.getElementById(`prev-${id}`).classList.add('show');
-                document.getElementById(`next-${id}`).classList.add('show');
-                startProdAutoSlide(id);
+
+        function checkImagesForContext(p, context) {
+            for(let i=2; i<=4; i++) {
+                const img = new Image();
+                img.src = `${IMG_URL}${p.id}-${i}.webp`;
+                img.onload = () => addProdSlide(p.id, context, i-1, img.src);
             }
         }
         
-        function startProdAutoSlide(id) {
-            // Clear existing interval if any
-            if(productSlideData[id]) clearInterval(productSlideData[id].interval);
-            else productSlideData[id] = { index: 0, interval: null };
+        function addProdSlide(id, context, index, src) {
+            const container = document.getElementById(`img-box-${context}-${id}`);
+            const dots = document.getElementById(`dots-${context}-${id}`);
+            if(!container) return;
             
-            // Start new interval (2 seconds)
-            productSlideData[id].interval = setInterval(() => {
-                const slides = document.querySelectorAll(`#img-box-${id} .prod-slide`);
-                let curr = productSlideData[id].index;
+            const slide = document.createElement('div');
+            slide.className = 'prod-slide';
+            slide.id = `slide-${context}-${id}-${index}`;
+            slide.innerHTML = `<img src="${src}">`;
+            container.insertBefore(slide, dots);
+            
+            const dot = document.createElement('button');
+            dot.className = 'prod-dot';
+            dot.onclick = () => goToProdSlide(id, context, index);
+            dots.appendChild(dot);
+            
+            if(index === 1) {
+                document.getElementById(`prev-${context}-${id}`).classList.add('show');
+                document.getElementById(`next-${context}-${id}`).classList.add('show');
+                startProdAutoSlide(id, context);
+            }
+        }
+        
+        function startProdAutoSlide(id, context) {
+            const key = `${context}-${id}`;
+            if(productSlideData[key]) clearInterval(productSlideData[key].interval);
+            else productSlideData[key] = { index: 0, interval: null };
+            
+            productSlideData[key].interval = setInterval(() => {
+                const container = document.getElementById(`img-box-${context}-${id}`);
+                if(!container) return;
+                const slides = container.querySelectorAll('.prod-slide');
+                if(slides.length < 2) return;
+                
+                let curr = productSlideData[key].index;
                 let next = (curr + 1) % slides.length;
-                goToProdSlide(id, next);
+                goToProdSlide(id, context, next);
             }, 2000);
         }
         
-        function goToProdSlide(id, n) {
-            const slides = document.querySelectorAll(`#img-box-${id} .prod-slide`);
-            const dots = document.querySelectorAll(`#dots-${id} .prod-dot`);
+        function goToProdSlide(id, context, n) {
+            const key = `${context}-${id}`;
+            const container = document.getElementById(`img-box-${context}-${id}`);
+            if(!container) return;
+            
+            const slides = container.querySelectorAll('.prod-slide');
+            const dots = container.querySelectorAll('.prod-dot');
             if(slides.length === 0) return;
             
-            // Update index
-            productSlideData[id].index = n;
+            if(!productSlideData[key]) productSlideData[key] = {index:0};
+            productSlideData[key].index = n;
             
-            // Visual Update
             slides.forEach((s,i) => s.classList.toggle('active', i === n));
             dots.forEach((d,i) => d.classList.toggle('active', i === n));
         }
         
-        function prodNext(id) {
-            const slides = document.querySelectorAll(`#img-box-${id} .prod-slide`);
-            let curr = productSlideData[id] ? productSlideData[id].index : 0;
+        function prodNext(id, context) {
+            const key = `${context}-${id}`;
+            const container = document.getElementById(`img-box-${context}-${id}`);
+            if(!container) return;
+            const slides = container.querySelectorAll('.prod-slide');
+            let curr = productSlideData[key] ? productSlideData[key].index : 0;
             let next = (curr + 1) % slides.length;
-            goToProdSlide(id, next);
-            startProdAutoSlide(id); // Reset timer on manual click
+            goToProdSlide(id, context, next);
+            startProdAutoSlide(id, context); // Reset timer
         }
         
-        function prodPrev(id) {
-            const slides = document.querySelectorAll(`#img-box-${id} .prod-slide`);
-            let curr = productSlideData[id] ? productSlideData[id].index : 0;
+        function prodPrev(id, context) {
+            const key = `${context}-${id}`;
+            const container = document.getElementById(`img-box-${context}-${id}`);
+            if(!container) return;
+            const slides = container.querySelectorAll('.prod-slide');
+            let curr = productSlideData[key] ? productSlideData[key].index : 0;
             let prev = (curr - 1 + slides.length) % slides.length;
-            goToProdSlide(id, prev);
-            startProdAutoSlide(id); // Reset timer on manual click
+            goToProdSlide(id, context, prev);
+            startProdAutoSlide(id, context); // Reset timer
         }
         
         // ================= HERO CAROUSEL =================
@@ -459,7 +481,7 @@
             if(!c) return '#ccc'; 
             if(c.startsWith('#')) return c; 
             
-            // Comprehensive Color Map (English & Arabic with variations)
+            // Comprehensive Color Map
             const map={
                 // English
                 'black':'#222','white':'#fff','red':'#e74c3c','blue':'#3498db','beige':'#d4b896','brown':'#795548','gray':'#95a5a6','navy':'#2c3e50','green':'#27ae60','yellow':'#f1c40f','pink':'#e91e63','purple':'#9b59b6','orange':'#e67e22','darkblue':'#1a237e','skyblue':'#81d4fa','offwhite':'#f8f7f4', 'gold':'#D4AF37', 'silver':'#c0c0c0',
@@ -467,7 +489,7 @@
                 // Arabic (Common)
                 'اسود':'#222','أبيض':'#fff','ابيض':'#fff','احمر':'#e74c3c','ازرق':'#3498db','اخضر':'#27ae60','اصفر':'#f1c40f','وردي':'#e91e63','بنفسجي':'#9b59b0','برتقالي':'#e67e22','بني':'#795548','رمادي':'#95a5a6','كحلي':'#1a237e','بيج':'#d4b896','ذهبي':'#D4AF37','سماوي':'#81d4fa','نيلي':'#3f51b5','عسلي':'#d4b896','فضي':'#c0c0c0','زيتي':'#808000','عنابي':'#800000','خاكي':'#f0e68c','موف':'#9c27b0','تركي':'#40e0d0',
                 
-                // Arabic with AL (The)
+                // Arabic with AL (The) - Normalized
                 'السواد':'#222','الأسود':'#222','الاسود':'#222',
                 'الأبيض':'#fff','الابيض':'#fff',
                 'الأحمر':'#e74c3c','الاحمر':'#e74c3c',
@@ -494,26 +516,36 @@
             };
             
             // Normalize input: lowercase, remove spaces
-            const key = c.toLowerCase().replace(/\s/g, '');
+            const key = c.trim().toLowerCase().replace(/\s/g, '');
             return map[key] || '#ccc'; // Default to gray if not found
         }
         
         function toggleFav(id, el){ const i=favorites.indexOf(id); if(i>-1){favorites.splice(i,1);el.classList.remove('active');}else{favorites.push(id);el.classList.add('active');} localStorage.setItem('lp_fav',JSON.stringify(favorites)); }
         function selectSize(b,id,s){ [...b.parentElement.children].forEach(x=>x.classList.remove('selected')); b.classList.add('selected'); selections[id]={...selections[id], size:s}; }
         function selectColor(b,id,c){ [...b.parentElement.children].forEach(x=>x.classList.remove('selected')); b.classList.add('selected'); selections[id]={...selections[id], color:c}; }
-        function changeQty(id,d){ const el=document.getElementById(`qty-${id}`); el.textContent=Math.max(1,parseInt(el.textContent)+d); }
+        
+        // Updated to use specific context ID
+        function changeQty(id, d, context){ 
+            const el=document.getElementById(`qty-${context}-${id}`); 
+            if(el) el.textContent=Math.max(1,parseInt(el.textContent)+d); 
+        }
 
         // ================= CART =================
-        function addToCart(id) {
+        function addToCart(id, context) {
             const p=products.find(x=>x.id===id); if(!p||!p.active) return;
             const s=selections[id]||{};
             if(p.sizes.length&&!s.size) return alert('اختر المقاس');
             if(p.colors.length&&!s.color) return alert('اختر اللون');
-            const q=parseInt(document.getElementById(`qty-${id}`).textContent);
+            
+            const qtyEl = document.getElementById(`qty-${context}-${id}`);
+            const q = parseInt(qtyEl ? qtyEl.textContent : 1);
+            
             const ex=cart.find(i=>i.id===id&&i.size===s.size&&i.color===s.color);
             if(ex) ex.qty+=q; else cart.push({id,name:p.name,price:p.discount_price||p.price,size:s.size||'-',color:s.color||'-',qty:q,img:`${IMG_URL}${id}.webp`});
-            saveCart(); updateCart(); openCart(); document.getElementById(`qty-${id}`).textContent='1';
+            saveCart(); updateCart(); openCart(); 
+            if(qtyEl) qtyEl.textContent='1';
         }
+        
         function saveCart(){ localStorage.setItem('lp_cart',JSON.stringify(cart)); }
         function loadCart(){ cart=JSON.parse(localStorage.getItem('lp_cart')||'[]'); updateCart(); }
         function updateCart(){
