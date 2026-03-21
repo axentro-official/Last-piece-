@@ -1,41 +1,137 @@
-body {
-  font-family: Arial;
-  margin: 0;
-  background: #fff;
-  color: #111;
+:root{
+  --gold:#C9A24A;
+  --black:#000;
+  --white:#fff;
 }
 
-.header {
-  background: #000;
-  color: #C9A24A;
-  text-align: center;
-  padding: 20px;
+/* GLOBAL */
+body{
+  margin:0;
+  font-family:Arial;
+  background:#fff;
+  color:#111;
 }
 
-.products {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 20px;
-  padding: 20px;
+/* HEADER */
+.header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:20px;
+  background:#fff;
+  border-bottom:1px solid #eee;
 }
 
-.card {
-  border: 1px solid #eee;
-  padding: 10px;
+.logo img{
+  height:80px;
 }
 
-.card img {
-  width: 100%;
+.center{
+  text-align:center;
 }
 
-button {
-  background: #C9A24A;
-  color: #fff;
-  border: none;
-  padding: 10px;
-  cursor: pointer;
+.center h1{
+  color:var(--gold);
+  margin:0;
+  letter-spacing:2px;
 }
 
-.container {
-  padding: 20px;
+.slogan{
+  color:#777;
+}
+
+nav a{
+  margin:0 10px;
+  text-decoration:none;
+  color:#000;
+  font-weight:bold;
+}
+
+nav a:hover{
+  color:var(--gold);
+}
+
+/* CART */
+.cart{
+  font-size:28px;
+  cursor:pointer;
+  transition:0.3s;
+}
+
+.cart:hover{
+  color:var(--gold);
+}
+
+/* HERO */
+.hero{
+  padding:30px;
+}
+
+.slider{
+  position:relative;
+  max-width:900px;
+  margin:auto;
+}
+
+.slider img{
+  width:100%;
+  display:none;
+  border-radius:10px;
+}
+
+.slider img.active{
+  display:block;
+}
+
+button.prev,button.next{
+  position:absolute;
+  top:50%;
+  transform:translateY(-50%);
+  background:rgba(0,0,0,0.5);
+  color:#fff;
+  border:none;
+  font-size:30px;
+  cursor:pointer;
+  padding:10px;
+}
+
+.prev{ left:10px; }
+.next{ right:10px; }
+
+/* DOTS */
+.dots{
+  text-align:center;
+  margin-top:10px;
+}
+
+.dots span{
+  display:inline-block;
+  width:10px;
+  height:10px;
+  background:#ccc;
+  margin:5px;
+  border-radius:50%;
+  cursor:pointer;
+}
+
+.dots span.active{
+  background:var(--gold);
+}
+
+/* FOOTER */
+.footer{
+  background:#000;
+  color:#fff;
+  display:flex;
+  justify-content:space-between;
+  padding:20px;
+}
+
+.footer .center{
+  text-align:center;
+}
+
+.qr{
+  width:100px;
+  margin-top:10px;
 }
