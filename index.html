@@ -7,99 +7,58 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --gold: #D4AF37;
-            --gold-dark: #B8860B;
-            --black-deep: #0d0d0d;
-            --white-cream: #FAF9F6;
-        }
+        :root { --gold: #D4AF37; --gold-dark: #B8860B; --black-deep: #0d0d0d; --white-cream: #FAF9F6; }
         body { font-family: 'Tajawal', sans-serif; background: var(--white-cream); }
         .font-display { font-family: 'Playfair Display', serif; }
-        
         ::-webkit-scrollbar { width: 8px; }
         ::-webkit-scrollbar-track { background: #f1f1f1; }
         ::-webkit-scrollbar-thumb { background: var(--gold); border-radius: 10px; }
-        
-        .text-gold-gradient {
-            background: linear-gradient(135deg, var(--gold), var(--gold-dark));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-        
-        .btn-gold {
-            background: linear-gradient(135deg, var(--gold), var(--gold-dark));
-            color: white; border: none; padding: 14px 35px;
-            border-radius: 50px; font-weight: 600; cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);
-        }
+        .text-gold-gradient { background: linear-gradient(135deg, var(--gold), var(--gold-dark)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .btn-gold { background: linear-gradient(135deg, var(--gold), var(--gold-dark)); color: white; border: none; padding: 14px 35px; border-radius: 50px; font-weight: 600; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3); }
         .btn-gold:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(212, 175, 55, 0.5); }
         .btn-gold.disabled { background: #ccc; cursor: not-allowed; transform: none; box-shadow: none; }
         
-        .hero-carousel {
-            position: relative; width: 100%; max-width: 1000px;
-            height: 70vh; min-height: 500px;
-            border-radius: 25px; overflow: hidden;
-            box-shadow: 0 25px 60px rgba(0,0,0,0.15);
-            background: white;
-        }
-        .carousel-slide {
-            position: absolute; inset: 0; opacity: 0; transition: opacity 1s ease;
-            display: flex; align-items: center; justify-content: center; padding: 20px;
-        }
+        /* Hero Carousel */
+        .hero-carousel { position: relative; width: 100%; max-width: 1000px; height: 70vh; min-height: 500px; border-radius: 25px; overflow: hidden; box-shadow: 0 25px 60px rgba(0,0,0,0.15); background: white; }
+        .carousel-slide { position: absolute; inset: 0; opacity: 0; transition: opacity 1s ease; display: flex; align-items: center; justify-content: center; padding: 20px; }
         .carousel-slide.active { opacity: 1; }
         .carousel-slide img { width: 100%; height: 100%; object-fit: contain; }
-        
-        .carousel-btn {
-            position: absolute; top: 50%; transform: translateY(-50%);
-            width: 60px; height: 60px; background: rgba(255,255,255,0.95);
-            border-radius: 50%; border: none; cursor: pointer; z-index: 10;
-            display: flex; align-items: center; justify-content: center;
-            transition: 0.3s; box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-        }
+        .carousel-btn { position: absolute; top: 50%; transform: translateY(-50%); width: 60px; height: 60px; background: rgba(255,255,255,0.95); border-radius: 50%; border: none; cursor: pointer; z-index: 10; display: flex; align-items: center; justify-content: center; transition: 0.3s; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
         .carousel-btn:hover { background: var(--gold); color: white; transform: translateY(-50%) scale(1.1); }
-        .carousel-btn.prev { left: 20px; }
-        .carousel-btn.next { right: 20px; }
-        
+        .carousel-btn.prev { left: 20px; } .carousel-btn.next { right: 20px; }
         .carousel-dots { display: flex; justify-content: center; gap: 12px; margin-top: 25px; }
         .carousel-dot { width: 14px; height: 14px; border-radius: 50%; background: #ddd; border: 2px solid var(--gold); cursor: pointer; transition: 0.3s; }
         .carousel-dot.active { background: var(--gold); transform: scale(1.3); }
         
-        .product-card {
-            background: white; border-radius: 25px; overflow: hidden;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            position: relative;
-        }
+        /* Product Card */
+        .product-card { background: white; border-radius: 25px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.05); transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); position: relative; }
         .product-card:hover { transform: translateY(-10px); box-shadow: 0 25px 50px rgba(212, 175, 55, 0.15); }
+        .sold-out-overlay { position: absolute; inset: 0; background: rgba(255,255,255,0.8); display: flex; align-items: center; justify-content: center; z-index: 20; backdrop-filter: blur(2px); }
         
-        /* Sold Out Overlay */
-        .sold-out-overlay {
-            position: absolute; inset: 0; background: rgba(255,255,255,0.8);
-            display: flex; align-items: center; justify-content: center;
-            z-index: 20; backdrop-filter: blur(2px);
-        }
+        /* Product Image Carousel */
+        .prod-img-container { position: relative; aspect-ratio: 3/4; overflow: hidden; background: #f8f8f8; }
+        .prod-slide { position: absolute; inset: 0; opacity: 0; transition: opacity 0.5s ease; display: flex; align-items: center; justify-content: center; }
+        .prod-slide.active { opacity: 1; }
+        .prod-slide img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s; }
+        .product-card:hover .prod-slide.active img { transform: scale(1.05); }
+        .prod-dots { position: absolute; bottom: 10px; left: 50%; transform: translateX(-50%); display: flex; gap: 6px; z-index: 10; }
+        .prod-dot { width: 8px; height: 8px; border-radius: 50%; background: rgba(255,255,255,0.5); border: 1px solid var(--gold); cursor: pointer; transition: 0.2s; }
+        .prod-dot.active { background: var(--gold); transform: scale(1.2); }
         
-        .size-btn {
-            min-width: 45px; height: 40px; border: 1px solid #ccc; border-radius: 10px;
-            background: transparent; cursor: pointer; font-size: 14px; font-weight: 600; transition: 0.2s;
-        }
+        .size-btn { min-width: 45px; height: 40px; border: 1px solid #ccc; border-radius: 10px; background: transparent; cursor: pointer; font-size: 14px; font-weight: 600; transition: 0.2s; }
         .size-btn.available { border-color: var(--gold); color: #333; }
         .size-btn.unavailable { opacity: 0.25; cursor: not-allowed; background: #f5f5f5; }
         .size-btn.selected { background: var(--gold); color: white; border-color: var(--gold); }
-        
         .color-dot { width: 28px; height: 28px; border-radius: 50%; border: 2px solid transparent; cursor: pointer; transition: 0.2s; }
         .color-dot.selected { border-color: #333; box-shadow: 0 0 0 3px white, 0 0 0 5px var(--gold); }
-        
         .qty-counter { display: flex; align-items: center; background: #f0f0f0; border-radius: 30px; padding: 5px; }
         .qty-btn { width: 32px; height: 32px; border-radius: 50%; background: white; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; font-weight: bold; }
         .qty-btn:hover { background: var(--gold); color: white; }
-        
-        /* Favorite Button */
         .fav-btn { position: absolute; top: 15px; left: 15px; z-index: 15; width: 40px; height: 40px; background: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 2px 8px rgba(0,0,0,0.1); transition: 0.3s; }
         .fav-btn svg { transition: 0.3s; }
         .fav-btn.active svg { fill: #e74c3c; stroke: #e74c3c; transform: scale(1.2); }
         
+        /* Cart & Sidebar */
         .cart-sidebar { position: fixed; top: 0; left: -450px; width: 450px; max-width: 100%; height: 100vh; background: white; z-index: 1000; transition: left 0.4s; box-shadow: 5px 0 20px rgba(0,0,0,0.1); display: flex; flex-direction: column; }
         .cart-sidebar.open { left: 0; }
         .cart-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.4); z-index: 999; opacity: 0; visibility: hidden; transition: 0.3s; }
@@ -232,10 +191,34 @@
                             <select name="governorate" id="governorateSelect" required class="w-full p-4 border rounded-xl bg-white text-lg"><option value="">اختر المحافظة</option></select>
                             <select name="area" id="areaSelect" required class="w-full p-4 border rounded-xl bg-white text-lg"><option value="">اختر المنطقة</option></select>
                             <textarea name="address" placeholder="العنوان بالتفصيل" rows="2" required class="w-full p-4 border rounded-xl text-lg"></textarea>
-                            <div class="grid grid-cols-2 gap-3">
-                                <label class="flex items-center gap-2 p-4 border rounded-xl cursor-pointer hover:border-[var(--gold)]"><input type="radio" name="payment" value="COD" checked class="accent-[var(--gold)]"> الدفع عند الاستلام</label>
-                                <label class="flex items-center gap-2 p-4 border rounded-xl cursor-pointer hover:border-[var(--gold)]"><input type="radio" name="payment" value="INSTAPAY" class="accent-[var(--gold)]"> INSTAPAY</label>
+                            
+                            <!-- Payment Methods Grid -->
+                            <div>
+                                <p class="font-medium mb-3">طريقة الدفع</p>
+                                <div class="grid grid-cols-2 md:grid-cols-3 gap-3">
+                                    <label class="flex items-center gap-2 p-3 border rounded-xl cursor-pointer hover:border-[var(--gold)] transition-colors">
+                                        <input type="radio" name="payment" value="الدفع عند الاستلام" checked class="accent-[var(--gold)]"> الدفع عند الاستلام
+                                    </label>
+                                    <label class="flex items-center gap-2 p-3 border rounded-xl cursor-pointer hover:border-[var(--gold)] transition-colors">
+                                        <input type="radio" name="payment" value="INSTAPAY" class="accent-[var(--gold)]"> INSTAPAY
+                                    </label>
+                                    <label class="flex items-center gap-2 p-3 border rounded-xl cursor-pointer hover:border-[var(--gold)] transition-colors">
+                                        <input type="radio" name="payment" value="VODAFONE CASH" class="accent-[var(--gold)]"> فودافون كاش
+                                    </label>
+                                    <label class="flex items-center gap-2 p-3 border rounded-xl cursor-pointer hover:border-[var(--gold)] transition-colors">
+                                        <input type="radio" name="payment" value="ETISALAT CASH" class="accent-[var(--gold)]"> اتصالات كاش
+                                    </label>
+                                    <label class="flex items-center gap-2 p-3 border rounded-xl cursor-pointer hover:border-[var(--gold)] transition-colors">
+                                        <input type="radio" name="payment" value="ORANGE CASH" class="accent-[var(--gold)]"> اورنج كاش
+                                    </label>
+                                    <label class="flex items-center gap-2 p-3 border rounded-xl cursor-pointer hover:border-[var(--gold)] transition-colors">
+                                        <input type="radio" name="payment" value="WE PAY" class="accent-[var(--gold)]"> WE Pay
+                                    </label>
+                                </div>
                             </div>
+
+                            <!-- Notes Field -->
+                            <textarea name="notes" placeholder="ملاحظات إضافية (اختياري)" rows="2" class="w-full p-4 border rounded-xl text-lg"></textarea>
                         </div>
                         <button type="submit" class="w-full btn-gold text-xl mt-8">تأكيد الطلب</button>
                     </form>
@@ -258,16 +241,34 @@
         </div>
     </main>
 
-    <!-- Footer Updated -->
+    <!-- Footer (Correct Order) -->
     <footer class="bg-[var(--black-deep)] text-white py-16 px-4 mt-20">
         <div class="max-w-7xl mx-auto grid md:grid-cols-3 gap-10 items-center">
             
-            <!-- Left Side: Last Piece Info & Social (Visual Left in RTL) -->
-            <div class="text-center md:text-left order-3 md:order-1">
+            <!-- 1. Visual Right (Start): QR Code -->
+            <div class="text-center md:text-left order-1 md:order-1">
+                 <a href="https://axentro-official.github.io/axentro-website/links.html" target="_blank" class="inline-block group">
+                    <div class="qr-container">
+                        <img src="https://axentro-official.github.io/Last-piece-/images/qr.png" alt="QR" class="w-24 h-24" onerror="this.src='https://api.qrserver.com/v1/create-qr-code/?size=96x96&data=https://axentro-official.github.io/axentro-website/links.html&color=D4AF37'">
+                    </div>
+                    <div class="text-xs text-gray-400 mt-3 group-hover:text-[var(--gold)] transition-colors">
+                        Scan Me <span class="inline-block mx-1">&gt;</span> Click On Me
+                    </div>
+                </a>
+            </div>
+
+            <!-- 2. Center: Axentro -->
+            <div class="text-center order-2 md:order-2">
+                <p class="text-[var(--gold)] text-sm mb-2">© 2024 Axentro – All Rights Reserved</p>
+                <p class="text-gray-500 text-xs">By Axentro Team</p>
+            </div>
+            
+            <!-- 3. Visual Left (End): Last Piece Info & Social -->
+            <div class="text-center md:text-right order-3 md:order-3">
                 <h3 class="text-3xl text-gold-gradient font-bold mb-2">Last Piece</h3>
                 <p class="text-gray-400 mb-6">2026 Last-Piece, Inc.</p>
                 <!-- Social Icons -->
-                <div class="flex justify-center md:justify-start gap-4">
+                <div class="flex justify-center md:justify-end gap-4">
                     <a href="#" class="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center hover:bg-[var(--gold)] transition-colors">
                         <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
                     </a>
@@ -280,24 +281,6 @@
                 </div>
             </div>
             
-            <!-- Center: Axentro -->
-            <div class="text-center order-1 md:order-2">
-                <p class="text-[var(--gold)] text-sm mb-2">© 2024 Axentro – All Rights Reserved</p>
-                <p class="text-gray-500 text-xs">By Axentro Team</p>
-            </div>
-
-            <!-- Right Side: QR (Visual Right in RTL) -->
-            <div class="text-center md:text-right order-2 md:order-3">
-                 <a href="https://axentro-official.github.io/axentro-website/links.html" target="_blank" class="inline-block group">
-                    <div class="qr-container">
-                        <img src="https://axentro-official.github.io/Last-piece-/images/qr.png" alt="QR" class="w-24 h-24" onerror="this.src='https://api.qrserver.com/v1/create-qr-code/?size=96x96&data=https://axentro-official.github.io/axentro-website/links.html&color=D4AF37'">
-                    </div>
-                    <div class="text-xs text-gray-400 mt-3 group-hover:text-[var(--gold)] transition-colors">
-                        Scan Me <span class="inline-block mx-1">&gt;</span> Click On Me
-                    </div>
-                </a>
-            </div>
-            
         </div>
     </footer>
 
@@ -306,7 +289,6 @@
         const IMG_URL = 'https://axentro-official.github.io/Last-piece-/images/';
         
         let products = [], cart = [], slideInterval = 0, currentSlide = 0;
-        // Load favorites from localStorage
         let favorites = JSON.parse(localStorage.getItem('lp_fav') || '[]');
         const selections = {};
 
@@ -319,284 +301,148 @@
         });
 
         async function loadData() {
-            try {
-                const res = await fetch(`${API_URL}?action=getProducts`);
-                const data = await res.json();
-                products = data.products || [];
-                renderProducts();
-            } catch(e) {
-                console.error(e);
-            }
+            try { const res = await fetch(`${API_URL}?action=getProducts`); products = (await res.json()).products || []; renderProducts(); } catch(e) { console.error(e); }
         }
 
         function renderProducts() {
-            if (products.length === 0) {
-                document.getElementById('productsList').innerHTML = '<p class="col-span-full text-center text-gray-400 py-20">لا توجد منتجات</p>';
-                return;
-            }
-            
-            // Filter only active for main display, but show all in products page? 
-            // Request: "If product finished... turn it unavailable without deleting".
-            // Logic: Show all, but mark inactive ones.
-            
+            if (!products.length) return;
             document.getElementById('featuredProducts').innerHTML = products.slice(0,3).map(createCard).join('');
-            
-            const regular = products.filter(p => !p.discount_price);
-            const discounted = products.filter(p => p.discount_price);
-            
-            document.getElementById('productsList').innerHTML = regular.map(createCard).join('');
-            document.getElementById('discountsList').innerHTML = discounted.map(createCard).join('');
+            document.getElementById('productsList').innerHTML = products.filter(p => !p.discount_price).map(createCard).join('');
+            document.getElementById('discountsList').innerHTML = products.filter(p => p.discount_price).map(createCard).join('');
+            checkProductImages(); // Check extra images
         }
 
-        function createCard(p, i) {
+        function createCard(p) {
             const isFav = favorites.includes(p.id);
+            const sizeBtns = p.sizes.map(s => `<button class="size-btn available" onclick="selectSize(this, '${p.id}', '${s}')">${s}</button>`).join('');
+            const colorBtns = p.colors.map(c => `<button class="color-dot" style="background-color:${getColorCode(c)}" onclick="selectColor(this, '${p.id}', '${c}')"></button>`).join('');
+            const isActive = p.active !== false;
+            const soldOut = !isActive ? `<div class="sold-out-overlay"><span class="bg-gray-800 text-white px-6 py-2 rounded-full font-bold">غير متوفر</span></div>` : '';
             
-            // Logic: Read sizes directly from product data (no filtering)
-            const sizeBtns = p.sizes.map(s => {
-                return `<button class="size-btn available" onclick="selectSize(this, '${p.id}', '${s}')">${s}</button>`;
-            }).join('');
-
-            const colorBtns = p.colors.map(c => {
-                const colorCode = getColorCode(c);
-                return `<button class="color-dot" style="background-color:${colorCode}; border: 1px solid #ddd;" onclick="selectColor(this, '${p.id}', '${c}')" title="${c}"></button>`;
-            }).join('');
-
-            // Sold Out Logic
-            const isActive = p.active !== false; // true if undefined or true
-            const soldOutOverlay = !isActive ? `
-                <div class="sold-out-overlay">
-                    <span class="bg-gray-800 text-white px-6 py-2 rounded-full font-bold text-lg">غير متوفر حالياً</span>
-                </div>
-            ` : '';
-
             return `
-                <div class="product-card">
-                    ${soldOutOverlay}
-                    <!-- Favorite Button -->
-                    <div class="fav-btn ${isFav ? 'active' : ''}" onclick="toggleFavorite('${p.id}', this)">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
-                        </svg>
-                    </div>
-
-                    <div class="relative aspect-[3/4] overflow-hidden bg-gray-100">
-                        <img src="${IMG_URL}${p.id}.webp" alt="${p.name}" class="w-full h-full object-cover hover:scale-105 transition-transform duration-500" onerror="this.src='https://via.placeholder.com/400x600?text=No+Image'">
-                        ${p.discount_price ? `<span class="absolute top-4 right-4 bg-red-500 text-white px-4 py-1 rounded-full text-sm font-bold shadow-lg z-10">خصم</span>` : ''}
+                <div class="product-card" id="card-${p.id}">
+                    ${soldOut}
+                    <div class="fav-btn ${isFav?'active':''}" onclick="toggleFav('${p.id}',this)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg></div>
+                    <div class="prod-img-container">
+                        <div class="prod-slide active" id="slide-${p.id}-0"><img src="${IMG_URL}${p.id}.webp" onerror="this.src='https://via.placeholder.com/400x600?text=No+Image'"></div>
+                        ${p.discount_price ? `<span class="absolute top-4 right-4 bg-red-500 text-white px-4 py-1 rounded-full text-sm font-bold z-10">خصم</span>` : ''}
+                        <div class="prod-dots" id="dots-${p.id}"><button class="prod-dot active" onclick="goToProdSlide('${p.id}',0)"></button></div>
                     </div>
                     <div class="p-6">
                         <h3 class="font-bold text-xl mb-2">${p.name}</h3>
                         <p class="text-sm text-gray-500 mb-3">كود: ${p.id}</p>
                         <div class="flex gap-2 items-center mb-4">
-                            <span class="font-bold text-2xl ${p.discount_price ? 'text-[var(--gold)]' : ''}">${p.discount_price || p.price} ج.م</span>
-                            ${p.discount_price ? `<span class="text-lg line-through text-gray-400">${p.price}</span>` : ''}
+                            <span class="font-bold text-2xl ${p.discount_price?'text-[var(--gold)]':''}">${p.discount_price||p.price} ج.م</span>
+                            ${p.discount_price?`<span class="text-lg line-through text-gray-400">${p.price}</span>`:''}
                         </div>
-                        
-                        <!-- Sizes -->
-                        ${p.sizes.length > 0 ? `
-                        <div class="mb-4">
-                            <p class="text-sm text-gray-500 mb-2 font-medium">المقاسات</p>
-                            <div class="flex flex-wrap gap-2">${sizeBtns}</div>
-                        </div>
-                        ` : ''}
-
-                        <!-- Colors -->
-                        ${p.colors.length > 0 ? `
-                        <div class="mb-5">
-                            <p class="text-sm text-gray-500 mb-2 font-medium">الألوان</p>
-                            <div class="flex gap-3">${colorBtns}</div>
-                        </div>
-                        ` : ''}
-
+                        ${p.sizes.length?`<div class="mb-4"><p class="text-sm text-gray-500 mb-2">المقاسات</p><div class="flex flex-wrap gap-2">${sizeBtns}</div></div>`:''}
+                        ${p.colors.length?`<div class="mb-5"><p class="text-sm text-gray-500 mb-2">الألوان</p><div class="flex gap-3">${colorBtns}</div></div>`:''}
                         <div class="flex gap-3 items-center mt-auto">
                             <div class="qty-counter">
-                                <button class="qty-btn" onclick="changeQty('${p.id}', -1)">-</button>
-                                <span class="w-8 text-center font-bold" id="qty-${p.id}">1</span>
-                                <button class="qty-btn" onclick="changeQty('${p.id}', 1)">+</button>
+                                <button class="qty-btn" onclick="changeQty('${p.id}',-1)">-</button><span class="w-8 text-center font-bold" id="qty-${p.id}">1</span><button class="qty-btn" onclick="changeQty('${p.id}',1)">+</button>
                             </div>
-                            <button class="flex-1 btn-gold py-3 text-lg ${!isActive ? 'disabled' : ''}" onclick="${isActive ? `addToCart('${p.id}')` : 'return false;'}">
-                                ${isActive ? 'أضف للسلة' : 'غير متوفر'}
-                            </button>
+                            <button class="flex-1 btn-gold py-3 text-lg ${!isActive?'disabled':''}" onclick="${isActive?`addToCart('${p.id}')`:'return false;'}">${isActive?'أضف للسلة':'غير متوفر'}</button>
                         </div>
                     </div>
                 </div>
             `;
         }
         
-        function toggleFavorite(id, el) {
-            const index = favorites.indexOf(id);
-            if (index > -1) {
-                favorites.splice(index, 1);
-                el.classList.remove('active');
-            } else {
-                favorites.push(id);
-                el.classList.add('active');
-            }
-            localStorage.setItem('lp_fav', JSON.stringify(favorites));
-        }
-
-        function getColorCode(c) { 
-            const map = {
-                'black':'#222', 'white':'#fff', 'red':'#e74c3c', 'blue':'#3498db', 
-                'beige':'#d4b896', 'brown':'#795548', 'gray':'#95a5a6', 'navy':'#2c3e50',
-                'green':'#27ae60', 'yellow':'#f1c40f', 'pink':'#e91e63', 'purple':'#9b59b6',
-                'orange':'#e67e22', 'darkblue':'#1a237e', 'skyblue':'#81d4fa',
-                'كحلي':'#1a237e', 'سماوي':'#81d4fa', 'بيج':'#d4b896',
-                'رمادي':'#757575', 'ازرق':'#2196f3', 'احمر':'#f44336', 'اخضر':'#4caf50',
-                'ابيض':'#ffffff', 'اسود':'#000000', 'بني':'#795548', 'ذهبي':'#D4AF37'
-            };
-            if(!c) return '#ccc'; 
-            if(c.startsWith('#') || c.startsWith('rgb')) return c;
-            
-            // Normalize input: remove spaces, lowercase
-            const key = c.toLowerCase().replace(/\s/g, '');
-            return map[key] || map[c.toLowerCase()] || c; 
+        // Check for extra product images
+        function checkProductImages() {
+            products.forEach(p => {
+                const dotsContainer = document.getElementById(`dots-${p.id}`); if(!dotsContainer) return;
+                for(let i=2; i<=4; i++) {
+                    const img = new Image();
+                    img.src = `${IMG_URL}${p.id}-${i}.webp`;
+                    img.onload = function() {
+                        const container = document.querySelector(`#card-${p.id} .prod-img-container`);
+                        const slide = document.createElement('div'); slide.className='prod-slide'; slide.id=`slide-${p.id}-${i-1}`; slide.innerHTML=`<img src="${this.src}">`;
+                        container.insertBefore(slide, dotsContainer);
+                        const dot = document.createElement('button'); dot.className='prod-dot'; dot.onclick=()=>goToProdSlide(p.id,i-1);
+                        dotsContainer.appendChild(dot);
+                    };
+                }
+            });
         }
         
-        function selectSize(btn, id, s) { 
-            // Find parent container to clear selection
-            const container = btn.parentElement;
-            [...container.children].forEach(b=>b.classList.remove('selected')); 
-            btn.classList.add('selected'); 
-            selections[id] = {...selections[id], size: s}; 
+        function goToProdSlide(id, idx) {
+            const c = document.getElementById(`card-${id}`); if(!c) return;
+            c.querySelectorAll('.prod-slide').forEach((s,i)=>s.classList.toggle('active',i===idx));
+            c.querySelectorAll('.prod-dot').forEach((d,i)=>d.classList.toggle('active',i===idx));
         }
-        function selectColor(btn, id, c) { 
-            const container = btn.parentElement;
-            [...container.children].forEach(b=>b.classList.remove('selected')); 
-            btn.classList.add('selected'); 
-            selections[id] = {...selections[id], color: c}; 
-        }
-        function changeQty(id, d) { const el=document.getElementById(`qty-${id}`); el.textContent=Math.max(1,parseInt(el.textContent)+d); }
+
+        function toggleFav(id, el) { const idx = favorites.indexOf(id); if(idx>-1){favorites.splice(idx,1);el.classList.remove('active');}else{favorites.push(id);el.classList.add('active');} localStorage.setItem('lp_fav',JSON.stringify(favorites)); }
+
+        function getColorCode(c) { const map={'black':'#222','white':'#fff','red':'#e74c3c','blue':'#3498db','beige':'#d4b896','brown':'#795548','gray':'#95a5a6','navy':'#2c3e50','green':'#27ae60'}; return map[c]||c; }
+        function selectSize(btn,id,s) { [...btn.parentElement.children].forEach(b=>b.classList.remove('selected')); btn.classList.add('selected'); selections[id]={...selections[id],size:s}; }
+        function selectColor(btn,id,c) { [...btn.parentElement.children].forEach(b=>b.classList.remove('selected')); btn.classList.add('selected'); selections[id]={...selections[id],color:c}; }
+        function changeQty(id,d) { const el=document.getElementById(`qty-${id}`); el.textContent=Math.max(1,parseInt(el.textContent)+d); }
 
         function addToCart(id) {
-            const p = products.find(x=>x.id===id);
-            if(!p || p.active === false) return; // Prevent adding inactive
-            
-            const sel = selections[id] || {};
-            if(p.sizes.length > 0 && !sel.size) return alert('اختر المقاس');
-            if(p.colors.length > 0 && !sel.color) return alert('اختر اللون');
-            
+            const p = products.find(x=>x.id===id); if(!p||!p.active) return;
+            const sel = selections[id]||{};
+            if(p.sizes.length && !sel.size) return alert('اختر المقاس');
+            if(p.colors.length && !sel.color) return alert('اختر اللون');
             const qty = parseInt(document.getElementById(`qty-${id}`).textContent);
-            
-            const existing = cart.find(i=>i.id===id && i.size===sel.size && i.color===sel.color);
-            if(existing) existing.qty += qty;
-            else cart.push({id, name:p.name, price:p.discount_price||p.price, size:sel.size || '-', color:sel.color || '-', qty, img:`${IMG_URL}${id}.webp`});
-            
-            saveCart(); updateCart(); openCart();
-            document.getElementById(`qty-${id}`).textContent = '1';
+            const ex = cart.find(i=>i.id===id&&i.size===sel.size&&i.color===sel.color);
+            if(ex) ex.qty+=qty; else cart.push({id,name:p.name,price:p.discount_price||p.price,size:sel.size||'-',color:sel.color||'-',qty,img:`${IMG_URL}${id}.webp`});
+            saveCart(); updateCart(); openCart(); document.getElementById(`qty-${id}`).textContent='1';
         }
-        function saveCart() { localStorage.setItem('lp_cart', JSON.stringify(cart)); }
+        function saveCart() { localStorage.setItem('lp_cart',JSON.stringify(cart)); }
         function loadCart() { cart=JSON.parse(localStorage.getItem('lp_cart')||'[]'); updateCart(); }
         function updateCart() {
-            const count = cart.reduce((a,b)=>a+b.qty,0);
-            ['cartBadgeHome','cartBadgeProd','cartBadgeDisc'].forEach(i=>{const el=document.getElementById(i); if(el){el.textContent=count; el.style.display=count?'flex':'none';}});
-            
-            const itemsEl = document.getElementById('cartItems');
-            const total = cart.reduce((a,b)=>a+(b.price*b.qty),0);
-            
-            if(cart.length===0) itemsEl.innerHTML='<p class="text-center text-gray-500 py-20">السلة فارغة</p>';
-            else itemsEl.innerHTML = cart.map(i=>`
-                <div class="flex gap-3 p-3 bg-gray-50 rounded-xl mb-3">
-                    <img src="${i.img}" class="w-20 h-20 rounded-xl object-cover">
-                    <div class="flex-1">
-                        <h4 class="font-bold text-lg">${i.name}</h4>
-                        <p class="text-sm text-gray-500 mt-1">${i.size} / <span class="inline-block w-4 h-4 rounded-full align-middle border" style="background:${getColorCode(i.color)}"></span></p>
-                        <div class="flex justify-between items-center mt-2">
-                            <span class="font-bold text-[var(--gold)]">${i.price*i.qty} ج.م</span>
-                            <div class="qty-counter" style="padding:2px">
-                                <button class="qty-btn" style="width:26px;height:26px" onclick="updateCartQty('${i.id}','${i.size}','${i.color}',-1)">-</button>
-                                <span class="w-6 text-center text-sm">${i.qty}</span>
-                                <button class="qty-btn" style="width:26px;height:26px" onclick="updateCartQty('${i.id}','${i.size}','${i.color}',1)">+</button>
-                            </div>
-                        </div>
-                    </div>
-                    <button onclick="removeFromCart('${i.id}','${i.size}','${i.color}')" class="text-red-400 hover:text-red-600 text-2xl p-1">&times;</button>
-                </div>
-            `).join('');
-            document.getElementById('cartTotal').textContent = `${total} ج.م`;
+            const count=cart.reduce((a,b)=>a+b.qty,0);
+            ['cartBadgeHome','cartBadgeProd','cartBadgeDisc'].forEach(i=>{const el=document.getElementById(i);if(el){el.textContent=count;el.style.display=count?'flex':'none';}});
+            const itemsEl=document.getElementById('cartItems'); const total=cart.reduce((a,b)=>a+(b.price*b.qty),0);
+            if(!cart.length) itemsEl.innerHTML='<p class="text-center text-gray-500 py-20">السلة فارغة</p>';
+            else itemsEl.innerHTML = cart.map(i=>`<div class="flex gap-3 p-3 bg-gray-50 rounded-xl mb-3"><img src="${i.img}" class="w-20 h-20 rounded-xl object-cover"><div class="flex-1"><h4 class="font-bold text-lg">${i.name}</h4><p class="text-sm text-gray-500 mt-1">${i.size} / <span class="inline-block w-4 h-4 rounded-full align-middle border" style="background:${getColorCode(i.color)}"></span></p><div class="flex justify-between items-center mt-2"><span class="font-bold text-[var(--gold)]">${i.price*i.qty} ج.م</span><div class="qty-counter" style="padding:2px"><button class="qty-btn" style="width:26px;height:26px" onclick="updateCartQty('${i.id}','${i.size}','${i.color}',-1)">-</button><span class="w-6 text-center text-sm">${i.qty}</span><button class="qty-btn" style="width:26px;height:26px" onclick="updateCartQty('${i.id}','${i.size}','${i.color}',1)">+</button></div></div></div><button onclick="removeFromCart('${i.id}','${i.size}','${i.color}')" class="text-red-400 hover:text-red-600 text-2xl p-1">&times;</button></div>`).join('');
+            document.getElementById('cartTotal').textContent=`${total} ج.م`;
         }
-        function updateCartQty(id,s,c,d) { const i=cart.find(x=>x.id===id&&x.size===s&&x.color===c); if(i){i.qty+=d; if(i.qty<=0) cart=cart.filter(x=>!(x.id===id&&x.size===s&&x.color===c)); saveCart(); updateCart();}}
-        function removeFromCart(id,s,c) { cart=cart.filter(x=>!(x.id===id&&x.size===s&&x.color===c)); saveCart(); updateCart(); }
-        function clearCart() { cart=[]; saveCart(); updateCart(); }
+        function updateCartQty(id,s,c,d){const i=cart.find(x=>x.id===id&&x.size===s&&x.color===c);if(i){i.qty+=d;if(i.qty<=0)cart=cart.filter(x=>!(x.id===id&&x.size===s&&x.color===c));saveCart();updateCart();}}
+        function removeFromCart(id,s,c){cart=cart.filter(x=>!(x.id===id&&x.size===s&&x.color===c));saveCart();updateCart();}
+        function clearCart(){cart=[];saveCart();updateCart();}
         
         function openCart() { document.getElementById('cartSidebar').classList.add('open'); document.getElementById('cartOverlay').classList.add('open'); }
         function closeCart() { document.getElementById('cartSidebar').classList.remove('open'); document.getElementById('cartOverlay').classList.remove('open'); }
 
-        function proceedToCheckout() { if(cart.length===0) return; closeCart(); showPage('checkoutPage'); renderCheckout(); }
+        function proceedToCheckout() { if(!cart.length)return; closeCart(); showPage('checkoutPage'); renderCheckout(); }
         function renderCheckout() {
-            document.getElementById('checkoutItems').innerHTML = cart.map(i=>`
-                <div class="flex gap-3 p-3 bg-gray-50 rounded-lg">
-                    <img src="${i.img}" class="w-16 h-16 rounded-lg object-cover">
-                    <div class="flex-1">
-                        <p class="font-medium">${i.name}</p>
-                        <p class="text-gray-500 text-sm">${i.size} - ${i.color} x${i.qty}</p>
-                    </div>
-                    <span class="font-bold">${i.price*i.qty} ج.م</span>
-                </div>
-            `).join('');
-            document.getElementById('checkoutTotal').textContent = cart.reduce((a,b)=>a+(b.price*b.qty),0) + ' ج.م';
+            document.getElementById('checkoutItems').innerHTML=cart.map(i=>`<div class="flex gap-3 p-3 bg-gray-50 rounded-lg"><img src="${i.img}" class="w-16 h-16 rounded-lg object-cover"><div class="flex-1"><p class="font-medium">${i.name}</p><p class="text-gray-500 text-sm">${i.size} - ${i.color} x${i.qty}</p></div><span class="font-bold">${i.price*i.qty} ج.م</span></div>`).join('');
+            document.getElementById('checkoutTotal').textContent=cart.reduce((a,b)=>a+(b.price*b.qty),0)+' ج.م';
         }
 
         function showPage(id) { document.querySelectorAll('.page').forEach(p=>p.classList.remove('active')); document.getElementById(id).classList.add('active'); window.scrollTo(0,0); }
 
         // Hero Carousel
         function initCarousel() {
-            const cont = document.getElementById('heroCarousel');
-            const dots = document.getElementById('carouselDots');
-            let html = '';
-            for(let i=1; i<=6; i++) {
-                html += `<div class="carousel-slide ${i===1?'active':''}"><img src="${IMG_URL}hero${i}.webp" onerror="this.parentElement.style.display='none'"></div>`;
-                dots.innerHTML += `<button class="carousel-dot ${i===1?'active':''}" onclick="goToSlide(${i-1})"></button>`;
-            }
-            cont.innerHTML = html + `<button class="carousel-btn prev" onclick="prevSlide()"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"></polyline></svg></button><button class="carousel-btn next" onclick="nextSlide()"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg></button>`;
-            
-            clearInterval(slideInterval);
-            slideInterval = setInterval(nextSlide, 3000);
+            const cont=document.getElementById('heroCarousel'); const dots=document.getElementById('carouselDots'); let html='';
+            for(let i=1;i<=6;i++){html+=`<div class="carousel-slide ${i===1?'active':''}"><img src="${IMG_URL}hero${i}.webp" onerror="this.parentElement.style.display='none'"></div>`; dots.innerHTML+=`<button class="carousel-dot ${i===1?'active':''}" onclick="goToSlide(${i-1})"></button>`;}
+            cont.innerHTML=html+cont.innerHTML;
+            clearInterval(slideInterval); slideInterval=setInterval(nextSlide,3000);
         }
-        function nextSlide() { const s=document.querySelectorAll('.carousel-slide'); if(s.length===0) return; goToSlide((currentSlide+1)%s.length); }
-        function prevSlide() { const s=document.querySelectorAll('.carousel-slide'); if(s.length===0) return; goToSlide((currentSlide-1+s.length)%s.length); }
-        function goToSlide(n) {
-            const s=document.querySelectorAll('.carousel-slide'), d=document.querySelectorAll('.carousel-dot');
-            if(s.length===0) return;
-            s[currentSlide]?.classList.remove('active'); d[currentSlide]?.classList.remove('active');
-            currentSlide = n;
-            s[currentSlide]?.classList.add('active'); d[currentSlide]?.classList.add('active');
-        }
+        function nextSlide() { const s=document.querySelectorAll('.carousel-slide'); if(!s.length)return; goToSlide((currentSlide+1)%s.length); }
+        function prevSlide() { const s=document.querySelectorAll('.carousel-slide'); if(!s.length)return; goToSlide((currentSlide-1+s.length)%s.length); }
+        function goToSlide(n) { const s=document.querySelectorAll('.carousel-slide'),d=document.querySelectorAll('.carousel-dot'); if(!s.length)return; s[currentSlide]?.classList.remove('active'); d[currentSlide]?.classList.remove('active'); currentSlide=n; s[currentSlide]?.classList.add('active'); d[currentSlide]?.classList.add('active'); }
         
         async function handleSubmit(e) {
             e.preventDefault();
-            const fd = new FormData(e.target);
-            const data = { 
-                action: 'submitOrder',
-                items: cart.map(i=>({productId:i.id, productName:i.name, size:i.size, color:i.color, quantity:i.qty, price:i.price})),
-                customer: { name:fd.get('name'), phone:fd.get('phone'), governorate:fd.get('governorate'), area:fd.get('area'), address:fd.get('address'), payment:fd.get('payment') }
-            };
+            const fd=new FormData(e.target);
+            const data={ action:'submitOrder', items:cart.map(i=>({productId:i.id,productName:i.name,size:i.size,color:i.color,quantity:i.qty,price:i.price})), customer:{name:fd.get('name'),phone:fd.get('phone'),governorate:fd.get('governorate'),area:fd.get('area'),address:fd.get('address'),payment:fd.get('payment'),notes:fd.get('notes')} };
             try {
-                const res = await fetch(API_URL, { method:'POST', body: JSON.stringify(data) });
-                const json = await res.json();
-                if(json.success) {
-                    document.getElementById('successOrderId').textContent = json.orderId;
-                    clearCart(); showPage('successPage');
-                } else alert('حدث خطأ في إرسال الطلب');
-            } catch(err) {
-                console.error(err);
-                alert('خطأ في الاتصال');
-            }
+                const res=await fetch(API_URL,{method:'POST',body:JSON.stringify(data)});
+                const json=await res.json();
+                if(json.success){ document.getElementById('successOrderId').textContent=json.orderId; clearCart(); showPage('successPage'); }
+                else alert('حدث خطأ');
+            } catch(err){ alert('خطأ في الاتصال'); }
         }
 
         async function initGovernorates() {
-            try {
-                const res = await fetch(`${API_URL}?action=getGovernorates`);
-                const data = await res.json();
-                const sel = document.getElementById('governorateSelect');
-                data.governorates.forEach(g => sel.innerHTML += `<option value="${g}">${g}</option>`);
-                sel.onchange = async () => {
-                    const aRes = await fetch(`${API_URL}?action=getAreas&governorate=${sel.value}`);
-                    const aData = await aRes.json();
-                    const aSel = document.getElementById('areaSelect');
-                    aSel.innerHTML = '<option value="">اختر المنطقة</option>';
-                    aData.areas.forEach(a=> aSel.innerHTML += `<option value="${a}">${a}</option>`);
-                };
-            } catch(e){}
+            try{
+                const res=await fetch(`${API_URL}?action=getGovernorates`); const data=await res.json();
+                const sel=document.getElementById('governorateSelect'); data.governorates.forEach(g=>sel.innerHTML+=`<option value="${g}">${g}</option>`);
+                sel.onchange=async()=>{ const aRes=await fetch(`${API_URL}?action=getAreas&governorate=${sel.value}`); const aData=await aRes.json(); const aSel=document.getElementById('areaSelect'); aSel.innerHTML='<option value="">اختر المنطقة</option>'; aData.areas.forEach(a=>aSel.innerHTML+=`<option value="${a}">${a}</option>`); };
+            }catch(e){}
         }
     </script>
 </body>
