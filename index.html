@@ -36,48 +36,47 @@
         .btn-gold:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(212, 175, 55, 0.5); }
         .btn-gold.disabled { background: #ccc; cursor: not-allowed; transform: none; box-shadow: none; }
         
-        .hero-carousel {
-            position: relative; width: 100%; max-width: 1000px;
-            height: 70vh; min-height: 500px;
-            border-radius: 25px; overflow: hidden;
-            box-shadow: 0 25px 60px rgba(0,0,0,0.15);
+        /* Hero & Product Carousel */
+        .hero-carousel, .prod-carousel {
+            position: relative; width: 100%; overflow: hidden;
             background: white;
         }
+        .hero-carousel { max-width: 1000px; height: 70vh; min-height: 500px; border-radius: 25px; box-shadow: 0 25px 60px rgba(0,0,0,0.15); }
+        .prod-carousel { height: 100%; border-radius: 20px 20px 0 0; }
+        
         .carousel-slide {
-            position: absolute; inset: 0; opacity: 0; transition: opacity 1s ease;
-            display: flex; align-items: center; justify-content: center; padding: 20px;
+            position: absolute; inset: 0; opacity: 0; transition: opacity 0.8s ease;
+            display: flex; align-items: center; justify-content: center;
         }
         .carousel-slide.active { opacity: 1; }
         .carousel-slide img { width: 100%; height: 100%; object-fit: contain; }
         
         .carousel-btn {
             position: absolute; top: 50%; transform: translateY(-50%);
-            width: 60px; height: 60px; background: rgba(255,255,255,0.95);
+            width: 50px; height: 50px; background: rgba(255,255,255,0.9);
             border-radius: 50%; border: none; cursor: pointer; z-index: 10;
             display: flex; align-items: center; justify-content: center;
             transition: 0.3s; box-shadow: 0 5px 15px rgba(0,0,0,0.1);
         }
-        .carousel-btn:hover { background: var(--gold); color: white; transform: translateY(-50%) scale(1.1); }
-        .carousel-btn.prev { left: 20px; }
-        .carousel-btn.next { right: 20px; }
+        .carousel-btn:hover { background: var(--gold); color: white; }
+        .carousel-btn.prev { left: 15px; }
+        .carousel-btn.next { right: 15px; }
         
-        .carousel-dots { display: flex; justify-content: center; gap: 12px; margin-top: 25px; }
-        .carousel-dot { width: 14px; height: 14px; border-radius: 50%; background: #ddd; border: 2px solid var(--gold); cursor: pointer; transition: 0.3s; }
+        .carousel-dots { display: flex; justify-content: center; gap: 8px; margin-top: 10px; position: absolute; bottom: 15px; left: 50%; transform: translateX(-50%); z-index: 10; }
+        .carousel-dot { width: 8px; height: 8px; border-radius: 50%; background: rgba(255,255,255,0.5); border: 1px solid var(--gold); cursor: pointer; transition: 0.3s; }
         .carousel-dot.active { background: var(--gold); transform: scale(1.3); }
         
         .product-card {
             background: white; border-radius: 25px; overflow: hidden;
             box-shadow: 0 10px 30px rgba(0,0,0,0.05);
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transition: all 0.4s;
             position: relative;
         }
         .product-card:hover { transform: translateY(-10px); box-shadow: 0 25px 50px rgba(212, 175, 55, 0.15); }
         
-        /* Sold Out Overlay */
         .sold-out-overlay {
-            position: absolute; inset: 0; background: rgba(255,255,255,0.8);
-            display: flex; align-items: center; justify-content: center;
-            z-index: 20; backdrop-filter: blur(2px);
+            position: absolute; inset: 0; background: rgba(255,255,255,0.85);
+            display: flex; align-items: center; justify-content: center; z-index: 20; backdrop-filter: blur(3px);
         }
         
         .size-btn {
@@ -85,20 +84,18 @@
             background: transparent; cursor: pointer; font-size: 14px; font-weight: 600; transition: 0.2s;
         }
         .size-btn.available { border-color: var(--gold); color: #333; }
-        .size-btn.unavailable { opacity: 0.25; cursor: not-allowed; background: #f5f5f5; }
         .size-btn.selected { background: var(--gold); color: white; border-color: var(--gold); }
         
-        .color-dot { width: 28px; height: 28px; border-radius: 50%; border: 2px solid transparent; cursor: pointer; transition: 0.2s; }
+        .color-dot { width: 26px; height: 26px; border-radius: 50%; border: 2px solid #eee; cursor: pointer; transition: 0.2s; }
         .color-dot.selected { border-color: #333; box-shadow: 0 0 0 3px white, 0 0 0 5px var(--gold); }
         
         .qty-counter { display: flex; align-items: center; background: #f0f0f0; border-radius: 30px; padding: 5px; }
         .qty-btn { width: 32px; height: 32px; border-radius: 50%; background: white; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; font-weight: bold; }
         .qty-btn:hover { background: var(--gold); color: white; }
         
-        /* Favorite Button */
         .fav-btn { position: absolute; top: 15px; left: 15px; z-index: 15; width: 40px; height: 40px; background: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 2px 8px rgba(0,0,0,0.1); transition: 0.3s; }
         .fav-btn svg { transition: 0.3s; }
-        .fav-btn.active svg { fill: #e74c3c; stroke: #e74c3c; transform: scale(1.2); }
+        .fav-btn.active svg { fill: #e74c3c; stroke: #e74c3c; }
         
         .cart-sidebar { position: fixed; top: 0; left: -450px; width: 450px; max-width: 100%; height: 100vh; background: white; z-index: 1000; transition: left 0.4s; box-shadow: 5px 0 20px rgba(0,0,0,0.1); display: flex; flex-direction: column; }
         .cart-sidebar.open { left: 0; }
@@ -108,12 +105,16 @@
         .page.active { display: block; opacity: 1; animation: fadeIn 0.5s ease; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
         
-        .qr-container { display: inline-block; padding: 12px; background: white; border-radius: 16px; border: 2px solid var(--gold); box-shadow: 0 10px 30px rgba(0,0,0,0.2); transition: 0.3s; }
+        .qr-container { display: inline-block; padding: 10px; background: white; border-radius: 16px; border: 2px solid var(--gold); box-shadow: 0 10px 30px rgba(0,0,0,0.2); transition: 0.3s; }
         .qr-container:hover { transform: scale(1.05); }
+        
+        /* Payment Option */
+        .pay-opt { border: 2px solid #eee; border-radius: 12px; padding: 12px; cursor: pointer; transition: 0.2s; }
+        .pay-opt:hover { border-color: var(--gold); }
+        .pay-opt.selected { border-color: var(--gold); background: #fffbf0; }
         
         @media (max-width: 768px) {
             .hero-carousel { height: 50vh; border-radius: 15px; }
-            .carousel-btn { width: 45px; height: 45px; }
             .cart-sidebar { width: 100%; left: -100%; }
         }
     </style>
@@ -167,10 +168,9 @@
                     </div>
                     <div>
                         <div class="hero-carousel mx-auto" id="heroCarousel">
-                            <button class="carousel-btn prev" onclick="prevSlide()"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"></polyline></svg></button>
-                            <button class="carousel-btn next" onclick="nextSlide()"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg></button>
+                            <button class="carousel-btn prev" onclick="prevSlide('hero')"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"></polyline></svg></button>
+                            <button class="carousel-btn next" onclick="nextSlide('hero')"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg></button>
                         </div>
-                        <div class="carousel-dots" id="carouselDots"></div>
                     </div>
                 </div>
             </section>
@@ -183,7 +183,7 @@
             </section>
         </div>
 
-        <!-- Products Page -->
+        <!-- Products & Discounts Pages (Similar Structure) -->
         <div class="page" id="productsPage">
             <header class="fixed top-0 left-0 right-0 z-50 bg-white/95 shadow-sm">
                 <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
@@ -195,7 +195,6 @@
             <section class="pt-24 pb-16 px-4"><div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="productsList"></div></section>
         </div>
 
-        <!-- Discounts Page -->
         <div class="page" id="discountsPage">
             <header class="fixed top-0 left-0 right-0 z-50 bg-white/95 shadow-sm">
                 <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
@@ -207,7 +206,7 @@
             <section class="pt-24 pb-16 px-4"><div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="discountsList"></div></section>
         </div>
 
-        <!-- Checkout Page -->
+        <!-- Checkout Page (Updated) -->
         <div class="page" id="checkoutPage">
              <header class="fixed top-0 left-0 right-0 z-50 bg-white/95 shadow-sm">
                 <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
@@ -224,18 +223,31 @@
                         <div class="border-t mt-4 pt-4 flex justify-between"><span>الإجمالي</span><span class="text-2xl font-bold text-gold-gradient" id="checkoutTotal">0 ج.م</span></div>
                         <p class="text-center text-gray-500 mt-4 text-sm" id="shippingNote">سيتم تحديد تكلفة الشحن النهائية بعد مراجعة موقعك.</p>
                     </div>
+                    
                     <form id="checkoutForm" class="bg-white p-8 rounded-3xl shadow-lg">
                         <h2 class="text-xl font-bold mb-6">بيانات العميل</h2>
                         <div class="space-y-4">
-                            <input type="text" name="name" placeholder="الاسم الكامل" required class="w-full p-4 border rounded-xl focus:ring-2 focus:ring-[var(--gold)] text-lg">
+                            <input type="text" name="name" placeholder="الاسم الكامل" required class="w-full p-4 border rounded-xl text-lg">
                             <input type="tel" name="phone" placeholder="رقم الموبايل" required class="w-full p-4 border rounded-xl text-lg">
                             <select name="governorate" id="governorateSelect" required class="w-full p-4 border rounded-xl bg-white text-lg"><option value="">اختر المحافظة</option></select>
                             <select name="area" id="areaSelect" required class="w-full p-4 border rounded-xl bg-white text-lg"><option value="">اختر المنطقة</option></select>
                             <textarea name="address" placeholder="العنوان بالتفصيل" rows="2" required class="w-full p-4 border rounded-xl text-lg"></textarea>
-                            <div class="grid grid-cols-2 gap-3">
-                                <label class="flex items-center gap-2 p-4 border rounded-xl cursor-pointer hover:border-[var(--gold)]"><input type="radio" name="payment" value="COD" checked class="accent-[var(--gold)]"> الدفع عند الاستلام</label>
-                                <label class="flex items-center gap-2 p-4 border rounded-xl cursor-pointer hover:border-[var(--gold)]"><input type="radio" name="payment" value="INSTAPAY" class="accent-[var(--gold)]"> INSTAPAY</label>
+                            
+                            <!-- Payment Methods -->
+                            <div>
+                                <p class="font-medium mb-3">طريقة الدفع</p>
+                                <div class="grid grid-cols-2 gap-3" id="paymentMethods">
+                                    <label class="pay-opt selected flex items-center gap-2"><input type="radio" name="payment" value="الدفع عند الاستلام" checked class="accent-[var(--gold)]"> الدفع عند الاستلام</label>
+                                    <label class="pay-opt flex items-center gap-2"><input type="radio" name="payment" value="INSTAPAY" class="accent-[var(--gold)]"> INSTAPAY</label>
+                                    <label class="pay-opt flex items-center gap-2"><input type="radio" name="payment" value="VODAFONE CASH" class="accent-[var(--gold)]"> فودافون كاش</label>
+                                    <label class="pay-opt flex items-center gap-2"><input type="radio" name="payment" value="ETISALAT CASH" class="accent-[var(--gold)]"> اتصالات كاش</label>
+                                    <label class="pay-opt flex items-center gap-2"><input type="radio" name="payment" value="ORANGE CASH" class="accent-[var(--gold)]"> اورنج كاش</label>
+                                    <label class="pay-opt flex items-center gap-2"><input type="radio" name="payment" value="WE PAY" class="accent-[var(--gold)]"> WE Pay</label>
+                                </div>
                             </div>
+
+                            <!-- Notes Field -->
+                            <textarea name="notes" placeholder="ملاحظات إضافية (اختياري)" rows="2" class="w-full p-4 border rounded-xl text-lg"></textarea>
                         </div>
                         <button type="submit" class="w-full btn-gold text-xl mt-8">تأكيد الطلب</button>
                     </form>
@@ -243,7 +255,6 @@
             </section>
         </div>
 
-        <!-- Success Page -->
         <div class="page" id="successPage">
             <section class="min-h-screen flex items-center justify-center text-center px-4">
                 <div>
@@ -258,41 +269,34 @@
         </div>
     </main>
 
-    <!-- Footer Updated -->
+    <!-- Footer (Updated Layout) -->
     <footer class="bg-[var(--black-deep)] text-white py-16 px-4 mt-20">
         <div class="max-w-7xl mx-auto grid md:grid-cols-3 gap-10 items-center">
             
-            <!-- Left Side: Last Piece Info & Social (Visual Left in RTL) -->
-            <div class="text-center md:text-left order-3 md:order-1">
+            <!-- 1. Left (Visual Right in RTL): Last Piece & Social -->
+            <div class="text-center md:text-right order-1 md:order-1">
                 <h3 class="text-3xl text-gold-gradient font-bold mb-2">Last Piece</h3>
-                <p class="text-gray-400 mb-6">2026 Last-Piece, Inc.</p>
-                <!-- Social Icons -->
-                <div class="flex justify-center md:justify-start gap-4">
-                    <a href="#" class="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center hover:bg-[var(--gold)] transition-colors">
-                        <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
-                    </a>
-                    <a href="#" class="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center hover:bg-[var(--gold)] transition-colors">
-                        <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
-                    </a>
-                    <a href="#" class="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center hover:bg-[var(--gold)] transition-colors">
-                        <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/></svg>
-                    </a>
+                <p class="text-gray-400 mb-4">2026 Last-Piece, Inc.</p>
+                <div class="flex justify-center md:justify-end gap-3">
+                    <a href="#" class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-[var(--gold)]"><svg width="18" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg></a>
+                    <a href="#" class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-[var(--gold)]"><svg width="18" fill="currentColor" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg></a>
+                    <a href="#" class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-[var(--gold)]"><svg width="18" fill="currentColor" viewBox="0 0 24 24"><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/></svg></a>
                 </div>
             </div>
             
-            <!-- Center: Axentro -->
-            <div class="text-center order-1 md:order-2">
-                <p class="text-[var(--gold)] text-sm mb-2">© 2024 Axentro – All Rights Reserved</p>
-                <p class="text-gray-500 text-xs">By Axentro Team</p>
+            <!-- 2. Center: Axentro -->
+            <div class="text-center order-2 md:order-2">
+                <p class="text-[var(--gold)] mb-1">© 2024 Axentro – All Rights Reserved</p>
+                <p class="text-gray-500 text-sm">By Axentro Team</p>
             </div>
 
-            <!-- Right Side: QR (Visual Right in RTL) -->
-            <div class="text-center md:text-right order-2 md:order-3">
+            <!-- 3. Right (Visual Left in RTL): QR -->
+            <div class="text-center md:text-left order-3 md:order-3">
                  <a href="https://axentro-official.github.io/axentro-website/links.html" target="_blank" class="inline-block group">
                     <div class="qr-container">
                         <img src="https://axentro-official.github.io/Last-piece-/images/qr.png" alt="QR" class="w-24 h-24" onerror="this.src='https://api.qrserver.com/v1/create-qr-code/?size=96x96&data=https://axentro-official.github.io/axentro-website/links.html&color=D4AF37'">
                     </div>
-                    <div class="text-xs text-gray-400 mt-3 group-hover:text-[var(--gold)] transition-colors">
+                    <div class="text-xs text-gray-400 mt-2 group-hover:text-[var(--gold)]">
                         Scan Me <span class="inline-block mx-1">&gt;</span> Click On Me
                     </div>
                 </a>
@@ -305,17 +309,25 @@
         const API_URL = 'https://script.google.com/macros/s/AKfycbyuLyCqPmG1a2w7Vpgu2hGFFG44tlmW4N9AuNwa-YHRupXRPhxBF-_mEOhPgjpSBwM9/exec';
         const IMG_URL = 'https://axentro-official.github.io/Last-piece-/images/';
         
-        let products = [], cart = [], slideInterval = 0, currentSlide = 0;
-        // Load favorites from localStorage
-        let favorites = JSON.parse(localStorage.getItem('lp_fav') || '[]');
+        let products = [], cart = [], favorites = JSON.parse(localStorage.getItem('lp_fav') || '[]');
         const selections = {};
+        const productSlides = {}; // Store slides for each product carousel
 
         document.addEventListener('DOMContentLoaded', async () => {
             await loadData();
-            initCarousel();
+            initHeroCarousel();
             initGovernorates();
             loadCart();
             document.getElementById('checkoutForm').addEventListener('submit', handleSubmit);
+            
+            // Payment Selection Logic
+            document.querySelectorAll('.pay-opt').forEach(el => {
+                el.addEventListener('click', function() {
+                    document.querySelectorAll('.pay-opt').forEach(p => p.classList.remove('selected'));
+                    this.classList.add('selected');
+                    this.querySelector('input').checked = true;
+                });
+            });
         });
 
         async function loadData() {
@@ -324,65 +336,45 @@
                 const data = await res.json();
                 products = data.products || [];
                 renderProducts();
-            } catch(e) {
-                console.error(e);
-            }
+            } catch(e) { console.error(e); }
         }
 
         function renderProducts() {
-            if (products.length === 0) {
-                document.getElementById('productsList').innerHTML = '<p class="col-span-full text-center text-gray-400 py-20">لا توجد منتجات</p>';
-                return;
-            }
-            
-            // Filter only active for main display, but show all in products page? 
-            // Request: "If product finished... turn it unavailable without deleting".
-            // Logic: Show all, but mark inactive ones.
+            if (products.length === 0) return;
             
             document.getElementById('featuredProducts').innerHTML = products.slice(0,3).map(createCard).join('');
-            
-            const regular = products.filter(p => !p.discount_price);
-            const discounted = products.filter(p => p.discount_price);
-            
-            document.getElementById('productsList').innerHTML = regular.map(createCard).join('');
-            document.getElementById('discountsList').innerHTML = discounted.map(createCard).join('');
+            document.getElementById('productsList').innerHTML = products.filter(p => !p.discount_price).map(createCard).join('');
+            document.getElementById('discountsList').innerHTML = products.filter(p => p.discount_price).map(createCard).join('');
         }
 
         function createCard(p, i) {
             const isFav = favorites.includes(p.id);
             
-            // Logic: Read sizes directly from product data (no filtering)
-            const sizeBtns = p.sizes.map(s => {
-                return `<button class="size-btn available" onclick="selectSize(this, '${p.id}', '${s}')">${s}</button>`;
-            }).join('');
+            // Sizes & Colors
+            const sizeBtns = p.sizes.map(s => `<button class="size-btn available" onclick="selectSize(this, '${p.id}', '${s}')">${s}</button>`).join('');
+            const colorBtns = p.colors.map(c => `<button class="color-dot" style="background-color:${getColorCode(c)}" onclick="selectColor(this, '${p.id}', '${c}')" title="${c}"></button>`).join('');
 
-            const colorBtns = p.colors.map(c => {
-                const colorCode = getColorCode(c);
-                return `<button class="color-dot" style="background-color:${colorCode}; border: 1px solid #ddd;" onclick="selectColor(this, '${p.id}', '${c}')" title="${c}"></button>`;
-            }).join('');
+            const isActive = p.active !== false;
+            const soldOutOverlay = !isActive ? `<div class="sold-out-overlay"><span class="bg-gray-800 text-white px-6 py-2 rounded-full font-bold">غير متوفر</span></div>` : '';
 
-            // Sold Out Logic
-            const isActive = p.active !== false; // true if undefined or true
-            const soldOutOverlay = !isActive ? `
-                <div class="sold-out-overlay">
-                    <span class="bg-gray-800 text-white px-6 py-2 rounded-full font-bold text-lg">غير متوفر حالياً</span>
-                </div>
-            ` : '';
-
+            // Image Carousel Logic (Check for -2, -3, -4)
+            // We will detect these images using JS after render or try simple logic here
+            // For simplicity in HTML string, we render main image and let JS enhance it
+            
             return `
                 <div class="product-card">
                     ${soldOutOverlay}
-                    <!-- Favorite Button -->
                     <div class="fav-btn ${isFav ? 'active' : ''}" onclick="toggleFavorite('${p.id}', this)">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
-                        </svg>
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
                     </div>
 
-                    <div class="relative aspect-[3/4] overflow-hidden bg-gray-100">
-                        <img src="${IMG_URL}${p.id}.webp" alt="${p.name}" class="w-full h-full object-cover hover:scale-105 transition-transform duration-500" onerror="this.src='https://via.placeholder.com/400x600?text=No+Image'">
+                    <div class="relative aspect-[3/4] bg-gray-100">
+                        <div class="prod-carousel" id="car-${p.id}">
+                            <div class="carousel-slide active"><img src="${IMG_URL}${p.id}.webp" alt="${p.name}" onerror="this.src='https://via.placeholder.com/400x600?text=No+Image'"></div>
+                        </div>
                         ${p.discount_price ? `<span class="absolute top-4 right-4 bg-red-500 text-white px-4 py-1 rounded-full text-sm font-bold shadow-lg z-10">خصم</span>` : ''}
                     </div>
+                    
                     <div class="p-6">
                         <h3 class="font-bold text-xl mb-2">${p.name}</h3>
                         <p class="text-sm text-gray-500 mb-3">كود: ${p.id}</p>
@@ -391,21 +383,8 @@
                             ${p.discount_price ? `<span class="text-lg line-through text-gray-400">${p.price}</span>` : ''}
                         </div>
                         
-                        <!-- Sizes -->
-                        ${p.sizes.length > 0 ? `
-                        <div class="mb-4">
-                            <p class="text-sm text-gray-500 mb-2 font-medium">المقاسات</p>
-                            <div class="flex flex-wrap gap-2">${sizeBtns}</div>
-                        </div>
-                        ` : ''}
-
-                        <!-- Colors -->
-                        ${p.colors.length > 0 ? `
-                        <div class="mb-5">
-                            <p class="text-sm text-gray-500 mb-2 font-medium">الألوان</p>
-                            <div class="flex gap-3">${colorBtns}</div>
-                        </div>
-                        ` : ''}
+                        ${p.sizes.length > 0 ? `<div class="mb-4"><p class="text-sm text-gray-500 mb-2 font-medium">المقاسات</p><div class="flex flex-wrap gap-2">${sizeBtns}</div></div>` : ''}
+                        ${p.colors.length > 0 ? `<div class="mb-5"><p class="text-sm text-gray-500 mb-2 font-medium">الألوان</p><div class="flex gap-3">${colorBtns}</div></div>` : ''}
 
                         <div class="flex gap-3 items-center mt-auto">
                             <div class="qty-counter">
@@ -413,63 +392,100 @@
                                 <span class="w-8 text-center font-bold" id="qty-${p.id}">1</span>
                                 <button class="qty-btn" onclick="changeQty('${p.id}', 1)">+</button>
                             </div>
-                            <button class="flex-1 btn-gold py-3 text-lg ${!isActive ? 'disabled' : ''}" onclick="${isActive ? `addToCart('${p.id}')` : 'return false;'}">
-                                ${isActive ? 'أضف للسلة' : 'غير متوفر'}
-                            </button>
+                            <button class="flex-1 btn-gold py-3 text-lg ${!isActive ? 'disabled' : ''}" onclick="${isActive ? `addToCart('${p.id}')` : 'return false;'}">${isActive ? 'أضف للسلة' : 'غير متوفر'}</button>
                         </div>
                     </div>
                 </div>
             `;
         }
         
+        // Check for additional images for each product
+        function checkProductImages() {
+            products.forEach(p => {
+                const carId = `car-${p.id}`;
+                const carEl = document.getElementById(carId);
+                if(!carEl) return;
+                
+                let slidesHTML = '';
+                let dotsHTML = '';
+                let foundCount = 1;
+                
+                // Assume main image exists
+                slidesHTML += `<div class="carousel-slide active"><img src="${IMG_URL}${p.id}.webp"></div>`;
+                dotsHTML += `<button class="carousel-dot active" onclick="goToProductSlide('${p.id}', 0)"></button>`;
+                
+                // Check for -2, -3, -4
+                // We use Image object to check, but we need to do it async
+                // For simplicity we just add the dots logic if user uploads
+                
+                // Simplified approach: We will just verify if images exist
+                for(let i=2; i<=4; i++) {
+                    const img = new Image();
+                    img.src = `${IMG_URL}${p.id}-${i}.webp`;
+                    img.onload = function() {
+                        // Found
+                        const newSlide = document.createElement('div');
+                        newSlide.className = 'carousel-slide';
+                        newSlide.innerHTML = `<img src="${this.src}">`;
+                        carEl.insertBefore(newSlide, null);
+                        
+                        const dot = document.createElement('button');
+                        dot.className = 'carousel-dot';
+                        dot.onclick = () => goToProductSlide(p.id, i-1);
+                        
+                        let dotsContainer = carEl.querySelector('.carousel-dots');
+                        if(!dotsContainer) {
+                            dotsContainer = document.createElement('div');
+                            dotsContainer.className = 'carousel-dots';
+                            carEl.appendChild(dotsContainer);
+                            // Add first dot too
+                            const firstDot = document.createElement('button');
+                            firstDot.className = 'carousel-dot active';
+                            firstDot.onclick = () => goToProductSlide(p.id, 0);
+                            dotsContainer.appendChild(firstDot);
+                        }
+                        dotsContainer.appendChild(dot);
+                    };
+                }
+            });
+        }
+        
+        function goToProductSlide(id, index) {
+            const car = document.getElementById(`car-${id}`);
+            if(!car) return;
+            const slides = car.querySelectorAll('.carousel-slide');
+            const dots = car.querySelectorAll('.carousel-dot');
+            slides.forEach((s, i) => { s.classList.toggle('active', i === index); });
+            dots.forEach((d, i) => { d.classList.toggle('active', i === index); });
+        }
+
         function toggleFavorite(id, el) {
             const index = favorites.indexOf(id);
-            if (index > -1) {
-                favorites.splice(index, 1);
-                el.classList.remove('active');
-            } else {
-                favorites.push(id);
-                el.classList.add('active');
-            }
+            if (index > -1) { favorites.splice(index, 1); el.classList.remove('active'); }
+            else { favorites.push(id); el.classList.add('active'); }
             localStorage.setItem('lp_fav', JSON.stringify(favorites));
         }
 
         function getColorCode(c) { 
-            const map = {
-                'black':'#222', 'white':'#fff', 'red':'#e74c3c', 'blue':'#3498db', 
-                'beige':'#d4b896', 'brown':'#795548', 'gray':'#95a5a6', 'navy':'#2c3e50',
-                'green':'#27ae60', 'yellow':'#f1c40f', 'pink':'#e91e63', 'purple':'#9b59b6',
-                'orange':'#e67e22', 'darkblue':'#1a237e', 'skyblue':'#81d4fa',
-                'كحلي':'#1a237e', 'سماوي':'#81d4fa', 'بيج':'#d4b896',
-                'رمادي':'#757575', 'ازرق':'#2196f3', 'احمر':'#f44336', 'اخضر':'#4caf50',
-                'ابيض':'#ffffff', 'اسود':'#000000', 'بني':'#795548', 'ذهبي':'#D4AF37'
-            };
-            if(!c) return '#ccc'; 
-            if(c.startsWith('#') || c.startsWith('rgb')) return c;
-            
-            // Normalize input: remove spaces, lowercase
-            const key = c.toLowerCase().replace(/\s/g, '');
-            return map[key] || map[c.toLowerCase()] || c; 
+            const map = {'black':'#222','white':'#fff','red':'#e74c3c','blue':'#3498db','beige':'#d4b896','brown':'#795548','gray':'#95a5a6','navy':'#2c3e50','green':'#27ae60','darkblue':'#1a237e','كحلي':'#1a237e','بيج':'#d4b896'};
+            if(!c) return '#ccc';
+            if(c.startsWith('#')) return c;
+            return map[c.toLowerCase().replace(/\s/g, '')] || c; 
         }
         
         function selectSize(btn, id, s) { 
-            // Find parent container to clear selection
-            const container = btn.parentElement;
-            [...container.children].forEach(b=>b.classList.remove('selected')); 
-            btn.classList.add('selected'); 
+            [...btn.parentElement.children].forEach(b=>b.classList.remove('selected')); btn.classList.add('selected'); 
             selections[id] = {...selections[id], size: s}; 
         }
         function selectColor(btn, id, c) { 
-            const container = btn.parentElement;
-            [...container.children].forEach(b=>b.classList.remove('selected')); 
-            btn.classList.add('selected'); 
+            [...btn.parentElement.children].forEach(b=>b.classList.remove('selected')); btn.classList.add('selected'); 
             selections[id] = {...selections[id], color: c}; 
         }
         function changeQty(id, d) { const el=document.getElementById(`qty-${id}`); el.textContent=Math.max(1,parseInt(el.textContent)+d); }
 
         function addToCart(id) {
             const p = products.find(x=>x.id===id);
-            if(!p || p.active === false) return; // Prevent adding inactive
+            if(!p || p.active === false) return;
             
             const sel = selections[id] || {};
             if(p.sizes.length > 0 && !sel.size) return alert('اختر المقاس');
@@ -539,27 +555,26 @@
         function showPage(id) { document.querySelectorAll('.page').forEach(p=>p.classList.remove('active')); document.getElementById(id).classList.add('active'); window.scrollTo(0,0); }
 
         // Hero Carousel
-        function initCarousel() {
+        let heroSlide = 0;
+        function initHeroCarousel() {
             const cont = document.getElementById('heroCarousel');
-            const dots = document.getElementById('carouselDots');
             let html = '';
             for(let i=1; i<=6; i++) {
                 html += `<div class="carousel-slide ${i===1?'active':''}"><img src="${IMG_URL}hero${i}.webp" onerror="this.parentElement.style.display='none'"></div>`;
-                dots.innerHTML += `<button class="carousel-dot ${i===1?'active':''}" onclick="goToSlide(${i-1})"></button>`;
             }
-            cont.innerHTML = html + `<button class="carousel-btn prev" onclick="prevSlide()"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"></polyline></svg></button><button class="carousel-btn next" onclick="nextSlide()"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg></button>`;
-            
-            clearInterval(slideInterval);
-            slideInterval = setInterval(nextSlide, 3000);
+            cont.innerHTML = html + cont.innerHTML;
+            setInterval(() => { nextSlide('hero'); }, 3000);
+            checkProductImages(); // Check for extra product images
         }
-        function nextSlide() { const s=document.querySelectorAll('.carousel-slide'); if(s.length===0) return; goToSlide((currentSlide+1)%s.length); }
-        function prevSlide() { const s=document.querySelectorAll('.carousel-slide'); if(s.length===0) return; goToSlide((currentSlide-1+s.length)%s.length); }
-        function goToSlide(n) {
-            const s=document.querySelectorAll('.carousel-slide'), d=document.querySelectorAll('.carousel-dot');
-            if(s.length===0) return;
-            s[currentSlide]?.classList.remove('active'); d[currentSlide]?.classList.remove('active');
-            currentSlide = n;
-            s[currentSlide]?.classList.add('active'); d[currentSlide]?.classList.add('active');
+        
+        function nextSlide(type) {
+            if(type === 'hero') {
+                const s = document.querySelectorAll('#heroCarousel .carousel-slide');
+                if(s.length === 0) return;
+                s[heroSlide].classList.remove('active');
+                heroSlide = (heroSlide + 1) % s.length;
+                s[heroSlide].classList.add('active');
+            }
         }
         
         async function handleSubmit(e) {
@@ -568,7 +583,7 @@
             const data = { 
                 action: 'submitOrder',
                 items: cart.map(i=>({productId:i.id, productName:i.name, size:i.size, color:i.color, quantity:i.qty, price:i.price})),
-                customer: { name:fd.get('name'), phone:fd.get('phone'), governorate:fd.get('governorate'), area:fd.get('area'), address:fd.get('address'), payment:fd.get('payment') }
+                customer: { name:fd.get('name'), phone:fd.get('phone'), governorate:fd.get('governorate'), area:fd.get('area'), address:fd.get('address'), payment:fd.get('payment'), notes:fd.get('notes') }
             };
             try {
                 const res = await fetch(API_URL, { method:'POST', body: JSON.stringify(data) });
@@ -576,11 +591,8 @@
                 if(json.success) {
                     document.getElementById('successOrderId').textContent = json.orderId;
                     clearCart(); showPage('successPage');
-                } else alert('حدث خطأ في إرسال الطلب');
-            } catch(err) {
-                console.error(err);
-                alert('خطأ في الاتصال');
-            }
+                } else alert('حدث خطأ');
+            } catch(err) { alert('خطأ في الاتصال'); }
         }
 
         async function initGovernorates() {
