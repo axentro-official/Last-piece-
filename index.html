@@ -4,7 +4,22 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Last Piece - أناقة لا تُنسى</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.tailwindcss.com">
+// === Added Intersection Animation (Non-breaking) ===
+const observer = new IntersectionObserver((entries)=>{
+  entries.forEach(entry=>{
+    if(entry.isIntersecting){
+      entry.target.classList.add('visible');
+    }
+  });
+});
+
+document.querySelectorAll('.product-card, section, .hero-carousel').forEach(el=>{
+  el.classList.add('fade-in');
+  observer.observe(el);
+});
+
+</script>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
         :root { --gold: #D4AF37; --gold-dark: #B8860B; --black-deep: #0d0d0d; --white-cream: #FAF9F6; }
@@ -94,7 +109,17 @@
             .product-card { border-radius: 15px; }
             .btn-gold { padding: 12px 20px; }
         }
-    </style>
+    
+/* === Added Animations (Non-breaking) === */
+.fade-in {opacity:0; transform:translateY(20px); transition: all .6s ease;}
+.fade-in.visible {opacity:1; transform:translateY(0);}
+
+.hover-scale {transition: transform .3s ease;}
+.hover-scale:hover {transform: scale(1.05);}
+
+.smooth {scroll-behavior:smooth;}
+
+</style>
 </head>
 <body class="text-gray-800">
 
@@ -514,6 +539,21 @@
         async function handleSubmit(e) { e.preventDefault(); const fd=new FormData(e.target); const payload={ action:'submitOrder', items:cart.map(i=>({productId:i.id,productName:i.name,size:i.size,color:i.color,quantity:i.qty,price:i.price})), customer:{name:fd.get('name'),phone:fd.get('phone'),governorate:fd.get('governorate'),area:fd.get('area'),address:fd.get('address'),payment:fd.get('payment'),notes:fd.get('notes')} }; try { const res=await fetch(API_URL,{method:'POST',body:JSON.stringify(payload)}); const json=await res.json(); if(json.success){ document.getElementById('successOrderId').textContent=json.orderId; clearCart(); showPage('successPage'); } else alert('حدث خطأ'); } catch(err){ alert('خطأ في الاتصال'); } }
         async function initGovernorates() { try{ const r=await fetch(`${API_URL}?action=getGovernorates`); const d=await r.json(); const s=document.getElementById('governorateSelect'); d.governorates.forEach(g=>s.innerHTML+=`<option value="${g}">${g}</option>`); s.onchange=async()=>{ const ar=await fetch(`${API_URL}?action=getAreas&governorate=${s.value}`); const ad=await ar.json(); const as=document.getElementById('areaSelect'); as.innerHTML='<option value="">اختر المنطقة</option>'; ad.areas.forEach(a=>as.innerHTML+=`<option value="${a}">${a}</option>`); }; }catch(e){} }
 
-    </script>
+    
+// === Added Intersection Animation (Non-breaking) ===
+const observer = new IntersectionObserver((entries)=>{
+  entries.forEach(entry=>{
+    if(entry.isIntersecting){
+      entry.target.classList.add('visible');
+    }
+  });
+});
+
+document.querySelectorAll('.product-card, section, .hero-carousel').forEach(el=>{
+  el.classList.add('fade-in');
+  observer.observe(el);
+});
+
+</script>
 </body>
 </html>
