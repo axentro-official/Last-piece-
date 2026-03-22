@@ -4,11 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Last Piece - أناقة لا تُنسى</title>
-    <script src="https://cdn.tailwindcss.com">
-const obs=new IntersectionObserver(e=>{e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('visible')})});
-document.querySelectorAll('.product-card,section').forEach(el=>{el.classList.add('fade-in');obs.observe(el);});
-
-</script>
+    <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
         :root { --gold: #D4AF37; --gold-dark: #B8860B; --black-deep: #0d0d0d; --white-cream: #FAF9F6; }
@@ -23,21 +19,12 @@ document.querySelectorAll('.product-card,section').forEach(el=>{el.classList.add
         
         .btn-gold { background: linear-gradient(135deg, var(--gold), var(--gold-dark)); color: white; border: none; padding: 14px 35px; border-radius: 50px; font-weight: 600; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3); text-decoration: none; display: inline-block; }
         .btn-gold:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(212, 175, 55, 0.5); }
-        
-        /* Overlays */
-        .license-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.95); z-index: 9999; display: flex; align-items: center; justify-content: center; padding: 20px; }
-        .license-box { background: white; padding: 40px; border-radius: 20px; max-width: 450px; width: 100%; text-align: center; border: 2px solid var(--gold); }
-        .license-title { font-family: 'Playfair Display', serif; font-size: 28px; color: var(--gold); margin-bottom: 10px; }
-        .license-sub { color: #666; margin-bottom: 20px; font-size: 14px; line-height: 1.6; }
-        .license-qr { width: 120px; height: 120px; margin: 10px auto; border: 2px solid var(--gold); border-radius: 10px; }
-        
-        /* Warning Modal */
-        .warning-modal { position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 9998; display: flex; align-items: center; justify-content: center; }
-        .warning-box { background: white; border-radius: 15px; width: 90%; max-width: 400px; overflow: hidden; border: 2px solid var(--gold); }
-        .warning-head { background: var(--gold); color: white; padding: 20px; }
-        .warning-body { padding: 25px; text-align: center; }
 
-        /* Product & Layout Styles (Condensed for brevity, use your existing styles) */
+        /* Animations */
+        .fade-in { opacity: 0; transform: translateY(30px); transition: opacity 0.8s ease-out, transform 0.8s ease-out; }
+        .fade-in.visible { opacity: 1; transform: translateY(0); }
+        
+        /* Product & Layout Styles */
         .hero-carousel { position: relative; width: 100%; max-width: 1000px; height: 70vh; min-height: 500px; border-radius: 25px; overflow: hidden; box-shadow: 0 25px 60px rgba(0,0,0,0.15); background: white; }
         .carousel-slide { position: absolute; inset: 0; opacity: 0; transition: opacity 1s ease; display: flex; align-items: center; justify-content: center; padding: 20px; }
         .carousel-slide.active { opacity: 1; z-index: 2; }
@@ -98,36 +85,9 @@ document.querySelectorAll('.product-card,section').forEach(el=>{el.classList.add
             .product-card { border-radius: 15px; }
             .btn-gold { padding: 12px 20px; }
         }
-    
-.fade-in{opacity:0;transform:translateY(30px);transition:.6s}
-.fade-in.visible{opacity:1;transform:none}
-.product-card{transition:.4s}
-.product-card:hover{transform:translateY(-12px) scale(1.02)}
-
-</style>
+    </style>
 </head>
 <body class="text-gray-800">
-
-    <!-- License Removed -->
-<!-- 3. Warning Modal (For client approaching end) -->
-    <div id="warningModal" class="warning-modal" style="display:none;">
-        <div class="warning-box">
-            <div class="warning-head">
-                <h3 class="text-xl font-bold">⚠️ تنبيه هام</h3>
-                <p class="text-sm opacity-90 mt-1">اقترب موعد تجديد الخدمة!</p>
-            </div>
-            <div class="warning-body">
-                <p class="text-lg font-bold text-gray-800 mb-2" id="warningTimeText">باقي 0 دقائق</p>
-                <p class="text-gray-500 text-sm mb-4">
-                    لتجديد الاشتراك أو الشراء النهائي تواصل معنا الآن.
-                </p>
-                <a href="mailto:axentroofficial@gmail.com">
-                    <button class="btn-gold w-full">💬 تواصل للتجديد</button>
-                </a>
-                <button class="text-gray-400 text-sm mt-4 hover:text-gray-600" onclick="dismissWarning()">متابعة الاستخدام</button>
-            </div>
-        </div>
-    </div>
 
     <div class="cart-overlay" id="cartOverlay" onclick="closeCart()"></div>
     <aside class="cart-sidebar" id="cartSidebar">
@@ -165,16 +125,16 @@ document.querySelectorAll('.product-card,section').forEach(el=>{el.classList.add
             <section class="pt-28 pb-20 px-4">
                 <div class="max-w-7xl mx-auto grid lg:grid-cols-2 gap-12 items-center">
                     <div class="text-center lg:text-right">
-                        <div class="mb-8 animate-fade-in-up">
+                        <div class="mb-8 fade-in">
                             <img src="https://axentro-official.github.io/Last-piece-/images/logo.png" alt="Last Piece" class="w-64 mx-auto lg:mx-0 lg:w-80" onerror="this.outerHTML='<span class=\'text-gold-gradient font-display text-6xl lg:text-8xl font-bold\'>Last Piece</span>'">
                         </div>
-                        <h1 class="font-display text-6xl lg:text-7xl font-bold text-gold-gradient mb-6">Last Piece</h1>
-                        <p class="text-2xl text-gray-600 mb-10" id="heroSlogan">قطعة فريدة، أناقة لا تُنسى</p>
-                        <div class="flex gap-4 justify-center lg:justify-start">
+                        <h1 class="font-display text-6xl lg:text-7xl font-bold text-gold-gradient mb-6 fade-in">Last Piece</h1>
+                        <p class="text-2xl text-gray-600 mb-10 fade-in" id="heroSlogan">قطعة فريدة، أناقة لا تُنسى</p>
+                        <div class="flex gap-4 justify-center lg:justify-start fade-in">
                             <button onclick="showPage('productsPage')" class="btn-gold text-xl">تسوق الآن</button>
                         </div>
                     </div>
-                    <div>
+                    <div class="fade-in">
                         <div class="hero-carousel mx-auto" id="heroCarousel">
                             <button class="carousel-btn prev" onclick="heroPrev()"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"></polyline></svg></button>
                             <button class="carousel-btn next" onclick="heroNext()"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg></button>
@@ -184,7 +144,7 @@ document.querySelectorAll('.product-card,section').forEach(el=>{el.classList.add
                 </div>
             </section>
             
-            <section class="py-16 px-4 bg-white" id="featuredSection" style="display:none;">
+            <section class="py-16 px-4 bg-white fade-in" id="featuredSection" style="display:none;">
                 <div class="max-w-7xl mx-auto text-center">
                     <h2 class="font-display text-4xl font-bold mb-10 text-gold-gradient">منتجات مميزة</h2>
                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6" id="homeFeatured"></div>
@@ -248,7 +208,6 @@ document.querySelectorAll('.product-card,section').forEach(el=>{el.classList.add
                             <select name="area" id="areaSelect" required class="w-full p-4 border rounded-xl bg-white text-lg"><option value="">اختر المنطقة</option></select>
                             <textarea name="address" placeholder="العنوان بالتفصيل" rows="2" required class="w-full p-4 border rounded-xl text-lg"></textarea>
                             
-                            <!-- Payment Methods -->
                             <div>
                                 <p class="font-medium mb-3">طريقة الدفع</p>
                                 <div class="grid grid-cols-2 md:grid-cols-3 gap-3">
@@ -321,87 +280,47 @@ document.querySelectorAll('.product-card,section').forEach(el=>{el.classList.add
         // ================= CONFIG =================
         const API_URL = 'https://script.google.com/macros/s/AKfycbyuLyCqPmG1a2w7Vpgu2hGFFG44tlmW4N9AuNwa-YHRupXRPhxBF-_mEOhPgjpSBwM9/exec';
         const IMG_URL = 'https://axentro-official.github.io/Last-piece-/images/';
-        const LICENSE_API_URL = 'https://script.google.com/macros/s/AKfycbyFueLWNvOm8DJjR2Hf_cQO9rkroG-sGltx_-iyCLtjDLFGtN4fgLgsgXlD2z_b3oUb8w/exec';
         
         let products = [], cart = [], favorites = JSON.parse(localStorage.getItem('lp_fav') || '[]');
         let heroSlide = 0, heroInterval;
         const productSlideData = {}; 
         const selections = {};
 
-        // ================= LICENSE LOGIC =================
-        async function checkLicenseStatus() {
-            const params = new URLSearchParams(window.location.search);
-            const key = params.get('key');
-
-            // التعديل: لو مفيش مفتاح، بنظهر صفحة الصيانة (عشان الجمهور ميغيرش إنه اشتراك)
-            if (!key) {
-                showMaintenance(); 
-                return;
-            }
-
-            try {
-                const res = await fetch(`${LICENSE_API_URL}?key=${key}`);
-                const data = await res.json();
-
-                if (data.status === 'expired' || data.status === 'suspended') {
-                    // برضو بنظهر صفحة صيانة عشان الجمهور
-                    showMaintenance();
-                } else if (data.status === 'active') {
-                    // Check for warning threshold
-                    let showWarn = false;
-                    let timeText = "";
-
-                    if (data.unit === 'hour' || data.unit === 'minute') {
-                        if (data.days_left === 0 && data.hours_left === 0) showWarn = true;
-                        timeText = `باقي ${data.minutes_left} دقيقة و ${data.hours_left} ساعة`;
-                    } else {
-                        if (data.days_left <= 7) showWarn = true;
-                        timeText = `باقي ${data.days_left} أيام`;
-                    }
-
-                    if (showWarn) {
-                        document.getElementById('warningTimeText').innerText = timeText;
-                        document.getElementById('warningModal').style.display = 'flex';
-                    }
-                    
-                    document.getElementById('licenseLoader').style.display = 'none';
-                    
-                } else {
-                    showMaintenance();
-                }
-            } catch (e) {
-                console.error("License check failed", e);
-                showMaintenance(); 
-            }
-        }
-
-        function showMaintenance() {
-            document.getElementById('licenseLoader').style.display = 'none';
-            document.getElementById('licenseExpired').style.display = 'flex';
-        }
-
-        function dismissWarning() {
-            document.getElementById('warningModal').style.display = 'none';
-        }
-
         // ================= MAIN APP =================
         document.addEventListener('DOMContentLoaded', async () => {
-            // removed license check
             await loadData();
             initHero();
             initGovernorates();
             loadCart();
+            initAnimations();
             document.getElementById('checkoutForm').addEventListener('submit', handleSubmit);
         });
 
-        // ... (Rest of your functions: loadData, renderProducts, etc. remain exactly the same as your provided code) ...
-        // To save space, I'm collapsing unchanged functions, but you should keep your existing logic for: 
-        // loadData, renderProducts, createCard, checkAllProductImages, getColorCode, toggleFav, selectSize, selectColor, changeQty, 
-        // addToCart, saveCart, loadCart, updateCart, uQty, rmCart, clearCart, openCart, closeCart, proceedToCheckout, renderCheckout, showPage, handleSubmit, initGovernorates
-        
-        // IMPORTANT: COPY THE REST OF YOUR FUNCTIONS HERE (I will include the essential ones below for completeness)
+        function initAnimations() {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, { threshold: 0.1 });
 
-        async function loadData() { try { const r = await fetch(`${API_URL}?action=getProducts`); products = (await r.json()).products || []; renderProducts(); } catch(e) { console.error(e); } }
+            document.querySelectorAll('.fade-in, .product-card, section').forEach(el => {
+                el.classList.add('fade-in'); // Ensure class exists
+                observer.observe(el);
+            });
+        }
+
+        async function loadData() { 
+            try { 
+                const r = await fetch(`${API_URL}?action=getProducts`); 
+                products = (await r.json()).products || []; 
+                renderProducts(); 
+            } catch(e) { 
+                console.error(e); 
+            } 
+        }
+
         function renderProducts() {
             if(!products.length) return;
             const featuredProds = products.filter(p => p.featured);
@@ -412,6 +331,8 @@ document.querySelectorAll('.product-card,section').forEach(el=>{el.classList.add
             document.getElementById('productsList').innerHTML = products.map(p => createCard(p, 'prod')).join('');
             document.getElementById('discountsList').innerHTML = products.filter(p => p.discount_price).map(p => createCard(p, 'disc')).join('');
             checkAllProductImages();
+            // Re-init animations for new cards
+            setTimeout(initAnimations, 100);
         }
 
         function createCard(p, context) {
@@ -429,7 +350,7 @@ document.querySelectorAll('.product-card,section').forEach(el=>{el.classList.add
             const qtyId = `qty-${context}-${p.id}`;
 
             return `
-                <div class="product-card" id="${cardId}">
+                <div class="product-card fade-in" id="${cardId}">
                     ${soldOut}
                     <div class="fav-btn ${isFav?'active':''}" onclick="toggleFav('${p.id}',this)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg></div>
                     
@@ -457,7 +378,7 @@ document.querySelectorAll('.product-card,section').forEach(el=>{el.classList.add
                             <div class="qty-counter">
                                 <button class="qty-btn" onclick="changeQty('${p.id}', -1, '${context}')">-</button><span class="w-8 text-center font-bold" id="${qtyId}">1</span><button class="qty-btn" onclick="changeQty('${p.id}', 1, '${context}')">+</button>
                             </div>
-                            <button class="flex-1 btn-gold py-3 text-lg ${!isActive?'disabled':''}" onclick="${isActive?`addToCart('${p.id}', '${context}')`:'return false'}">${isActive?'أضف للسلة':'غير متوفر'}</button>
+                            <button class="flex-1 btn-gold py-3 text-lg ${!isActive?'opacity-50 cursor-not-allowed':''}" onclick="${isActive?`addToCart('${p.id}', '${context}')`:'return false'}">${isActive?'أضف للسلة':'غير متوفر'}</button>
                         </div>
                     </div>
                 </div>
@@ -471,11 +392,13 @@ document.querySelectorAll('.product-card,section').forEach(el=>{el.classList.add
         function goToProdSlide(id, context, n) { const key = `${context}-${id}`; const container = document.getElementById(`img-box-${context}-${id}`); if(!container) return; const slides = container.querySelectorAll('.prod-slide'); const dots = container.querySelectorAll('.prod-dot'); if(slides.length === 0) return; if(!productSlideData[key]) productSlideData[key] = {index:0}; productSlideData[key].index = n; slides.forEach((s,i) => s.classList.toggle('active', i === n)); dots.forEach((d,i) => d.classList.toggle('active', i === n)); }
         function prodNext(id, context) { const key = `${context}-${id}`; const container = document.getElementById(`img-box-${context}-${id}`); if(!container) return; const slides = container.querySelectorAll('.prod-slide'); let curr = productSlideData[key] ? productSlideData[key].index : 0; let next = (curr + 1) % slides.length; goToProdSlide(id, context, next); startProdAutoSlide(id, context); }
         function prodPrev(id, context) { const key = `${context}-${id}`; const container = document.getElementById(`img-box-${context}-${id}`); if(!container) return; const slides = container.querySelectorAll('.prod-slide'); let curr = productSlideData[key] ? productSlideData[key].index : 0; let prev = (curr - 1 + slides.length) % slides.length; goToProdSlide(id, context, prev); startProdAutoSlide(id, context); }
+
         function initHero() { const c=document.getElementById('heroCarousel'), d=document.getElementById('carouselDots'); let h=''; for(let i=1;i<=6;i++){ h+=`<div class="carousel-slide ${i===1?'active':''}"><img src="${IMG_URL}hero${i}.webp" onerror="this.parentElement.style.display='none'"></div>`; d.innerHTML+=`<button class="carousel-dot ${i===1?'active':''}" onclick="goHero(${i-1})"></button>`; } c.innerHTML=h+c.innerHTML; startHeroAutoSlide(); }
         function startHeroAutoSlide() { clearInterval(heroInterval); heroInterval = setInterval(() => { const slides = document.querySelectorAll('.carousel-slide'); const visibleSlides = Array.from(slides).filter(s => s.style.display !== 'none'); if(visibleSlides.length === 0) return; let currentVisualIndex = -1; visibleSlides.forEach((s, i) => { if(s.classList.contains('active')) currentVisualIndex = i; }); let nextVisualIndex = (currentVisualIndex + 1) % visibleSlides.length; let nextRealIndex = Array.from(slides).indexOf(visibleSlides[nextVisualIndex]); goHero(nextRealIndex); }, 3000); }
         function goHero(n) { const s=document.querySelectorAll('.carousel-slide'), d=document.querySelectorAll('.carousel-dot'); s[heroSlide]?.classList.remove('active'); d[heroSlide]?.classList.remove('active'); heroSlide=n; s[heroSlide]?.classList.add('active'); d[heroSlide]?.classList.add('active'); startHeroAutoSlide(); }
         function heroNext() { const slides = document.querySelectorAll('.carousel-slide'); const visibleSlides = Array.from(slides).filter(s => s.style.display !== 'none'); let currentVisualIndex = -1; visibleSlides.forEach((s, i) => { if(s.classList.contains('active')) currentVisualIndex = i; }); let nextVisualIndex = (currentVisualIndex + 1) % visibleSlides.length; let nextRealIndex = Array.from(slides).indexOf(visibleSlides[nextVisualIndex]); goHero(nextRealIndex); }
         function heroPrev() { const slides = document.querySelectorAll('.carousel-slide'); const visibleSlides = Array.from(slides).filter(s => s.style.display !== 'none'); let currentVisualIndex = -1; visibleSlides.forEach((s, i) => { if(s.classList.contains('active')) currentVisualIndex = i; }); let prevVisualIndex = (currentVisualIndex - 1 + visibleSlides.length) % visibleSlides.length; let prevRealIndex = Array.from(slides).indexOf(visibleSlides[prevVisualIndex]); goHero(prevRealIndex); }
+
         function getColorCode(c) { if(!c) return '#ccc'; if(c.startsWith('#')) return c; const map={'black':'#000000','white':'#ffffff','red':'#ff0000','green':'#008000','blue':'#0000ff','yellow':'#ffff00','cyan':'#00ffff','magenta':'#ff00ff','gray':'#808080','grey':'#808080','silver':'#c0c0c0','gold':'#ffd700','beige':'#f5f5dc','brown':'#a52a2a','navy':'#000080','purple':'#800080','pink':'#ffc0cb','orange':'#ffa500','violet':'#ee82ee','indigo':'#4b0082','turquoise':'#40e0d0','maroon':'#800000','olive':'#808000','lime':'#00ff00','aqua':'#00ffff','teal':'#008080','coral':'#ff7f50','salmon':'#fa8072','khaki':'#f0e68c','lavender':'#e6e6fa','tan':'#d2b48c','crimson':'#dc143c','chocolate':'#d2691e','plum':'#dda0dd','orchid':'#da70d6','sienna':'#a0522d','tomato':'#ff6347','wheat':'#f5deb3','ivory':'#fffff0','darkblue':'#00008b','darkred':'#8b0000','darkgreen':'#006400','darkgray':'#a9a9a9','darkgrey':'#a9a9a9','darkorange':'#ff8c00','darkviolet':'#9400d3','darkcyan':'#008b8b','lightblue':'#add8e6','lightred':'#ffcccb','lightgreen':'#90ee90','lightgray':'#d3d3d3','lightgrey':'#d3d3d3','lightyellow':'#ffffe0','lightpink':'#ffb6c1','skyblue':'#87ceeb','deepskyblue':'#00bfff','dodgerblue':'#1e90ff','royalblue':'#4169e1','midnightblue':'#191970','steelblue':'#4682b4','slateblue':'#6a5acd','forestgreen':'#228b22','seagreen':'#2e8b57','springgreen':'#00ff7f','palegreen':'#98fb98','limegreen':'#32cd32','yellowgreen':'#9acd32','hotpink':'#ff69b4','deeppink':'#ff1493','sandybrown':'#f4a460','goldenrod':'#daa520','darkgoldenrod':'#b8860b','rosybrown':'#bc8f8f','saddlebrown':'#8b4513','mistyrose':'#ffe4e1','antiquewhite':'#faebd7','linen':'#faf0e6','seashell':'#fff5ee','floralwhite':'#fffaf0','ghostwhite':'#f8f8ff','mintcream':'#f5fffa','azure':'#f0ffff','aliceblue':'#f0f8ff','snow':'#fffafa','اسود':'#000000','أبيض':'#ffffff','أحمر':'#ff0000','أزرق':'#0000ff','أخضر':'#008000','أصفر':'#ffff00','برتقالي':'#ffa500','بنفسجي':'#800080','وردي':'#ffc0cb','بني':'#a52a2a','رمادي':'#808080','كحلي':'#000080','بيج':'#f5f5dc','ذهبي':'#ffd700','فضي':'#c0c0c0','سماوي':'#87ceeb','عنابي':'#800000'}; let key = c.trim().toLowerCase(); key = key.replace(/اللون/g, '').replace(/\s/g, ''); return map[key] || '#cccccc'; }
         function toggleFav(id, el){ const i=favorites.indexOf(id); if(i>-1){favorites.splice(i,1);el.classList.remove('active');}else{favorites.push(id);el.classList.add('active');} localStorage.setItem('lp_fav',JSON.stringify(favorites)); }
         function selectSize(b,id,s){ [...b.parentElement.children].forEach(x=>x.classList.remove('selected')); b.classList.add('selected'); selections[id]={...selections[id], size:s}; }
@@ -495,11 +418,6 @@ document.querySelectorAll('.product-card,section').forEach(el=>{el.classList.add
         function showPage(id){ document.querySelectorAll('.page').forEach(p=>p.classList.remove('active')); document.getElementById(id).classList.add('active'); window.scrollTo(0,0); }
         async function handleSubmit(e) { e.preventDefault(); const fd=new FormData(e.target); const payload={ action:'submitOrder', items:cart.map(i=>({productId:i.id,productName:i.name,size:i.size,color:i.color,quantity:i.qty,price:i.price})), customer:{name:fd.get('name'),phone:fd.get('phone'),governorate:fd.get('governorate'),area:fd.get('area'),address:fd.get('address'),payment:fd.get('payment'),notes:fd.get('notes')} }; try { const res=await fetch(API_URL,{method:'POST',body:JSON.stringify(payload)}); const json=await res.json(); if(json.success){ document.getElementById('successOrderId').textContent=json.orderId; clearCart(); showPage('successPage'); } else alert('حدث خطأ'); } catch(err){ alert('خطأ في الاتصال'); } }
         async function initGovernorates() { try{ const r=await fetch(`${API_URL}?action=getGovernorates`); const d=await r.json(); const s=document.getElementById('governorateSelect'); d.governorates.forEach(g=>s.innerHTML+=`<option value="${g}">${g}</option>`); s.onchange=async()=>{ const ar=await fetch(`${API_URL}?action=getAreas&governorate=${s.value}`); const ad=await ar.json(); const as=document.getElementById('areaSelect'); as.innerHTML='<option value="">اختر المنطقة</option>'; ad.areas.forEach(a=>as.innerHTML+=`<option value="${a}">${a}</option>`); }; }catch(e){} }
-
-    
-const obs=new IntersectionObserver(e=>{e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('visible')})});
-document.querySelectorAll('.product-card,section').forEach(el=>{el.classList.add('fade-in');obs.observe(el);});
-
-</script>
+    </script>
 </body>
 </html>
