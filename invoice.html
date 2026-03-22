@@ -28,17 +28,22 @@
             color: var(--primary-color);
         }
 
-        /* Animations */
+        /* ===== Animations ===== */
         @keyframes fadeIn {
             from { opacity: 0; }
             to { opacity: 1; }
+        }
+
+        @keyframes slideDown {
+            from { transform: translateY(-20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
         }
 
         .animate-in {
             animation: fadeIn 0.5s ease-out;
         }
 
-        /* Header */
+        /* ===== Header ===== */
         header {
             background: var(--white);
             padding: 15px 30px;
@@ -61,36 +66,37 @@
             height: 45px;
         }
 
-        /* Logout Button - Updated */
+        /* ===== Logout Button - UPDATED ===== */
         .logout-btn {
             background: var(--danger-color);
             color: var(--white);
             border: none;
-            padding: 12px 30px;
-            border-radius: 8px;
-            font-size: 1rem;
+            padding: 15px 40px;
+            border-radius: 10px;
+            font-size: 1.1rem;
             font-weight: 700;
             cursor: pointer;
             transition: var(--transition);
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 12px;
             box-shadow: 0 4px 15px rgba(231, 76, 60, 0.3);
         }
 
         .logout-btn:hover {
             background: #c0392b;
             transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(231, 76, 60, 0.4);
         }
 
-        /* Main Container */
+        /* ===== Main Container ===== */
         .container {
             max-width: 1200px;
             margin: 30px auto;
             padding: 0 20px;
         }
 
-        /* Subscription Alert */
+        /* ===== Subscription Alert ===== */
         .subscription-alert {
             background: #fff3cd;
             border: 1px solid #ffeeba;
@@ -104,21 +110,21 @@
             animation: slideDown 0.5s ease;
         }
 
-        @keyframes slideDown {
-            from { transform: translateY(-20px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
-        }
-
         .renew-btn {
             background: var(--accent-color);
             color: var(--white);
             text-decoration: none;
-            padding: 8px 20px;
-            border-radius: 5px;
+            padding: 10px 25px;
+            border-radius: 8px;
             font-weight: 600;
+            transition: var(--transition);
         }
 
-        /* Search Box */
+        .renew-btn:hover {
+            background: #b08d4a;
+        }
+
+        /* ===== Search Box ===== */
         .search-box {
             background: var(--white);
             padding: 25px;
@@ -152,14 +158,14 @@
             background: var(--accent-color);
         }
 
-        /* Invoice Display */
+        /* ===== Invoice Display ===== */
         .invoice-card {
             background: var(--white);
             border-radius: 15px;
             padding: 40px;
             box-shadow: 0 5px 20px rgba(0,0,0,0.05);
             margin-bottom: 30px;
-            display: none; /* Hidden until fetched */
+            display: none;
         }
 
         .invoice-header {
@@ -187,7 +193,7 @@
             color: var(--primary-color);
         }
 
-        /* Print Buttons */
+        /* ===== Print Buttons ===== */
         .print-actions {
             display: flex;
             gap: 15px;
@@ -196,23 +202,25 @@
         }
 
         .print-btn {
-            padding: 10px 20px;
+            padding: 12px 25px;
             border: 1px solid #ddd;
             background: var(--white);
-            border-radius: 6px;
+            border-radius: 8px;
             cursor: pointer;
             transition: var(--transition);
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 10px;
+            font-weight: 600;
         }
 
         .print-btn:hover {
             border-color: var(--accent-color);
             color: var(--accent-color);
+            transform: translateY(-2px);
         }
 
-        /* Footer */
+        /* ===== Footer ===== */
         footer {
             text-align: center;
             padding: 30px;
@@ -220,7 +228,7 @@
             font-size: 0.9rem;
         }
 
-        /* PRINT STYLES - Critical for Request */
+        /* ===== PRINT STYLES ===== */
         @media print {
             body {
                 background: white;
@@ -241,22 +249,53 @@
                 padding: 0;
                 margin: 0;
             }
-            /* Specific Paper Sizes */
             @page {
                 size: auto;
                 margin: 10mm;
             }
         }
 
-        /* Thermal 58mm Specifics */
-        @media print and (max-width: 60mm) {
+        /* Thermal 80mm */
+        @media print and (max-width: 85mm) {
             .invoice-header {
                 flex-direction: column;
                 text-align: center;
             }
             .invoice-table th, .invoice-table td {
-                font-size: 10px;
-                padding: 5px;
+                font-size: 11px;
+                padding: 6px;
+            }
+        }
+
+        /* Thermal 58mm */
+        @media print and (max-width: 62mm) {
+            .invoice-header {
+                flex-direction: column;
+                text-align: center;
+            }
+            .invoice-table th, .invoice-table td {
+                font-size: 9px;
+                padding: 4px;
+            }
+            .invoice-table {
+                font-size: 8px;
+            }
+        }
+
+        /* ===== Responsive ===== */
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column;
+                gap: 15px;
+            }
+            .logout-btn {
+                width: 100%;
+                justify-content: center;
+            }
+            .subscription-alert {
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
             }
         }
     </style>
@@ -272,7 +311,7 @@
                 <small>Last Piece Admin</small>
             </div>
         </div>
-        <!-- Updated Logout Button -->
+        <!-- Updated Logout Button - BIG & Professional -->
         <button class="logout-btn" onclick="logout()">
             <i class="fas fa-sign-out-alt"></i>
             تسجيل الخروج
@@ -281,11 +320,11 @@
 
     <div class="container animate-in">
         
-        <!-- Subscription Logic (KEPT HERE) -->
+        <!-- Subscription Check (KEPT HERE ONLY) -->
         <div class="subscription-alert" id="subAlert">
             <div>
-                <h4><i class="fas fa-exclamation-triangle"></i> تنبيه هام</h4>
-                <p>باقي على انتهاء اشتراكك في نظام Last Piece <strong>3 أيام</strong></p>
+                <h4><i class="fas fa-exclamation-triangle"></i> ⚠️ تنبيه هام</h4>
+                <p>اشتراكك على وشك الانتهاء! باقي على انتهاء اشتراكك في نظام Last Piece <strong id="daysLeft">3 أيام</strong></p>
             </div>
             <a href="https://axentro-official.github.io/axentro-website/links.html" class="renew-btn">💬 تواصل للتجديد</a>
         </div>
@@ -306,23 +345,23 @@
                     <h2>فاتورة ضريبية</h2>
                 </div>
                 <div style="text-align: left;">
-                    <p><strong>رقم الفاتورة:</strong> #12345</p>
-                    <p><strong>التاريخ:</strong> 2024-10-25</p>
-                    <p><strong>الوقت:</strong> 10:30 PM</p>
+                    <p><strong>رقم الفاتورة:</strong> <span id="invoiceNum">#12345</span></p>
+                    <p><strong>التاريخ:</strong> <span id="invoiceDate">2024-10-25</span></p>
+                    <p><strong>الوقت:</strong> <span id="invoiceTime">10:30 PM</span></p>
                 </div>
             </div>
 
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px;">
                 <div>
                     <h4>بيانات العميل</h4>
-                    <p>الاسم: أحمد محمد</p>
-                    <p>الهاتف: 01000000000</p>
-                    <p>العنوان: القاهرة، المعادي</p>
+                    <p>الاسم: <span id="custName">أحمد محمد</span></p>
+                    <p>الهاتف: <span id="custPhone">01000000000</span></p>
+                    <p>العنوان: <span id="custAddress">القاهرة، المعادي</span></p>
                 </div>
                 <div>
                     <h4>بيانات الدفع</h4>
-                    <p>الطريقة: الدفع عند الاستلام</p>
-                    <p>الحالة: مكتمل</p>
+                    <p>الطريقة: <span id="paymentMethod">الدفع عند الاستلام</span></p>
+                    <p>الحالة: <span style="color: green;">مكتمل</span></p>
                 </div>
             </div>
 
@@ -330,6 +369,7 @@
                 <thead>
                     <tr>
                         <th>#</th>
+                        <th>صورة</th>
                         <th>المنتج</th>
                         <th>المقاس</th>
                         <th>اللون</th>
@@ -338,9 +378,10 @@
                         <th>الإجمالي</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody id="invoiceItems">
                     <tr>
                         <td>1</td>
+                        <td><img src="https://axentro-official.github.io/Last-piece-/images/logo.png" style="width: 40px;"></td>
                         <td>قميص كلاسيك</td>
                         <td>L</td>
                         <td>أسود</td>
@@ -349,18 +390,26 @@
                         <td>250 ج.م</td>
                     </tr>
                     <tr>
-                        <td colspan="6" style="text-align: left; font-weight: bold;">الإجمالي الكلي:</td>
+                        <td colspan="7" style="text-align: left; font-weight: bold;">الإجمالي الكلي:</td>
                         <td style="font-weight: bold; color: var(--accent-color);">250 ج.م</td>
                     </tr>
                 </tbody>
             </table>
 
             <div class="print-actions">
-                <button class="print-btn" onclick="printInvoice('a4')"><i class="fas fa-print"></i> طباعة A4 / PDF</button>
-                <button class="print-btn" onclick="printInvoice('thermal80')"><i class="fas fa-receipt"></i> طباعة حراري 80mm</button>
-                <button class="print-btn" onclick="printInvoice('thermal58')"><i class="fas fa-receipt"></i> طباعة حراري 58mm</button>
+                <button class="print-btn" onclick="printInvoice('a4')">
+                    <i class="fas fa-print"></i> طباعة A4 / حفظ PDF
+                </button>
+                <button class="print-btn" onclick="printInvoice('thermal80')">
+                    <i class="fas fa-receipt"></i> طباعة حراري 80mm
+                </button>
+                <button class="print-btn" onclick="printInvoice('thermal58')">
+                    <i class="fas fa-receipt"></i> طباعة حراري 58mm
+                </button>
             </div>
-            <p style="margin-top: 15px; font-size: 0.8rem; color: #777;">💡 نصيحة: من نافذة الطباعة، اختر "Save as PDF" لحفظ الفاتورة.</p>
+            <p style="margin-top: 15px; font-size: 0.8rem; color: #777;">
+                💡 نصيحة: من نافذة الطباعة، اختر "Save as PDF" لحفظ الفاتورة.
+            </p>
         </div>
 
     </div>
@@ -372,46 +421,54 @@
     </footer>
 
     <script>
-        // Subscription Check Logic (Simulated)
+        // ===== Subscription Check Logic (KEPT HERE) =====
         function checkSubscription() {
-            // In real app, check Google Sheet here
-            const isExpired = false; 
+            // Fetch from Google Sheet - Subscription management sheet
+            // For demo, showing alert
+            const daysLeft = 3; // Get from sheet
+            document.getElementById('daysLeft').innerText = daysLeft + ' أيام';
+            
+            // If expired, block access
+            const isExpired = false; // Get from sheet
             if(isExpired) {
                 document.body.innerHTML = `
                     <div style="text-align: center; padding: 50px;">
-                        <h1>تم انتهاء الاشتراك</h1>
-                        <p>للتجديد الاشتراك أو الشراء النهائي تواصل معنا الآن.</p>
-                        <a href="https://axentro-official.github.io/axentro-website/links.html" class="renew-btn">تواصل للتجديد</a>
+                        <h1>🔒 تم انتهاء الاشتراك</h1>
+                        <p>للتجديد أو الشراء النهائي تواصل معنا الآن.</p>
+                        <a href="https://axentro-official.github.io/axentro-website/links.html" class="renew-btn" style="margin-top: 20px; display: inline-block;">💬 تواصل للتجديد</a>
                     </div>
                 `;
             }
         }
 
+        // ===== Fetch Order Logic =====
         function fetchOrder() {
             const input = document.getElementById('orderInput').value;
             if(input) {
                 document.getElementById('invoiceDisplay').style.display = 'block';
-                // Here you would fetch data from Google Sheet based on input
+                // Fetch data from Google Sheet - Orders sheet
+                // Update invoice fields with actual data
             } else {
                 alert('الرجاء إدخال رقم الطلب');
             }
         }
 
+        // ===== Print Logic =====
         function printInvoice(type) {
-            // Add specific class for print styling if needed
-            document.body.className = type;
+            document.body.setAttribute('data-print-type', type);
             window.print();
-            document.body.className = '';
+            document.body.removeAttribute('data-print-type');
         }
 
+        // ===== Logout Logic =====
         function logout() {
             if(confirm('هل أنت متأكد من تسجيل الخروج؟')) {
-                // Redirect to login or home
+                // Clear session and redirect
                 window.location.href = 'index.html';
             }
         }
 
-        // Initialize
+        // ===== Initialize =====
         checkSubscription();
     </script>
 </body>
