@@ -31,23 +31,22 @@
 
     .wrap{ max-width:1100px; margin:0 auto; width:100%; flex:1; }
 
-    /* === LOGIN SCREEN === */
-    #loginBox{
-      position:fixed; inset:0; background:rgba(13,13,13,0.85);
-      display:flex; align-items:center; justify-content:center; z-index:999;
-      backdrop-filter:blur(8px);
-      padding: 20px;
+    /* === GENERIC SCREENS (Login / Expired / Warning) === */
+    .fullscreen-box {
+      position:fixed; inset:0; background:rgba(13,13,13,0.95);
+      display:flex; align-items:center; justify-content:center; z-index:9999;
+      backdrop-filter:blur(8px); padding: 20px;
     }
-    .loginCard{
-      background:#fff; padding:30px; border-radius:25px;
+    .center-card {
+      background:#fff; padding:40px; border-radius:25px;
       box-shadow:0 25px 50px rgba(0,0,0,0.2);
-      text-align:center; width:100%; max-width:400px;
+      text-align:center; width:100%; max-width:450px;
       border:2px solid var(--gold);
     }
-    .loginLogo{ width:80px; height:80px; margin:0 auto 15px; border-radius:50%; border:2px solid var(--gold); padding:5px; background:#fff; }
-    .loginLogo img{ width:100%; height:100%; object-fit:contain; }
-    .loginTitle{ font-family:'Playfair Display', serif; font-size:26px; font-weight:900; background:linear-gradient(135deg, var(--gold), var(--gold-dark)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
-    .loginSub{ color:var(--muted); font-size:14px; margin-bottom:20px; font-weight:700; }
+    .logo-circle{ width:90px; height:90px; margin:0 auto 20px; border-radius:50%; border:3px solid var(--gold); padding:5px; background:#fff; }
+    .logo-circle img{ width:100%; height:100%; object-fit:contain; }
+    .main-title{ font-family:'Playfair Display', serif; font-size:28px; font-weight:900; background:linear-gradient(135deg, var(--gold), var(--gold-dark)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; margin-bottom:5px; }
+    .sub-title{ color:var(--muted); font-size:14px; margin-bottom:25px; font-weight:700; }
     
     input{
       width:100%; padding:12px; border-radius:12px; border:2px solid #eee;
@@ -60,26 +59,31 @@
       display:inline-flex; align-items:center; justify-content:center; gap:8px;
       padding:12px 25px; border-radius:30px; border:none;
       font-family:'Tajawal'; font-weight:700; font-size:16px;
-      cursor:pointer; transition:0.3s;
+      cursor:pointer; transition:0.3s; width:100%;
     }
-    .btn-gold{
-      background:linear-gradient(135deg, var(--gold), var(--gold-dark));
-      color:#fff; box-shadow:0 5px 15px rgba(212,175,55,0.3); width:100%;
-    }
+    .btn-gold{ background:linear-gradient(135deg, var(--gold), var(--gold-dark)); color:#fff; box-shadow:0 5px 15px rgba(212,175,55,0.3); }
     .btn-gold:hover{ transform:translateY(-2px); box-shadow:0 8px 25px rgba(212,175,55,0.5); }
     .btn-outline{ background:#fff; border:2px solid var(--gold); color:var(--black-deep); }
-    .btn-dark{ background:var(--black-deep); color:#fff; }
+    
+    .qr-box{ margin-top:20px; padding-top:20px; border-top:1px solid #eee; }
+    .qr-img { width:110px; height:110px; border-radius:10px; border:2px solid var(--gold); margin:10px auto; display:block; }
+    .small-text{ font-size:11px; color:#666; margin-top:5px; }
 
-    /* Login Footer */
-    .loginFooter{ margin-top:25px; padding-top:20px; border-top:1px solid #eee; }
-    .copy-text{ color:#333; font-size:13px; font-weight:700; margin-bottom:5px; }
-    .team-text{ color:#888; font-size:12px; margin-bottom:15px; }
-    .qr-container{ display:inline-block; padding:8px; background:#fff; border-radius:10px; border:2px solid var(--gold); box-shadow:0 5px 15px rgba(0,0,0, 0.1); transition:0.3s; }
-    .qr-container:hover{ transform:scale(1.05); }
-    .qr-container img{ width:100px; height:100px; display:block; }
-    .scan-text{ margin-top:8px; font-size:11px; color:#666; font-weight:700; }
+    /* WARNING MODAL */
+    .warning-modal {
+      position:fixed; inset:0; background:rgba(0,0,0,0.7); z-index:9998;
+      display:flex; align-items:center; justify-content:center; padding:20px;
+    }
+    .warning-content {
+      background:#fff; border-radius:25px; width:100%; max-width:400px; overflow:hidden;
+      box-shadow:0 25px 50px rgba(0,0,0,0.3); border:2px solid #D4AF37;
+    }
+    .warning-header { background: linear-gradient(135deg, var(--gold), var(--gold-dark)); color:#fff; padding:20px; }
+    .warning-body { padding:25px; text-align:center; }
+    .dismiss-btn { background:#eee; color:#333; margin-top:15px; width:auto; padding:8px 20px; font-size:14px; }
+    .renew-btn { width:100%; margin-top:10px; }
 
-    /* === APP STYLES === */
+    /* APP STYLES */
     .topbar{
       display:flex; justify-content:space-between; align-items:center;
       padding:15px; background:#fff; border-radius:15px;
@@ -115,53 +119,20 @@
     .totalLine{ display:flex; justify-content:space-between; padding:8px 0; border-bottom:1px dashed #eee; }
     .totalLine.primary{ border-bottom:none; font-size:20px; color:var(--gold-dark); font-weight:900; }
 
-    /* === MAIN FOOTER === */
+    /* Footer */
     .site-footer{
-      background: var(--black-deep);
-      padding: 40px 20px;
-      margin-top: auto;
-      color: #fff;
-      font-family: 'Tajawal', sans-serif;
+      background: var(--black-deep); padding: 40px 20px; margin-top: auto; color: #fff; font-family: 'Tajawal', sans-serif;
     }
-    .footer-grid {
-      max-width: 1180px;
-      margin: 0 auto;
-      display: grid;
-      grid-template-columns: 1fr 1fr 1fr; 
-      gap: 30px;
-      align-items: center;
-    }
-    
+    .footer-grid { max-width: 1180px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 30px; align-items: center; }
     .footer-col-right-spacer { display: none; }
     @media (min-width: 769px) { .footer-col-right-spacer { display: block; } }
-
-    .footer-col-center {
-      text-align: center;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
+    .footer-col-center { text-align: center; display: flex; flex-direction: column; align-items: center; }
     .copyright-text { font-size: 12px; color: var(--gold); font-weight: 700; }
     .team-text-footer { font-size: 11px; color: #666; margin-bottom: 10px; }
-    
-    .qr-link {
-      display: inline-block;
-      padding: 8px;
-      background: #fff;
-      border-radius: 10px;
-      border: 2px solid var(--gold);
-      transition: transform 0.3s;
-    }
+    .qr-link { display: inline-block; padding: 8px; background: #fff; border-radius: 10px; border: 2px solid var(--gold); transition: transform 0.3s; }
     .qr-link:hover { transform: scale(1.05); }
     .qr-link img { width: 90px; height: 90px; display: block; }
-    
-    .footer-col-left {
-      text-align: left;
-      direction: ltr;
-      display: flex;
-      flex-direction: column;
-      align-items: flex-start;
-    }
+    .footer-col-left { text-align: left; direction: ltr; display: flex; flex-direction: column; align-items: flex-start; }
     .footer-logo-text { font-family: 'Playfair Display', serif; font-size: 24px; color: var(--gold); font-weight: 900; margin-bottom: 5px; }
     .footer-inc { color: #888; font-size: 12px; }
 
@@ -172,8 +143,6 @@
       .footer-grid{ grid-template-columns:1fr; text-align:center; gap:20px; }
       .footer-col-left{ text-align:center; align-items:center; order: 3; }
       .footer-col-center{ order: 1; }
-      .footer-col-right-spacer{ display: none; }
-      
       .table-wrap{ border:none; }
       table, thead, tbody, th, td, tr{ display:block; min-width:0; }
       thead{ display:none; }
@@ -187,32 +156,92 @@
 </head>
 <body>
 
-<!-- Login Screen -->
-<div id="loginBox">
-  <div class="loginCard">
-    <div class="loginLogo">
-      <img src="https://axentro-official.github.io/Last-piece-/images/logo.png" alt="Logo">
+<!-- 1. License Loader Screen -->
+<div id="loaderBox" class="fullscreen-box">
+  <div class="center-card">
+    <div class="logo-circle"><img src="https://axentro-official.github.io/Last-piece-/images/logo.png" alt="Logo"></div>
+    <div class="main-title">Last Piece</div>
+    <div class="sub-title">نظام إدارة الفواتير</div>
+    <div style="color:#888; font-size:14px;">جاري التحقق من الترخيص...</div>
+  </div>
+</div>
+
+<!-- 2. Expired Screen -->
+<div id="expiredBox" class="fullscreen-box" style="display:none;">
+  <div class="center-card">
+    <div class="logo-circle"><img src="https://axentro-official.github.io/Last-piece-/images/logo.png" alt="Logo"></div>
+    <div class="main-title" style="color:#e74c3c; -webkit-text-fill-color:#e74c3c;">انتهت صلاحية الاشتراك</div>
+    <div class="sub-title">نعتذر، انتهت فترة تجربتك أو اشتراكك في نظام Last Piece.</div>
+    <p style="font-size:14px; color:#555; margin:20px 0;">
+      لتجديد الاشتراك أو الشراء النهائي والحصول على خصم 20%، تواصل معنا الآن.
+    </p>
+    
+    <a href="https://axentro-official.github.io/axentro-website/links.html" target="_blank" style="text-decoration:none; display:block;">
+      <button class="btn btn-gold" style="margin-bottom:10px;">💬 تواصل للتجديد</button>
+    </a>
+    
+    <div class="qr-box">
+      <div class="copyright-text">© 2024 Axentro – All Rights Reserved</div>
+      <div class="team-text">By Axentro Team</div>
+      <img src="https://axentro-official.github.io/Last-piece-/images/qr.png" class="qr-img" alt="QR">
+      <div class="small-text">Scan Me > Click On Me</div>
     </div>
-    <div class="loginTitle">Last Piece</div>
-    <div class="loginSub">نظام إدارة الفواتير</div>
+  </div>
+</div>
+
+<!-- 3. Login Screen -->
+<div id="loginBox" class="fullscreen-box" style="display:none;">
+  <div class="center-card">
+    <div class="logo-circle"><img src="https://axentro-official.github.io/Last-piece-/images/logo.png" alt="Logo"></div>
+    <div class="main-title">Last Piece</div>
+    <div class="sub-title">نظام إدارة الفواتير</div>
     
     <form id="loginForm" onsubmit="return false;">
       <input type="password" id="passInput" placeholder="رمز الدخول" autocomplete="off">
       <button type="submit" class="btn btn-gold">دخول</button>
     </form>
 
-    <div class="loginFooter">
-      <div class="copy-text">© 2024 Axentro – All Rights Reserved</div>
+    <div class="qr-box">
+      <div class="copyright-text">© 2024 Axentro – All Rights Reserved</div>
       <div class="team-text">By Axentro Team</div>
-      <a href="https://axentro-official.github.io/axentro-website/links.html" target="_blank" class="qr-container">
-        <img src="https://axentro-official.github.io/Last-piece-/images/qr.png" alt="QR">
-      </a>
-      <div class="scan-text">Scan Me > Click On Me</div>
+      <img src="https://axentro-official.github.io/Last-piece-/images/qr.png" class="qr-img" alt="QR">
+      <div class="small-text">Scan Me > Click On Me</div>
     </div>
   </div>
 </div>
 
-<!-- Main App -->
+<!-- 4. Warning Modal -->
+<div id="warningModal" class="warning-modal" style="display:none;">
+  <div class="warning-content">
+    <div class="warning-header">
+      <h3 style="margin:0; font-size:20px;">⚠️ تنبيه هام</h3>
+      <p style="margin:5px 0 0; font-size:14px; opacity:0.9;">اشتراكك على وشك الانتهاء!</p>
+    </div>
+    <div class="warning-body">
+      <p style="font-size:16px; color:#333; line-height:1.6;">
+        باقي على انتهاء اشتراكك في نظام <strong>Last Piece</strong> 
+        <br>
+        <span id="daysLeftWarning" style="color:var(--gold-dark); font-weight:bold; font-size:20px;"></span>
+      </p>
+      <p style="font-size:13px; color:#666; margin-top:10px;">
+        جدد الآن واحصل على <strong style="color:var(--gold)">خصم 20%</strong> أو اشترِ النظام مدى الحياة!
+      </p>
+      
+      <a href="https://axentro-official.github.io/axentro-website/links.html" target="_blank">
+         <button class="btn btn-gold renew-btn">تواصل للتجديد</button>
+      </a>
+      
+      <button class="btn dismiss-btn" onclick="dismissWarning()">المتابعة الآن</button>
+      
+      <div style="margin-top:20px; border-top:1px solid #eee; padding-top:15px;">
+        <img src="https://axentro-official.github.io/Last-piece-/images/qr.png" style="width:80px; height:80px; border-radius:8px; border:1px solid var(--gold);">
+        <div class="small-text">© 2024 Axentro – All Rights Reserved</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 5. Main App -->
 <div class="wrap" id="app" style="display:none; padding: 15px;">
   
   <div class="topbar">
@@ -273,16 +302,13 @@
     </div>
   </div>
 
-  <!-- Modified Actions Card -->
   <div class="card">
     <h2>الطباعة والتصدير</h2>
     
-    <!-- Single Button for A4 -->
     <button class="btn btn-dark" onclick="printInvoice('A4')" style="width: 100%; padding: 15px; font-size: 17px;">
       🖨️ طباعة A4 / حفظ PDF
     </button>
     
-    <!-- Thermal Buttons -->
     <div class="grid-2" style="margin-top:15px;">
        <button class="btn btn-outline" onclick="printInvoice('Thermal80')">🧾 طباعة حراري 80mm</button>
        <button class="btn btn-outline" onclick="printInvoice('Thermal58')">🧾 طباعة حراري 58mm</button>
@@ -305,7 +331,7 @@
       <a href="https://axentro-official.github.io/axentro-website/links.html" target="_blank" class="qr-link">
         <img src="https://axentro-official.github.io/Last-piece-/images/qr.png" alt="QR">
       </a>
-      <div class="scan-text">Scan Me > Click On Me</div>
+      <div class="small-text">Scan Me > Click On Me</div>
     </div>
     <div class="footer-col-left">
       <div class="footer-logo-text">Last Piece</div>
@@ -315,9 +341,97 @@
 </footer>
 
 <script>
-const ADMIN_PASSWORD = "1407";
-const API_URL = 'https://script.google.com/macros/s/AKfycbyuLyCqPmG1a2w7Vpgu2hGFFG44tlmW4N9AuNwa-YHRupXRPhxBF-_mEOhPgjpSBwM9/exec';
+const ADMIN_PASSWORD = "1407"; // كلمة مرور الدخول للوحة التحكم
+const API_URL = 'https://script.google.com/macros/s/AKfycbyuLyCqPmG1a2w7Vpgu2hGFFG44tlmW4N9AuNwa-YHRupXRPhxBF-_mEOhPgjpSBwM9/exec'; // رابط API الخاص بطلبات المنتجات
 const IMG_URL = 'https://axentro-official.github.io/Last-piece-/images/';
+const LICENSE_API_URL = 'https://script.google.com/macros/s/AKfycbyFueLWNvOm8DJjR2Hf_cQO9rkroG-sGltx_-iyCLtjDLFGtN4fgLgsgXlD2z_b3oUb8w/exec'; 
+
+/* === LICENSE SYSTEM ===*/
+async function checkLicense() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const key = urlParams.get('key');
+
+    if (!key) {
+        showError("لا يوجد مفتاح ترخيص", "يجب فتح الرابط باستخدام مفتاح الترخيص المخصص لك.");
+        return;
+ 
+    }
+
+    try {
+        const res = await fetch(`${LICENSE_API_URL}?key=${key}`);
+        const data = await res.json();
+
+        if (data.status === 'expired' || data.status === 'suspended') {
+            showExpired();
+        } else if (data.status === 'invalid') {
+            showError("مفتاح غير صالح", "المفتاح المستخدم غير مسجل في النظام.");
+        } else if (data.status === 'active') {
+            
+            // بناء نص الوقت المتبقي
+            let timeText = "";
+            let showWarn = false;
+
+            if (data.is_lifetime) {
+                timeText = "اشتراك مدى الحياة";
+            } else {
+                let parts = [];
+                if(data.days_left > 0) parts.push(`${data.days_left} يوم`);
+                if(data.hours_left > 0) parts.push(`${data.hours_left} ساعة`);
+                if(data.minutes_left > 0 && data.days_left === 0) parts.push(`${data.minutes_left} دقيقة`); // نظهر الدقائق لو الأيام ب صفر
+                
+                timeText = "باقي " + parts.join(" و ");
+                
+                // التحذير يظهر إذا كان المتبقي أقل من يوم كامل
+                if (data.days_left === 0) {
+                    showWarn = true;
+                }
+            }
+
+            // عرض التحذير لو لازم
+            if (showWarn) {
+                document.getElementById('daysLeftWarning').innerText = timeText;
+                document.getElementById('warningModal').style.display = 'flex';
+            }
+            
+            showApp();
+        } else {
+            showError("خطأ", "خطأ في الاتصال.");
+        }
+    } catch (e) {
+        console.error(e);
+        showError("خطأ اتصال", "تعذر التحقق من الترخيص.");
+    }
+}
+
+function showError(title, msg) {
+    document.getElementById('loaderBox').style.display = 'none';
+    const exp = document.getElementById('expiredBox');
+    exp.querySelector('.main-title').innerText = title;
+    exp.querySelector('.sub-title').innerText = msg;
+    exp.style.display = 'flex';
+}
+
+function showExpired() {
+    document.getElementById('loaderBox').style.display = 'none';
+    document.getElementById('expiredBox').style.display = 'flex';
+}
+
+function showApp() {
+    document.getElementById('loaderBox').style.display = 'none';
+    document.getElementById('loginBox').style.display = 'flex';
+    document.getElementById('mainFooter').style.display = 'block';
+    
+    // تفعيل جلسة العمل
+    if(sessionStorage.getItem('LP_ADMIN') === '1'){
+        document.getElementById('loginBox').style.display = 'none';
+        document.getElementById('app').style.display = 'block';
+        initInvoice();
+    }
+}
+
+function dismissWarning() {
+    document.getElementById('warningModal').style.display = 'none';
+}
 
 /* === LOGIN === */
 const loginForm = document.getElementById('loginForm');
@@ -333,7 +447,6 @@ function checkLogin(){
     sessionStorage.setItem('LP_ADMIN', '1');
     document.getElementById('loginBox').style.display = 'none';
     document.getElementById('app').style.display = 'block';
-    document.getElementById('mainFooter').style.display = 'block';
     initInvoice();
   } else {
     alert('خطأ في الرمز');
@@ -344,13 +457,6 @@ function checkLogin(){
 function logout(){
   sessionStorage.removeItem('LP_ADMIN');
   location.reload();
-}
-
-if(sessionStorage.getItem('LP_ADMIN') === '1'){
-  document.getElementById('loginBox').style.display = 'none';
-  document.getElementById('app').style.display = 'block';
-  document.getElementById('mainFooter').style.display = 'block';
-  initInvoice();
 }
 
 /* === INVOICE ===*/
@@ -469,24 +575,8 @@ function buildA4Html(d){
       <style>
         @page { size: A4; margin: 0; }
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { 
-            font-family: 'Segoe UI', Tahoma, Arial, sans-serif; 
-            background: #fff; 
-            color: #333; 
-            direction: rtl; 
-            /* مركز المحتوى في منتصف الصفحة */
-            display: flex; 
-            justify-content: center; 
-            align-items: flex-start;
-        }
-        .page { 
-            width: 210mm; 
-            min-height: 297mm; 
-            padding: 15mm; 
-            background: white; 
-            position: relative; 
-            box-sizing: border-box;
-        }
+        body { font-family: 'Segoe UI', Tahoma, Arial, sans-serif; background: #fff; color: #333; direction: rtl; display: flex; justify-content: center; align-items: flex-start; }
+        .page { width: 210mm; min-height: 297mm; padding: 15mm; background: white; position: relative; }
         .header { text-align: center; border-bottom: 3px solid #D4AF37; padding-bottom: 20px; margin-bottom: 25px; }
         .logo { width: 100px; height: 100px; border-radius: 50%; border: 3px solid #D4AF37; margin: 0 auto 15px; display: block; }
         h1 { font-size: 32px; color: #D4AF37; margin-bottom: 5px; }
@@ -583,21 +673,8 @@ function buildThermalHtml(d, mm){
       <style>
         @page { size: ${w} auto; margin: 0; }
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { 
-            font-family: 'Segoe UI', Tahoma, Arial; 
-            background: #fff; 
-            color: #000; 
-            direction: rtl; 
-            /* مركز المحتوى في منتصف الصفحة */
-            display: flex; 
-            justify-content: center; 
-        }
-        .container { 
-            width: ${w}; 
-            background: #fff;
-            padding: 3mm;
-            overflow: hidden;
-        }
+        body { font-family: 'Segoe UI', Tahoma, Arial; width: ${w}; background: #fff; color: #000; direction: rtl; display: flex; justify-content: center; }
+        .container { width: ${w}; background: #fff; padding: 3mm; overflow: hidden; }
         .center { text-align: center; }
         .bold { font-weight: bold; }
         .sep { border-top: 1px dashed #000; margin: 8px 0; }
@@ -605,7 +682,6 @@ function buildThermalHtml(d, mm){
         .qr { width: 80px; height: 80px; margin: 10px auto; display: block; }
         .item { margin: 8px 0; padding-bottom: 5px; border-bottom: 1px dotted #ccc; }
         .total-box { background: #f5f5f5; padding: 8px; margin: 10px 0; }
-        /* منع خروج النص عن الإطار */
         div, span { word-wrap: break-word; overflow-wrap: break-word; }
       </style>
     </head>
@@ -667,8 +743,6 @@ function printInvoice(type){
   
   win.document.write(html);
   win.document.close();
-  
-  // اسم الملف سيكون عنوان الصفحة
   win.document.title = `فاتورة_${data.invNo}`;
   
   setTimeout(() => {
@@ -676,6 +750,10 @@ function printInvoice(type){
     win.print();
   }, 500);
 }
+
+// Start license check immediately
+window.onload = checkLicense;
+
 </script>
 </body>
 </html>
