@@ -31,7 +31,7 @@
 
     .wrap{ max-width:1100px; margin:0 auto; width:100%; flex:1; }
 
-    /* === GENERIC SCREENS (Login / Expired / Warning) === */
+    /* GENERIC SCREENS */
     .fullscreen-box {
       position:fixed; inset:0; background:rgba(13,13,13,0.95);
       display:flex; align-items:center; justify-content:center; z-index:9999;
@@ -60,13 +60,15 @@
       padding:12px 25px; border-radius:30px; border:none;
       font-family:'Tajawal'; font-weight:700; font-size:16px;
       cursor:pointer; transition:0.3s; width:100%;
+      text-decoration: none; /* For links */
     }
     .btn-gold{ background:linear-gradient(135deg, var(--gold), var(--gold-dark)); color:#fff; box-shadow:0 5px 15px rgba(212,175,55,0.3); }
     .btn-gold:hover{ transform:translateY(-2px); box-shadow:0 8px 25px rgba(212,175,55,0.5); }
     .btn-outline{ background:#fff; border:2px solid var(--gold); color:var(--black-deep); }
     
     .qr-box{ margin-top:20px; padding-top:20px; border-top:1px solid #eee; }
-    .qr-img { width:110px; height:110px; border-radius:10px; border:2px solid var(--gold); margin:10px auto; display:block; }
+    .qr-img { width:110px; height:110px; border-radius:10px; border:2px solid var(--gold); margin:10px auto; display:block; cursor: pointer; transition: 0.3s; }
+    .qr-img:hover { transform: scale(1.05); border-color: var(--black-deep); }
     .small-text{ font-size:11px; color:#666; margin-top:5px; }
 
     /* WARNING MODAL */
@@ -166,24 +168,26 @@
   </div>
 </div>
 
-<!-- 2. Expired Screen -->
+<!-- 2. Expired Screen (Modified Messages) -->
 <div id="expiredBox" class="fullscreen-box" style="display:none;">
   <div class="center-card">
     <div class="logo-circle"><img src="https://axentro-official.github.io/Last-piece-/images/logo.png" alt="Logo"></div>
-    <div class="main-title" style="color:#e74c3c; -webkit-text-fill-color:#e74c3c;">انتهت صلاحية الاشتراك</div>
-    <div class="sub-title">نعتذر، انتهت فترة تجربتك أو اشتراكك في نظام Last Piece.</div>
-    <p style="font-size:14px; color:#555; margin:20px 0;">
-      لتجديد الاشتراك أو الشراء النهائي والحصول على خصم 20%، تواصل معنا الآن.
-    </p>
+    <!-- Changed Title -->
+    <div class="main-title" style="color:#e74c3c; -webkit-text-fill-color:#e74c3c;">تم انتهاء الأشتراك</div>
+    <!-- Changed Text -->
+    <div class="sub-title">للتجديد الاشتراك أو الشراء النهائي تواصل معنا الآن.</div>
     
-    <a href="https://axentro-official.github.io/axentro-website/links.html" target="_blank" style="text-decoration:none; display:block;">
+    <a href="https://axentro-official.github.io/axentro-website/links.html" target="_blank" style="text-decoration:none;">
       <button class="btn btn-gold" style="margin-bottom:10px;">💬 تواصل للتجديد</button>
     </a>
     
+    <!-- Clickable QR -->
     <div class="qr-box">
       <div class="copyright-text">© 2024 Axentro – All Rights Reserved</div>
       <div class="team-text">By Axentro Team</div>
-      <img src="https://axentro-official.github.io/Last-piece-/images/qr.png" class="qr-img" alt="QR">
+      <a href="https://axentro-official.github.io/axentro-website/links.html" target="_blank">
+        <img src="https://axentro-official.github.io/Last-piece-/images/qr.png" class="qr-img" alt="QR">
+      </a>
       <div class="small-text">Scan Me > Click On Me</div>
     </div>
   </div>
@@ -204,7 +208,9 @@
     <div class="qr-box">
       <div class="copyright-text">© 2024 Axentro – All Rights Reserved</div>
       <div class="team-text">By Axentro Team</div>
-      <img src="https://axentro-official.github.io/Last-piece-/images/qr.png" class="qr-img" alt="QR">
+      <a href="https://axentro-official.github.io/axentro-website/links.html" target="_blank">
+        <img src="https://axentro-official.github.io/Last-piece-/images/qr.png" class="qr-img" alt="QR">
+      </a>
       <div class="small-text">Scan Me > Click On Me</div>
     </div>
   </div>
@@ -228,13 +234,15 @@
       </p>
       
       <a href="https://axentro-official.github.io/axentro-website/links.html" target="_blank">
-         <button class="btn btn-gold renew-btn">تواصل للتجديد</button>
+         <button class="btn btn-gold renew-btn">💬 تواصل للتجديد</button>
       </a>
       
       <button class="btn dismiss-btn" onclick="dismissWarning()">المتابعة الآن</button>
       
       <div style="margin-top:20px; border-top:1px solid #eee; padding-top:15px;">
-        <img src="https://axentro-official.github.io/Last-piece-/images/qr.png" style="width:80px; height:80px; border-radius:8px; border:1px solid var(--gold);">
+        <a href="https://axentro-official.github.io/axentro-website/links.html" target="_blank">
+          <img src="https://axentro-official.github.io/Last-piece-/images/qr.png" style="width:80px; height:80px; border-radius:8px; border:1px solid var(--gold); cursor:pointer;">
+        </a>
         <div class="small-text">© 2024 Axentro – All Rights Reserved</div>
       </div>
     </div>
@@ -305,7 +313,7 @@
   <div class="card">
     <h2>الطباعة والتصدير</h2>
     
-    <button class="btn btn-dark" onclick="printInvoice('A4')" style="width: 100%; padding: 15px; font-size: 17px;">
+    <button class="btn btn-dark" onclick="printInvoice('A4')" style="width: 100%; padding: 15px; font-size: 17px; background: #0d0d0d; color: white;">
       🖨️ طباعة A4 / حفظ PDF
     </button>
     
@@ -315,7 +323,7 @@
     </div>
     
     <p style="font-size:12px; color:#888; margin-top:15px; text-align:center;">
-      💡 نصيحة: من نافذة الطباعة، اختر "Save as PDF" أو "Microsoft Print to PDF" لحفظ الفاتورة.
+      💡 نصيحة: من نافذة الطباعة، اختر "Save as PDF" لحفظ الفاتورة.
     </p>
   </div>
 
@@ -341,8 +349,8 @@
 </footer>
 
 <script>
-const ADMIN_PASSWORD = "1407"; // كلمة مرور الدخول للوحة التحكم
-const API_URL = 'https://script.google.com/macros/s/AKfycbyuLyCqPmG1a2w7Vpgu2hGFFG44tlmW4N9AuNwa-YHRupXRPhxBF-_mEOhPgjpSBwM9/exec'; // رابط API الخاص بطلبات المنتجات
+const ADMIN_PASSWORD = "1407";
+const API_URL = 'https://script.google.com/macros/s/AKfycbyuLyCqPmG1a2w7Vpgu2hGFFG44tlmW4N9AuNwa-YHRupXRPhxBF-_mEOhPgjpSBwM9/exec';
 const IMG_URL = 'https://axentro-official.github.io/Last-piece-/images/';
 const LICENSE_API_URL = 'https://script.google.com/macros/s/AKfycbyFueLWNvOm8DJjR2Hf_cQO9rkroG-sGltx_-iyCLtjDLFGtN4fgLgsgXlD2z_b3oUb8w/exec'; 
 
@@ -351,10 +359,10 @@ async function checkLicense() {
     const urlParams = new URLSearchParams(window.location.search);
     const key = urlParams.get('key');
 
+    // التعديل: لو مفيش مفتاح، نظهر رسالة "تم انتهاء الأشتراك" 
     if (!key) {
-        showError("لا يوجد مفتاح ترخيص", "يجب فتح الرابط باستخدام مفتاح الترخيص المخصص لك.");
+        showExpired();
         return;
- 
     }
 
     try {
@@ -363,11 +371,7 @@ async function checkLicense() {
 
         if (data.status === 'expired' || data.status === 'suspended') {
             showExpired();
-        } else if (data.status === 'invalid') {
-            showError("مفتاح غير صالح", "المفتاح المستخدم غير مسجل في النظام.");
         } else if (data.status === 'active') {
-            
-            // بناء نص الوقت المتبقي
             let timeText = "";
             let showWarn = false;
 
@@ -377,17 +381,15 @@ async function checkLicense() {
                 let parts = [];
                 if(data.days_left > 0) parts.push(`${data.days_left} يوم`);
                 if(data.hours_left > 0) parts.push(`${data.hours_left} ساعة`);
-                if(data.minutes_left > 0 && data.days_left === 0) parts.push(`${data.minutes_left} دقيقة`); // نظهر الدقائق لو الأيام ب صفر
+                if(data.minutes_left > 0 && data.days_left === 0) parts.push(`${data.minutes_left} دقيقة`);
                 
                 timeText = "باقي " + parts.join(" و ");
                 
-                // التحذير يظهر إذا كان المتبقي أقل من يوم كامل
                 if (data.days_left === 0) {
                     showWarn = true;
                 }
             }
 
-            // عرض التحذير لو لازم
             if (showWarn) {
                 document.getElementById('daysLeftWarning').innerText = timeText;
                 document.getElementById('warningModal').style.display = 'flex';
@@ -395,20 +397,13 @@ async function checkLicense() {
             
             showApp();
         } else {
-            showError("خطأ", "خطأ في الاتصال.");
+            // Changed: Generic "Expired" message for invalid keys too
+            showExpired();
         }
     } catch (e) {
         console.error(e);
-        showError("خطأ اتصال", "تعذر التحقق من الترخيص.");
+        showExpired();
     }
-}
-
-function showError(title, msg) {
-    document.getElementById('loaderBox').style.display = 'none';
-    const exp = document.getElementById('expiredBox');
-    exp.querySelector('.main-title').innerText = title;
-    exp.querySelector('.sub-title').innerText = msg;
-    exp.style.display = 'flex';
 }
 
 function showExpired() {
@@ -421,7 +416,6 @@ function showApp() {
     document.getElementById('loginBox').style.display = 'flex';
     document.getElementById('mainFooter').style.display = 'block';
     
-    // تفعيل جلسة العمل
     if(sessionStorage.getItem('LP_ADMIN') === '1'){
         document.getElementById('loginBox').style.display = 'none';
         document.getElementById('app').style.display = 'block';
