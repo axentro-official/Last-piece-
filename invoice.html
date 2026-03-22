@@ -60,7 +60,7 @@
       padding:12px 25px; border-radius:30px; border:none;
       font-family:'Tajawal'; font-weight:700; font-size:16px;
       cursor:pointer; transition:0.3s; width:100%;
-      text-decoration: none; /* For links */
+      text-decoration: none;
     }
     .btn-gold{ background:linear-gradient(135deg, var(--gold), var(--gold-dark)); color:#fff; box-shadow:0 5px 15px rgba(212,175,55,0.3); }
     .btn-gold:hover{ transform:translateY(-2px); box-shadow:0 8px 25px rgba(212,175,55,0.5); }
@@ -96,6 +96,28 @@
     .brand img{ width:40px; height:40px; border-radius:50%; border:1px solid var(--gold); }
     .brandName{ font-family:'Playfair Display', serif; font-weight:900; font-size:20px; color:var(--gold); }
     
+    /* Updated Logout Button */
+    .logout-btn {
+        background: transparent;
+        color: #666;
+        border: 1px solid #eee;
+        padding: 6px 12px;
+        font-size: 12px;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        transition: 0.2s;
+        cursor: pointer;
+        font-family: 'Tajawal', sans-serif;
+        font-weight: 700;
+    }
+    .logout-btn:hover {
+        background: #f5f5f5;
+        border-color: #ddd;
+        color: #000;
+    }
+
     .card{
       background:#fff; border-radius:var(--radius);
       padding:20px; margin-bottom:20px;
@@ -155,13 +177,13 @@
       .thumbMini{ width:30px; height:30px; }
     }
   
-@media print{
-body{background:#fff}
-.card{box-shadow:none;border:none}
-button{display:none!important}
-}
-
-</style>
+    @media print{
+      body{background:#fff}
+      .card{box-shadow:none;border:none}
+      button{display:none!important}
+      .topbar, .site-footer{display:none!important}
+    }
+  </style>
 </head>
 <body>
 
@@ -175,20 +197,17 @@ button{display:none!important}
   </div>
 </div>
 
-<!-- 2. Expired Screen (Modified Messages) -->
+<!-- 2. Expired Screen -->
 <div id="expiredBox" class="fullscreen-box" style="display:none;">
   <div class="center-card">
     <div class="logo-circle"><img src="https://axentro-official.github.io/Last-piece-/images/logo.png" alt="Logo"></div>
-    <!-- Changed Title -->
     <div class="main-title" style="color:#e74c3c; -webkit-text-fill-color:#e74c3c;">تم انتهاء الأشتراك</div>
-    <!-- Changed Text -->
     <div class="sub-title">للتجديد الاشتراك أو الشراء النهائي تواصل معنا الآن.</div>
     
     <a href="https://axentro-official.github.io/axentro-website/links.html" target="_blank" style="text-decoration:none;">
       <button class="btn btn-gold" style="margin-bottom:10px;">💬 تواصل للتجديد</button>
     </a>
     
-    <!-- Clickable QR -->
     <div class="qr-box">
       <div class="copyright-text">© 2024 Axentro – All Rights Reserved</div>
       <div class="team-text">By Axentro Team</div>
@@ -267,7 +286,8 @@ button{display:none!important}
         <div style="font-size:12px; color:#888;">لوحة التحكم</div>
       </div>
     </div>
-    <button class="btn btn-outline" onclick="logout()" style="padding:6px 14px;font-size:13px;">🔒 خروج</button>
+    <!-- Fixed Logout Button -->
+    <button class="logout-btn" onclick="logout()">🔒 خروج</button>
   </div>
 
   <div class="card">
@@ -366,7 +386,6 @@ async function checkLicense() {
     const urlParams = new URLSearchParams(window.location.search);
     const key = urlParams.get('key');
 
-    // التعديل: لو مفيش مفتاح، نظهر رسالة "تم انتهاء الأشتراك" 
     if (!key) {
         showExpired();
         return;
@@ -404,7 +423,6 @@ async function checkLicense() {
             
             showApp();
         } else {
-            // Changed: Generic "Expired" message for invalid keys too
             showExpired();
         }
     } catch (e) {
@@ -598,14 +616,7 @@ function buildA4Html(d){
         .qr { width: 100px; height: 100px; margin: 15px auto; }
         .footer-text { font-size: 12px; color: #888; line-height: 1.8; }
         .brand-footer { position: absolute; bottom: 15mm; left: 15mm; font-size: 11px; color: #888; }
-      
-@media print{
-body{background:#fff}
-.card{box-shadow:none;border:none}
-button{display:none!important}
-}
-
-</style>
+      </style>
     </head>
     <body>
       <div class="page">
@@ -691,14 +702,7 @@ function buildThermalHtml(d, mm){
         .item { margin: 8px 0; padding-bottom: 5px; border-bottom: 1px dotted #ccc; }
         .total-box { background: #f5f5f5; padding: 8px; margin: 10px 0; }
         div, span { word-wrap: break-word; overflow-wrap: break-word; }
-      
-@media print{
-body{background:#fff}
-.card{box-shadow:none;border:none}
-button{display:none!important}
-}
-
-</style>
+      </style>
     </head>
     <body>
       <div class="container">
