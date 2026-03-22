@@ -21,6 +21,19 @@
         .btn-gold:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(212, 175, 55, 0.5); }
         .btn-gold.disabled { background: #ccc; cursor: not-allowed; transform: none; box-shadow: none; }
         
+        /* License Overlays */
+        .license-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.9); z-index: 9999; display: flex; align-items: center; justify-content: center; padding: 20px; }
+        .license-box { background: white; padding: 40px; border-radius: 20px; max-width: 450px; width: 100%; text-align: center; border: 2px solid var(--gold); }
+        .license-title { font-family: 'Playfair Display', serif; font-size: 28px; color: var(--gold); margin-bottom: 10px; }
+        .license-sub { color: #666; margin-bottom: 20px; font-size: 14px; }
+        .license-qr { width: 120px; height: 120px; margin: 10px auto; border: 2px solid var(--gold); border-radius: 10px; }
+        
+        /* Warning Modal */
+        .warning-modal { position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 9998; display: flex; align-items: center; justify-content: center; }
+        .warning-box { background: white; border-radius: 15px; width: 90%; max-width: 400px; overflow: hidden; border: 2px solid var(--gold); }
+        .warning-head { background: var(--gold); color: white; padding: 20px; }
+        .warning-body { padding: 25px; text-align: center; }
+
         /* Hero Carousel */
         .hero-carousel { position: relative; width: 100%; max-width: 1000px; height: 70vh; min-height: 500px; border-radius: 25px; overflow: hidden; box-shadow: 0 25px 60px rgba(0,0,0,0.15); background: white; }
         .carousel-slide { position: absolute; inset: 0; opacity: 0; transition: opacity 1s ease; display: flex; align-items: center; justify-content: center; padding: 20px; }
@@ -97,6 +110,51 @@
     </style>
 </head>
 <body class="text-gray-800">
+
+    <!-- 1. License Loader Screen -->
+    <div id="licenseLoader" class="license-overlay">
+        <div class="license-box">
+            <div class="font-display text-2xl text-gold-gradient mb-2">Last Piece</div>
+            <div class="text-gray-400 text-sm">جاري التحقق من الترخيص...</div>
+        </div>
+    </div>
+
+    <!-- 2. License Expired/Suspended Screen -->
+    <div id="licenseExpired" class="license-overlay" style="display:none;">
+        <div class="license-box">
+            <div class="license-title" style="color: #e74c3c;">تم إيقاف الخدمة</div>
+            <div class="license-sub">
+                انتهت صلاحية اشتراكك أو تم إيقافه. للحصول على خصم 20% عند التجديد، تواصل معنا.
+            </div>
+            
+            <a href="https://axentro-official.github.io/axentro-website/links.html" target="_blank">
+                <button class="btn-gold w-full mb-4">💬 تواصل للتجديد</button>
+            </a>
+            
+            <img src="https://axentro-official.github.io/Last-piece-/images/qr.png" class="license-qr" alt="QR">
+            <div class="text-xs text-gray-400">© 2024 Axentro – All Rights Reserved</div>
+        </div>
+    </div>
+
+    <!-- 3. Warning Modal -->
+    <div id="warningModal" class="warning-modal" style="display:none;">
+        <div class="warning-box">
+            <div class="warning-head">
+                <h3 class="text-xl font-bold">⚠️ تنبيه هام</h3>
+                <p class="text-sm opacity-90 mt-1">اشتراكك على وشك الانتهاء!</p>
+            </div>
+            <div class="warning-body">
+                <p class="text-lg font-bold text-gray-800 mb-2" id="warningTimeText">باقي 0 دقائق</p>
+                <p class="text-gray-500 text-sm mb-4">
+                    جدد الآن واستمتع بخصم 20% أو اشترِ النظام مدى الحياة!
+                </p>
+                <a href="https://axentro-official.github.io/axentro-website/links.html" target="_blank">
+                    <button class="btn-gold w-full">تجديد الاشتراك</button>
+                </a>
+                <button class="text-gray-400 text-sm mt-4 hover:text-gray-600" onclick="dismissWarning()">متابعة الاستخدام</button>
+            </div>
+        </div>
+    </div>
 
     <div class="cart-overlay" id="cartOverlay" onclick="closeCart()"></div>
     <aside class="cart-sidebar" id="cartSidebar">
@@ -271,17 +329,6 @@
     <footer class="bg-[var(--black-deep)] text-white py-16 px-4 mt-20">
         <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-10 items-center">
             
-            <!-- Center Column (Order 1 in RTL means visual Right on desktop, but we want Center content here. Wait, RTL grid places Col 1 on Right. Let's reorder) -->
-            <!-- 
-                Layout Request:
-                Left: Logo + Socials (Visually Left in LTR, but Visually Right in RTL? No, user said "Extreme Left" (Shimal)).
-                In RTL, "Shimal" (Left) is the end of the flex/grid line.
-                So: 
-                Col 1 (Right/Start): Empty/Spacer
-                Col 2 (Center): Copyright + QR
-                Col 3 (Left/END): Logo + Socials
-            -->
-
             <!-- 1. Empty Spacer for Grid Balance (Visual Right) -->
             <div class="hidden md:block order-1"></div>
 
@@ -315,13 +362,74 @@
         // ================= CONFIG =================
         const API_URL = 'https://script.google.com/macros/s/AKfycbyuLyCqPmG1a2w7Vpgu2hGFFG44tlmW4N9AuNwa-YHRupXRPhxBF-_mEOhPgjpSBwM9/exec';
         const IMG_URL = 'https://axentro-official.github.io/Last-piece-/images/';
+        const LICENSE_API_URL = 'https://script.google.com/macros/s/AKfycbyFueLWNvOm8DJjR2Hf_cQO9rkroG-sGltx_-iyCLtjDLFGtN4fgLgsgXlD2z_b3oUb8w/exec';
         
         let products = [], cart = [], favorites = JSON.parse(localStorage.getItem('lp_fav') || '[]');
         let heroSlide = 0, heroInterval;
         const productSlideData = {}; 
         const selections = {};
 
+        // ================= LICENSE LOGIC =================
+        async function checkLicenseStatus() {
+            const params = new URLSearchParams(window.location.search);
+            const key = params.get('key');
+
+            if (!key) return; // No key provided, skip check (or handle as invalid)
+
+            try {
+                const res = await fetch(`${LICENSE_API_URL}?key=${key}`);
+                const data = await res.json();
+
+                if (data.status === 'expired' || data.status === 'suspended') {
+                    showExpired();
+                } else if (data.status === 'active') {
+                    // Check for warning threshold
+                    let showWarn = false;
+                    let timeText = "";
+
+                    if (data.unit === 'hour' || data.unit === 'minute') {
+                        // Warn if less than 1 hour left
+                        if (data.days_left === 0 && data.hours_left === 0) showWarn = true;
+                        timeText = `باقي ${data.minutes_left} دقيقة و ${data.hours_left} ساعة`;
+                    } else {
+                        // Days/Months/Years
+                        if (data.days_left <= 7) showWarn = true;
+                        timeText = `باقي ${data.days_left} أيام`;
+                    }
+
+                    if (showWarn) {
+                        document.getElementById('warningTimeText').innerText = timeText;
+                        document.getElementById('warningModal').style.display = 'flex';
+                    }
+                    
+                    // Hide loader, show app
+                    document.getElementById('licenseLoader').style.display = 'none';
+                    
+                } else {
+                    // Invalid key or error
+                    showExpired();
+                }
+            } catch (e) {
+                console.error("License check failed", e);
+                // Fail silently or block? For safety, maybe block.
+                // showExpired(); 
+            }
+        }
+
+        function showExpired() {
+            document.getElementById('licenseLoader').style.display = 'none';
+            document.getElementById('licenseExpired').style.display = 'flex';
+        }
+
+        function dismissWarning() {
+            document.getElementById('warningModal').style.display = 'none';
+        }
+
+        // ================= MAIN APP =================
         document.addEventListener('DOMContentLoaded', async () => {
+            // Check license first
+            await checkLicenseStatus();
+            
             await loadData();
             initHero();
             initGovernorates();
@@ -514,7 +622,6 @@
                 const visibleSlides = Array.from(slides).filter(s => s.style.display !== 'none');
                 if(visibleSlides.length === 0) return;
                 
-                // Calculate next index based on visible slides count to avoid white screen
                 let currentVisualIndex = -1;
                 visibleSlides.forEach((s, i) => { if(s.classList.contains('active')) currentVisualIndex = i; });
                 
@@ -532,7 +639,7 @@
             heroSlide=n; 
             s[heroSlide]?.classList.add('active'); 
             d[heroSlide]?.classList.add('active'); 
-            startHeroAutoSlide(); // Reset timer
+            startHeroAutoSlide();
         }
 
         function heroNext() {
@@ -557,57 +664,45 @@
             goHero(prevRealIndex);
         }
         
-        // ================= HELPERS (Massive Color Map) =================
+        // ================= HELPERS =================
         function getColorCode(c) {
             if(!c) return '#ccc'; 
             if(c.startsWith('#')) return c; 
-            
             const map={
-                // English Standard
                 'black':'#000000','white':'#ffffff','red':'#ff0000','green':'#008000','blue':'#0000ff','yellow':'#ffff00','cyan':'#00ffff','magenta':'#ff00ff',
                 'gray':'#808080','grey':'#808080','silver':'#c0c0c0','gold':'#ffd700','beige':'#f5f5dc','brown':'#a52a2a','navy':'#000080','purple':'#800080',
                 'pink':'#ffc0cb','orange':'#ffa500','violet':'#ee82ee','indigo':'#4b0082','turquoise':'#40e0d0','maroon':'#800000','olive':'#808000','lime':'#00ff00',
                 'aqua':'#00ffff','teal':'#008080','coral':'#ff7f50','salmon':'#fa8072','khaki':'#f0e68c','lavender':'#e6e6fa','tan':'#d2b48c','crimson':'#dc143c',
                 'chocolate':'#d2691e','plum':'#dda0dd','orchid':'#da70d6','sienna':'#a0522d','tomato':'#ff6347','wheat':'#f5deb3','ivory':'#fffff0',
-                
-                // Shades
                 'darkblue':'#00008b','darkred':'#8b0000','darkgreen':'#006400','darkgray':'#a9a9a9','darkgrey':'#a9a9a9','darkorange':'#ff8c00','darkviolet':'#9400d3','darkcyan':'#008b8b',
                 'lightblue':'#add8e6','lightred':'#ffcccb','lightgreen':'#90ee90','lightgray':'#d3d3d3','lightgrey':'#d3d3d3','lightyellow':'#ffffe0','lightpink':'#ffb6c1',
                 'skyblue':'#87ceeb','deepskyblue':'#00bfff','dodgerblue':'#1e90ff','royalblue':'#4169e1','midnightblue':'#191970','steelblue':'#4682b4','slateblue':'#6a5acd',
                 'forestgreen':'#228b22','seagreen':'#2e8b57','springgreen':'#00ff7f','palegreen':'#98fb98','limegreen':'#32cd32','yellowgreen':'#9acd32',
-                'hotpink':'#ff69b4','deeppink':'#ff1493',' palevioletred':'#db7093','mediumvioletred':'#c71585',
+                'hotpink':'#ff69b4','deeppink':'#ff1493',
                 'sandybrown':'#f4a460','goldenrod':'#daa520','darkgoldenrod':'#b8860b','rosybrown':'#bc8f8f','saddlebrown':'#8b4513',
                 'mistyrose':'#ffe4e1','antiquewhite':'#faebd7','linen':'#faf0e6','seashell':'#fff5ee','floralwhite':'#fffaf0','ghostwhite':'#f8f8ff','mintcream':'#f5fffa','azure':'#f0ffff','aliceblue':'#f0f8ff','snow':'#fffafa',
-
                 // Arabic Standard
-                'اسود':'#000000','أسود':'#000000','الاسود':'#000000','الأسود':'#000000','سواد':'#000000','السواد':'#000000',
-                'ابيض':'#ffffff','أبيض':'#ffffff','الابيض':'#ffffff','الأبيض':'#ffffff','بياض':'#ffffff','البياض':'#ffffff',
-                'احمر':'#ff0000','أحمر':'#ff0000','الاحمر':'#ff0000','الأحمر':'#ff0000','حمرة':'#ff0000','الحمرة':'#ff0000',
-                'ازرق':'#0000ff','أزرق':'#0000ff','الازرق':'#0000ff','الأزرق':'#0000ff','زرقة':'#0000ff','الزرقة':'#0000ff',
-                'اخضر':'#008000','أخضر':'#008000','الاخضر':'#008000','الأخضر':'#008000','خضرة':'#008000','الخضرة':'#008000',
-                'اصفر':'#ffff00','أصفر':'#ffff00','الاصفر':'#ffff00','الأصفر':'#ffff00','صفرة':'#ffff00','الصفرة':'#ffff00',
-                'برتقالي':'#ffa500','البرتقالي':'#ffa500','برتقالى':'#ffa500','البرتقالى':'#ffa500',
-                'بنفسجي':'#800080','البنفسجي':'#800080','بنفسجى':'#800080','البنفسجى':'#800080','موف':'#800080','الموف':'#800080',
-                'وردي':'#ffc0cb','الوردي':'#ffc0cb','وردى':'#ffc0cb','الوردى':'#ffc0cb','روز':'#ffc0cb','الروز':'#ffc0cb',
-                'بني':'#a52a2a','البنى':'#a52a2a','البني':'#a52a2a','بنى':'#a52a2a','سكني':'#d2b48c','السكني':'#d2b48c',
-                'رمادي':'#808080','الرمادي':'#808080','رصاصي':'#708090','الرصاصي':'#708090',
-                'كحلي':'#000080','الكحلي':'#000080','كحلى':'#000080','نيلي':'#000080','النيلي':'#000080',
-                'بيج':'#f5f5dc','البيج':'#f5f5dc','عسلي':'#d4b896','العسلي':'#d4b896',
-                'ذهبي':'#ffd700','الذهبي':'#ffd700','ذهب':'#ffd700',
-                'فضي':'#c0c0c0','الفضي':'#c0c0c0','فضة':'#c0c0c0',
-                'سماوي':'#87ceeb','السماوي':'#87ceeb','تركي':'#40e0d0','التركي':'#40e0d0','تركواز':'#40e0d0','التركواز':'#40e0d0',
-                'عنابي':'#800000','العنابي':'#800000','خمري':'#800000','الخمري':'#800000',
-                'زيتي':'#808000','الزيتي':'#808000','زيتوني':'#808000','الزيتوني':'#808000',
-                'خاكي':'#f0e68c','الخاكي':'#f0e68c','كاكي':'#f0e68c','الكاكي':'#f0e68c',
-                'نحاسي':'#b87333','النحاسي':'#b87333','برونزي':'#cd7f32','البرونزي':'#cd7f32',
-                'جينز':'#1560bd','الجينز':'#1560bd','جين':'#1560bd','الجين':'#1560bd'
+                'اسود':'#000000','أسود':'#000000','الاسود':'#000000','الأسود':'#000000',
+                'ابيض':'#ffffff','أبيض':'#ffffff','الابيض':'#ffffff','الأبيض':'#ffffff',
+                'احمر':'#ff0000','أحمر':'#ff0000','الاحمر':'#ff0000','الأحمر':'#ff0000',
+                'ازرق':'#0000ff','أزرق':'#0000ff','الازرق':'#0000ff','الأزرق':'#0000ff',
+                'اخضر':'#008000','أخضر':'#008000','الاخضر':'#008000','الأخضر':'#008000',
+                'اصفر':'#ffff00','أصفر':'#ffff00','الاصفر':'#ffff00','الأصفر':'#ffff00',
+                'برتقاني':'#ffa500','البرتقالي':'#ffa500',
+                'بنفسجي':'#800080','البنفسجي':'#800080',
+                'وردي':'#ffc0cb','الوردي':'#ffc0cb',
+                'بني':'#a52a2a','البنى':'#a52a2a',
+                'رمادي':'#808080','الرمادي':'#808080',
+                'كحلي':'#000080','الكحلي':'#000080',
+                'بيج':'#f5f5dc','البيج':'#f5f5dc',
+                'ذهبي':'#ffd700','الذهبي':'#ffd700',
+                'فضي':'#c0c0c0','الفضي':'#c0c0c0',
+                'سماوي':'#87ceeb','السماوي':'#87ceeb',
+                'عنابي':'#800000','العنابي':'#800000'
             };
-            
-            // Normalize input
             let key = c.trim().toLowerCase();
-            key = key.replace(/اللون/g, '').replace(/\s/g, ''); // Remove "اللون" and spaces
-            
-            return map[key] || '#cccccc'; // Default to a visible gray
+            key = key.replace(/اللون/g, '').replace(/\s/g, '');
+            return map[key] || '#cccccc';
         }
         
         function toggleFav(id, el){ const i=favorites.indexOf(id); if(i>-1){favorites.splice(i,1);el.classList.remove('active');}else{favorites.push(id);el.classList.add('active');} localStorage.setItem('lp_fav',JSON.stringify(favorites)); }
