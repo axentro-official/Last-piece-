@@ -381,14 +381,13 @@ const API_URL = 'https://script.google.com/macros/s/AKfycbyuLyCqPmG1a2w7Vpgu2hGF
 const IMG_URL = 'https://axentro-official.github.io/Last-piece-/images/';
 const LICENSE_API_URL = 'https://script.google.com/macros/s/AKfycbyFueLWNvOm8DJjR2Hf_cQO9rkroG-sGltx_-iyCLtjDLFGtN4fgLgsgXlD2z_b3oUb8w/exec'; 
 
-/* === LICENSE SYSTEM (With URL Cleaner) ===*/
+/* === LICENSE SYSTEM ===*/
 async function checkLicense() {
     const urlParams = new URLSearchParams(window.location.search);
     const key = urlParams.get('key');
 
-    // لو مفيش مفتاح خالص -> بنظهر صفحة الخطأ (تم الانتهاء)
     if (!key) {
-        showExpired(); 
+        showExpired();
         return;
     }
 
@@ -399,14 +398,8 @@ async function checkLicense() {
         if (data.status === 'expired' || data.status === 'suspended') {
             showExpired();
         } else if (data.status === 'active') {
-            
-            // 🚀🔥 الخطوة السحرية: هنا بنشيل المفتاح من اللينك
-            // هيخلي اللينك نظيف في المتصفح (invoice.html بس من غير ?key=...)
-            window.history.replaceState({}, document.title, window.location.pathname);
-
-            // Check for warning threshold
-            let showWarn = false;
             let timeText = "";
+            let showWarn = false;
 
             if (data.is_lifetime) {
                 timeText = "اشتراك مدى الحياة";
@@ -433,8 +426,8 @@ async function checkLicense() {
             showExpired();
         }
     } catch (e) {
-        console.error("License check failed", e);
-        showExpired(); 
+        console.error(e);
+        showExpired();
     }
 }
 
