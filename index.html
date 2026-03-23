@@ -30,6 +30,11 @@
             background: var(--white-cream);
             color: #333;
             overflow-x: hidden;
+            padding-bottom: 80px;
+        }
+        
+        @media (min-width: 769px) {
+            body { padding-bottom: 0; }
         }
         
         .font-display { font-family: 'Playfair Display', serif; }
@@ -73,35 +78,15 @@
             box-shadow: 0 8px 25px rgba(212, 175, 55, 0.5);
         }
         
-        .btn-gold:active {
-            transform: translateY(-1px);
-        }
-        
         /* Animations */
         @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(40px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-        
-        @keyframes shimmer {
-            0% { background-position: -200% 0; }
-            100% { background-position: 200% 0; }
+            from { opacity: 0; transform: translateY(40px); }
+            to { opacity: 1; transform: translateY(0); }
         }
         
         @keyframes pulse {
             0%, 100% { transform: scale(1); }
             50% { transform: scale(1.05); }
-        }
-        
-        @keyframes float {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
         }
         
         .fade-in {
@@ -113,13 +98,6 @@
         .fade-in.visible {
             opacity: 1;
             transform: translateY(0);
-        }
-        
-        /* Loading Skeleton */
-        .skeleton {
-            background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
-            background-size: 200% 100%;
-            animation: shimmer 1.5s infinite;
         }
         
         /* Header */
@@ -307,9 +285,7 @@
             aspect-ratio: 3/4;
             border-radius: 30px;
             overflow: hidden;
-            box-shadow: 
-                0 30px 60px rgba(0, 0, 0, 0.12),
-                0 0 0 1px rgba(212, 175, 55, 0.1);
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.12), 0 0 0 1px rgba(212, 175, 55, 0.1);
             background: white;
             margin: 0 auto;
         }
@@ -410,7 +386,6 @@
             font-size: 16px;
             color: #888;
             letter-spacing: 2px;
-            text-transform: uppercase;
         }
         
         .products-grid {
@@ -787,11 +762,6 @@
             grid-template-columns: repeat(3, 1fr);
         }
         
-        .page-header {
-            text-align: center;
-            padding: 40px 24px 20px;
-        }
-        
         .back-btn {
             display: inline-flex;
             align-items: center;
@@ -805,7 +775,6 @@
             font-weight: 600;
             color: #555;
             transition: all 0.3s ease;
-            margin-bottom: 20px;
         }
         
         .back-btn:hover {
@@ -852,11 +821,13 @@
         }
         
         .cart-header {
-            padding: 24px;
+            padding: 20px 24px;
             border-bottom: 1px solid #eee;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            flex-shrink: 0;
+            background: white;
         }
         
         .cart-title {
@@ -885,6 +856,7 @@
             flex: 1;
             overflow-y: auto;
             padding: 20px;
+            min-height: 0;
         }
         
         .cart-empty {
@@ -916,10 +888,12 @@
             border-radius: 12px;
             object-fit: cover;
             background: white;
+            flex-shrink: 0;
         }
         
         .cart-item-info {
             flex: 1;
+            min-width: 0;
         }
         
         .cart-item-name {
@@ -970,16 +944,17 @@
         }
         
         .cart-footer {
-            padding: 24px;
+            padding: 20px 24px;
             border-top: 1px solid #eee;
-            background: #fafafa;
+            background: white;
+            flex-shrink: 0;
         }
         
         .cart-total {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 20px;
+            margin-bottom: 16px;
         }
         
         .cart-total-label {
@@ -988,7 +963,7 @@
         }
         
         .cart-total-value {
-            font-size: 28px;
+            font-size: 26px;
             font-weight: 800;
         }
         
@@ -1011,6 +986,7 @@
             font-weight: 600;
             font-size: 15px;
             transition: all 0.3s ease;
+            font-family: 'Tajawal', sans-serif;
         }
         
         .clear-cart-btn:hover {
@@ -1277,6 +1253,51 @@
             color: #666;
         }
         
+        /* Bottom Navigation - Shows on ALL screens */
+        .mobile-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            padding: 10px 16px;
+            border-top: 1px solid #eee;
+            z-index: 999;
+            box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.05);
+        }
+        
+        .mobile-nav-inner {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+        
+        .mobile-nav-btn {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            padding: 8px 16px;
+            border-radius: 12px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: #888;
+        }
+        
+        .mobile-nav-btn.active {
+            color: var(--gold);
+            background: rgba(212, 175, 55, 0.1);
+        }
+        
+        .mobile-nav-btn span {
+            font-size: 11px;
+            font-weight: 600;
+        }
+        
         /* Responsive */
         @media (max-width: 1200px) {
             .products-grid {
@@ -1324,12 +1345,7 @@
             }
             
             .nav-links {
-                gap: 4px;
-            }
-            
-            .nav-link {
-                padding: 8px 14px;
-                font-size: 13px;
+                display: none;
             }
             
             .hero-section {
@@ -1424,72 +1440,6 @@
                 text-align: center;
                 order: 3;
             }
-        }
-        
-        @media (max-width: 480px) {
-            .products-grid,
-            .products-page .products-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .product-card {
-                max-width: 400px;
-                margin: 0 auto;
-            }
-        }
-        
-        /* Mobile Bottom Navigation */
-        .mobile-nav {
-            display: none;
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: white;
-            padding: 12px 16px;
-            border-top: 1px solid #eee;
-            z-index: 999;
-            box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.05);
-        }
-        
-        .mobile-nav-inner {
-            display: flex;
-            justify-content: space-around;
-            align-items: center;
-        }
-        
-        .mobile-nav-btn {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 4px;
-            padding: 8px 16px;
-            border-radius: 12px;
-            background: none;
-            border: none;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            color: #888;
-        }
-        
-        .mobile-nav-btn.active {
-            color: var(--gold);
-            background: rgba(212, 175, 55, 0.1);
-        }
-        
-        .mobile-nav-btn span {
-            font-size: 11px;
-            font-weight: 600;
-        }
-        
-        @media (max-width: 768px) {
-            .mobile-nav {
-                display: block;
-            }
-            
-            .nav-links {
-                display: none;
-            }
             
             .site-footer {
                 padding-bottom: 100px;
@@ -1499,6 +1449,108 @@
             .products-page,
             .success-page {
                 padding-bottom: 100px;
+            }
+        }
+        
+        /* كارتين جنب بعض في الموبايل العادي */
+        @media (max-width: 480px) {
+            .products-grid,
+            .products-page .products-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 12px;
+                padding: 0 12px;
+            }
+            
+            .product-card {
+                border-radius: 16px;
+            }
+            
+            .prod-info {
+                padding: 12px;
+            }
+            
+            .prod-name {
+                font-size: 13px;
+                margin-bottom: 4px;
+            }
+            
+            .prod-code {
+                font-size: 10px;
+                margin-bottom: 8px;
+            }
+            
+            .price-current {
+                font-size: 15px;
+            }
+            
+            .price-old {
+                font-size: 12px;
+            }
+            
+            .size-section,
+            .color-section {
+                margin-bottom: 10px;
+            }
+            
+            .section-label {
+                font-size: 11px;
+                margin-bottom: 6px;
+            }
+            
+            .size-btn {
+                min-width: 32px;
+                height: 28px;
+                font-size: 11px;
+            }
+            
+            .color-dot {
+                width: 22px;
+                height: 22px;
+            }
+            
+            .color-name {
+                font-size: 9px;
+            }
+            
+            .prod-actions {
+                gap: 8px;
+            }
+            
+            .qty-counter {
+                padding: 2px;
+            }
+            
+            .qty-btn {
+                width: 26px;
+                height: 26px;
+                font-size: 14px;
+            }
+            
+            .qty-display {
+                width: 28px;
+                font-size: 13px;
+            }
+            
+            .add-cart-btn {
+                padding: 10px;
+                font-size: 12px;
+            }
+            
+            .discount-badge {
+                padding: 4px 10px;
+                font-size: 11px;
+            }
+            
+            .fav-btn {
+                width: 36px;
+                height: 36px;
+                top: 10px;
+                left: 10px;
+            }
+            
+            .fav-btn svg {
+                width: 16px;
+                height: 16px;
             }
         }
     </style>
@@ -1604,7 +1656,7 @@
             
             <section class="featured-section" id="featuredSection" style="display:none;">
                 <div class="section-header">
-                    <p class="section-subtitle">精选推荐</p>
+                    <p class="section-subtitle">منتجات مختارة بعناية</p>
                     <h2 class="section-title text-gold-gradient">منتجات مميزة</h2>
                 </div>
                 <div class="products-grid" id="homeFeatured"></div>
@@ -1786,7 +1838,7 @@
         </div>
     </main>
 
-    <!-- Mobile Bottom Navigation -->
+    <!-- Bottom Navigation - Shows on ALL screens -->
     <nav class="mobile-nav" id="mobileNav">
         <div class="mobile-nav-inner">
             <button class="mobile-nav-btn active" onclick="showPage('homePage')" data-page="homePage">
@@ -1854,9 +1906,6 @@
         let heroInterval = null;
         const productSlideData = {}; 
         const selections = {};
-        
-        // Image cache for faster loading
-        const imageCache = new Map();
 
         // ================= MAIN APP =================
         document.addEventListener('DOMContentLoaded', async () => {
@@ -1884,19 +1933,15 @@
         }
 
         function initScrollEffects() {
-            let lastScroll = 0;
             const header = document.getElementById('mainHeader');
             
             window.addEventListener('scroll', () => {
                 const currentScroll = window.pageYOffset;
-                
                 if (currentScroll > 50) {
                     header.classList.add('scrolled');
                 } else {
                     header.classList.remove('scrolled');
                 }
-                
-                lastScroll = currentScroll;
             }, { passive: true });
         }
 
@@ -1922,9 +1967,7 @@
             document.getElementById('productsList').innerHTML = products.map(p => createCard(p, 'prod')).join('');
             document.getElementById('discountsList').innerHTML = products.filter(p => p.discount_price).map(p => createCard(p, 'disc')).join('');
             
-            // Preload first images
             checkAllProductImages();
-            
             setTimeout(initAnimations, 100);
         }
 
@@ -2132,7 +2175,6 @@
                 d.innerHTML += `<button class="carousel-dot ${i === 1 ? 'active' : ''}" onclick="goHero(${i - 1})"></button>`;
             }
             
-            // Insert slides before the buttons
             c.insertAdjacentHTML('afterbegin', h);
             startHeroAutoSlide();
         }
@@ -2439,12 +2481,10 @@
             document.getElementById(id).classList.add('active');
             window.scrollTo(0, 0);
             
-            // Update mobile nav
             document.querySelectorAll('.mobile-nav-btn').forEach(btn => {
                 btn.classList.toggle('active', btn.dataset.page === id);
             });
             
-            // Re-init animations
             setTimeout(initAnimations, 50);
         }
 
