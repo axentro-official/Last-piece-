@@ -96,7 +96,6 @@
     .brand img{ width:40px; height:40px; border-radius:50%; border:1px solid var(--gold); }
     .brandName{ font-family:'Playfair Display', serif; font-weight:900; font-size:20px; color:var(--gold); }
     
-    /* Updated Logout Button */
     .logout-btn {
         background: transparent;
         color: #666;
@@ -160,7 +159,63 @@
     .footer-logo-text { font-family: 'Playfair Display', serif; font-size: 24px; color: var(--gold); font-weight: 900; margin-bottom: 5px; }
     .footer-inc { color: #888; font-size: 12px; }
 
-    /* Responsive */
+    /* Responsive - Desktop Large (NEW FIX) */
+    @media (min-width: 1025px) {
+      body { font-size: 16px; }
+      
+      .topbar {
+        padding: 20px;
+      }
+      
+      .brand img {
+        width: 50px;
+        height: 50px;
+      }
+
+      .brandName {
+        font-size: 24px;
+      }
+
+      .logout-btn {
+        font-size: 14px;
+        padding: 8px 16px;
+      }
+      
+      .card {
+        padding: 30px;
+      }
+
+      h2 {
+        font-size: 24px;
+        margin-bottom: 20px;
+      }
+
+      label {
+        font-size: 14px;
+        margin-bottom: 8px;
+      }
+
+      input {
+        font-size: 16px;
+        padding: 14px;
+      }
+
+      .btn {
+        font-size: 17px;
+        padding: 14px 30px;
+      }
+
+      th, td {
+        font-size: 15px;
+        padding: 12px;
+      }
+
+      .totalLine.primary {
+        font-size: 24px;
+      }
+    }
+
+    /* Responsive - Mobile */
     @media (max-width: 768px){
       .grid-4, .grid-2{ grid-template-columns:1fr; }
       .topbar{ flex-direction:column; gap:10px; }
@@ -286,7 +341,6 @@
         <div style="font-size:12px; color:#888;">لوحة التحكم</div>
       </div>
     </div>
-    <!-- Fixed Logout Button -->
     <button class="logout-btn" onclick="logout()">🔒 خروج</button>
   </div>
 
@@ -323,11 +377,11 @@
       <table id="itemsTable">
         <thead>
           <tr>
-            <th>#</th><th>صورة</th><th>المنتج</th><th>المقاس</th><th>اللون</th><th>الكمية</th><th>السعر</th><th>الإجمالي</th>
+            <th>#</th><th>صورة</th><th>الكود</th><th>المنتج</th><th>المقاس</th><th>اللون</th><th>الكمية</th><th>السعر</th><th>الإجمالي</th>
           </tr>
         </thead>
         <tbody id="itemsBody">
-          <tr><td colspan="8" style="padding:20px; color:#888">لم يتم جلب طلب بعد</td></tr>
+          <tr><td colspan="9" style="padding:20px; color:#888">لم يتم جلب طلب بعد</td></tr>
         </tbody>
       </table>
     </div>
@@ -529,11 +583,13 @@ function fillForm(order){
   order.items.forEach((item, i) => {
     const subtotal = item.qty * item.price;
     total += subtotal;
+    // Added data-id attribute and a dedicated column for ID
     tbody.innerHTML += `
-      <tr>
+      <tr data-id="${item.product_id}">
         <td data-label="#">${i+1}</td>
         <td data-label="صورة"><img class="thumbMini" src="${IMG_URL}${item.product_id}.webp" onerror="this.src='https://via.placeholder.com/40'"></td>
-        <td data-label="المنتج">${item.product_name}<br><small style="color:#999">${item.product_id}</small></td>
+        <td data-label="الكود"><strong>${item.product_id}</strong></td>
+        <td data-label="المنتج">${item.product_name}</td>
         <td data-label="المقاس">${item.size}</td>
         <td data-label="اللون">${item.color}</td>
         <td data-label="الكمية">${item.qty}</td>
@@ -571,13 +627,14 @@ function getInvoiceData(){
     notes: document.getElementById('custNotes').value,
     payment: document.getElementById('payMethod').value,
     items: Array.from(document.querySelectorAll('#itemsBody tr')).map(r => ({
-      name: r.children[2] ? r.children[2].innerText.split('\n')[0] : '-', 
+      id: r.dataset.id || '-', // Get ID from data attribute
+      name: r.children[3] ? r.children[3].innerText : '-', // Name is now index 3
       img: r.querySelector('img') ? r.querySelector('img').src : '',
-      size: r.children[3] ? r.children[3].innerText : '-',
-      color: r.children[4] ? r.children[4].innerText : '-',
-      qty: r.children[5] ? r.children[5].innerText : '0',
-      price: r.children[6] ? r.children[6].innerText : '0',
-      total: r.children[7] ? r.children[7].innerText : '0'
+      size: r.children[4] ? r.children[4].innerText : '-',
+      color: r.children[5] ? r.children[5].innerText : '-',
+      qty: r.children[6] ? r.children[6].innerText : '0',
+      price: r.children[7] ? r.children[7].innerText : '0',
+      total: r.children[8] ? r.children[8].innerText : '0'
     })),
     grandTotal: document.querySelector('#totalsBox .primary span:last-child') ? document.querySelector('#totalsBox .primary span:last-child').innerText : '0.00 ج.م',
     words: document.getElementById('amountWords').innerText
@@ -652,10 +709,10 @@ function buildA4Html(d){
 
         <table>
           <thead>
-            <tr><th>#</th><th>المنتج</th><th>المقاس</th><th>اللون</th><th>الكمية</th><th>السعر</th><th>الإجمالي</th></tr>
+            <tr><th>#</th><th>الكود</th><th>المنتج</th><th>المقاس</th><th>اللون</th><th>الكمية</th><th>السعر</th><th>الإجمالي</th></tr>
           </thead>
           <tbody>
-            ${d.items.map((it,i) => `<tr><td>${i+1}</td><td>${it.name}</td><td>${it.size}</td><td>${it.color}</td><td>${it.qty}</td><td>${it.price}</td><td><strong>${it.total}</strong></td></tr>`).join('')}
+            ${d.items.map((it,i) => `<tr><td>${i+1}</td><td>${it.id}</td><td>${it.name}</td><td>${it.size}</td><td>${it.color}</td><td>${it.qty}</td><td>${it.price}</td><td><strong>${it.total}</strong></td></tr>`).join('')}
           </tbody>
         </table>
 
@@ -726,7 +783,7 @@ function buildThermalHtml(d, mm){
         <div>
           ${d.items.map(it => `
             <div class="item">
-              <div class="bold">${it.name}</div>
+              <div class="bold">${it.name} <span style="font-weight:normal; font-size:10px;">(${it.id})</span></div>
               <div style="font-size: 11px; color: #444;">${it.size} / ${it.color} × ${it.qty}</div>
               <div style="text-align: left;" class="bold">${it.total}</div>
             </div>
