@@ -53,12 +53,12 @@
             background-clip: text;
         }
         
-        /* Buttons */
+        /* Buttons - Scaled Down */
         .btn-gold {
             background: linear-gradient(135deg, var(--gold), var(--gold-dark));
             color: white;
             border: none;
-            padding: 14px 35px;
+            padding: 10px 24px;
             border-radius: 50px;
             font-weight: 600;
             cursor: pointer;
@@ -68,19 +68,19 @@
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            gap: 8px;
+            gap: 6px;
             font-family: 'Tajawal', sans-serif;
-            font-size: 16px;
+            font-size: 14px;
         }
         
         .btn-gold:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 25px rgba(212, 175, 55, 0.5);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(212, 175, 55, 0.5);
         }
         
         /* Animations */
         @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(40px); }
+            from { opacity: 0; transform: translateY(30px); }
             to { opacity: 1; transform: translateY(0); }
         }
         
@@ -91,7 +91,7 @@
         
         .fade-in {
             opacity: 0;
-            transform: translateY(30px);
+            transform: translateY(20px);
             transition: opacity 0.7s ease-out, transform 0.7s ease-out;
         }
         
@@ -100,7 +100,7 @@
             transform: translateY(0);
         }
         
-        /* Header */
+        /* Header - Compact */
         .main-header {
             position: fixed;
             top: 0;
@@ -121,14 +121,14 @@
         .header-inner {
             max-width: 1400px;
             margin: 0 auto;
-            padding: 12px 24px;
+            padding: 10px 24px;
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
         
         .logo-img {
-            height: 50px;
+            height: 40px;
             width: auto;
             transition: transform 0.3s ease;
         }
@@ -139,16 +139,16 @@
         
         .nav-links {
             display: flex;
-            gap: 8px;
+            gap: 6px;
             align-items: center;
         }
         
         .nav-link {
             font-family: 'Playfair Display', serif;
             font-weight: 700;
-            font-size: 15px;
+            font-size: 13px;
             letter-spacing: 0.5px;
-            padding: 10px 20px;
+            padding: 8px 16px;
             border-radius: 25px;
             transition: all 0.3s ease;
             background: transparent;
@@ -184,8 +184,8 @@
         
         .cart-btn {
             position: relative;
-            width: 48px;
-            height: 48px;
+            width: 40px;
+            height: 40px;
             border-radius: 50%;
             background: var(--gray-soft);
             border: none;
@@ -209,11 +209,11 @@
             position: absolute;
             top: -4px;
             right: -4px;
-            width: 22px;
-            height: 22px;
+            width: 20px;
+            height: 20px;
             background: linear-gradient(135deg, var(--gold), var(--gold-dark));
             color: white;
-            font-size: 11px;
+            font-size: 10px;
             font-weight: 700;
             border-radius: 50%;
             display: flex;
@@ -223,10 +223,10 @@
             box-shadow: 0 2px 8px rgba(212, 175, 55, 0.4);
         }
         
-        /* Hero Section */
+        /* Hero Section - Balanced */
         .hero-section {
-            padding-top: 100px;
-            padding-bottom: 60px;
+            padding-top: 90px;
+            padding-bottom: 40px;
             background: linear-gradient(180deg, var(--white-cream) 0%, white 100%);
         }
         
@@ -236,7 +236,7 @@
             padding: 0 24px;
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 60px;
+            gap: 40px;
             align-items: center;
         }
         
@@ -245,29 +245,29 @@
         }
         
         .hero-logo {
-            width: 200px;
-            margin-bottom: 30px;
+            width: 140px;
+            margin-bottom: 20px;
             animation: fadeInUp 0.8s ease-out;
         }
         
         .hero-title {
             font-family: 'Playfair Display', serif;
-            font-size: clamp(48px, 8vw, 80px);
+            font-size: clamp(32px, 5vw, 48px); /* Scaled Down */
             font-weight: 900;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
             animation: fadeInUp 0.8s ease-out 0.2s backwards;
         }
         
         .hero-slogan {
-            font-size: 24px;
+            font-size: 18px; /* Scaled Down */
             color: #666;
-            margin-bottom: 40px;
+            margin-bottom: 30px;
             animation: fadeInUp 0.8s ease-out 0.4s backwards;
         }
         
         .hero-actions {
             display: flex;
-            gap: 16px;
+            gap: 12px;
             justify-content: flex-start;
             animation: fadeInUp 0.8s ease-out 0.6s backwards;
         }
@@ -281,11 +281,11 @@
         .hero-carousel {
             position: relative;
             width: 100%;
-            max-width: 550px;
+            max-width: 450px; /* Adjusted */
             aspect-ratio: 3/4;
-            border-radius: 30px;
+            border-radius: 24px; /* Slightly reduced */
             overflow: hidden;
-            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.12), 0 0 0 1px rgba(212, 175, 55, 0.1);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1), 0 0 0 1px rgba(212, 175, 55, 0.1);
             background: white;
             margin: 0 auto;
         }
@@ -316,8 +316,8 @@
             position: absolute;
             top: 50%;
             transform: translateY(-50%);
-            width: 56px;
-            height: 56px;
+            width: 44px;
+            height: 44px;
             background: rgba(255, 255, 255, 0.98);
             border-radius: 50%;
             border: none;
@@ -327,7 +327,7 @@
             align-items: center;
             justify-content: center;
             transition: all 0.3s ease;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
             color: var(--gold-dark);
         }
         
@@ -338,19 +338,19 @@
             box-shadow: 0 8px 30px rgba(212, 175, 55, 0.4);
         }
         
-        .carousel-btn.prev { left: -28px; }
-        .carousel-btn.next { right: -28px; }
+        .carousel-btn.prev { left: -20px; }
+        .carousel-btn.next { right: -20px; }
         
         .carousel-dots {
             display: flex;
             justify-content: center;
-            gap: 10px;
-            margin-top: 24px;
+            gap: 8px;
+            margin-top: 20px;
         }
         
         .carousel-dot {
-            width: 12px;
-            height: 12px;
+            width: 10px;
+            height: 10px;
             border-radius: 50%;
             background: #ddd;
             border: 2px solid var(--gold);
@@ -366,24 +366,24 @@
         
         /* Featured Section */
         .featured-section {
-            padding: 80px 24px;
+            padding: 60px 24px;
             background: white;
         }
         
         .section-header {
             text-align: center;
-            margin-bottom: 50px;
+            margin-bottom: 40px;
         }
         
         .section-title {
             font-family: 'Playfair Display', serif;
-            font-size: 42px;
+            font-size: 32px; /* Scaled Down */
             font-weight: 900;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
         }
         
         .section-subtitle {
-            font-size: 16px;
+            font-size: 13px;
             color: #888;
             letter-spacing: 2px;
         }
@@ -393,22 +393,22 @@
             margin: 0 auto;
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            gap: 24px;
+            gap: 20px;
         }
         
-        /* Product Card */
+        /* Product Card - Compact */
         .product-card {
             background: white;
-            border-radius: 24px;
+            border-radius: 16px;
             overflow: hidden;
-            box-shadow: 0 4px 20px var(--shadow-dark);
+            box-shadow: 0 4px 15px var(--shadow-dark);
             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             position: relative;
         }
         
         .product-card:hover {
-            transform: translateY(-12px);
-            box-shadow: 0 20px 50px var(--shadow-gold);
+            transform: translateY(-8px);
+            box-shadow: 0 15px 30px var(--shadow-gold);
         }
         
         .sold-out-overlay {
@@ -425,33 +425,33 @@
         .sold-out-badge {
             background: #333;
             color: white;
-            padding: 10px 24px;
+            padding: 8px 18px;
             border-radius: 30px;
             font-weight: 700;
-            font-size: 14px;
+            font-size: 12px;
         }
         
         .fav-btn {
             position: absolute;
-            top: 16px;
-            left: 16px;
+            top: 12px;
+            left: 12px;
             z-index: 15;
-            width: 44px;
-            height: 44px;
+            width: 36px;
+            height: 36px;
             background: white;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
             transition: all 0.3s ease;
             border: none;
         }
         
         .fav-btn:hover {
             transform: scale(1.15);
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
         }
         
         .fav-btn.active svg {
@@ -461,16 +461,16 @@
         
         .discount-badge {
             position: absolute;
-            top: 16px;
-            right: 16px;
+            top: 12px;
+            right: 12px;
             background: linear-gradient(135deg, #ff6b6b, #ee5a5a);
             color: white;
-            padding: 6px 16px;
+            padding: 4px 12px;
             border-radius: 20px;
-            font-size: 13px;
+            font-size: 11px;
             font-weight: 700;
             z-index: 10;
-            box-shadow: 0 4px 15px rgba(255, 107, 107, 0.4);
+            box-shadow: 0 3px 10px rgba(255, 107, 107, 0.4);
         }
         
         .prod-img-container {
@@ -511,8 +511,8 @@
             position: absolute;
             top: 50%;
             transform: translateY(-50%);
-            width: 36px;
-            height: 36px;
+            width: 30px;
+            height: 30px;
             background: rgba(255, 255, 255, 0.95);
             border-radius: 50%;
             border: none;
@@ -522,7 +522,7 @@
             align-items: center;
             justify-content: center;
             transition: all 0.3s ease;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
             color: var(--gold-dark);
         }
         
@@ -536,22 +536,22 @@
             transform: translateY(-50%) scale(1.1);
         }
         
-        .prod-carousel-btn.prev { left: 12px; }
-        .prod-carousel-btn.next { right: 12px; }
+        .prod-carousel-btn.prev { left: 10px; }
+        .prod-carousel-btn.next { right: 10px; }
         
         .prod-dots {
             position: absolute;
-            bottom: 12px;
+            bottom: 10px;
             left: 50%;
             transform: translateX(-50%);
             display: flex;
-            gap: 6px;
+            gap: 5px;
             z-index: 5;
         }
         
         .prod-dot {
-            width: 8px;
-            height: 8px;
+            width: 6px;
+            height: 6px;
             border-radius: 50%;
             background: rgba(255, 255, 255, 0.6);
             border: 1px solid var(--gold);
@@ -565,66 +565,66 @@
         }
         
         .prod-info {
-            padding: 20px;
+            padding: 14px;
         }
         
         .prod-name {
-            font-size: 18px;
+            font-size: 15px; /* Scaled Down */
             font-weight: 700;
-            margin-bottom: 6px;
+            margin-bottom: 4px;
             color: #222;
         }
         
         .prod-code {
-            font-size: 12px;
+            font-size: 10px;
             color: #999;
-            margin-bottom: 12px;
+            margin-bottom: 8px;
         }
         
         .prod-price {
             display: flex;
             align-items: center;
-            gap: 10px;
-            margin-bottom: 16px;
+            gap: 8px;
+            margin-bottom: 12px;
         }
         
         .price-current {
-            font-size: 22px;
+            font-size: 17px; /* Scaled Down */
             font-weight: 800;
             color: var(--gold-dark);
         }
         
         .price-old {
-            font-size: 16px;
+            font-size: 13px;
             color: #999;
             text-decoration: line-through;
         }
         
         .size-section {
-            margin-bottom: 16px;
+            margin-bottom: 12px;
         }
         
         .section-label {
-            font-size: 13px;
+            font-size: 11px;
             color: #888;
-            margin-bottom: 10px;
+            margin-bottom: 6px;
             font-weight: 600;
         }
         
         .size-options {
             display: flex;
             flex-wrap: wrap;
-            gap: 8px;
+            gap: 6px;
         }
         
         .size-btn {
-            min-width: 42px;
-            height: 38px;
+            min-width: 36px;
+            height: 30px;
             border: 1.5px solid #ddd;
-            border-radius: 10px;
+            border-radius: 8px;
             background: white;
             cursor: pointer;
-            font-size: 13px;
+            font-size: 11px;
             font-weight: 600;
             transition: all 0.3s ease;
             color: #555;
@@ -639,34 +639,34 @@
             background: var(--gold);
             color: white;
             border-color: var(--gold);
-            box-shadow: 0 4px 12px rgba(212, 175, 55, 0.3);
+            box-shadow: 0 2px 8px rgba(212, 175, 55, 0.3);
         }
         
         .color-section {
-            margin-bottom: 20px;
+            margin-bottom: 12px;
         }
         
         .color-options {
             display: flex;
             flex-wrap: wrap;
-            gap: 12px;
+            gap: 10px;
         }
         
         .color-item {
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 6px;
+            gap: 4px;
         }
         
         .color-dot {
-            width: 32px;
-            height: 32px;
+            width: 26px;
+            height: 26px;
             border-radius: 50%;
-            border: 3px solid #eee;
+            border: 2px solid #eee;
             cursor: pointer;
             transition: all 0.3s ease;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
         }
         
         .color-dot:hover {
@@ -675,18 +675,18 @@
         
         .color-dot.selected {
             border-color: #333;
-            box-shadow: 0 0 0 3px white, 0 0 0 5px var(--gold);
+            box-shadow: 0 0 0 2px white, 0 0 0 4px var(--gold);
         }
         
         .color-name {
-            font-size: 11px;
+            font-size: 9px;
             color: #666;
             font-weight: 500;
         }
         
         .prod-actions {
             display: flex;
-            gap: 12px;
+            gap: 8px;
             align-items: center;
         }
         
@@ -694,13 +694,13 @@
             display: flex;
             align-items: center;
             background: #f5f5f5;
-            border-radius: 30px;
-            padding: 4px;
+            border-radius: 20px;
+            padding: 2px;
         }
         
         .qty-btn {
-            width: 34px;
-            height: 34px;
+            width: 28px;
+            height: 28px;
             border-radius: 50%;
             background: white;
             border: none;
@@ -709,7 +709,7 @@
             align-items: center;
             justify-content: center;
             font-weight: bold;
-            font-size: 18px;
+            font-size: 14px;
             transition: all 0.2s ease;
             color: #333;
         }
@@ -720,16 +720,16 @@
         }
         
         .qty-display {
-            width: 36px;
+            width: 30px;
             text-align: center;
             font-weight: 700;
-            font-size: 16px;
+            font-size: 13px;
         }
         
         .add-cart-btn {
             flex: 1;
-            padding: 14px;
-            font-size: 15px;
+            padding: 10px;
+            font-size: 13px;
         }
         
         .add-cart-btn.disabled {
@@ -752,7 +752,7 @@
         
         /* Products Page */
         .products-page {
-            padding-top: 100px;
+            padding-top: 90px;
             padding-bottom: 60px;
             min-height: 100vh;
             background: var(--white-cream);
@@ -765,13 +765,13 @@
         .back-btn {
             display: inline-flex;
             align-items: center;
-            gap: 8px;
-            padding: 10px 20px;
+            gap: 6px;
+            padding: 8px 16px;
             border-radius: 25px;
             background: white;
             border: 1px solid #eee;
             cursor: pointer;
-            font-size: 14px;
+            font-size: 13px;
             font-weight: 600;
             color: #555;
             transition: all 0.3s ease;
@@ -803,12 +803,11 @@
         .cart-sidebar {
             position: fixed;
             top: 0;
-            bottom: 0; /* التعديل هنا: استخدام bottom بدلاً من height */
+            bottom: 0; 
             left: 0;
-            width: 420px;
+            width: 380px;
             max-width: 100%;
-            /* height: 100vh; تم حذفها لحل مشكلة الاختفاء */
-            height: 100%; /* ضمان تغطية الشاشة */
+            height: 100%;
             background: white;
             z-index: 1999;
             transform: translateX(-100%);
@@ -823,7 +822,7 @@
         }
         
         .cart-header {
-            padding: 20px 24px;
+            padding: 16px 20px;
             border-bottom: 1px solid #eee;
             display: flex;
             justify-content: space-between;
@@ -833,13 +832,13 @@
         }
         
         .cart-title {
-            font-size: 22px;
+            font-size: 18px;
             font-weight: 700;
         }
         
         .cart-close {
-            width: 40px;
-            height: 40px;
+            width: 36px;
+            height: 36px;
             border-radius: 50%;
             background: #f5f5f5;
             border: none;
@@ -857,38 +856,38 @@
         .cart-body {
             flex: 1;
             overflow-y: auto;
-            padding: 20px;
+            padding: 16px;
             min-height: 0;
-            -webkit-overflow-scrolling: touch; /* تجعل التمرير سلس على الآيفون */
+            -webkit-overflow-scrolling: touch;
         }
         
         .cart-empty {
             text-align: center;
-            padding: 60px 20px;
+            padding: 50px 20px;
             color: #999;
         }
         
         .cart-empty svg {
-            width: 80px;
-            height: 80px;
-            margin-bottom: 20px;
+            width: 60px;
+            height: 60px;
+            margin-bottom: 16px;
             opacity: 0.3;
         }
         
         .cart-item {
             display: flex;
-            gap: 16px;
-            padding: 16px;
+            gap: 12px;
+            padding: 12px;
             background: #fafafa;
-            border-radius: 16px;
-            margin-bottom: 12px;
+            border-radius: 12px;
+            margin-bottom: 10px;
             position: relative;
         }
         
         .cart-item-img {
-            width: 80px;
-            height: 80px;
-            border-radius: 12px;
+            width: 70px;
+            height: 70px;
+            border-radius: 10px;
             object-fit: cover;
             background: white;
             flex-shrink: 0;
@@ -901,14 +900,14 @@
         
         .cart-item-name {
             font-weight: 700;
-            font-size: 16px;
-            margin-bottom: 4px;
+            font-size: 14px;
+            margin-bottom: 3px;
         }
         
         .cart-item-details {
-            font-size: 13px;
+            font-size: 12px;
             color: #888;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
         }
         
         .cart-item-bottom {
@@ -920,15 +919,15 @@
         .cart-item-price {
             font-weight: 700;
             color: var(--gold-dark);
-            font-size: 16px;
+            font-size: 14px;
         }
         
         .cart-item-remove {
             position: absolute;
-            top: 8px;
-            right: 8px;
-            width: 28px;
-            height: 28px;
+            top: 6px;
+            right: 6px;
+            width: 24px;
+            height: 24px;
             border-radius: 50%;
             background: white;
             border: none;
@@ -936,7 +935,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 18px;
+            font-size: 16px;
             color: #ccc;
             transition: all 0.3s ease;
         }
@@ -947,9 +946,8 @@
         }
         
         .cart-footer {
-            padding: 20px 24px;
-            /* إضافة مساحة آمنة أسفل الأزرار لمنع اختفائها خلف شريط المتصفح */
-            padding-bottom: calc(20px + env(safe-area-inset-bottom, 0px)); 
+            padding: 16px 20px;
+            padding-bottom: calc(16px + env(safe-area-inset-bottom, 0px)); 
             border-top: 1px solid #eee;
             background: white;
             flex-shrink: 0;
@@ -959,22 +957,22 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 16px;
+            margin-bottom: 12px;
         }
         
         .cart-total-label {
             color: #666;
-            font-size: 16px;
+            font-size: 14px;
         }
         
         .cart-total-value {
-            font-size: 26px;
+            font-size: 22px;
             font-weight: 800;
         }
         
         .cart-actions {
             display: flex;
-            gap: 12px;
+            gap: 10px;
         }
         
         .cart-actions .btn-gold {
@@ -983,13 +981,13 @@
         
         .clear-cart-btn {
             flex: 1;
-            padding: 14px;
+            padding: 10px;
             border-radius: 50px;
             background: white;
             border: 2px solid #ddd;
             cursor: pointer;
             font-weight: 600;
-            font-size: 15px;
+            font-size: 13px;
             transition: all 0.3s ease;
             font-family: 'Tajawal', sans-serif;
         }
@@ -1001,38 +999,38 @@
         
         /* Checkout */
         .checkout-page {
-            padding-top: 100px;
+            padding-top: 90px;
             padding-bottom: 60px;
             background: var(--white-cream);
         }
         
         .checkout-container {
-            max-width: 700px;
+            max-width: 600px;
             margin: 0 auto;
             padding: 0 24px;
         }
         
         .checkout-card {
             background: white;
-            border-radius: 24px;
-            padding: 32px;
-            margin-bottom: 24px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+            border-radius: 20px;
+            padding: 24px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
         }
         
         .checkout-title {
-            font-size: 20px;
+            font-size: 18px;
             font-weight: 700;
-            margin-bottom: 24px;
-            padding-bottom: 16px;
+            margin-bottom: 20px;
+            padding-bottom: 12px;
             border-bottom: 2px solid var(--gold);
             display: inline-block;
         }
         
         .checkout-item {
             display: flex;
-            gap: 16px;
-            padding: 16px 0;
+            gap: 14px;
+            padding: 12px 0;
             border-bottom: 1px solid #f5f5f5;
         }
         
@@ -1041,9 +1039,9 @@
         }
         
         .checkout-item img {
-            width: 70px;
-            height: 70px;
-            border-radius: 12px;
+            width: 60px;
+            height: 60px;
+            border-radius: 10px;
             object-fit: cover;
             background: #fafafa;
         }
@@ -1054,38 +1052,40 @@
         
         .checkout-item-name {
             font-weight: 600;
-            margin-bottom: 4px;
+            font-size: 14px;
+            margin-bottom: 3px;
         }
         
         .checkout-item-details {
-            font-size: 13px;
+            font-size: 12px;
             color: #888;
         }
         
         .checkout-item-price {
             font-weight: 700;
             color: var(--gold-dark);
+            font-size: 14px;
         }
         
         .checkout-total {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding-top: 20px;
+            padding-top: 16px;
             border-top: 2px solid #eee;
-            margin-top: 16px;
+            margin-top: 12px;
         }
         
         .form-group {
-            margin-bottom: 20px;
+            margin-bottom: 16px;
         }
         
         .form-input {
             width: 100%;
-            padding: 16px 20px;
+            padding: 12px 16px;
             border: 2px solid #eee;
-            border-radius: 14px;
-            font-size: 16px;
+            border-radius: 12px;
+            font-size: 14px;
             font-family: 'Tajawal', sans-serif;
             transition: all 0.3s ease;
             background: white;
@@ -1100,16 +1100,16 @@
         .payment-options {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
-            gap: 12px;
+            gap: 10px;
         }
         
         .payment-option {
             display: flex;
             align-items: center;
-            gap: 10px;
-            padding: 14px 16px;
+            gap: 8px;
+            padding: 12px;
             border: 2px solid #eee;
-            border-radius: 14px;
+            border-radius: 12px;
             cursor: pointer;
             transition: all 0.3s ease;
         }
@@ -1120,12 +1120,12 @@
         
         .payment-option input {
             accent-color: var(--gold);
-            width: 18px;
-            height: 18px;
+            width: 16px;
+            height: 16px;
         }
         
         .payment-option span {
-            font-size: 14px;
+            font-size: 12px;
             font-weight: 500;
         }
         
@@ -1145,37 +1145,37 @@
         }
         
         .success-icon {
-            width: 120px;
-            height: 120px;
+            width: 100px;
+            height: 100px;
             background: linear-gradient(135deg, var(--gold), var(--gold-dark));
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin: 0 auto 30px;
-            box-shadow: 0 10px 40px rgba(212, 175, 55, 0.3);
+            margin: 0 auto 24px;
+            box-shadow: 0 10px 30px rgba(212, 175, 55, 0.3);
             animation: pulse 2s infinite;
         }
         
         .success-title {
-            font-size: 42px;
+            font-size: 36px;
             font-weight: 800;
-            margin-bottom: 16px;
+            margin-bottom: 12px;
         }
         
         .success-text {
-            font-size: 20px;
+            font-size: 16px;
             color: #666;
-            margin-bottom: 30px;
+            margin-bottom: 24px;
         }
         
         .order-number {
             display: inline-block;
             background: #f5f5f5;
-            padding: 16px 32px;
-            border-radius: 16px;
-            font-size: 18px;
-            margin-bottom: 40px;
+            padding: 12px 24px;
+            border-radius: 12px;
+            font-size: 16px;
+            margin-bottom: 30px;
         }
         
         .order-number span {
@@ -1186,7 +1186,7 @@
         /* Footer */
         .site-footer {
             background: var(--black-deep);
-            padding: 60px 24px;
+            padding: 50px 24px;
             color: white;
         }
         
@@ -1204,23 +1204,23 @@
         }
         
         .footer-copyright {
-            font-size: 13px;
+            font-size: 12px;
             color: var(--gold);
             font-weight: 600;
-            margin-bottom: 6px;
+            margin-bottom: 4px;
         }
         
         .footer-team {
-            font-size: 12px;
+            font-size: 11px;
             color: #666;
-            margin-bottom: 20px;
+            margin-bottom: 16px;
         }
         
         .qr-container {
             display: inline-block;
-            padding: 10px;
+            padding: 8px;
             background: white;
-            border-radius: 16px;
+            border-radius: 12px;
             border: 2px solid var(--gold);
             transition: all 0.3s ease;
         }
@@ -1231,15 +1231,15 @@
         }
         
         .qr-container img {
-            width: 100px;
-            height: 100px;
+            width: 80px;
+            height: 80px;
             display: block;
         }
         
         .footer-scan-text {
-            font-size: 11px;
+            font-size: 10px;
             color: #888;
-            margin-top: 12px;
+            margin-top: 10px;
         }
         
         .footer-left {
@@ -1248,24 +1248,24 @@
         
         .footer-brand {
             font-family: 'Playfair Display', serif;
-            font-size: 28px;
+            font-size: 24px;
             font-weight: 900;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
         }
         
         .footer-inc {
-            font-size: 13px;
+            font-size: 11px;
             color: #666;
         }
         
-        /* Bottom Navigation - Shows on ALL screens */
+        /* Bottom Navigation */
         .mobile-nav {
             position: fixed;
             bottom: 0;
             left: 0;
             right: 0;
             background: white;
-            padding: 10px 16px;
+            padding: 8px 16px;
             border-top: 1px solid #eee;
             z-index: 999;
             box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.05);
@@ -1283,9 +1283,9 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 4px;
-            padding: 8px 16px;
-            border-radius: 12px;
+            gap: 2px;
+            padding: 6px 14px;
+            border-radius: 10px;
             background: none;
             border: none;
             cursor: pointer;
@@ -1299,7 +1299,7 @@
         }
         
         .mobile-nav-btn span {
-            font-size: 11px;
+            font-size: 10px;
             font-weight: 600;
         }
         
@@ -1325,11 +1325,11 @@
             }
             
             .hero-carousel {
-                max-width: 450px;
+                max-width: 400px;
             }
             
-            .carousel-btn.prev { left: 12px; }
-            .carousel-btn.next { right: 12px; }
+            .carousel-btn.prev { left: 10px; }
+            .carousel-btn.next { right: 10px; }
             
             .products-grid {
                 grid-template-columns: repeat(2, 1fr);
@@ -1342,11 +1342,11 @@
         
         @media (max-width: 768px) {
             .header-inner {
-                padding: 10px 16px;
+                padding: 8px 16px;
             }
             
             .logo-img {
-                height: 40px;
+                height: 35px;
             }
             
             .nav-links {
@@ -1354,68 +1354,68 @@
             }
             
             .hero-section {
-                padding-top: 80px;
-                padding-bottom: 40px;
+                padding-top: 70px;
+                padding-bottom: 30px;
             }
             
             .hero-container {
                 padding: 0 16px;
-                gap: 40px;
+                gap: 30px;
             }
             
             .hero-title {
-                font-size: 42px;
+                font-size: 32px;
             }
             
             .hero-slogan {
-                font-size: 18px;
+                font-size: 16px;
             }
             
             .hero-carousel {
                 max-width: 100%;
-                border-radius: 20px;
+                border-radius: 16px;
             }
             
             .carousel-btn {
-                width: 44px;
-                height: 44px;
+                width: 36px;
+                height: 36px;
             }
             
             .featured-section {
-                padding: 50px 16px;
+                padding: 40px 16px;
             }
             
             .section-title {
-                font-size: 32px;
+                font-size: 28px;
             }
             
             .products-grid {
                 grid-template-columns: repeat(2, 1fr);
-                gap: 16px;
-                padding: 0 16px;
+                gap: 12px;
+                padding: 0 12px;
             }
             
             .prod-info {
-                padding: 16px;
+                padding: 12px;
             }
             
             .prod-name {
-                font-size: 15px;
+                font-size: 13px;
             }
             
             .price-current {
-                font-size: 18px;
+                font-size: 15px;
             }
             
             .size-btn {
-                min-width: 38px;
-                height: 34px;
-                font-size: 12px;
+                min-width: 32px;
+                height: 26px;
+                font-size: 10px;
             }
             
             .color-dot {
-                width: 28px;
-                height: 28px;
+                width: 22px;
+                height: 22px;
             }
             
             .prod-actions {
@@ -1438,7 +1438,7 @@
             .footer-content {
                 grid-template-columns: 1fr;
                 text-align: center;
-                gap: 30px;
+                gap: 24px;
             }
             
             .footer-left {
@@ -1447,78 +1447,77 @@
             }
             
             .site-footer {
-                padding-bottom: 100px;
+                padding-bottom: 80px;
             }
             
             .checkout-page,
             .products-page,
             .success-page {
-                padding-bottom: 100px;
+                padding-bottom: 80px;
             }
         }
         
-        /* كارتين جنب بعض في الموبايل العادي */
         @media (max-width: 480px) {
             .products-grid,
             .products-page .products-grid {
                 grid-template-columns: repeat(2, 1fr);
-                gap: 12px;
-                padding: 0 12px;
+                gap: 10px;
+                padding: 0 10px;
             }
             
             .product-card {
-                border-radius: 16px;
+                border-radius: 12px;
             }
             
             .prod-info {
-                padding: 12px;
+                padding: 10px;
             }
             
             .prod-name {
-                font-size: 13px;
-                margin-bottom: 4px;
+                font-size: 12px;
+                margin-bottom: 3px;
             }
             
             .prod-code {
-                font-size: 10px;
-                margin-bottom: 8px;
+                font-size: 9px;
+                margin-bottom: 6px;
             }
             
             .price-current {
-                font-size: 15px;
+                font-size: 14px;
             }
             
             .price-old {
-                font-size: 12px;
+                font-size: 11px;
             }
             
             .size-section,
             .color-section {
-                margin-bottom: 10px;
+                margin-bottom: 8px;
             }
             
             .section-label {
-                font-size: 11px;
-                margin-bottom: 6px;
+                font-size: 10px;
+                margin-bottom: 4px;
             }
             
             .size-btn {
-                min-width: 32px;
-                height: 28px;
-                font-size: 11px;
+                min-width: 28px;
+                height: 24px;
+                font-size: 10px;
             }
             
             .color-dot {
-                width: 22px;
-                height: 22px;
+                width: 18px;
+                height: 18px;
             }
             
             .color-name {
-                font-size: 9px;
+                font-size: 8px;
             }
             
             .prod-actions {
-                gap: 8px;
+                gap: 6px;
             }
             
             .qty-counter {
@@ -1526,36 +1525,36 @@
             }
             
             .qty-btn {
-                width: 26px;
-                height: 26px;
-                font-size: 14px;
-            }
-            
-            .qty-display {
-                width: 28px;
-                font-size: 13px;
-            }
-            
-            .add-cart-btn {
-                padding: 10px;
+                width: 24px;
+                height: 24px;
                 font-size: 12px;
             }
             
-            .discount-badge {
-                padding: 4px 10px;
+            .qty-display {
+                width: 24px;
+                font-size: 12px;
+            }
+            
+            .add-cart-btn {
+                padding: 8px;
                 font-size: 11px;
             }
             
+            .discount-badge {
+                padding: 3px 8px;
+                font-size: 10px;
+            }
+            
             .fav-btn {
-                width: 36px;
-                height: 36px;
-                top: 10px;
-                left: 10px;
+                width: 30px;
+                height: 30px;
+                top: 8px;
+                left: 8px;
             }
             
             .fav-btn svg {
-                width: 16px;
-                height: 16px;
+                width: 14px;
+                height: 14px;
             }
         }
     </style>
@@ -1570,7 +1569,7 @@
         <div class="cart-header">
             <h2 class="cart-title">سلة التسوق</h2>
             <button class="cart-close" onclick="closeCart()">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <line x1="18" y1="6" x2="6" y2="18"></line>
                     <line x1="6" y1="6" x2="18" y2="18"></line>
                 </svg>
@@ -1615,7 +1614,7 @@
                     </nav>
                     
                     <button class="cart-btn" onclick="openCart()">
-                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <circle cx="9" cy="21" r="1"></circle>
                             <circle cx="20" cy="21" r="1"></circle>
                             <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.55L23 6H6"></path>
@@ -1634,7 +1633,7 @@
                         <div class="hero-actions">
                             <button onclick="showPage('productsPage')" class="btn-gold">
                                 تسوق الآن
-                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                     <polyline points="15 18 9 12 15 6"></polyline>
                                 </svg>
                             </button>
@@ -1644,12 +1643,12 @@
                     <div class="hero-carousel-wrapper">
                         <div class="hero-carousel" id="heroCarousel">
                             <button class="carousel-btn prev" onclick="heroPrev()">
-                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
                                     <polyline points="15 18 9 12 15 6"></polyline>
                                 </svg>
                             </button>
                             <button class="carousel-btn next" onclick="heroNext()">
-                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
                                     <polyline points="9 18 15 12 9 6"></polyline>
                                 </svg>
                             </button>
@@ -1673,14 +1672,14 @@
             <header class="main-header">
                 <div class="header-inner">
                     <button onclick="showPage('homePage')" class="back-btn">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <polyline points="15 18 9 12 15 6"></polyline>
                         </svg>
                         الرئيسية
                     </button>
-                    <h1 class="text-gold-gradient font-display" style="font-size: 24px; font-weight: 900;">المنتجات</h1>
+                    <h1 class="text-gold-gradient font-display" style="font-size: 20px; font-weight: 900;">المنتجات</h1>
                     <button class="cart-btn" onclick="openCart()">
-                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <circle cx="9" cy="21" r="1"></circle>
                             <circle cx="20" cy="21" r="1"></circle>
                             <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.55L23 6H6"></path>
@@ -1700,14 +1699,14 @@
             <header class="main-header">
                 <div class="header-inner">
                     <button onclick="showPage('homePage')" class="back-btn">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <polyline points="15 18 9 12 15 6"></polyline>
                         </svg>
                         الرئيسية
                     </button>
-                    <h1 class="text-gold-gradient font-display" style="font-size: 24px; font-weight: 900;">التخفيضات</h1>
+                    <h1 class="text-gold-gradient font-display" style="font-size: 20px; font-weight: 900;">التخفيضات</h1>
                     <button class="cart-btn" onclick="openCart()">
-                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <circle cx="9" cy="21" r="1"></circle>
                             <circle cx="20" cy="21" r="1"></circle>
                             <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.55L23 6H6"></path>
@@ -1727,13 +1726,13 @@
             <header class="main-header">
                 <div class="header-inner">
                     <button onclick="showPage('homePage')" class="back-btn">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <polyline points="15 18 9 12 15 6"></polyline>
                         </svg>
                         الرئيسية
                     </button>
-                    <h1 class="text-gold-gradient font-display" style="font-size: 24px; font-weight: 900;">إتمام الطلب</h1>
-                    <div style="width: 48px;"></div>
+                    <h1 class="text-gold-gradient font-display" style="font-size: 20px; font-weight: 900;">إتمام الطلب</h1>
+                    <div style="width: 40px;"></div>
                 </div>
             </header>
             
@@ -1744,9 +1743,9 @@
                         <div id="checkoutItems"></div>
                         <div class="checkout-total">
                             <span>الإجمالي</span>
-                            <span class="text-gold-gradient" style="font-size: 26px; font-weight: 800;" id="checkoutTotal">0 ج.م</span>
+                            <span class="text-gold-gradient" style="font-size: 22px; font-weight: 800;" id="checkoutTotal">0 ج.م</span>
                         </div>
-                        <p style="text-align: center; color: #888; font-size: 13px; margin-top: 16px;">
+                        <p style="text-align: center; color: #888; font-size: 12px; margin-top: 12px;">
                             سيتم تحديد تكلفة الشحن النهائية بعد مراجعة موقعك
                         </p>
                     </div>
@@ -1779,7 +1778,7 @@
                         </div>
                         
                         <div class="form-group">
-                            <p style="font-weight: 600; margin-bottom: 14px;">طريقة الدفع</p>
+                            <p style="font-weight: 600; margin-bottom: 12px; font-size: 14px;">طريقة الدفع</p>
                             <div class="payment-options">
                                 <label class="payment-option">
                                     <input type="radio" name="payment" value="الدفع عند الاستلام" checked>
@@ -1812,7 +1811,7 @@
                             <textarea name="notes" placeholder="ملاحظات إضافية (اختياري)" rows="2" class="form-input"></textarea>
                         </div>
                         
-                        <button type="submit" class="btn-gold" style="width: 100%; padding: 18px; font-size: 18px;">
+                        <button type="submit" class="btn-gold" style="width: 100%; padding: 14px; font-size: 16px;">
                             تأكيد الطلب
                         </button>
                     </form>
@@ -1825,7 +1824,7 @@
             <section class="success-page">
                 <div class="success-content">
                     <div class="success-icon">
-                        <svg width="60" height="60" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3">
+                        <svg width="50" height="50" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3">
                             <polyline points="20 6 9 17 4 12"></polyline>
                         </svg>
                     </div>
@@ -1835,7 +1834,7 @@
                         رقم الطلب: <span id="successOrderId"></span>
                     </div>
                     <br>
-                    <button onclick="showPage('homePage')" class="btn-gold" style="font-size: 18px; padding: 16px 40px;">
+                    <button onclick="showPage('homePage')" class="btn-gold" style="font-size: 16px; padding: 12px 30px;">
                         العودة للتسوق
                     </button>
                 </div>
@@ -1847,14 +1846,14 @@
     <nav class="mobile-nav" id="mobileNav">
         <div class="mobile-nav-inner">
             <button class="mobile-nav-btn active" onclick="showPage('homePage')" data-page="homePage">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
                     <polyline points="9 22 9 12 15 12 15 22"></polyline>
                 </svg>
                 <span>الرئيسية</span>
             </button>
             <button class="mobile-nav-btn" onclick="showPage('productsPage')" data-page="productsPage">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <rect x="3" y="3" width="7" height="7"></rect>
                     <rect x="14" y="3" width="7" height="7"></rect>
                     <rect x="14" y="14" width="7" height="7"></rect>
@@ -1863,14 +1862,14 @@
                 <span>المنتجات</span>
             </button>
             <button class="mobile-nav-btn" onclick="showPage('discountsPage')" data-page="discountsPage">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path>
                     <line x1="7" y1="7" x2="7.01" y2="7"></line>
                 </svg>
                 <span>التخفيضات</span>
             </button>
             <button class="mobile-nav-btn" onclick="openCart()">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <circle cx="9" cy="21" r="1"></circle>
                     <circle cx="20" cy="21" r="1"></circle>
                     <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.55L23 6H6"></path>
@@ -1996,7 +1995,7 @@
                 <div class="product-card fade-in" id="card-${context}-${p.id}">
                     ${soldOut}
                     <button class="fav-btn ${isFav ? 'active' : ''}" onclick="toggleFav('${p.id}',this)">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="${isFav ? '#e74c3c' : 'none'}" stroke="${isFav ? '#e74c3c' : 'currentColor'}" stroke-width="2">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="${isFav ? '#e74c3c' : 'none'}" stroke="${isFav ? '#e74c3c' : 'currentColor'}" stroke-width="2">
                             <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
                         </svg>
                     </button>
@@ -2009,12 +2008,12 @@
                         </div>
                         
                         <button id="prev-${context}-${p.id}" class="prod-carousel-btn prev" onclick="prodPrev('${p.id}', '${context}')">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
                                 <polyline points="15 18 9 12 15 6"></polyline>
                             </svg>
                         </button>
                         <button id="next-${context}-${p.id}" class="prod-carousel-btn next" onclick="prodNext('${p.id}', '${context}')">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
                                 <polyline points="9 18 15 12 9 6"></polyline>
                             </svg>
                         </button>
@@ -2408,9 +2407,9 @@
                             <div class="cart-item-bottom">
                                 <span class="cart-item-price">${i.price * i.qty} ج.م</span>
                                 <div class="qty-counter" style="padding: 2px;">
-                                    <button class="qty-btn" style="width: 26px; height: 26px; font-size: 14px;" onclick="uQty('${i.id}','${i.size}','${i.color}',-1)">−</button>
-                                    <span class="qty-display" style="font-size: 13px; width: 24px;">${i.qty}</span>
-                                    <button class="qty-btn" style="width: 26px; height: 26px; font-size: 14px;" onclick="uQty('${i.id}','${i.size}','${i.color}',1)">+</button>
+                                    <button class="qty-btn" style="width: 24px; height: 24px; font-size: 12px;" onclick="uQty('${i.id}','${i.size}','${i.color}',-1)">−</button>
+                                    <span class="qty-display" style="font-size: 12px; width: 20px;">${i.qty}</span>
+                                    <button class="qty-btn" style="width: 24px; height: 24px; font-size: 12px;" onclick="uQty('${i.id}','${i.size}','${i.color}',1)">+</button>
                                 </div>
                             </div>
                         </div>
