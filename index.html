@@ -783,7 +783,7 @@
             border-color: var(--gold);
         }
         
-        /* Cart Sidebar */
+        /* Cart Sidebar - FIXED */
         .cart-overlay {
             position: fixed;
             inset: 0;
@@ -803,10 +803,12 @@
         .cart-sidebar {
             position: fixed;
             top: 0;
+            bottom: 0; /* التعديل هنا: استخدام bottom بدلاً من height */
             left: 0;
             width: 420px;
             max-width: 100%;
-            height: 100vh;
+            /* height: 100vh; تم حذفها لحل مشكلة الاختفاء */
+            height: 100%; /* ضمان تغطية الشاشة */
             background: white;
             z-index: 1999;
             transform: translateX(-100%);
@@ -857,6 +859,7 @@
             overflow-y: auto;
             padding: 20px;
             min-height: 0;
+            -webkit-overflow-scrolling: touch; /* تجعل التمرير سلس على الآيفون */
         }
         
         .cart-empty {
@@ -945,6 +948,8 @@
         
         .cart-footer {
             padding: 20px 24px;
+            /* إضافة مساحة آمنة أسفل الأزرار لمنع اختفائها خلف شريط المتصفح */
+            padding-bottom: calc(20px + env(safe-area-inset-bottom, 0px)); 
             border-top: 1px solid #eee;
             background: white;
             flex-shrink: 0;
