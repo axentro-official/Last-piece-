@@ -53,7 +53,7 @@
             background-clip: text;
         }
         
-        /* Buttons - Scaled Down */
+        /* Buttons */
         .btn-gold {
             background: linear-gradient(135deg, var(--gold), var(--gold-dark));
             color: white;
@@ -100,7 +100,7 @@
             transform: translateY(0);
         }
         
-        /* Header - Compact */
+        /* Header */
         .main-header {
             position: fixed;
             top: 0;
@@ -223,7 +223,7 @@
             box-shadow: 0 2px 8px rgba(212, 175, 55, 0.4);
         }
         
-        /* Hero Section - Balanced */
+        /* Hero Section */
         .hero-section {
             padding-top: 90px;
             padding-bottom: 40px;
@@ -252,14 +252,14 @@
         
         .hero-title {
             font-family: 'Playfair Display', serif;
-            font-size: clamp(32px, 5vw, 48px); /* Scaled Down */
+            font-size: clamp(32px, 5vw, 48px);
             font-weight: 900;
             margin-bottom: 15px;
             animation: fadeInUp 0.8s ease-out 0.2s backwards;
         }
         
         .hero-slogan {
-            font-size: 18px; /* Scaled Down */
+            font-size: 18px;
             color: #666;
             margin-bottom: 30px;
             animation: fadeInUp 0.8s ease-out 0.4s backwards;
@@ -281,9 +281,9 @@
         .hero-carousel {
             position: relative;
             width: 100%;
-            max-width: 450px; /* Adjusted */
+            max-width: 450px;
             aspect-ratio: 3/4;
-            border-radius: 24px; /* Slightly reduced */
+            border-radius: 24px;
             overflow: hidden;
             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1), 0 0 0 1px rgba(212, 175, 55, 0.1);
             background: white;
@@ -377,7 +377,7 @@
         
         .section-title {
             font-family: 'Playfair Display', serif;
-            font-size: 32px; /* Scaled Down */
+            font-size: 32px;
             font-weight: 900;
             margin-bottom: 8px;
         }
@@ -388,15 +388,16 @@
             letter-spacing: 2px;
         }
         
+        /* Products Grid - Adjusted for Desktop */
         .products-grid {
-            max-width: 1400px;
+            max-width: 1200px; /* تم التعديل من 1400px لتناسب الشاشات */
             margin: 0 auto;
             display: grid;
             grid-template-columns: repeat(4, 1fr);
             gap: 20px;
         }
         
-        /* Product Card - Compact */
+        /* Product Card */
         .product-card {
             background: white;
             border-radius: 16px;
@@ -569,7 +570,7 @@
         }
         
         .prod-name {
-            font-size: 15px; /* Scaled Down */
+            font-size: 15px;
             font-weight: 700;
             margin-bottom: 4px;
             color: #222;
@@ -589,7 +590,7 @@
         }
         
         .price-current {
-            font-size: 17px; /* Scaled Down */
+            font-size: 17px;
             font-weight: 800;
             color: var(--gold-dark);
         }
@@ -783,7 +784,7 @@
             border-color: var(--gold);
         }
         
-        /* Cart Sidebar - FIXED */
+        /* Cart Sidebar */
         .cart-overlay {
             position: fixed;
             inset: 0;
@@ -1303,7 +1304,7 @@
             font-weight: 600;
         }
         
-        /* Responsive */
+        /* Responsive - Tablet & Small Laptop */
         @media (max-width: 1200px) {
             .products-grid {
                 grid-template-columns: repeat(3, 1fr);
@@ -1339,7 +1340,93 @@
                 grid-template-columns: repeat(2, 1fr);
             }
         }
+
+        /* Responsive - Desktop Large (NEW FIX) */
+        @media (min-width: 1025px) {
+            /* تكبير النصوص والأزرار لتناسب الكروت على الشاشات الكبيرة */
+            .prod-info {
+                padding: 20px;
+            }
+
+            .prod-name {
+                font-size: 18px; /* كان 15px */
+                margin-bottom: 6px;
+            }
+
+            .prod-code {
+                font-size: 12px; /* كان 10px */
+                margin-bottom: 10px;
+            }
+
+            .price-current {
+                font-size: 20px; /* كان 17px */
+            }
+
+            .price-old {
+                font-size: 15px; /* كان 13px */
+            }
+
+            .section-label {
+                font-size: 13px; /* كان 11px */
+                margin-bottom: 8px;
+            }
+
+            .size-btn {
+                min-width: 44px;
+                height: 36px;
+                font-size: 13px; /* كان 11px */
+            }
+
+            .color-dot {
+                width: 32px;  /* كان 26px */
+                height: 32px;
+            }
+
+            .color-name {
+                font-size: 11px; /* كان 9px */
+            }
+
+            .qty-counter {
+                padding: 4px;
+            }
+
+            .qty-btn {
+                width: 34px;
+                height: 34px;
+                font-size: 16px;
+            }
+
+            .qty-display {
+                width: 36px;
+                font-size: 15px;
+            }
+
+            .add-cart-btn {
+                padding: 12px;
+                font-size: 15px; /* كان 13px */
+            }
+
+            .fav-btn {
+                width: 44px;
+                height: 44px;
+                top: 16px;
+                left: 16px;
+            }
+
+            .discount-badge {
+                padding: 6px 14px;
+                font-size: 13px;
+                top: 16px;
+                right: 16px;
+            }
+
+            .prod-carousel-btn {
+                width: 36px;
+                height: 36px;
+            }
+        }
         
+        /* Responsive - Mobile */
         @media (max-width: 768px) {
             .header-inner {
                 padding: 8px 16px;
@@ -2316,8 +2403,13 @@
             selections[id] = { ...selections[id], size: s };
         }
 
+        // Fix: Select Color function updated
         function selectColor(b, id, c) {
-            [...b.parentElement.querySelectorAll('.color-dot')].forEach(x => x.classList.remove('selected'));
+            // Use closest to find the main container for colors, then find all dots inside it
+            const optionsContainer = b.closest('.color-options');
+            if (optionsContainer) {
+                optionsContainer.querySelectorAll('.color-dot').forEach(x => x.classList.remove('selected'));
+            }
             b.classList.add('selected');
             selections[id] = { ...selections[id], color: c };
         }
