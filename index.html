@@ -272,7 +272,7 @@
             animation: fadeInUp 0.8s ease-out 0.6s backwards;
         }
         
-        /* Hero Carousel */
+        /* Hero Carousel - تم الإصلاح */
         .hero-carousel-wrapper {
             position: relative;
             animation: fadeInUp 0.8s ease-out 0.3s backwards;
@@ -312,13 +312,14 @@
             object-fit: contain;
         }
         
+        /* ✅ تم إصلاح الأزرار هنا */
         .carousel-btn {
             position: absolute;
             top: 50%;
             transform: translateY(-50%);
             width: 44px;
             height: 44px;
-            background: rgba(255, 255, 255, 0.98);
+            background: rgba(255, 255, 255, 0.95);
             border-radius: 50%;
             border: none;
             cursor: pointer;
@@ -327,7 +328,7 @@
             align-items: center;
             justify-content: center;
             transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
             color: var(--gold-dark);
         }
         
@@ -335,11 +336,11 @@
             background: var(--gold);
             color: white;
             transform: translateY(-50%) scale(1.1);
-            box-shadow: 0 8px 30px rgba(212, 175, 55, 0.4);
+            box-shadow: 0 8px 30px rgba(212, 175, 55, 0.5);
         }
         
-        .carousel-btn.prev { left: -20px; }
-        .carousel-btn.next { right: -20px; }
+        .carousel-btn.prev { left: 12px; }
+        .carousel-btn.next { right: 12px; }
         
         .carousel-dots {
             display: flex;
@@ -388,9 +389,9 @@
             letter-spacing: 2px;
         }
         
-        /* Products Grid - Adjusted for Desktop */
+        /* Products Grid */
         .products-grid {
-            max-width: 1200px; /* تم التعديل من 1400px لتناسب الشاشات */
+            max-width: 1200px;
             margin: 0 auto;
             display: grid;
             grid-template-columns: repeat(4, 1fr);
@@ -1329,9 +1330,6 @@
                 max-width: 400px;
             }
             
-            .carousel-btn.prev { left: 10px; }
-            .carousel-btn.next { right: 10px; }
-            
             .products-grid {
                 grid-template-columns: repeat(2, 1fr);
             }
@@ -1341,49 +1339,48 @@
             }
         }
 
-        /* Responsive - Desktop Large (NEW FIX) */
+        /* Responsive - Desktop Large */
         @media (min-width: 1025px) {
-            /* تكبير النصوص والأزرار لتناسب الكروت على الشاشات الكبيرة */
             .prod-info {
                 padding: 20px;
             }
 
             .prod-name {
-                font-size: 18px; /* كان 15px */
+                font-size: 18px;
                 margin-bottom: 6px;
             }
 
             .prod-code {
-                font-size: 12px; /* كان 10px */
+                font-size: 12px;
                 margin-bottom: 10px;
             }
 
             .price-current {
-                font-size: 20px; /* كان 17px */
+                font-size: 20px;
             }
 
             .price-old {
-                font-size: 15px; /* كان 13px */
+                font-size: 15px;
             }
 
             .section-label {
-                font-size: 13px; /* كان 11px */
+                font-size: 13px;
                 margin-bottom: 8px;
             }
 
             .size-btn {
                 min-width: 44px;
                 height: 36px;
-                font-size: 13px; /* كان 11px */
+                font-size: 13px;
             }
 
             .color-dot {
-                width: 32px;  /* كان 26px */
+                width: 32px;
                 height: 32px;
             }
 
             .color-name {
-                font-size: 11px; /* كان 9px */
+                font-size: 11px;
             }
 
             .qty-counter {
@@ -1403,7 +1400,7 @@
 
             .add-cart-btn {
                 padding: 12px;
-                font-size: 15px; /* كان 13px */
+                font-size: 15px;
             }
 
             .fav-btn {
@@ -1929,7 +1926,7 @@
         </div>
     </main>
 
-    <!-- Bottom Navigation - Shows on ALL screens -->
+    <!-- Bottom Navigation -->
     <nav class="mobile-nav" id="mobileNav">
         <div class="mobile-nav-inner">
             <button class="mobile-nav-btn active" onclick="showPage('homePage')" data-page="homePage">
@@ -2353,7 +2350,7 @@
                 'tomato': '#ff6347', 'wheat': '#f5deb3', 'ivory': '#fffff0',
                 'darkblue': '#00008b', 'darkred': '#8b0000', 'darkgreen': '#006400',
                 'darkgray': '#a9a9a9', 'darkgrey': '#a9a9a9', 'darkorange': '#ff8c00',
-                'darkviolet': '#9400d3', 'darkcyan': '#008b8b', 'lightblue': '#add8e6',
+                'darkviolet': '#9400d3', 'darkcyan': '#008b0b', 'lightblue': '#add8e6',
                 'lightred': '#ffcccb', 'lightgreen': '#90ee90', 'lightgray': '#d3d3d3',
                 'lightgrey': '#d3d3d3', 'lightyellow': '#ffffe0', 'lightpink': '#ffb6c1',
                 'skyblue': '#87ceeb', 'deepskyblue': '#00bfff', 'dodgerblue': '#1e90ff',
@@ -2403,9 +2400,7 @@
             selections[id] = { ...selections[id], size: s };
         }
 
-        // Fix: Select Color function updated
         function selectColor(b, id, c) {
-            // Use closest to find the main container for colors, then find all dots inside it
             const optionsContainer = b.closest('.color-options');
             if (optionsContainer) {
                 optionsContainer.querySelectorAll('.color-dot').forEach(x => x.classList.remove('selected'));
