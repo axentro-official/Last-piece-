@@ -8,7 +8,7 @@
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%230a0a0a'/%3E%3Ctext x='16' y='21' font-family='Arial' font-size='13' font-weight='bold' fill='%23fff' text-anchor='middle'%3ELP%3C/text%3E%3C/svg%3E">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;800&family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
 <style>
-:root{--black:#0a0a0a;--paper:#f6f6f6;--line:#e7e7e7;--muted:#7a7a7a;--ok:#1a7f37;--no:#c0392b}
+:root{--black:#0a0a0a;--paper:#f6f6f6;--line:#e7e7e7;--muted:#7a7a7a;--ok:#1a7f37;--no:#c0392b;--warn:#b2600b}
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:'Tajawal',sans-serif;font-size:14px;background:var(--paper);color:#141414;line-height:1.6}
 .en{font-family:'Inter','Tajawal',sans-serif}
@@ -53,6 +53,10 @@ main{max-width:1200px;margin:auto;padding:24px 20px 60px}
 .badge.ok{background:#e6f4ea;color:var(--ok)}
 .badge.no{background:#fdecea;color:var(--no)}
 .badge.feat{background:var(--black);color:#fff}
+.st-pending{background:#f0f0f0;color:#555}
+.st-completed{background:#e6f4ea;color:var(--ok)}
+.st-returned{background:#fff3e0;color:var(--warn)}
+.st-cancelled{background:#fdecea;color:var(--no)}
 .modal{position:fixed;inset:0;z-index:1000;background:rgba(0,0,0,.5);display:none;align-items:flex-start;justify-content:center;padding:24px;overflow-y:auto}
 .modal.open{display:flex}
 .modal-box{background:#fff;max-width:640px;width:100%;padding:26px;margin:auto}
@@ -88,15 +92,21 @@ main{max-width:1200px;margin:auto;padding:24px 20px 60px}
 .oc-cust{margin-bottom:14px;font-size:13px}
 .oc-cust p{margin-bottom:3px}
 .oc-total{text-align:left;font-size:15px;margin-top:10px}
+.oc-actions{display:flex;gap:6px;flex-wrap:wrap;margin-right:auto}
 .tbl.small{min-width:500px}
 .tbl.small th,.tbl.small td{padding:8px 10px;font-size:12px}
+.orders-toolbar{background:#fff;border:1px solid var(--line);padding:14px 16px;margin-bottom:16px}
+.of-chips{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}
+.of-chip{border:1px solid var(--line);background:#fff;padding:6px 16px;font-size:12px;font-weight:700;transition:.15s}
+.of-chip:hover{border-color:var(--black)}
+.of-chip.active{background:var(--black);color:#fff;border-color:var(--black)}
 .settings-box{background:#fff;border:1px solid var(--line);padding:24px;max-width:560px}
 .settings-box h3{font-size:17px;font-weight:800;margin-bottom:8px}
 .settings-box p{color:var(--muted);font-size:13px;margin-bottom:14px}
 .settings-box .row{display:flex;gap:8px}
 #tokenStatus{font-size:13px;font-weight:700;margin-top:10px;min-height:18px}
 .settings-box ol{margin:10px 20px 16px;color:var(--muted);font-size:12.5px}
-@media(max-width:640px){.f-row{grid-template-columns:1fr}.img-slot{flex-direction:column;text-align:center}.dh-inner{justify-content:center}}
+@media(max-width:640px){.f-row{grid-template-columns:1fr}.img-slot{flex-direction:column;text-align:center}.dh-inner{justify-content:center}.oc-actions{margin-right:0;width:100%}}
 </style>
 </head>
 <body>
@@ -145,6 +155,16 @@ main{max-width:1200px;margin:auto;padding:24px 20px 60px}
                 <h2>الطلبات</h2>
                 <button onclick="loadOrders()" class="btn-ghost">تحديث ↻</button>
             </div>
+            <div class="orders-toolbar">
+                <input id="orderSearch" placeholder="🔍 ابحث برقم الطلب أو اسم العميل أو رقم الموبايل…" oninput="onOrderSearch(this.value)">
+                <div class="of-chips">
+                    <button class="of-chip active" onclick="setOrderFilter('all', this)">الكل</button>
+                    <button class="of-chip" onclick="setOrderFilter('pending', this)">قيد التنفيذ</button>
+                    <button class="of-chip" onclick="setOrderFilter('completed', this)">تم التسليم</button>
+                    <button class="of-chip" onclick="setOrderFilter('returned', this)">مرتجع</button>
+                    <button class="of-chip" onclick="setOrderFilter('cancelled', this)">ملغي</button>
+                </div>
+            </div>
             <div id="ordersList"><p class="empty">اضغط تحديث لعرض الطلبات</p></div>
         </section>
 
@@ -177,15 +197,18 @@ main{max-width:1200px;margin:auto;padding:24px 20px 60px}
             <form id="productForm" onsubmit="saveProduct(event)">
                 <div class="f-row">
                     <div class="f"><label>اسم المنتج *</label><input id="pfName" required></div>
-                    <div class="f"><label>الفئة *</label><input id="pfCat" list="catList" required></div>
-                </div>
-                <div class="f-row">
                     <div class="f"><label>السعر قبل الخصم (ج.م) *</label><input id="pfPrice" type="number" min="0" required></div>
-                    <div class="f"><label>سعر بعد الخصم (اختياري)</label><input id="pfDiscount" type="number" min="0"></div>
                 </div>
                 <div class="f-row">
+                    <div class="f"><label>سعر بعد الخصم (اختياري)</label><input id="pfDiscount" type="number" min="0"></div>
                     <div class="f"><label>SKU (كود المنتج) — اختياري</label><input id="pfSku" placeholder="سيُولَّد تلقائياً إذا تركته فاضي" style="direction:ltr"></div>
-                    <div class="f"><label style="visibility:hidden">.</label><p style="font-size:11px;color:var(--muted)">مثال: TS-015 — لازم يكون فريد (مش مستخدم قبل كده)</p></div>
+                </div>
+
+                <p class="sec-label">الفئة <span id="catSelectedHint" style="font-weight:400;color:var(--muted)"></span></p>
+                <div id="catsChips" class="chips"></div>
+                <div class="f-row" style="grid-template-columns:2fr 1fr;margin-bottom:6px">
+                    <input id="newCatInput" placeholder="اكتب فئة جديدة واضغط Enter (مثال: بلوفر رجالي)" onkeydown="if(event.key==='Enter'){event.preventDefault();addCustomCategory();}">
+                    <button type="button" onclick="addCustomCategory()" class="btn-ghost">+ إضافة فئة</button>
                 </div>
 
                 <p class="sec-label">المقاسات المتاحة (اختر اللي يناسب المنتج)</p>
@@ -222,31 +245,69 @@ const IMG_URL = 'https://axentro-official.github.io/Last-piece-/images/';
 const GH = { owner: 'axentro-official', repo: 'Last-piece-' };
 const V = Date.now().toString(36);
 
-// ✅ كل أنواع المقاسات + مقاس واحد
 const SIZES = ['مقاس واحد','XS','S','M','L','XL','XXL','3XL','4XL','5XL','26','28','30','32','34','35','36','37','38','39','40','41','42','43','44','45','2-3 سنوات','4-5 سنوات','6-7 سنوات','8-9 سنوات','10-11 سنوات','12-13 سنوات'];
-
-// ✅ باليت ألوان كبيرة (عربي + إنجليزي)
 const COLORS = ['أسود','أبيض','رمادي','رمادي فاتح','رمادي غامق','فحمي','فضي','بيج','كريمي','أوف وايت','كاميل','بني','بني فاتح','بني غامق','شوكولاتة','كحلي','أزرق','أزرق فاتح','سماوي','تركواز','أزرق ملكي','أخضر','أخضر فاتح','أخضر غامق','زيتي','نعناعي','خاكي','أصفر','خردلي','ذهبي','برتقالي','مشمشي','أحمر','أحمر غامق','عنابي','نبيتي','وردي','وردي فاتح','فوشيا','بنفسجي','لافندر','بمبي','متعدد الألوان','black','white','gray','light gray','dark gray','charcoal','silver','beige','cream','off white','camel','brown','light brown','dark brown','chocolate','navy','blue','light blue','sky blue','turquoise','royal blue','green','light green','dark green','olive','mint','khaki','yellow','mustard','gold','orange','peach','red','dark red','maroon','burgundy','pink','light pink','fuchsia','purple','lavender','multicolor'];
-
-// ✅ فئات كثيرة (بنفس ترتيب بريفكسات الـ SKU في code.gs)
 const CATEGORIES = ['تيشرت نص كم','تيشرت بكم','بولو','قميص','قميص كتان','هودي','سويت شيرت','سويت بانت','جاكيت','بلوفر','جينز','بنطلون','كارجو','شورت','جوارب','اكسسوارات','كاب','حزام','شال','صندل','توب','ملابس داخلية','فستان','تنورة'];
+
+// ✅ حالات الطلبات
+const STATUS_MAP = {
+    'pending':   { label: 'قيد التنفيذ', cls: 'st-pending' },
+    'completed': { label: 'تم التسليم ✓', cls: 'st-completed' },
+    'returned':  { label: 'مرتجع ↩', cls: 'st-returned' },
+    'cancelled': { label: 'ملغي ✗', cls: 'st-cancelled' }
+};
+function statusInfo(s) { return STATUS_MAP[s] || STATUS_MAP['pending']; }
 
 let products = [];
 let orders = [];
 let editingId = null;
 let selectedSizes = new Set();
 let selectedColors = new Set();
+let orderFilter = 'all';
+let orderSearch = '';
 
 const $ = id => document.getElementById(id);
 const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const getPass = () => localStorage.getItem('lp_admin_pass') || '';
 
-// ✅ بناء قائمة الفئات في الـ datalist
- $('catList') && ($('catList').outerHTML = '<datalist id="catList">' + CATEGORIES.map(c => '<option value="' + c + '">').join('') + '</datalist>');
-
 const PH = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="400" height="600"><rect width="400" height="600" fill="#ececec"/><text x="200" y="310" font-family="Arial" font-size="24" fill="#9a9a9a" text-anchor="middle" letter-spacing="4">LAST PIECE</text></svg>');
 
 function imgSrc(name) { return IMG_URL + encodeURIComponent(name) + '?v=' + V; }
+
+// ═══════════ ✅ الفئات — Chips + إضافة يدوية + حفظ محلي ═══════════
+function getAllCategories() {
+    let custom = [];
+    try { custom = JSON.parse(localStorage.getItem('lp_custom_cats') || '[]'); } catch (e) {}
+    return CATEGORIES.concat(custom.filter(c => CATEGORIES.indexOf(c) === -1));
+}
+
+function renderCatChips() {
+    const current = $('pfCat') ? $('pfCat').value.trim() : '';
+    $('catsChips').innerHTML = getAllCategories().map(c =>
+        '<button type="button" class="chip' + (c === current ? ' sel' : '') + '" onclick="pickCategory(this,\'' + c + '\')">' + esc(c) + '</button>'
+    ).join('');
+    const hint = $('catSelectedHint');
+    if (hint) hint.textContent = current ? '— المختارة: ' + current : '— اضغط على فئة أو اكتب واحدة جديدة تحت';
+}
+
+function pickCategory(btn, c) {
+    $('pfCat').value = c;
+    renderCatChips();
+}
+
+function addCustomCategory() {
+    const v = $('newCatInput').value.trim();
+    if (!v) return;
+    $('pfCat').value = v;
+    let custom = [];
+    try { custom = JSON.parse(localStorage.getItem('lp_custom_cats') || '[]'); } catch (e) {}
+    if (CATEGORIES.indexOf(v) === -1 && custom.indexOf(v) === -1) {
+        custom.push(v);
+        try { localStorage.setItem('lp_custom_cats', JSON.stringify(custom)); } catch (e) {}
+    }
+    $('newCatInput').value = '';
+    renderCatChips();
+}
 
 function getColorCode(c) {
     if (!c) return '#cccccc';
@@ -321,7 +382,7 @@ function renderProducts() {
             '<td>' + esc(p.category) + '</td>' +
             '<td>' + p.price + '</td>' +
             '<td>' + (p.discount_price || '-') + '</td>' +
-            '<td>' + (p.active ? '<span class="badge ok">متاح</span>' : '<span class="badge no" style="background:#fdecea;color:#c0392b">نفذ</span>') +
+            '<td>' + (p.active ? '<span class="badge ok">متاح</span>' : '<span class="badge no">نفذ</span>') +
                 (p.featured ? ' <span class="badge feat">مميز</span>' : '') + '</td>' +
             '<td><button class="mini" onclick="editProduct(\'' + p.id + '\')">تعديل</button> ' +
                 '<button class="mini danger" onclick="deleteProduct(\'' + p.id + '\')">حذف</button></td>' +
@@ -331,7 +392,7 @@ function renderProducts() {
     $('productsTable').innerHTML = html;
 }
 
-// ═══════════ Chips ═══════════
+// ═══════════ Chips (مقاسات وألوان) ═══════════
 function renderChips() {
     $('sizesChips').innerHTML = SIZES.map(s =>
         '<button type="button" class="chip' + (selectedSizes.has(s) ? ' sel' : '') + '" onclick="toggleSize(\'' + s + '\',this)">' + s + '</button>'
@@ -365,6 +426,7 @@ function openNewProduct() {
     $('pfActive').checked = true;
     $('imagesSection').style.display = 'none';
     renderChips();
+    renderCatChips();
     $('productModal').classList.add('open');
 }
 
@@ -378,13 +440,14 @@ function editProduct(id) {
     $('pfPrice').value = p.price;
     $('pfDiscount').value = p.discount_price || '';
     $('pfSku').value = p.id;
-    $('pfSku').disabled = true; // الكود ميتغيرش في التعديل
+    $('pfSku').disabled = true;
     $('pfActive').checked = p.active !== false;
     $('pfFeatured').checked = !!p.featured;
     selectedSizes = new Set(p.sizes || []);
     selectedColors = new Set(p.colors || []);
     $('saveStatus').textContent = '';
     renderChips();
+    renderCatChips();
     $('imagesSection').style.display = 'block';
     renderImageSlots();
     $('productModal').classList.add('open');
@@ -397,9 +460,13 @@ function closeModal() {
 
 async function saveProduct(e) {
     e.preventDefault();
+
+    const cat = $('pfCat').value.trim();
+    if (!cat) { $('saveStatus').style.color = 'var(--no)'; $('saveStatus').textContent = '✗ لازم تختار أو تكتب الفئة'; return; }
+
     const payload = {
         name: $('pfName').value.trim(),
-        category: $('pfCat').value.trim(),
+        category: cat,
         price: parseFloat($('pfPrice').value) || 0,
         discount_price: $('pfDiscount').value ? parseFloat($('pfDiscount').value) : '',
         sizes: Array.from(selectedSizes),
@@ -575,7 +642,7 @@ async function testToken() {
     } catch (e) { $('tokenStatus').style.color = 'var(--no)'; $('tokenStatus').textContent = '✗ تعذر الاتصال بـ GitHub'; }
 }
 
-// ═══════════ Orders ═══════════
+// ═══════════ الطلبات — عرض + بحث + فلتر + تغيير الحالة ═══════════
 async function loadOrders() {
     $('ordersList').innerHTML = '<p class="empty">جاري التحميل…</p>';
     try {
@@ -586,18 +653,77 @@ async function loadOrders() {
     } catch (e) { $('ordersList').innerHTML = '<p class="empty">تعذر تحميل الطلبات</p>'; }
 }
 
+function setOrderFilter(f, btn) {
+    orderFilter = f;
+    document.querySelectorAll('.of-chip').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    renderOrders();
+}
+
+function onOrderSearch(v) {
+    orderSearch = v.trim().toLowerCase();
+    renderOrders();
+}
+
+async function setOrderStatus(oid, newStatus) {
+    const info = statusInfo(newStatus);
+    if (!confirm('تغيير حالة الطلب ' + oid + ' إلى "' + info.label + '"؟')) return;
+    try {
+        const j = await api('updateOrderStatus', { orderId: oid, status: newStatus });
+        if (j.success) {
+            orders.forEach(o => { if (o.order_id === oid) o.status = newStatus; });
+            renderOrders();
+        } else alert(j.error || 'حدث خطأ');
+    } catch (e) { alert('تعذر الاتصال'); }
+}
+
 function renderOrders() {
-    if (!orders.length) { $('ordersList').innerHTML = '<p class="empty">لا توجد طلبات بعد</p>'; return; }
+    if (!orders.length) {
+        $('ordersList').innerHTML = '<p class="empty">' + (orderSearch || orderFilter !== 'all' ? 'لا توجد طلبات مطابقة' : 'لا توجد طلبات بعد — اضغط تحديث') + '</p>';
+        return;
+    }
+
     const groups = {};
     orders.forEach(o => { (groups[o.order_id] = groups[o.order_id] || []).push(o); });
-    const ids = Object.keys(groups).sort((a, b) => b.localeCompare(a));
+    let ids = Object.keys(groups).sort((a, b) => b.localeCompare(a));
+
+    if (orderFilter !== 'all') {
+        ids = ids.filter(oid => (groups[oid][0].status || 'pending') === orderFilter);
+    }
+    if (orderSearch) {
+        ids = ids.filter(oid => {
+            const c = groups[oid][0];
+            return oid.toLowerCase().includes(orderSearch) ||
+                   String(c.customer_name || '').toLowerCase().includes(orderSearch) ||
+                   String(c.phone || '').includes(orderSearch);
+        });
+    }
+
+    if (!ids.length) {
+        $('ordersList').innerHTML = '<p class="empty">لا توجد طلبات مطابقة للبحث/الفلتر الحالي</p>';
+        return;
+    }
+
     $('ordersList').innerHTML = ids.map(function (oid) {
         const rows = groups[oid];
         const c = rows[0];
+        const st = c.status || 'pending';
+        const info = statusInfo(st);
         const total = rows.reduce((s, r) => s + (Number(r.price) * Number(r.qty)), 0);
+
+        let actions = '';
+        Object.keys(STATUS_MAP).forEach(function (key) {
+            if (key === st) return;
+            actions += '<button class="mini' + (key === 'cancelled' ? ' danger' : '') + '" onclick="setOrderStatus(\'' + oid + '\',\'' + key + '\')">' + STATUS_MAP[key].label + '</button>';
+        });
+
         return '<div class="order-card">' +
-            '<div class="oc-head"><b class="en">' + esc(oid) + '</b><small>' + esc(c.date || '') + '</small>' +
-            '<span class="badge" style="background:var(--paper);color:var(--muted)">' + esc(c.status || 'pending') + '</span></div>' +
+            '<div class="oc-head">' +
+            '<b class="en">' + esc(oid) + '</b>' +
+            '<small>' + esc(c.date || '') + '</small>' +
+            '<span class="badge ' + info.cls + '">' + info.label + '</span>' +
+            '<div class="oc-actions">' + actions + '</div>' +
+            '</div>' +
             '<div class="oc-body">' +
             '<div class="oc-cust">' +
             '<p><b>' + esc(c.customer_name) + '</b> — <span class="en" dir="ltr">' + esc(String(c.phone)) + '</span></p>' +
