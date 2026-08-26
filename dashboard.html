@@ -1,1 +1,940 @@
-test
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex">
+<title>لوحة التحكم — Last Piece</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%230a0a0a'/%3E%3Ctext x='16' y='21' font-family='Arial' font-size='13' font-weight='bold' fill='%23fff' text-anchor='middle'%3ELP%3C/text%3E%3C/svg%3E">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;800&family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--black:#0a0a0a;--paper:#f6f6f6;--line:#e7e7e7;--muted:#7a7a7a;--ok:#1a7f37;--no:#c0392b;--warn:#b2600b}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Tajawal',sans-serif;font-size:14px;background:var(--paper);color:#141414;line-height:1.6}
+.en{font-family:'Inter','Tajawal',sans-serif}
+button{font-family:inherit;cursor:pointer;border:none;background:none}
+img{display:block;max-width:100%}
+.btn-dark{background:var(--black);color:#fff;padding:10px 22px;font-weight:800;font-size:13px;border:1px solid var(--black);transition:.2s}
+.btn-dark:hover{background:#fff;color:var(--black)}
+.btn-ghost{background:#fff;border:1px solid #141414;padding:10px 22px;font-weight:800;font-size:13px;transition:.2s;display:inline-block}
+.btn-ghost:hover{background:var(--black);color:#fff}
+.btn-block{width:100%;display:block}
+input,select{font-family:inherit;font-size:14px;padding:11px 14px;border:1px solid var(--line);background:#fff;width:100%}
+input:focus{outline:none;border-color:var(--black)}
+.login-wrap{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px;background:var(--black)}
+.login-box{background:#fff;padding:36px;max-width:380px;width:100%;text-align:center}
+.login-box h1{font-size:22px;font-weight:800;margin-bottom:4px}
+.login-box p{color:var(--muted);font-size:13px;margin-bottom:20px}
+.login-box input{margin-bottom:12px;text-align:center}
+.logo-txt{font-family:'Inter',sans-serif;font-weight:800;letter-spacing:.15em;direction:ltr;font-size:18px}
+.logo-txt small{font-size:10px;letter-spacing:.3em;opacity:.6}
+.dash-header{background:#fff;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:100}
+.dh-inner{max-width:1200px;margin:auto;display:flex;justify-content:space-between;align-items:center;padding:12px 20px;gap:14px;flex-wrap:wrap}
+.dh-nav{display:flex;gap:4px;flex-wrap:wrap}
+.tab-btn{padding:8px 18px;font-weight:700;font-size:13px;color:var(--muted);transition:.2s}
+.tab-btn.active{background:var(--black);color:#fff}
+main{max-width:1200px;margin:auto;padding:24px 20px 60px}
+.tab{display:none}
+.tab.active{display:block}
+.tab-head{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:18px}
+.tab-head h2{font-size:24px;font-weight:800}
+.tab-head>div{display:flex;gap:8px}
+.empty{text-align:center;color:var(--muted);padding:60px 0;background:#fff;border:1px solid var(--line)}
+.tbl-wrap{background:#fff;border:1px solid var(--line);overflow-x:auto}
+.tbl{width:100%;border-collapse:collapse;min-width:700px}
+.tbl th{background:var(--paper);padding:10px 12px;text-align:right;font-size:12px;font-weight:800}
+.tbl td{padding:10px 12px;border-top:1px solid var(--paper);font-size:13px;vertical-align:middle}
+.thumb{width:44px;height:56px;object-fit:cover;background:var(--paper)}
+.mini{border:1px solid var(--line);background:#fff;padding:5px 12px;font-size:12px;font-weight:700;transition:.2s}
+.mini:hover{border-color:var(--black)}
+.mini.danger{color:var(--no)}
+.mini.danger:hover{border-color:var(--no);background:#fdf2f2}
+.badge{display:inline-block;font-size:11px;font-weight:800;padding:3px 10px}
+.badge.ok{background:#e6f4ea;color:var(--ok)}
+.badge.no{background:#fdecea;color:var(--no)}
+.badge.feat{background:var(--black);color:#fff}
+.st-pending{background:#f0f0f0;color:#555}
+.st-completed{background:#e6f4ea;color:var(--ok)}
+.st-returned{background:#fff3e0;color:var(--warn)}
+.st-cancelled{background:#fdecea;color:var(--no)}
+.modal{position:fixed;inset:0;z-index:1000;background:rgba(0,0,0,.5);display:none;align-items:flex-start;justify-content:center;padding:24px;overflow-y:auto}
+.modal.open{display:flex}
+.modal-box{background:#fff;max-width:640px;width:100%;padding:26px;margin:auto}
+.modal-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px}
+.modal-head h3{font-size:19px;font-weight:800}
+.f-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px}
+.f label{display:block;font-size:12.5px;font-weight:700;margin-bottom:6px}
+.checks{display:flex;gap:24px;align-items:center;margin:14px 0;flex-wrap:wrap}
+.checks label{display:flex;align-items:center;gap:8px;margin:0;font-size:13px;font-weight:700;cursor:pointer}
+.checks input{width:16px;height:16px;accent-color:var(--black)}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px}
+.chip{border:1px solid var(--line);background:#fff;padding:6px 14px;font-size:12px;font-weight:700;transition:.15s;display:inline-flex;align-items:center;gap:6px}
+.chip:hover{border-color:var(--black)}
+.chip.sel{background:var(--black);color:#fff;border-color:var(--black)}
+.chip .sw{display:inline-block;width:11px;height:11px;border-radius:50%;border:1px solid rgba(0,0,0,.2)}
+.sec-label{font-size:12.5px;font-weight:700;margin:10px 0 8px}
+#saveStatus{font-size:12.5px;font-weight:700;margin-top:10px;min-height:18px}
+.img-section{border-top:1px solid var(--line);margin-top:20px;padding-top:18px}
+.img-section h4{font-size:15px;font-weight:800;margin-bottom:4px}
+.img-section .hint{font-size:11.5px;color:var(--muted);margin-bottom:14px}
+.img-slot{display:flex;gap:14px;align-items:center;border:1px solid var(--line);padding:10px;margin-bottom:10px}
+.img-preview{width:70px;height:90px;background:var(--paper);flex-shrink:0;overflow:hidden}
+.img-preview img{width:100%;height:100%;object-fit:cover}
+.img-info{flex:1;min-width:0}
+.img-info b{display:block;font-size:13px}
+.img-info small{display:block;color:var(--muted);font-size:11px;margin-bottom:8px;direction:ltr;text-align:right}
+.img-btns{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.up-status{display:block;font-size:11.5px;font-weight:700;margin-top:6px;min-height:16px}
+.order-card{background:#fff;border:1px solid var(--line);margin-bottom:14px}
+.oc-head{display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding:14px 16px;border-bottom:1px solid var(--paper)}
+.oc-head b{font-size:14px}
+.oc-head small{color:var(--muted)}
+.oc-body{padding:16px}
+.oc-cust{margin-bottom:14px;font-size:13px}
+.oc-cust p{margin-bottom:3px}
+.oc-total{text-align:left;font-size:15px;margin-top:10px}
+.oc-actions{display:flex;gap:6px;flex-wrap:wrap;margin-right:auto}
+.tbl.small{min-width:500px}
+.tbl.small th,.tbl.small td{padding:8px 10px;font-size:12px}
+.orders-toolbar{background:#fff;border:1px solid var(--line);padding:14px 16px;margin-bottom:16px}
+.of-chips{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}
+.of-chip{border:1px solid var(--line);background:#fff;padding:6px 16px;font-size:12px;font-weight:700;transition:.15s}
+.of-chip:hover{border-color:var(--black)}
+.of-chip.active{background:var(--black);color:#fff;border-color:var(--black)}
+.settings-box{background:#fff;border:1px solid var(--line);padding:24px;max-width:560px}
+.settings-box h3{font-size:17px;font-weight:800;margin-bottom:8px}
+.settings-box p{color:var(--muted);font-size:13px;margin-bottom:14px}
+.settings-box .row{display:flex;gap:8px}
+#tokenStatus{font-size:13px;font-weight:700;margin-top:10px;min-height:18px}
+.settings-box ol{margin:10px 20px 16px;color:var(--muted);font-size:12.5px}
+/* ✅ التوست الاحترافي */
+.toast{position:fixed;bottom:24px;right:24px;z-index:4000;display:flex;flex-direction:column;gap:10px;pointer-events:none}
+.toast-item{background:var(--black);color:#fff;padding:14px 20px;font-size:13.5px;font-weight:700;min-width:240px;max-width:360px;display:flex;align-items:center;gap:10px;animation:tIn .3s cubic-bezier(.2,.9,.3,1.2);border-left:4px solid #fff}
+.toast-item.t-ok{border-left-color:#2ecc71}
+.toast-item.t-err{border-left-color:#e74c3c}
+.toast-item.t-info{border-left-color:#fff}
+.toast-item.t-out{animation:tOut .3s forwards}
+@keyframes tIn{from{opacity:0;transform:translateY(16px)}}
+@keyframes tOut{to{opacity:0;transform:translateY(10px)}}
+/* ✅ مودال التأكيد الاحترافي */
+.confirm-modal{position:fixed;inset:0;z-index:5000;background:rgba(10,10,10,.55);display:none;align-items:center;justify-content:center;padding:20px}
+.confirm-modal.open{display:flex}
+.confirm-box{background:#fff;max-width:420px;width:100%;padding:28px;text-align:center;animation:tIn .25s}
+.confirm-box .c-icon{width:54px;height:54px;margin:0 auto 14px;border:2px solid var(--black);display:flex;align-items:center;justify-content:center;font-size:24px}
+.confirm-box .c-icon.warn{border-color:var(--no);color:var(--no)}
+.confirm-box h3{font-size:18px;font-weight:800;margin-bottom:8px}
+.confirm-box p{font-size:13.5px;color:var(--muted);margin-bottom:8px}
+.confirm-box .c-pass{margin:14px 0 18px;text-align:center}
+.confirm-box .c-btns{display:flex;gap:10px;justify-content:center}
+@media(max-width:640px){.f-row{grid-template-columns:1fr}.img-slot{flex-direction:column;text-align:center}.dh-inner{justify-content:center}.oc-actions{margin-right:0;width:100%}.toast{right:12px;left:12px;bottom:12px}.toast-item{min-width:0;width:100%}}
+</style>
+</head>
+<body>
+
+<div id="loginScreen" class="login-wrap">
+    <div class="login-box">
+        <span class="logo-txt">LAST PIECE <small>ADMIN</small></span>
+        <h1 style="margin-top:14px">لوحة التحكم</h1>
+        <p>ادخل باسورد الإدارة</p>
+        <input type="password" id="loginPass" placeholder="••••••••" onkeydown="if(event.key==='Enter')doLogin()">
+        <button onclick="doLogin()" class="btn-dark btn-block">دخول</button>
+        <p id="loginErr" style="color:var(--no);font-weight:700;font-size:12px;margin-top:10px;min-height:16px"></p>
+    </div>
+</div>
+
+<div id="app" style="display:none">
+    <header class="dash-header">
+        <div class="dh-inner">
+            <span class="logo-txt">LAST PIECE <small>ADMIN</small></span>
+            <nav class="dh-nav">
+                <button class="tab-btn active" onclick="switchTab('products', this)">المنتجات</button>
+                <button class="tab-btn" onclick="switchTab('orders', this)">الطلبات</button>
+                <button class="tab-btn" onclick="switchTab('settings', this)">الإعدادات</button>
+            </nav>
+            <div style="display:flex;gap:8px">
+                <a href="https://axentro-official.github.io/Last-piece-/" target="_blank" class="btn-ghost" style="padding:8px 16px;font-size:12px">الموقع ↗</a>
+                <button onclick="logout()" class="btn-ghost" style="padding:8px 18px">خروج</button>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <section id="tab-products" class="tab active">
+            <div class="tab-head">
+                <h2>المنتجات</h2>
+                <div>
+                    <button onclick="loadProducts()" class="btn-ghost">تحديث ↻</button>
+                    <button onclick="openNewProduct()" class="btn-dark">+ إضافة منتج</button>
+                </div>
+            </div>
+            <div id="productsTable" class="tbl-wrap"><p class="empty">جاري التحميل…</p></div>
+        </section>
+
+        <section id="tab-orders" class="tab">
+            <div class="tab-head">
+                <h2>الطلبات</h2>
+                <button onclick="loadOrders()" class="btn-ghost">تحديث ↻</button>
+            </div>
+            <div class="orders-toolbar">
+                <input id="orderSearch" placeholder="🔍 ابحث برقم الطلب أو اسم العميل أو رقم الموبايل…" oninput="onOrderSearch(this.value)">
+                <div class="of-chips">
+                    <button class="of-chip active" onclick="setOrderFilter('all', this)">الكل</button>
+                    <button class="of-chip" onclick="setOrderFilter('pending', this)">قيد التنفيذ</button>
+                    <button class="of-chip" onclick="setOrderFilter('completed', this)">تم التسليم</button>
+                    <button class="of-chip" onclick="setOrderFilter('returned', this)">مرتجع</button>
+                    <button class="of-chip" onclick="setOrderFilter('cancelled', this)">ملغي</button>
+                </div>
+            </div>
+            <div id="ordersList"><p class="empty">اضغط تحديث لعرض الطلبات</p></div>
+        </section>
+
+        <section id="tab-settings" class="tab">
+            <div class="settings-box">
+                <h3>GitHub — لرفع الصور</h3>
+                <p>محتاج Token من GitHub عشان الداشبورد ترفع الصور مباشرة على الريبو:</p>
+                <ol>
+                    <li>افتح github.com → Settings → Developer settings</li>
+                    <li>Personal access tokens → Tokens (classic) → Generate new token</li>
+                    <li>علّم على <b>repo</b> → Generate → انسخ التوكين</li>
+                </ol>
+                <input type="password" id="ghToken" placeholder="ghp_..." style="direction:ltr">
+                <div class="row" style="margin-top:10px">
+                    <button onclick="saveToken()" class="btn-dark">حفظ</button>
+                    <button onclick="testToken()" class="btn-ghost">اختبار الاتصال</button>
+                </div>
+                <p id="tokenStatus"></p>
+            </div>
+        </section>
+    </main>
+
+    <div id="productModal" class="modal" onclick="if(event.target===this)closeModal()">
+        <div class="modal-box">
+            <div class="modal-head">
+                <h3 id="modalTitle">إضافة منتج جديد</h3>
+                <button onclick="closeModal()" style="font-size:20px">✕</button>
+            </div>
+
+            <form id="productForm" onsubmit="saveProduct(event)">
+                <div class="f-row">
+                    <div class="f"><label>اسم المنتج *</label><input id="pfName" required></div>
+                    <div class="f"><label>السعر قبل الخصم (ج.م) *</label><input id="pfPrice" type="number" min="0" required></div>
+                </div>
+                <div class="f-row">
+                    <div class="f"><label>سعر بعد الخصم (اختياري)</label><input id="pfDiscount" type="number" min="0"></div>
+                    <div class="f"><label>SKU (كود المنتج) — اختياري</label><input id="pfSku" placeholder="سيُولَّد تلقائياً إذا تركته فاضي" style="direction:ltr"></div>
+                </div>
+
+                <input type="hidden" id="pfCat">
+                <p class="sec-label">الفئة <span id="catSelectedHint" style="font-weight:400;color:var(--muted)"></span></p>
+                <div id="catsChips" class="chips"></div>
+                <div class="f-row" style="grid-template-columns:2fr 1fr;margin-bottom:6px">
+                    <input id="newCatInput" placeholder="اكتب فئة جديدة واضغط Enter (مثال: بلوفر رجالي)" onkeydown="if(event.key==='Enter'){event.preventDefault();addCustomCategory();}">
+                    <button type="button" onclick="addCustomCategory()" class="btn-ghost">+ إضافة فئة</button>
+                </div>
+
+                <p class="sec-label">المقاسات المتاحة (اختر اللي يناسب المنتج)</p>
+                <div id="sizesChips" class="chips"></div>
+                <p class="sec-label">الألوان المتاحة</p>
+                <div id="colorsChips" class="chips"></div>
+                <div class="f-row" style="grid-template-columns:2fr 1fr;margin-bottom:6px">
+                    <input id="newColorInput" placeholder="لون مخصص (أو كود زي #ff0000) واضغط Enter" onkeydown="if(event.key==='Enter'){event.preventDefault();addCustomColor();}">
+                    <button type="button" onclick="addCustomColor()" class="btn-ghost">+ إضافة لون</button>
+                </div>
+
+                <div class="checks">
+                    <label><input type="checkbox" id="pfActive" checked> متاح للبيع</label>
+                    <label><input type="checkbox" id="pfFeatured"> منتج مميز (الرئيسية)</label>
+                </div>
+
+                <button type="submit" class="btn-dark btn-block">حفظ المنتج</button>
+                <p id="saveStatus"></p>
+            </form>
+
+            <div id="imagesSection" class="img-section" style="display:none">
+                <h4>صور المنتج <span class="en" id="imgProductId" style="font-size:12px;color:var(--muted)"></span></h4>
+                <p class="hint">الصورة الأساسية هي اللي بتظهر كصورة المنتج، والإضافية بتظهر في السلايدر. بعد الرفع أو الحذف استنى دقيقة واعمل Refresh للموقع (Ctrl+F5).</p>
+                <div id="imageSlots"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ✅ التوست -->
+<div class="toast" id="toastBox"></div>
+
+<!-- ✅ مودال التأكيد الاحترافي -->
+<div class="confirm-modal" id="confirmModal">
+    <div class="confirm-box">
+        <div class="c-icon" id="cIcon">⚠</div>
+        <h3 id="cTitle">تأكيد</h3>
+        <p id="cMsg">متأكد؟</p>
+        <div class="c-pass" id="cPassWrap" style="display:none">
+            <input type="password" id="cPass" placeholder="اكتب باسورد الإدارة للتأكيد" style="text-align:center">
+        </div>
+        <div class="c-btns">
+            <button class="btn-ghost" onclick="cResolve(false)">إلغاء</button>
+            <button class="btn-dark" id="cOkBtn" onclick="cResolve(true)">تأكيد</button>
+        </div>
+    </div>
+</div>
+
+<script>
+// ═══════════ الإعدادات ═══════════
+const API_URL = 'https://script.google.com/macros/s/AKfycbyuLyCqPmG1a2w7Vpgu2hGFFG44tlmW4N9AuNwa-YHRupXRPhxBF-_mEOhPgjpSBwM9/exec';
+const IMG_URL = 'https://axentro-official.github.io/Last-piece-/images/';
+const GH = { owner: 'axentro-official', repo: 'Last-piece-' };
+const V = Date.now().toString(36);
+
+const SIZES = ['مقاس واحد','XS','S','M','L','XL','XXL','3XL','4XL','5XL','26','28','30','32','34','35','36','37','38','39','40','41','42','43','44','45','2-3 سنوات','4-5 سنوات','6-7 سنوات','8-9 سنوات','10-11 سنوات','12-13 سنوات'];
+const COLORS = ['أسود','أبيض','رمادي','رمادي فاتح','رمادي غامق','فحمي','فضي','بيج','كريمي','أوف وايت','كاميل','بني','بني فاتح','بني غامق','شوكولاتة','كحلي','أزرق','أزرق فاتح','سماوي','تركواز','أزرق ملكي','أخضر','أخضر فاتح','أخضر غامق','زيتي','نعناعي','خاكي','أصفر','خردلي','ذهبي','برتقالي','مشمشي','أحمر','أحمر غامق','عنابي','نبيتي','وردي','وردي فاتح','فوشيا','بنفسجي','لافندر','بمبي','متعدد الألوان','black','white','gray','light gray','dark gray','charcoal','silver','beige','cream','off white','camel','brown','light brown','dark brown','chocolate','navy','blue','light blue','sky blue','turquoise','royal blue','green','light green','dark green','olive','mint','khaki','yellow','mustard','gold','orange','peach','red','dark red','maroon','burgundy','pink','light pink','fuchsia','purple','lavender','multicolor'];
+const CATEGORIES = ['تيشرت نص كم','تيشرت بكم','بولو','قميص','قميص كتان','هودي','سويت شيرت','سويت بانت','جاكيت','بلوفر','جينز','بنطلون','كارجو','شورت','جوارب','اكسسوارات','كاب','حزام','شال','صندل','توب','ملابس داخلية','فستان','تنورة'];
+
+const STATUS_MAP = {
+    'pending':   { label: 'قيد التنفيذ', cls: 'st-pending' },
+    'completed': { label: 'تم التسليم ✓', cls: 'st-completed' },
+    'returned':  { label: 'مرتجع ↩', cls: 'st-returned' },
+    'cancelled': { label: 'ملغي ✗', cls: 'st-cancelled' }
+};
+function statusInfo(s) { return STATUS_MAP[s] || STATUS_MAP['pending']; }
+
+let products = [];
+let orders = [];
+let editingId = null;
+let selectedSizes = new Set();
+let selectedColors = new Set();
+let orderFilter = 'all';
+let orderSearch = '';
+let ghImageSet = null; // ✅ قائمة الصور الفعلية من GitHub
+
+const $ = id => document.getElementById(id);
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const getPass = () => localStorage.getItem('lp_admin_pass') || '';
+
+const PH = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="400" height="600"><rect width="400" height="600" fill="#ececec"/><text x="200" y="310" font-family="Arial" font-size="24" fill="#9a9a9a" text-anchor="middle" letter-spacing="4">LAST PIECE</text></svg>');
+
+function imgSrc(name) { return IMG_URL + encodeURIComponent(name) + '?v=' + V; }
+
+// ═══════════ ✅ التوست الاحترافي ═══════════
+function toast(msg, type) {
+    const box = $('toastBox');
+    const el = document.createElement('div');
+    el.className = 'toast-item ' + (type === 'ok' ? 't-ok' : type === 'err' ? 't-err' : 't-info');
+    el.textContent = msg;
+    box.appendChild(el);
+    setTimeout(() => { el.classList.add('t-out'); setTimeout(() => el.remove(), 300); }, 3200);
+}
+
+// ═══════════ ✅ مودال التأكيد (بديل confirm/alert) ═══════════
+let _cResolve = null;
+function lpConfirm(opts) {
+    return new Promise(function (resolve) {
+        _cResolve = resolve;
+        $('cTitle').textContent = opts.title || 'تأكيد';
+        $('cMsg').textContent = opts.msg || '';
+        $('cIcon').textContent = opts.icon || '⚠';
+        $('cIcon').className = 'c-icon' + (opts.danger ? ' warn' : '');
+        $('cOkBtn').textContent = opts.okText || 'تأكيد';
+        const needPass = !!opts.needPassword;
+        $('cPassWrap').style.display = needPass ? 'block' : 'none';
+        if (needPass) { $('cPass').value = ''; }
+        $('confirmModal').classList.add('open');
+        if (needPass) setTimeout(() => $('cPass').focus(), 100);
+    });
+}
+
+function cResolve(ok) {
+    const passInput = $('cPass');
+    const needPass = $('cPassWrap').style.display !== 'none';
+    if (ok && needPass) {
+        if (passInput.value.trim() !== getPass()) {
+            passInput.value = '';
+            passInput.placeholder = 'الباسورد غلط — حاول تاني';
+            passInput.focus();
+            return;
+        }
+    }
+    $('confirmModal').classList.remove('open');
+    if (_cResolve) { _cResolve(ok ? (needPass ? passInput.value.trim() : true) : false); _cResolve = null; }
+}
+
+// Enter في خانة الباسورد = تأكيد
+ $('cPass').addEventListener('keydown', function (e) { if (e.key === 'Enter') cResolve(true); });
+
+// ═══════════ ✅ قائمة الصور الحقيقية من GitHub (صفر 404) ═══════════
+async function loadGitHubImages() {
+    try {
+        const res = await fetch('https://api.github.com/repos/' + GH.owner + '/' + GH.repo + '/contents/images?per_page=1000');
+        if (res.ok) {
+            const arr = await res.json();
+            ghImageSet = new Set(arr.filter(f => f.type === 'file').map(f => f.name));
+        }
+    } catch (e) { ghImageSet = null; }
+}
+
+function imageExists(name) {
+    if (ghImageSet === null) return true; // لو القائمة مش متاحة، نظهر كل الخانات (وضع احتياطي)
+    return ghImageSet.has(name);
+}
+
+function refreshImageSet(name, add) {
+    if (ghImageSet) { if (add) ghImageSet.add(name); else ghImageSet.delete(name); }
+}
+
+// ═══════════ الفئات ═══════════
+function getAllCategories() {
+    let custom = [];
+    try { custom = JSON.parse(localStorage.getItem('lp_custom_cats') || '[]'); } catch (e) {}
+    return CATEGORIES.concat(custom.filter(c => CATEGORIES.indexOf(c) === -1));
+}
+
+function renderCatChips() {
+    const current = $('pfCat') ? $('pfCat').value.trim() : '';
+    $('catsChips').innerHTML = getAllCategories().map(c =>
+        '<button type="button" class="chip' + (c === current ? ' sel' : '') + '" onclick="pickCategory(this,\'' + c + '\')">' + esc(c) + '</button>'
+    ).join('');
+    const hint = $('catSelectedHint');
+    if (hint) hint.textContent = current ? '— المختارة: ' + current : '— اضغط على فئة أو اكتب واحدة جديدة تحت';
+}
+
+function pickCategory(btn, c) {
+    $('pfCat').value = c;
+    renderCatChips();
+}
+
+function addCustomCategory() {
+    const v = $('newCatInput').value.trim();
+    if (!v) return;
+    $('pfCat').value = v;
+    let custom = [];
+    try { custom = JSON.parse(localStorage.getItem('lp_custom_cats') || '[]'); } catch (e) {}
+    if (CATEGORIES.indexOf(v) === -1 && custom.indexOf(v) === -1) {
+        custom.push(v);
+        try { localStorage.setItem('lp_custom_cats', JSON.stringify(custom)); } catch (e) {}
+    }
+    $('newCatInput').value = '';
+    renderCatChips();
+}
+
+function getColorCode(c) {
+    if (!c) return '#cccccc';
+    c = String(c).trim();
+    if (c.startsWith('#')) return c;
+    const map = {
+        'black':'#141414','white':'#ffffff','gray':'#808080','light gray':'#d3d3d3','dark gray':'#4a4a4a','charcoal':'#36454f','silver':'#c0c0c0','beige':'#e8dcc8','cream':'#f5ecd7','off white':'#faf9f6','camel':'#c19a6b','brown':'#7a4a2b','light brown':'#a5713f','dark brown':'#4e2f1c','chocolate':'#4a2c1a','navy':'#1f2a44','blue':'#2b5c8a','light blue':'#a8c4dd','sky blue':'#87ceeb','turquoise':'#3aa6a0','royal blue':'#4169e1','green':'#3a6b4f','light green':'#90ee90','dark green':'#1d4d2b','olive':'#6b7150','mint':'#98ff98','khaki':'#b6a271','yellow':'#e6c229','mustard':'#d4a017','gold':'#c9a227','orange':'#d97b29','peach':'#f2b48c','red':'#b03a3a','dark red':'#7a1f1f','maroon':'#6e1423','burgundy':'#5c0a1e','pink':'#d98ca6','light pink':'#f2c4d4','fuchsia':'#c33c64','purple':'#6a4c93','lavender':'#b57edc','multicolor':'linear-gradient(135deg,#e74c3c,#f1c40f,#2ecc71,#3498db)',
+        'أسود':'#141414','أبيض':'#ffffff','ابيض':'#ffffff','رمادي':'#808080','رمادي فاتح':'#d3d3d3','رمادي غامق':'#4a4a4a','فحمي':'#36454f','فضي':'#c0c0c0','بيج':'#e8dcc8','كريمي':'#f5ecd7','أوف وايت':'#faf9f6','اوف وايت':'#faf9f6','كاميل':'#c19a6b','بني':'#7a4a2b','بني فاتح':'#a5713f','بني غامق':'#4e2f1c','شوكولاتة':'#4a2c1a','كحلي':'#1f2a44','أزرق':'#2b5c8a','ازرق':'#2b5c8a','أزرق فاتح':'#a8c4dd','سماوي':'#a8c4dd','تركواز':'#3aa6a0','أزرق ملكي':'#4169e1','أخضر':'#3a6b4f','اخضر':'#3a6b4f','أخضر فاتح':'#90ee90','أخضر غامق':'#1d4d2b','زيتي':'#6b7150','نعناعي':'#98ff98','خاكي':'#b6a271','أصفر':'#e6c229','اصفر':'#e6c229','خردلي':'#d4a017','ذهبي':'#c9a227','برتقالي':'#d97b29','مشمشي':'#f2b48c','أحمر':'#b03a3a','احمر':'#b03a3a','أحمر غامق':'#7a1f1f','عنابي':'#6e1423','نبيتي':'#5c0a1e','وردي':'#d98ca6','وردي فاتح':'#f2c4d4','فوشيا':'#c33c64','بنفسجي':'#6a4c93','لافندر':'#b57edc','بمبي':'#f4c2c2','متعدد الألوان':'linear-gradient(135deg,#e74c3c,#f1c40f,#2ecc71,#3498db)'
+    };
+    return map[c.toLowerCase()] || map[c] || '#cccccc';
+}
+
+// ═══════════ API ═══════════
+async function api(action, payload) {
+    const res = await fetch(API_URL, { method: 'POST', body: JSON.stringify(Object.assign({ action: action, password: getPass() }, payload || {})) });
+    return res.json();
+}
+
+// ═══════════ Login ═══════════
+async function doLogin() {
+    const pass = $('loginPass').value.trim();
+    if (!pass) return;
+    $('loginErr').textContent = 'جاري التحقق…';
+    try {
+        const res = await fetch(API_URL, { method: 'POST', body: JSON.stringify({ action: 'verifyAdmin', password: pass }) });
+        const j = await res.json();
+        if (j.valid) { localStorage.setItem('lp_admin_pass', pass); showApp(); }
+        else { $('loginErr').textContent = 'الباسورد غلط'; }
+    } catch (e) { $('loginErr').textContent = 'تعذر الاتصال — راجع نشر السكريبت'; }
+}
+
+function showApp() {
+    $('loginScreen').style.display = 'none';
+    $('app').style.display = 'block';
+    loadProducts();
+    loadGitHubImages();
+}
+function logout() { localStorage.removeItem('lp_admin_pass'); location.reload(); }
+
+(function () {
+    if (getPass()) {
+        fetch(API_URL, { method: 'POST', body: JSON.stringify({ action: 'verifyAdmin', password: getPass() }) })
+            .then(r => r.json()).then(j => { if (j.valid) showApp(); }).catch(() => {});
+    }
+})();
+
+// ═══════════ Tabs ═══════════
+function switchTab(name, btn) {
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    $('tab-' + name).classList.add('active');
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    if (name === 'orders' && !orders.length) loadOrders();
+}
+
+// ═══════════ Products ═══════════
+async function loadProducts() {
+    $('productsTable').innerHTML = '<p class="empty">جاري التحميل…</p>';
+    try {
+        const r = await fetch(API_URL + '?action=getProducts');
+        const j = await r.json();
+        products = j.products || [];
+        renderProducts();
+    } catch (e) {
+        $('productsTable').innerHTML = '<p class="empty">تعذر تحميل المنتجات — تأكد من رابط النشر</p>';
+    }
+}
+
+function renderProducts() {
+    if (!products.length) { $('productsTable').innerHTML = '<p class="empty">لا توجد منتجات — اضغط "+ إضافة منتج"</p>'; return; }
+    let html = '<table class="tbl"><thead><tr><th>صورة</th><th>الكود</th><th>الاسم</th><th>الفئة</th><th>السعر</th><th>بعد الخصم</th><th>الحالة</th><th>إجراءات</th></tr></thead><tbody>';
+    products.forEach(p => {
+        html += '<tr>' +
+            '<td><img class="thumb" src="' + imgSrc(p.id + '.webp') + '" onerror="this.onerror=null;this.src=PH"></td>' +
+            '<td class="en">' + esc(p.id) + '</td>' +
+            '<td>' + esc(p.name) + '</td>' +
+            '<td>' + esc(p.category) + '</td>' +
+            '<td>' + p.price + '</td>' +
+            '<td>' + (p.discount_price || '-') + '</td>' +
+            '<td>' + (p.active ? '<span class="badge ok">متاح</span>' : '<span class="badge no">نفذ</span>') +
+                (p.featured ? ' <span class="badge feat">مميز</span>' : '') + '</td>' +
+            '<td><button class="mini" onclick="editProduct(\'' + p.id + '\')">تعديل</button> ' +
+                '<button class="mini danger" onclick="deleteProduct(\'' + p.id + '\')">حذف</button></td>' +
+            '</tr>';
+    });
+    html += '</tbody></table>';
+    $('productsTable').innerHTML = html;
+}
+
+// ═══════════ Chips ═══════════
+function renderChips() {
+    $('sizesChips').innerHTML = SIZES.map(s =>
+        '<button type="button" class="chip' + (selectedSizes.has(s) ? ' sel' : '') + '" onclick="toggleSize(\'' + s + '\',this)">' + s + '</button>'
+    ).join('');
+    const allColors = Array.from(selectedColors).concat(COLORS.filter(c => !selectedColors.has(c)));
+    $('colorsChips').innerHTML = allColors.map(c =>
+        '<button type="button" class="chip' + (selectedColors.has(c) ? ' sel' : '') + '" onclick="toggleColor(\'' + c + '\',this)"><span class="sw" style="background:' + getColorCode(c) + '"></span>' + esc(c) + '</button>'
+    ).join('');
+}
+function toggleSize(s, el) {
+    if (selectedSizes.has(s)) { selectedSizes.delete(s); el.classList.remove('sel'); }
+    else { selectedSizes.add(s); el.classList.add('sel'); }
+}
+function toggleColor(c, el) {
+    if (selectedColors.has(c)) { selectedColors.delete(c); el.classList.remove('sel'); }
+    else { selectedColors.add(c); el.classList.add('sel'); }
+}
+function addCustomColor() {
+    const v = $('newColorInput').value.trim();
+    if (v) { selectedColors.add(v); $('newColorInput').value = ''; renderChips(); }
+}
+
+// ═══════════ Modal ═══════════
+function openNewProduct() {
+    editingId = null;
+    $('modalTitle').textContent = 'إضافة منتج جديد';
+    $('productForm').reset();
+    $('saveStatus').textContent = '';
+    selectedSizes = new Set();
+    selectedColors = new Set();
+    $('pfActive').checked = true;
+    $('imagesSection').style.display = 'none';
+    renderChips();
+    renderCatChips();
+    $('productModal').classList.add('open');
+}
+
+function editProduct(id) {
+    const p = products.find(x => x.id === id);
+    if (!p) return;
+    editingId = id;
+    $('modalTitle').textContent = 'تعديل: ' + p.name;
+    $('pfName').value = p.name;
+    $('pfCat').value = p.category;
+    $('pfPrice').value = p.price;
+    $('pfDiscount').value = p.discount_price || '';
+    $('pfSku').value = p.id;
+    $('pfSku').disabled = true;
+    $('pfActive').checked = p.active !== false;
+    $('pfFeatured').checked = !!p.featured;
+    selectedSizes = new Set(p.sizes || []);
+    selectedColors = new Set(p.colors || []);
+    $('saveStatus').textContent = '';
+    renderChips();
+    renderCatChips();
+    $('imagesSection').style.display = 'block';
+    renderImageSlots();
+    $('productModal').classList.add('open');
+}
+
+function closeModal() {
+    $('productModal').classList.remove('open');
+    $('pfSku').disabled = false;
+}
+
+async function saveProduct(e) {
+    e.preventDefault();
+
+    const cat = $('pfCat').value.trim();
+    if (!cat) { $('saveStatus').style.color = 'var(--no)'; $('saveStatus').textContent = '✗ لازم تختار أو تكتب الفئة'; return; }
+
+    const payload = {
+        name: $('pfName').value.trim(),
+        category: cat,
+        price: parseFloat($('pfPrice').value) || 0,
+        discount_price: $('pfDiscount').value ? parseFloat($('pfDiscount').value) : '',
+        sizes: Array.from(selectedSizes),
+        colors: Array.from(selectedColors),
+        active: $('pfActive').checked,
+        featured: $('pfFeatured').checked
+    };
+
+    $('saveStatus').style.color = 'var(--muted)';
+    $('saveStatus').textContent = 'جاري الحفظ…';
+
+    try {
+        if (editingId) {
+            payload.id = editingId;
+            const j = await api('updateProduct', payload);
+            if (j.success) {
+                $('saveStatus').style.color = 'var(--ok)';
+                $('saveStatus').textContent = '✓ تم حفظ التعديلات';
+                toast('تم حفظ تعديلات ' + editingId + ' ✓', 'ok');
+                loadProducts();
+            } else { $('saveStatus').style.color = 'var(--no)'; $('saveStatus').textContent = '✗ ' + (j.error || 'خطأ'); toast(j.error || 'خطأ في الحفظ', 'err'); }
+        } else {
+            const customSku = $('pfSku').value.trim();
+            if (customSku) payload.sku = customSku;
+            const j = await api('addProduct', payload);
+            if (j.success) {
+                editingId = j.id;
+                $('saveStatus').style.color = 'var(--ok)';
+                $('saveStatus').textContent = '✓ تم الإضافة — كود المنتج: ' + j.id + ' — ارفع الصور تحت';
+                toast('تم إضافة المنتج — الكود: ' + j.id + ' ✓', 'ok');
+                $('imagesSection').style.display = 'block';
+                renderImageSlots();
+                loadProducts();
+            } else { $('saveStatus').style.color = 'var(--no)'; $('saveStatus').textContent = '✗ ' + (j.error || 'خطأ'); toast(j.error || 'خطأ في الإضافة', 'err'); }
+        }
+    } catch (err) {
+        $('saveStatus').style.color = 'var(--no)';
+        $('saveStatus').textContent = '✗ تعذر الاتصال بالسيرفر';
+        toast('تعذر الاتصال بالسيرفر', 'err');
+    }
+}
+
+async function deleteProduct(id) {
+    const ok = await lpConfirm({
+        title: 'حذف منتج',
+        msg: 'متأكد من حذف المنتج ' + id + ' نهائياً؟ المنتج هيتشال من الشيت (الصور مش هتتمسح من GitHub).',
+        okText: 'حذف نهائي',
+        danger: true
+    });
+    if (!ok) return;
+    try {
+        const j = await api('deleteProduct', { id: id });
+        if (j.success) { toast('تم حذف ' + id + ' ✓', 'ok'); loadProducts(); }
+        else toast(j.error || 'حدث خطأ', 'err');
+    } catch (e) { toast('تعذر الاتصال', 'err'); }
+}
+
+// ═══════════ الصور — رفع + حذف من GitHub ═══════════
+function renderImageSlots() {
+    $('imgProductId').textContent = '— ' + editingId;
+    const slots = [
+        { s: '', label: 'الصورة الأساسية (الرئيسية)' },
+        { s: '-2', label: 'صورة إضافية 2' },
+        { s: '-3', label: 'صورة إضافية 3' },
+        { s: '-4', label: 'صورة إضافية 4' },
+        { s: '-5', label: 'صورة إضافية 5' },
+        { s: '-6', label: 'صورة إضافية 6' }
+    ];
+    $('imageSlots').innerHTML = slots.map(function (slot) {
+        const name = editingId + slot.s + '.webp';
+        const id = slot.s === '' ? 'main' : slot.s.replace('-', 'x');
+        const exists = imageExists(name);
+        const preview = exists
+            ? '<img src="' + imgSrc(name) + '">'
+            : '<img src="' + PH + '" style="opacity:.35">';
+
+        let btns = '<label class="btn-ghost" style="display:inline-block;padding:8px 18px">' + (exists ? 'تغيير الصورة' : 'رفع صورة') +
+            '<input type="file" accept="image/*" hidden onchange="uploadImage(\'' + slot.s + '\', this)"></label>';
+        if (exists) {
+            btns += ' <button type="button" class="mini danger" onclick="deleteImage(\'' + slot.s + '\')">🗑 حذف</button>';
+        }
+
+        return '<div class="img-slot">' +
+            '<div class="img-preview">' + preview + '</div>' +
+            '<div class="img-info"><b>' + slot.label + (exists ? ' <span style="color:var(--ok)">✓</span>' : '') + '</b><small>' + name + '</small>' +
+            '<div class="img-btns">' + btns + '</div>' +
+            '<span class="up-status" id="up' + id + '"></span></div></div>';
+    }).join('');
+}
+
+function convertToWebp(file, maxW, quality) {
+    maxW = maxW || 1200; quality = quality || 0.85;
+    return new Promise(function (resolve, reject) {
+        const img = new Image();
+        const url = URL.createObjectURL(file);
+        img.onload = function () {
+            const canvas = document.createElement('canvas');
+            let w = img.width, h = img.height;
+            if (w > maxW) { h = Math.round(h * maxW / w); w = maxW; }
+            canvas.width = w; canvas.height = h;
+            canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+            canvas.toBlob(function (blob) {
+                URL.revokeObjectURL(url);
+                if (blob && blob.type === 'image/webp') resolve(blob);
+                else reject(new Error('المتصفح مش بيدعم تحويل WebP — استخدم Chrome'));
+            }, 'image/webp', quality);
+        };
+        img.onerror = function () { URL.revokeObjectURL(url); reject(new Error('ملف صورة غير صالح')); };
+        img.src = url;
+    });
+}
+
+function blobToBase64(blob) {
+    return new Promise(function (resolve, reject) {
+        const r = new FileReader();
+        r.onload = () => resolve(r.result.split(',')[1]);
+        r.onerror = reject;
+        r.readAsDataURL(blob);
+    });
+}
+
+function ghHeaders() { return { 'Authorization': 'token ' + (localStorage.getItem('lp_gh_token') || '') }; }
+
+async function ghGetSha(filename) {
+    try {
+        const c = await fetch('https://api.github.com/repos/' + GH.owner + '/' + GH.repo + '/contents/images/' + encodeURIComponent(filename), { headers: ghHeaders() });
+        if (c.ok) { const j = await c.json(); return j.sha; }
+    } catch (e) {}
+    return null;
+}
+
+async function ghUpload(filename, b64) {
+    const sha = await ghGetSha(filename);
+    const body = { message: 'Upload ' + filename, content: b64, branch: 'main' };
+    if (sha) body.sha = sha;
+    const res = await fetch('https://api.github.com/repos/' + GH.owner + '/' + GH.repo + '/contents/images/' + encodeURIComponent(filename), {
+        method: 'PUT',
+        headers: Object.assign(ghHeaders(), { 'Accept': 'application/vnd.github.v3+json' }),
+        body: JSON.stringify(body)
+    });
+    return res.ok;
+}
+
+async function ghDelete(filename) {
+    const sha = await ghGetSha(filename);
+    if (!sha) return false;
+    const res = await fetch('https://api.github.com/repos/' + GH.owner + '/' + GH.repo + '/contents/images/' + encodeURIComponent(filename), {
+        method: 'DELETE',
+        headers: Object.assign(ghHeaders(), { 'Accept': 'application/vnd.github.v3+json' }),
+        body: JSON.stringify({ message: 'Delete ' + filename, sha: sha, branch: 'main' })
+    });
+    return res.ok;
+}
+
+async function uploadImage(suffix, input) {
+    const file = input.files[0];
+    if (!file) return;
+    const statusId = suffix === '' ? 'upmain' : 'upx' + suffix.replace('-', '');
+    const statusEl = $(statusId);
+    statusEl.style.color = 'var(--muted)';
+    statusEl.textContent = 'جاري التحويل والرفع…';
+
+    if (!localStorage.getItem('lp_gh_token')) {
+        statusEl.style.color = 'var(--no)';
+        statusEl.textContent = '✗ حط GitHub Token الأول من تبويب الإعدادات';
+        toast('حط GitHub Token الأول من الإعدادات', 'err');
+        input.value = '';
+        return;
+    }
+
+    try {
+        const blob = await convertToWebp(file);
+        const b64 = await blobToBase64(blob);
+        const filename = editingId + suffix + '.webp';
+        const ok = await ghUpload(filename, b64);
+        if (ok) {
+            refreshImageSet(filename, true);
+            statusEl.style.color = 'var(--ok)';
+            statusEl.textContent = '✓ اترفعت';
+            toast('اترفعت ' + filename + ' ✓', 'ok');
+            renderImageSlots();
+        } else {
+            statusEl.style.color = 'var(--no)';
+            statusEl.textContent = '✗ فشل الرفع';
+            toast('فشل الرفع — راجع التوكين', 'err');
+        }
+    } catch (e) {
+        statusEl.style.color = 'var(--no)';
+        statusEl.textContent = '✗ ' + e.message;
+        toast(e.message, 'err');
+    }
+    input.value = '';
+}
+
+// ✅ حذف صورة من GitHub
+async function deleteImage(suffix) {
+    const filename = editingId + suffix + '.webp';
+    const ok = await lpConfirm({
+        title: 'حذف الصورة',
+        msg: 'متأكد من حذف "' + filename + '" من الريبو نهائياً؟',
+        okText: 'حذف',
+        danger: true
+    });
+    if (!ok) return;
+
+    try {
+        const done = await ghDelete(filename);
+        if (done) {
+            refreshImageSet(filename, false);
+            toast('اتحذفت ' + filename + ' ✓', 'ok');
+            renderImageSlots();
+        } else {
+            toast('الصورة مش موجودة أو فشل الحذف', 'err');
+        }
+    } catch (e) { toast('تعذر الاتصال بـ GitHub', 'err'); }
+}
+
+// ═══════════ Token ═══════════
+ $('ghToken').value = localStorage.getItem('lp_gh_token') || '';
+function saveToken() {
+    localStorage.setItem('lp_gh_token', $('ghToken').value.trim());
+    $('tokenStatus').style.color = 'var(--ok)';
+    $('tokenStatus').textContent = '✓ تم حفظ التوكين';
+    loadGitHubImages();
+    toast('تم حفظ التوكين ✓', 'ok');
+}
+async function testToken() {
+    $('tokenStatus').style.color = 'var(--muted)';
+    $('tokenStatus').textContent = 'جاري الاختبار…';
+    try {
+        const res = await fetch('https://api.github.com/repos/' + GH.owner + '/' + GH.repo, { headers: ghHeaders() });
+        if (res.ok) { $('tokenStatus').style.color = 'var(--ok)'; $('tokenStatus').textContent = '✓ التوكين شغال والاتصال بالريبو تمام'; toast('التوكين شغال ✓', 'ok'); }
+        else { $('tokenStatus').style.color = 'var(--no)'; $('tokenStatus').textContent = '✗ التوكين غلط أو مش ليه صلاحية repo'; toast('التوكين غلط', 'err'); }
+    } catch (e) { $('tokenStatus').style.color = 'var(--no)'; $('tokenStatus').textContent = '✗ تعذر الاتصال بـ GitHub'; }
+}
+
+// ═══════════ الطلبات ═══════════
+async function loadOrders() {
+    $('ordersList').innerHTML = '<p class="empty">جاري التحميل…</p>';
+    try {
+        const j = await api('getOrdersList', {});
+        if (!j.success) { $('ordersList').innerHTML = '<p class="empty">' + (j.error || 'خطأ') + '</p>'; return; }
+        orders = j.orders || [];
+        renderOrders();
+    } catch (e) { $('ordersList').innerHTML = '<p class="empty">تعذر تحميل الطلبات</p>'; }
+}
+
+function setOrderFilter(f, btn) {
+    orderFilter = f;
+    document.querySelectorAll('.of-chip').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    renderOrders();
+}
+
+function onOrderSearch(v) {
+    orderSearch = v.trim().toLowerCase();
+    renderOrders();
+}
+
+async function setOrderStatus(oid, newStatus) {
+    const info = statusInfo(newStatus);
+    const ok = await lpConfirm({
+        title: 'تغيير حالة الطلب',
+        msg: 'تغيير حالة ' + oid + ' إلى "' + info.label + '"؟',
+        okText: 'تغيير'
+    });
+    if (!ok) return;
+    try {
+        const j = await api('updateOrderStatus', { orderId: oid, status: newStatus });
+        if (j.success) {
+            orders.forEach(o => { if (o.order_id === oid) o.status = newStatus; });
+            renderOrders();
+            toast('تم تحديث حالة ' + oid + ' ✓', 'ok');
+        } else toast(j.error || 'حدث خطأ', 'err');
+    } catch (e) { toast('تعذر الاتصال', 'err'); }
+}
+
+// ✅ حذف طلب — بتأكيد الباسورد
+async function deleteOrder(oid) {
+    const ok = await lpConfirm({
+        title: 'حذف طلب نهائي',
+        msg: 'هتحذف الطلب ' + oid + ' وكل سطوره من الشيت نهائياً. اكتب باسورد الإدارة للتأكيد.',
+        okText: 'حذف نهائي',
+        danger: true,
+        needPassword: true
+    });
+    if (!ok) return;
+    try {
+        const j = await api('deleteOrder', { orderId: oid, confirmPass: ok });
+        if (j.success) {
+            orders = orders.filter(o => o.order_id !== oid);
+            renderOrders();
+            toast('تم حذف الطلب ' + oid + ' ✓', 'ok');
+        } else toast(j.error || 'حدث خطأ', 'err');
+    } catch (e) { toast('تعذر الاتصال', 'err'); }
+}
+
+function renderOrders() {
+    if (!orders.length) {
+        $('ordersList').innerHTML = '<p class="empty">' + (orderSearch || orderFilter !== 'all' ? 'لا توجد طلبات مطابقة' : 'لا توجد طلبات بعد — اضغط تحديث') + '</p>';
+        return;
+    }
+
+    const groups = {};
+    orders.forEach(o => { (groups[o.order_id] = groups[o.order_id] || []).push(o); });
+    let ids = Object.keys(groups).sort((a, b) => b.localeCompare(a));
+
+    if (orderFilter !== 'all') {
+        ids = ids.filter(oid => (groups[oid][0].status || 'pending') === orderFilter);
+    }
+    if (orderSearch) {
+        ids = ids.filter(oid => {
+            const c = groups[oid][0];
+            return oid.toLowerCase().includes(orderSearch) ||
+                   String(c.customer_name || '').toLowerCase().includes(orderSearch) ||
+                   String(c.phone || '').includes(orderSearch);
+        });
+    }
+
+    if (!ids.length) {
+        $('ordersList').innerHTML = '<p class="empty">لا توجد طلبات مطابقة للبحث/الفلتر الحالي</p>';
+        return;
+    }
+
+    $('ordersList').innerHTML = ids.map(function (oid) {
+        const rows = groups[oid];
+        const c = rows[0];
+        const st = c.status || 'pending';
+        const info = statusInfo(st);
+        const total = rows.reduce((s, r) => s + (Number(r.price) * Number(r.qty)), 0);
+
+        let actions = '';
+        Object.keys(STATUS_MAP).forEach(function (key) {
+            if (key === st) return;
+            actions += '<button class="mini" onclick="setOrderStatus(\'' + oid + '\',\'' + key + '\')">' + STATUS_MAP[key].label + '</button>';
+        });
+        actions += '<button class="mini danger" onclick="deleteOrder(\'' + oid + '\')">🗑 حذف</button>';
+
+        return '<div class="order-card">' +
+            '<div class="oc-head">' +
+            '<b class="en">' + esc(oid) + '</b>' +
+            '<small>' + esc(c.date || '') + '</small>' +
+            '<span class="badge ' + info.cls + '">' + info.label + '</span>' +
+            '<div class="oc-actions">' + actions + '</div>' +
+            '</div>' +
+            '<div class="oc-body">' +
+            '<div class="oc-cust">' +
+            '<p><b>' + esc(c.customer_name) + '</b> — <span class="en" dir="ltr">' + esc(String(c.phone)) + '</span></p>' +
+            '<p>' + esc(c.governorate) + ' / ' + esc(c.area) + ' — ' + esc(c.address) + '</p>' +
+            '<p>الدفع: ' + esc(c.payment_method) + (c.notes ? ' — ملاحظات: ' + esc(c.notes) : '') + '</p></div>' +
+            '<div class="tbl-wrap"><table class="tbl small"><thead><tr><th>كود</th><th>منتج</th><th>مقاس</th><th>لون</th><th>عدد</th><th>سعر</th></tr></thead><tbody>' +
+            rows.map(r => '<tr><td class="en">' + esc(r.product_id) + '</td><td>' + esc(r.product_name) + '</td><td>' + esc(r.size) + '</td><td>' + esc(r.color) + '</td><td>' + r.qty + '</td><td>' + r.price + '</td></tr>').join('') +
+            '</tbody></table></div>' +
+            '<p class="oc-total">الإجمالي: <b>' + total + ' ج.م</b></p>' +
+            '</div></div>';
+    }).join('');
+}
+</script>
+</body>
+</html>
