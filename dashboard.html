@@ -203,9 +203,11 @@ main{max-width:1200px;margin:auto;padding:24px 20px 60px}
                     <div class="f"><label>سعر بعد الخصم (اختياري)</label><input id="pfDiscount" type="number" min="0"></div>
                     <div class="f"><label>SKU (كود المنتج) — اختياري</label><input id="pfSku" placeholder="سيُولَّد تلقائياً إذا تركته فاضي" style="direction:ltr"></div>
                 </div>
-
+                
+                <input type="hidden" id="pfCat">           
                 <p class="sec-label">الفئة <span id="catSelectedHint" style="font-weight:400;color:var(--muted)"></span></p>
                 <div id="catsChips" class="chips"></div>
+                
                 <div class="f-row" style="grid-template-columns:2fr 1fr;margin-bottom:6px">
                     <input id="newCatInput" placeholder="اكتب فئة جديدة واضغط Enter (مثال: بلوفر رجالي)" onkeydown="if(event.key==='Enter'){event.preventDefault();addCustomCategory();}">
                     <button type="button" onclick="addCustomCategory()" class="btn-ghost">+ إضافة فئة</button>
