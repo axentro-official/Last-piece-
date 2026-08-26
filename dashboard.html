@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex">
+<title>لوحة التحكم — Last Piece</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;800&family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--black:#0a0a0a;--paper:#f6f6f6;--line:#e7e7e7;--muted:#7a7a7a;--ok:#1a7f37;--no:#c0392b}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Tajawal',sans-serif;font-size:14px;background:var(--paper);color:#141414;line-height:1.6}
+.en{font-family:'Inter','Tajawal',sans-serif}
+button{font-family:inherit;cursor:pointer;border:none;background:none}
+img{display:block;max-width:100%}
+.btn-dark{background:var(--black);color:#fff;padding:10px 22px;font-weight:800;font-size:13px;border:1px solid var(--black);transition:.2s}
+.btn-dark:hover{background:#fff;color:var(--black)}
+.btn-ghost{background:#fff;border:1px solid #141414;padding:10px 22px;font-weight:800;font-size:13px;transition:.2s}
+.btn-ghost:hover{background:var(--black);color:#fff}
+.btn-block{width:100%;display:block}
+input,select{font-family:inherit;font-size:14px;padding:11px 14px;border:1px solid var(--line);background:#fff;width:100%;border-radius:0}
+input:focus{outline:none;border-color:var(--black)}
+
+/* Login */
+.login-wrap{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px;background:var(--black)}
+.login-box{background:#fff;padding:36px;max-width:380px;width:100%;text-align:center}
+.login-box h1{font-size:22px;font-weight:800;margin-bottom:4px}
+.login-box p{color:var(--muted);font-size:13px;margin-bottom:20px}
+.login-box input{margin-bottom:12px;text-align:center}
+.logo-txt{font-family:'Inter',sans-serif;font-weight:800;letter-spacing:.15em;direction:ltr;font-size:18px}
+.logo-txt small{font-size:10px;letter-spacing:.3em;opacity:.6}
+
+/* Header */
+.dash-header{background:#fff;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:100}
+.dh-inner{max-width:1200px;margin:auto;display:flex;justify-content:space-between;align-items:center;padding:12px 20px;gap:14px;flex-wrap:wrap}
+.dh-nav{display:flex;gap:4px}
+.tab-btn{padding:8px 18px;font-weight:700;font-size:13px;color:var(--muted);transition:.2s}
+.tab-btn.active{background:var(--black);color:#fff}
+main{max-width:1200px;margin:auto;padding:24px 20px 60px}
+.tab{display:none}
+.tab.active{display:block}
+.tab-head{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:18px}
+.tab-head h2{font-size:24px;font-weight:800}
+.tab-head>div{display:flex;gap:8px}
+.empty{text-align:center;color:var(--muted);padding:60px 0;background:#fff;border:1px solid var(--line)}
+
+/* Table */
+.tbl-wrap{background:#fff;border:1px solid var(--line);overflow-x:auto}
+.tbl{width:100%;border-collapse:collapse;min-width:700px}
+.tbl th{background:var(--paper);padding:10px 12px;text-align:right;font-size:12px;font-weight:800}
+.tbl td{padding:10px 12px;border-top:1px solid var(--paper);font-size:13px;vertical-align:middle}
+.thumb{width:44px;height:56px;object-fit:cover;background:var(--paper)}
+.mini{border:1px solid var(--line);background:#fff;padding:5px 12px;font-size:12px;font-weight:700;transition:.2s}
+.mini:hover{border-color:var(--black)}
+.mini.danger{color:var(--no)}
+.mini.danger:hover{border-color:var(--no);background:#fdf2f2}
+.badge{display:inline-block;font-size:11px;font-weight:800;padding:3px 10px}
+.badge.ok{background:#e6f4ea;color:var(--ok)}
+.badge.no{background:#fdecea;color:var(--no)}
+.badge.pending{background:var(--paper);color:var(--muted)}
+.badge.feat{background:var(--black);color:#fff}
+
+/* Modal */
+.modal{position:fixed;inset:0;z-index:1000;background:rgba(0,0,0,.5);display:none;align-items:flex-start;justify-content:center;padding:24px;overflow-y:auto}
+.modal.open{display:flex}
+.modal-box{background:#fff;max-width:640px;width:100%;padding:26px;margin:auto}
+.modal-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px}
+.modal-head h3{font-size:19px;font-weight:800}
+.f-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px}
+.f label{display:block;font-size:12.5px;font-weight:700;margin-bottom:6px}
+.checks{display:flex;gap:24px;align-items:center;margin:14px 0}
+.checks label{display:flex;align-items:center;gap:8px;margin:0;font-size:13px;font-weight:700;cursor:pointer}
+.checks input{width:16px;height:16px;accent-color:var(--black)}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px}
+.chip{border:1px solid var(--line);background:#fff;padding:6px 14px;font-size:12px;font-weight:700;transition:.15s}
+.chip:hover{border-color:var(--black)}
+.chip.sel{background:var(--black);color:#fff;border-color:var(--black)}
+.sec-label{font-size:12.5px;font-weight:700;margin:10px 0 8px}
+#saveStatus{font-size:12.5px;font-weight:700;margin-top:10px;min-height:18px}
+
+/* Images */
+.img-section{border-top:1px solid var(--line);margin-top:20px;padding-top:18px}
+.img-section h4{font-size:15px;font-weight:800;margin-bottom:4px}
+.img-section .hint{font-size:11.5px;color:var(--muted);margin-bottom:14px}
+.img-slot{display:flex;gap:14px;align-items:center;border:1px solid var(--line);padding:10px;margin-bottom:10px}
+.img-preview{width:70px;height:90px;background:var(--paper);flex-shrink:0;overflow:hidden}
+.img-preview img{width:100%;height:100%;object-fit:cover}
+.img-info{flex:1;min-width:0}
+.img-info b{display:block;font-size:13px}
+.img-info small{display:block;color:var(--muted);font-size:11px;margin-bottom:8px;direction:ltr;text-align:right}
+.up-status{display:block;font-size:11.5px;font-weight:700;margin-top:6px;min-height:16px}
+
+/* Orders */
+.order-card{background:#fff;border:1px solid var(--line);margin-bottom:14px}
+.oc-head{display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding:14px 16px;border-bottom:1px solid var(--paper)}
+.oc-head b{font-size:14px}
+.oc-head small{color:var(--muted)}
+.oc-body{padding:16px}
+.oc-cust{margin-bottom:14px;font-size:13px}
+.oc-cust p{margin-bottom:3px}
+.oc-total{text-align:left;font-size:15px;margin-top:10px}
+.tbl.small{min-width:500px}
+.tbl.small th,.tbl.small td{padding:8px 10px;font-size:12px}
+
+/* Settings */
+.settings-box{background:#fff;border:1px solid var(--line);padding:24px;max-width:560px}
+.settings-box h3{font-size:17px;font-weight:800;margin-bottom:8px}
+.settings-box p{color:var(--muted);font-size:13px;margin-bottom:14px}
+.settings-box .row{display:flex;gap:8px}
+#tokenStatus{font-size:13px;font-weight:700;margin-top:10px;min-height:18px}
+.settings-box ol{margin:10px 20px 16px;color:var(--muted);font-size:12.5px}
+
+@media(max-width:640px){
+.f-row{grid-template-columns:1fr}
+.img-slot{flex-direction:column;text-align:center}
+.dh-inner{justify-content:center}
+}
+</style>
+</head>
+<body>
+
+<!-- Login -->
+<div id="loginScreen" class="login-wrap">
+    <div class="login-box">
+        <span class="logo-txt">LAST PIECE <small>ADMIN</small></span>
+        <h1 style="margin-top:14px">لوحة التحكم</h1>
+        <p>ادخل باسورد الإدارة</p>
+        <input type="password" id="loginPass" placeholder="••••••••" onkeydown="if(event.key==='Enter')doLogin()">
+        <button onclick="doLogin()" class="btn-dark btn-block">دخول</button>
+        <p id="loginErr" style="color:var(--no);font-weight:700;font-size:12px;margin-top:10px;min-height:16px"></p>
+    </div>
+</div>
+
+<!-- App -->
+<div id="app" style="display:none">
+    <header class="dash-header">
+        <div class="dh-inner">
+            <span class="logo-txt">LAST PIECE <small>ADMIN</small></span>
+            <nav class="dh-nav">
+                <button class="tab-btn active" onclick="switchTab('products', this)">المنتجات</button>
+                <button class="tab-btn" onclick="switchTab('orders', this)">الطلبات</button>
+                <button class="tab-btn" onclick="switchTab('settings', this)">الإعدادات</button>
+            </nav>
+            <button onclick="logout()" class="btn-ghost" style="padding:8px 18px">خروج</button>
+        </div>
+    </header>
+
+    <main>
+        <!-- Products -->
+        <section id="tab-products" class="tab active">
+            <div class="tab-head">
+                <h2>المنتجات</h2>
+                <div>
+                    <button onclick="loadProducts()" class="btn-ghost">تحديث ↻</button>
+                    <button onclick="openNewProduct()" class="btn-dark">+ إضافة منتج</button>
+                </div>
+            </div>
+            <div id="productsTable" class="tbl-wrap"><p class="empty">جاري التحميل…</p></div>
+        </section>
+
+        <!-- Orders -->
+        <section id="tab-orders" class="tab">
+            <div class="tab-head">
+                <h2>الطلبات</h2>
+                <button onclick="loadOrders()" class="btn-ghost">تحديث ↻</button>
+            </div>
+            <div id="ordersList"><p class="empty">اضغط تحديث لعرض الطلبات</p></div>
+        </section>
+
+        <!-- Settings -->
+        <section id="tab-settings" class="tab">
+            <div class="settings-box">
+                <h3>GitHub — لرفع الصور</h3>
+                <p>محتاج Token من GitHub عشان الداشبورد ترفع الصور مباشرة على الريبو:</p>
+                <ol>
+                    <li>افتح github.com → Settings → Developer settings</li>
+                    <li>Personal access tokens → Tokens (classic) → Generate new token</li>
+                    <li>علّم على <b>repo</b> → Generate → انسخ التوكين</li>
+                </ol>
+                <input type="password" id="ghToken" placeholder="ghp_..." style="direction:ltr">
+                <div class="row" style="margin-top:10px">
+                    <button onclick="saveToken()" class="btn-dark">حفظ</button>
+                    <button onclick="testToken()" class="btn-ghost">اختبار الاتصال</button>
+                </div>
+                <p id="tokenStatus"></p>
+            </div>
+        </section>
+    </main>
+
+    <!-- Product Modal -->
+    <div id="productModal" class="modal" onclick="if(event.target===this)closeModal()">
+        <div class="modal-box">
+            <div class="modal-head">
+                <h3 id="modalTitle">إضافة منتج جديد</h3>
+                <button onclick="closeModal()" style="font-size:20px">✕</button>
+            </div>
+
+            <form id="productForm" onsubmit="saveProduct(event)">
+                <div class="f-row">
+                    <div class="f"><label>اسم المنتج *</label><input id="pfName" required></div>
+                    <div class="f"><label>الفئة *</label>
+                        <input id="pfCat" list="catList" required>
+                        <datalist id="catList">
+                            <option value="تيشرت نص كم"><option value="تيشرت بكم"><option value="قميص">
+                            <option value="جاكيت"><option value="هودي"><option value="سويت بانت">
+                            <option value="جينز"><option value="شورت"><option value="جوارب">
+                            <option value="اكسسوارات"><option value="شال"><option value="صندل">
+                        </datalist>
+                    </div>
+                </div>
+                <div class="f-row">
+                    <div class="f"><label>السعر قبل الخصم (ج.م) *</label><input id="pfPrice" type="number" min="0" required></div>
+                    <div class="f"><label>سعر بعد الخصم (اختياري)</label><input id="pfDiscount" type="number" min="0"></div>
+                </div>
+
+                <p class="sec-label">المقاسات المتاحة</p>
+                <div id="sizesChips" class="chips"></div>
+                <p class="sec-label">الألوان المتاحة</p>
+                <div id="colorsChips" class="chips"></div>
+                <div class="f-row" style="grid-template-columns:2fr 1fr;margin-bottom:6px">
+                    <input id="newColorInput" placeholder="لون مخصص واضغط Enter" onkeydown="if(event.key==='Enter'){event.preventDefault();addCustomColor();}">
+                    <button type="button" onclick="addCustomColor()" class="btn-ghost">+ إضافة لون</button>
+                </div>
+
+                <div class="checks">
+                    <label><input type="checkbox" id="pfActive" checked> متاح للبيع</label>
+                    <label><input type="checkbox" id="pfFeatured"> منتج مميز (الرئيسية)</label>
+                </div>
+
+                <button type="submit" class="btn-dark btn-block">حفظ المنتج</button>
+                <p id="saveStatus"></p>
+            </form>
+
+            <div id="imagesSection" class="img-section" style="display:none">
+                <h4>صور المنتج <span class="en" id="imgProductId" style="font-size:12px;color:var(--muted)"></span></h4>
+                <p class="hint">الصورة الأساسية هي اللي بتظهر كصورة المنتج، والإضافية بتظهر في السلايدر. بعد الرفع هيظهر على الموقع خلال دقيقة تقريباً.</p>
+                <div id="imageSlots"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+// ═══════════ الإعدادات ═══════════
+const API_URL = 'https://script.google.com/macros/s/AKfycbyuLyCqPmG1a2w7Vpgu2hGFFG44tlmW4N9AuNwa-YHRupXRPhxBF-_mEOhPgjpSBwM9/exec';
+const IMG_URL = 'https://axentro-official.github.io/Last-piece-/images/';
+const GH = { owner: 'axentro-official', repo: 'Last-piece-' };
+
+const SIZES = ['XS','S','M','L','XL','XXL','28','30','32','34','36','38','40'];
+const COLORS = ['black','white','red','blue','beige','brown','gray','navy'];
+
+let products = [];
+let orders = [];
+let editingId = null;
+let selectedSizes = new Set();
+let selectedColors = new Set();
+
+const $ = id => document.getElementById(id);
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const getPass = () => localStorage.getItem('lp_admin_pass') || '';
+
+// ═══════════ API ═══════════
+async function api(action, payload) {
+    const res = await fetch(API_URL, {
+        method: 'POST',
+        body: JSON.stringify(Object.assign({ action: action, password: getPass() }, payload || {}))
+    });
+    return res.json();
+}
+
+// ═══════════ Login ═══════════
+async function doLogin() {
+    const pass = $('loginPass').value.trim();
+    if (!pass) return;
+    $('loginErr').textContent = 'جاري التحقق…';
+    try {
+        const res = await fetch(API_URL, { method: 'POST', body: JSON.stringify({ action: 'verifyAdmin', password: pass }) });
+        const j = await res.json();
+        if (j.valid) {
+            localStorage.setItem('lp_admin_pass', pass);
+            showApp();
+        } else {
+            $('loginErr').textContent = 'الباسورد غلط';
+        }
+    } catch (e) {
+        $('loginErr').textContent = 'تعذر الاتصال — راجع نشر السكريبت';
+    }
+}
+
+function showApp() {
+    $('loginScreen').style.display = 'none';
+    $('app').style.display = 'block';
+    loadProducts();
+}
+
+function logout() {
+    localStorage.removeItem('lp_admin_pass');
+    location.reload();
+}
+
+// Auto-login
+(function () {
+    if (getPass()) {
+        fetch(API_URL, { method: 'POST', body: JSON.stringify({ action: 'verifyAdmin', password: getPass() }) })
+            .then(r => r.json())
+            .then(j => { if (j.valid) showApp(); })
+            .catch(() => {});
+    }
+})();
+
+// ═══════════ Tabs ═══════════
+function switchTab(name, btn) {
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    $('tab-' + name).classList.add('active');
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    if (name === 'orders' && !orders.length) loadOrders();
+}
+
+// ═══════════ Products ═══════════
+async function loadProducts() {
+    $('productsTable').innerHTML = '<p class="empty">جاري التحميل…</p>';
+    try {
+        const r = await fetch(API_URL + '?action=getProducts');
+        const j = await r.json();
+        products = j.products || [];
+        renderProducts();
+    } catch (e) {
+        $('productsTable').innerHTML = '<p class="empty">تعذر تحميل المنتجات — تأكد من رابط النشر</p>';
+    }
+}
+
+function renderProducts() {
+    if (!products.length) {
+        $('productsTable').innerHTML = '<p class="empty">لا توجد منتجات — اضغط "+ إضافة منتج"</p>';
+        return;
+    }
+    let html = '<table class="tbl"><thead><tr><th>صورة</th><th>الكود</th><th>الاسم</th><th>الفئة</th><th>السعر</th><th>بعد الخصم</th><th>الحالة</th><th>إجراءات</th></tr></thead><tbody>';
+    products.forEach(p => {
+        html += '<tr>' +
+            '<td><img class="thumb" src="' + IMG_URL + p.id + '.webp" onerror="this.style.opacity=.15"></td>' +
+            '<td class="en">' + esc(p.id) + '</td>' +
+            '<td>' + esc(p.name) + '</td>' +
+            '<td>' + esc(p.category) + '</td>' +
+            '<td>' + p.price + '</td>' +
+            '<td>' + (p.discount_price || '-') + '</td>' +
+            '<td>' + (p.active ? '<span class="badge ok">متاح</span>' : '<span class="badge no">نفذ</span>') +
+                (p.featured ? ' <span class="badge feat">مميز</span>' : '') + '</td>' +
+            '<td><button class="mini" onclick="editProduct(\'' + p.id + '\')">تعديل</button> ' +
+                '<button class="mini danger" onclick="deleteProduct(\'' + p.id + '\')">حذف</button></td>' +
+            '</tr>';
+    });
+    html += '</tbody></table>';
+    $('productsTable').innerHTML = html;
+}
+
+// ═══════════ Chips ═══════════
+function renderChips() {
+    $('sizesChips').innerHTML = SIZES.map(s =>
+        '<button type="button" class="chip' + (selectedSizes.has(s) ? ' sel' : '') + '" onclick="toggleSize(\'' + s + '\',this)">' + s + '</button>'
+    ).join('');
+    $('colorsChips').innerHTML = Array.from(selectedColors).concat(COLORS.filter(c => !selectedColors.has(c))).map(c =>
+        '<button type="button" class="chip' + (selectedColors.has(c) ? ' sel' : '') + '" onclick="toggleColor(\'' + c + '\',this)">' + esc(c) + '</button>'
+    ).join('');
+}
+function toggleSize(s, el) {
+    if (selectedSizes.has(s)) { selectedSizes.delete(s); el.classList.remove('sel'); }
+    else { selectedSizes.add(s); el.classList.add('sel'); }
+}
+function toggleColor(c, el) {
+    if (selectedColors.has(c)) { selectedColors.delete(c); el.classList.remove('sel'); }
+    else { selectedColors.add(c); el.classList.add('sel'); }
+}
+function addCustomColor() {
+    const v = $('newColorInput').value.trim();
+    if (v) { selectedColors.add(v); $('newColorInput').value = ''; renderChips(); }
+}
+
+// ═══════════ Modal ═══════════
+function openNewProduct() {
+    editingId = null;
+    $('modalTitle').textContent = 'إضافة منتج جديد';
+    $('productForm').reset();
+    $('saveStatus').textContent = '';
+    selectedSizes = new Set();
+    selectedColors = new Set();
+    $('pfActive').checked = true;
+    $('imagesSection').style.display = 'none';
+    renderChips();
+    $('productModal').classList.add('open');
+}
+
+function editProduct(id) {
+    const p = products.find(x => x.id === id);
+    if (!p) return;
+    editingId = id;
+    $('modalTitle').textContent = 'تعديل: ' + p.name;
+    $('pfName').value = p.name;
+    $('pfCat').value = p.category;
+    $('pfPrice').value = p.price;
+    $('pfDiscount').value = p.discount_price || '';
+    $('pfActive').checked = p.active !== false;
+    $('pfFeatured').checked = !!p.featured;
+    selectedSizes = new Set(p.sizes || []);
+    selectedColors = new Set(p.colors || []);
+    $('saveStatus').textContent = '';
+    renderChips();
+    $('imagesSection').style.display = 'block';
+    renderImageSlots();
+    $('productModal').classList.add('open');
+}
+
+function closeModal() { $('productModal').classList.remove('open'); }
+
+async function saveProduct(e) {
+    e.preventDefault();
+    const payload = {
+        name: $('pfName').value.trim(),
+        category: $('pfCat').value.trim(),
+        price: parseFloat($('pfPrice').value) || 0,
+        discount_price: $('pfDiscount').value ? parseFloat($('pfDiscount').value) : '',
+        sizes: Array.from(selectedSizes),
+        colors: Array.from(selectedColors),
+        active: $('pfActive').checked,
+        featured: $('pfFeatured').checked
+    };
+
+    $('saveStatus').style.color = 'var(--muted)';
+    $('saveStatus').textContent = 'جاري الحفظ…';
+
+    try {
+        if (editingId) {
+            payload.id = editingId;
+            const j = await api('updateProduct', payload);
+            if (j.success) {
+                $('saveStatus').style.color = 'var(--ok)';
+                $('saveStatus').textContent = '✓ تم حفظ التعديلات';
+                loadProducts();
+            } else { $('saveStatus').style.color = 'var(--no)'; $('saveStatus').textContent = '✗ ' + (j.error || 'خطأ'); }
+        } else {
+            const j = await api('addProduct', payload);
+            if (j.success) {
+                editingId = j.id;
+                $('saveStatus').style.color = 'var(--ok)';
+                $('saveStatus').textContent = '✓ تم الإضافة — كود المنتج: ' + j.id + ' — ارفع الصور تحت';
+                $('imagesSection').style.display = 'block';
+                renderImageSlots();
+                loadProducts();
+            } else { $('saveStatus').style.color = 'var(--no)'; $('saveStatus').textContent = '✗ ' + (j.error || 'خطأ'); }
+        }
+    } catch (err) {
+        $('saveStatus').style.color = 'var(--no)';
+        $('saveStatus').textContent = '✗ تعذر الاتصال بالسيرفر';
+    }
+}
+
+async function deleteProduct(id) {
+    if (!confirm('متأكد من حذف المنتج ' + id + ' نهائياً؟')) return;
+    try {
+        const j = await api('deleteProduct', { id: id });
+        if (j.success) loadProducts();
+        else alert(j.error || 'حدث خطأ');
+    } catch (e) { alert('تعذر الاتصال'); }
+}
+
+// ═══════════ الصور (رفع على GitHub) ═══════════
+function renderImageSlots() {
+    $('imgProductId').textContent = '— ' + editingId;
+    const slots = [
+        { s: '', label: 'الصورة الأساسية' },
+        { s: '-2', label: 'صورة إضافية 2' },
+        { s: '-3', label: 'صورة إضافية 3' },
+        { s: '-4', label: 'صورة إضافية 4' }
+    ];
+    $('imageSlots').innerHTML = slots.map(function(slot) {
+        const name = editingId + slot.s + '.webp';
+        return '<div class="img-slot">' +
+            '<div class="img-preview"><img src="' + IMG_URL + name + '?t=' + Date.now() + '" onerror="this.style.opacity=.1"></div>' +
+            '<div class="img-info"><b>' + slot.label + '</b><small>' + name + '</small>' +
+            '<label class="btn-ghost" style="display:inline-block;padding:8px 18px">رفع صورة' +
+            '<input type="file" accept="image/*" hidden onchange="uploadImage(\'' + slot.s + '\', this)"></label>' +
+            '<span class="up-status" id="up' + (slot.s || 'main') + '"></span></div></div>';
+    }).join('');
+}
+
+function convertToWebp(file, maxW, quality) {
+    maxW = maxW || 1200; quality = quality || 0.85;
+    return new Promise(function(resolve, reject) {
+        const img = new Image();
+        const url = URL.createObjectURL(file);
+        img.onload = function() {
+            const canvas = document.createElement('canvas');
+            let w = img.width, h = img.height;
+            if (w > maxW) { h = Math.round(h * maxW / w); w = maxW; }
+            canvas.width = w; canvas.height = h;
+            canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+            canvas.toBlob(function(blob) {
+                URL.revokeObjectURL(url);
+                if (blob && blob.type === 'image/webp') resolve(blob);
+                else reject(new Error('المتصفح مش بيدعم تحويل WebP — استخدم Chrome'));
+            }, 'image/webp', quality);
+        };
+        img.onerror = function() { URL.revokeObjectURL(url); reject(new Error('ملف صورة غير صالح')); };
+        img.src = url;
+    });
+}
+
+function blobToBase64(blob) {
+    return new Promise(function(resolve, reject) {
+        const r = new FileReader();
+        r.onload = () => resolve(r.result.split(',')[1]);
+        r.onerror = reject;
+        r.readAsDataURL(blob);
+    });
+}
+
+function ghHeaders() {
+    return { 'Authorization': 'token ' + (localStorage.getItem('lp_gh_token') || '') };
+}
+
+async function ghUpload(filename, b64) {
+    const url = 'https://api.github.com/repos/' + GH.owner + '/' + GH.repo + '/contents/images/' + encodeURIComponent(filename);
+    let sha = null;
+    try {
+        const c = await fetch(url, { headers: ghHeaders() });
+        if (c.ok) sha = (await c.json()).sha;
+    } catch (e) {}
+    const body = { message: 'Upload ' + filename, content: b64, branch: 'main' };
+    if (sha) body.sha = sha;
+    const res = await fetch(url, {
+        method: 'PUT',
+        headers: Object.assign(ghHeaders(), { 'Accept': 'application/vnd.github.v3+json' }),
+        body: JSON.stringify(body)
+    });
+    return res.ok;
+}
+
+async function uploadImage(suffix, input) {
+    const file = input.files[0];
+    if (!file) return;
+    const statusEl = $('up' + (suffix || 'main'));
+    statusEl.style.color = 'var(--muted)';
+    statusEl.textContent = 'جاري التحويل والرفع…';
+
+    const token = localStorage.getItem('lp_gh_token');
+    if (!token) {
+        statusEl.style.color = 'var(--no)';
+        statusEl.textContent = '✗ حط GitHub Token الأول من تبويب الإعدادات';
+        input.value = '';
+        return;
+    }
+
+    try {
+        const blob = await convertToWebp(file);
+        const b64 = await blobToBase64(blob);
+        const filename = editingId + suffix + '.webp';
+        const ok = await ghUpload(filename, b64);
+        if (ok) {
+            statusEl.style.color = 'var(--ok)';
+            statusEl.textContent = '✓ اترفعت — هتظهر على الموقع خلال دقيقة (اعمل refresh)';
+            const prev = input.closest('.img-slot').querySelector('img');
+            prev.style.opacity = 1;
+            prev.src = IMG_URL + filename + '?t=' + Date.now();
+        } else {
+            statusEl.style.color = 'var(--no)';
+            statusEl.textContent = '✗ فشل الرفع — راجع التوكين أو الصلاحيات';
+        }
+    } catch (e) {
+        statusEl.style.color = 'var(--no)';
+        statusEl.textContent = '✗ ' + e.message;
+    }
+    input.value = '';
+}
+
+// ═══════════ Token ═══════════
+ $('ghToken').value = localStorage.getItem('lp_gh_token') || '';
+function saveToken() {
+    localStorage.setItem('lp_gh_token', $('ghToken').value.trim());
+    $('tokenStatus').style.color = 'var(--ok)';
+    $('tokenStatus').textContent = '✓ تم حفظ التوكين';
+}
+async function testToken() {
+    $('tokenStatus').style.color = 'var(--muted)';
+    $('tokenStatus').textContent = 'جاري الاختبار…';
+    try {
+        const res = await fetch('https://api.github.com/repos/' + GH.owner + '/' + GH.repo, { headers: ghHeaders() });
+        if (res.ok) {
+            $('tokenStatus').style.color = 'var(--ok)';
+            $('tokenStatus').textContent = '✓ التوكين شغال والاتصال بالريبو تمام';
+        } else {
+            $('tokenStatus').style.color = 'var(--no)';
+            $('tokenStatus').textContent = '✗ التوكين غلط أو مش ليه صلاحية repo';
+        }
+    } catch (e) {
+        $('tokenStatus').style.color = 'var(--no)';
+        $('tokenStatus').textContent = '✗ تعذر الاتصال بـ GitHub';
+    }
+}
+
+// ═══════════ Orders ═══════════
+async function loadOrders() {
+    $('ordersList').innerHTML = '<p class="empty">جاري التحميل…</p>';
+    try {
+        const j = await api('getOrdersList', {});
+        if (!j.success) {
+            $('ordersList').innerHTML = '<p class="empty">' + (j.error || 'خطأ') + '</p>';
+            return;
+        }
+        orders = j.orders || [];
+        renderOrders();
+    } catch (e) {
+        $('ordersList').innerHTML = '<p class="empty">تعذر تحميل الطلبات</p>';
+    }
+}
+
+function renderOrders() {
+    if (!orders.length) {
+        $('ordersList').innerHTML = '<p class="empty">لا توجد طلبات بعد</p>';
+        return;
+    }
+    const groups = {};
+    orders.forEach(o => { (groups[o.order_id] = groups[o.order_id] || []).push(o); });
+    const ids = Object.keys(groups).sort((a, b) => b.localeCompare(a));
+
+    $('ordersList').innerHTML = ids.map(function(oid) {
+        const rows = groups[oid];
+        const c = rows[0];
+        const total = rows.reduce((s, r) => s + (Number(r.price) * Number(r.qty)), 0);
+        return '<div class="order-card">' +
+            '<div class="oc-head"><b class="en">' + esc(oid) + '</b><small>' + esc(c.date || '') + '</small>' +
+            '<span class="badge pending">' + esc(c.status || 'pending') + '</span></div>' +
+            '<div class="oc-body">' +
+            '<div class="oc-cust">' +
+            '<p><b>' + esc(c.customer_name) + '</b> — <span class="en" dir="ltr">' + esc(String(c.phone)) + '</span></p>' +
+            '<p>' + esc(c.governorate) + ' / ' + esc(c.area) + ' — ' + esc(c.address) + '</p>' +
+            '<p>الدفع: ' + esc(c.payment_method) + (c.notes ? ' — ملاحظات: ' + esc(c.notes) : '') + '</p></div>' +
+            '<div class="tbl-wrap"><table class="tbl small"><thead><tr><th>كود</th><th>منتج</th><th>مقاس</th><th>لون</th><th>عدد</th><th>سعر</th></tr></thead><tbody>' +
+            rows.map(r => '<tr><td class="en">' + esc(r.product_id) + '</td><td>' + esc(r.product_name) + '</td><td>' + esc(r.size) + '</td><td>' + esc(r.color) + '</td><td>' + r.qty + '</td><td>' + r.price + '</td></tr>').join('') +
+            '</tbody></table></div>' +
+            '<p class="oc-total">الإجمالي: <b>' + total + ' ج.م</b></p>' +
+            '</div></div>';
+    }).join('');
+}
+</script>
+</body>
+</html>
