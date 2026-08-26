@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="robots" content="noindex">
 <title>لوحة التحكم — Last Piece</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%230a0a0a'/%3E%3Ctext x='16' y='21' font-family='Arial' font-size='13' font-weight='bold' fill='%23fff' text-anchor='middle'%3ELP%3C/text%3E%3C/svg%3E">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;800&family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
 <style>
 :root{--black:#0a0a0a;--paper:#f6f6f6;--line:#e7e7e7;--muted:#7a7a7a;--ok:#1a7f37;--no:#c0392b}
@@ -15,13 +16,11 @@ button{font-family:inherit;cursor:pointer;border:none;background:none}
 img{display:block;max-width:100%}
 .btn-dark{background:var(--black);color:#fff;padding:10px 22px;font-weight:800;font-size:13px;border:1px solid var(--black);transition:.2s}
 .btn-dark:hover{background:#fff;color:var(--black)}
-.btn-ghost{background:#fff;border:1px solid #141414;padding:10px 22px;font-weight:800;font-size:13px;transition:.2s}
+.btn-ghost{background:#fff;border:1px solid #141414;padding:10px 22px;font-weight:800;font-size:13px;transition:.2s;display:inline-block}
 .btn-ghost:hover{background:var(--black);color:#fff}
 .btn-block{width:100%;display:block}
-input,select{font-family:inherit;font-size:14px;padding:11px 14px;border:1px solid var(--line);background:#fff;width:100%;border-radius:0}
+input,select{font-family:inherit;font-size:14px;padding:11px 14px;border:1px solid var(--line);background:#fff;width:100%}
 input:focus{outline:none;border-color:var(--black)}
-
-/* Login */
 .login-wrap{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px;background:var(--black)}
 .login-box{background:#fff;padding:36px;max-width:380px;width:100%;text-align:center}
 .login-box h1{font-size:22px;font-weight:800;margin-bottom:4px}
@@ -29,11 +28,9 @@ input:focus{outline:none;border-color:var(--black)}
 .login-box input{margin-bottom:12px;text-align:center}
 .logo-txt{font-family:'Inter',sans-serif;font-weight:800;letter-spacing:.15em;direction:ltr;font-size:18px}
 .logo-txt small{font-size:10px;letter-spacing:.3em;opacity:.6}
-
-/* Header */
 .dash-header{background:#fff;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:100}
 .dh-inner{max-width:1200px;margin:auto;display:flex;justify-content:space-between;align-items:center;padding:12px 20px;gap:14px;flex-wrap:wrap}
-.dh-nav{display:flex;gap:4px}
+.dh-nav{display:flex;gap:4px;flex-wrap:wrap}
 .tab-btn{padding:8px 18px;font-weight:700;font-size:13px;color:var(--muted);transition:.2s}
 .tab-btn.active{background:var(--black);color:#fff}
 main{max-width:1200px;margin:auto;padding:24px 20px 60px}
@@ -43,8 +40,6 @@ main{max-width:1200px;margin:auto;padding:24px 20px 60px}
 .tab-head h2{font-size:24px;font-weight:800}
 .tab-head>div{display:flex;gap:8px}
 .empty{text-align:center;color:var(--muted);padding:60px 0;background:#fff;border:1px solid var(--line)}
-
-/* Table */
 .tbl-wrap{background:#fff;border:1px solid var(--line);overflow-x:auto}
 .tbl{width:100%;border-collapse:collapse;min-width:700px}
 .tbl th{background:var(--paper);padding:10px 12px;text-align:right;font-size:12px;font-weight:800}
@@ -57,10 +52,7 @@ main{max-width:1200px;margin:auto;padding:24px 20px 60px}
 .badge{display:inline-block;font-size:11px;font-weight:800;padding:3px 10px}
 .badge.ok{background:#e6f4ea;color:var(--ok)}
 .badge.no{background:#fdecea;color:var(--no)}
-.badge.pending{background:var(--paper);color:var(--muted)}
 .badge.feat{background:var(--black);color:#fff}
-
-/* Modal */
 .modal{position:fixed;inset:0;z-index:1000;background:rgba(0,0,0,.5);display:none;align-items:flex-start;justify-content:center;padding:24px;overflow-y:auto}
 .modal.open{display:flex}
 .modal-box{background:#fff;max-width:640px;width:100%;padding:26px;margin:auto}
@@ -68,17 +60,16 @@ main{max-width:1200px;margin:auto;padding:24px 20px 60px}
 .modal-head h3{font-size:19px;font-weight:800}
 .f-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px}
 .f label{display:block;font-size:12.5px;font-weight:700;margin-bottom:6px}
-.checks{display:flex;gap:24px;align-items:center;margin:14px 0}
+.checks{display:flex;gap:24px;align-items:center;margin:14px 0;flex-wrap:wrap}
 .checks label{display:flex;align-items:center;gap:8px;margin:0;font-size:13px;font-weight:700;cursor:pointer}
 .checks input{width:16px;height:16px;accent-color:var(--black)}
 .chips{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px}
-.chip{border:1px solid var(--line);background:#fff;padding:6px 14px;font-size:12px;font-weight:700;transition:.15s}
+.chip{border:1px solid var(--line);background:#fff;padding:6px 14px;font-size:12px;font-weight:700;transition:.15s;display:inline-flex;align-items:center;gap:6px}
 .chip:hover{border-color:var(--black)}
 .chip.sel{background:var(--black);color:#fff;border-color:var(--black)}
+.chip .sw{display:inline-block;width:11px;height:11px;border-radius:50%;border:1px solid rgba(0,0,0,.2)}
 .sec-label{font-size:12.5px;font-weight:700;margin:10px 0 8px}
 #saveStatus{font-size:12.5px;font-weight:700;margin-top:10px;min-height:18px}
-
-/* Images */
 .img-section{border-top:1px solid var(--line);margin-top:20px;padding-top:18px}
 .img-section h4{font-size:15px;font-weight:800;margin-bottom:4px}
 .img-section .hint{font-size:11.5px;color:var(--muted);margin-bottom:14px}
@@ -89,8 +80,6 @@ main{max-width:1200px;margin:auto;padding:24px 20px 60px}
 .img-info b{display:block;font-size:13px}
 .img-info small{display:block;color:var(--muted);font-size:11px;margin-bottom:8px;direction:ltr;text-align:right}
 .up-status{display:block;font-size:11.5px;font-weight:700;margin-top:6px;min-height:16px}
-
-/* Orders */
 .order-card{background:#fff;border:1px solid var(--line);margin-bottom:14px}
 .oc-head{display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding:14px 16px;border-bottom:1px solid var(--paper)}
 .oc-head b{font-size:14px}
@@ -101,25 +90,17 @@ main{max-width:1200px;margin:auto;padding:24px 20px 60px}
 .oc-total{text-align:left;font-size:15px;margin-top:10px}
 .tbl.small{min-width:500px}
 .tbl.small th,.tbl.small td{padding:8px 10px;font-size:12px}
-
-/* Settings */
 .settings-box{background:#fff;border:1px solid var(--line);padding:24px;max-width:560px}
 .settings-box h3{font-size:17px;font-weight:800;margin-bottom:8px}
 .settings-box p{color:var(--muted);font-size:13px;margin-bottom:14px}
 .settings-box .row{display:flex;gap:8px}
 #tokenStatus{font-size:13px;font-weight:700;margin-top:10px;min-height:18px}
 .settings-box ol{margin:10px 20px 16px;color:var(--muted);font-size:12.5px}
-
-@media(max-width:640px){
-.f-row{grid-template-columns:1fr}
-.img-slot{flex-direction:column;text-align:center}
-.dh-inner{justify-content:center}
-}
+@media(max-width:640px){.f-row{grid-template-columns:1fr}.img-slot{flex-direction:column;text-align:center}.dh-inner{justify-content:center}}
 </style>
 </head>
 <body>
 
-<!-- Login -->
 <div id="loginScreen" class="login-wrap">
     <div class="login-box">
         <span class="logo-txt">LAST PIECE <small>ADMIN</small></span>
@@ -131,7 +112,6 @@ main{max-width:1200px;margin:auto;padding:24px 20px 60px}
     </div>
 </div>
 
-<!-- App -->
 <div id="app" style="display:none">
     <header class="dash-header">
         <div class="dh-inner">
@@ -141,12 +121,14 @@ main{max-width:1200px;margin:auto;padding:24px 20px 60px}
                 <button class="tab-btn" onclick="switchTab('orders', this)">الطلبات</button>
                 <button class="tab-btn" onclick="switchTab('settings', this)">الإعدادات</button>
             </nav>
-            <button onclick="logout()" class="btn-ghost" style="padding:8px 18px">خروج</button>
+            <div style="display:flex;gap:8px">
+                <a href="https://axentro-official.github.io/Last-piece-/" target="_blank" class="btn-ghost" style="padding:8px 16px;font-size:12px">الموقع ↗</a>
+                <button onclick="logout()" class="btn-ghost" style="padding:8px 18px">خروج</button>
+            </div>
         </div>
     </header>
 
     <main>
-        <!-- Products -->
         <section id="tab-products" class="tab active">
             <div class="tab-head">
                 <h2>المنتجات</h2>
@@ -158,7 +140,6 @@ main{max-width:1200px;margin:auto;padding:24px 20px 60px}
             <div id="productsTable" class="tbl-wrap"><p class="empty">جاري التحميل…</p></div>
         </section>
 
-        <!-- Orders -->
         <section id="tab-orders" class="tab">
             <div class="tab-head">
                 <h2>الطلبات</h2>
@@ -167,7 +148,6 @@ main{max-width:1200px;margin:auto;padding:24px 20px 60px}
             <div id="ordersList"><p class="empty">اضغط تحديث لعرض الطلبات</p></div>
         </section>
 
-        <!-- Settings -->
         <section id="tab-settings" class="tab">
             <div class="settings-box">
                 <h3>GitHub — لرفع الصور</h3>
@@ -187,7 +167,6 @@ main{max-width:1200px;margin:auto;padding:24px 20px 60px}
         </section>
     </main>
 
-    <!-- Product Modal -->
     <div id="productModal" class="modal" onclick="if(event.target===this)closeModal()">
         <div class="modal-box">
             <div class="modal-head">
@@ -198,27 +177,23 @@ main{max-width:1200px;margin:auto;padding:24px 20px 60px}
             <form id="productForm" onsubmit="saveProduct(event)">
                 <div class="f-row">
                     <div class="f"><label>اسم المنتج *</label><input id="pfName" required></div>
-                    <div class="f"><label>الفئة *</label>
-                        <input id="pfCat" list="catList" required>
-                        <datalist id="catList">
-                            <option value="تيشرت نص كم"><option value="تيشرت بكم"><option value="قميص">
-                            <option value="جاكيت"><option value="هودي"><option value="سويت بانت">
-                            <option value="جينز"><option value="شورت"><option value="جوارب">
-                            <option value="اكسسوارات"><option value="شال"><option value="صندل">
-                        </datalist>
-                    </div>
+                    <div class="f"><label>الفئة *</label><input id="pfCat" list="catList" required></div>
                 </div>
                 <div class="f-row">
                     <div class="f"><label>السعر قبل الخصم (ج.م) *</label><input id="pfPrice" type="number" min="0" required></div>
                     <div class="f"><label>سعر بعد الخصم (اختياري)</label><input id="pfDiscount" type="number" min="0"></div>
                 </div>
+                <div class="f-row">
+                    <div class="f"><label>SKU (كود المنتج) — اختياري</label><input id="pfSku" placeholder="سيُولَّد تلقائياً إذا تركته فاضي" style="direction:ltr"></div>
+                    <div class="f"><label style="visibility:hidden">.</label><p style="font-size:11px;color:var(--muted)">مثال: TS-015 — لازم يكون فريد (مش مستخدم قبل كده)</p></div>
+                </div>
 
-                <p class="sec-label">المقاسات المتاحة</p>
+                <p class="sec-label">المقاسات المتاحة (اختر اللي يناسب المنتج)</p>
                 <div id="sizesChips" class="chips"></div>
                 <p class="sec-label">الألوان المتاحة</p>
                 <div id="colorsChips" class="chips"></div>
                 <div class="f-row" style="grid-template-columns:2fr 1fr;margin-bottom:6px">
-                    <input id="newColorInput" placeholder="لون مخصص واضغط Enter" onkeydown="if(event.key==='Enter'){event.preventDefault();addCustomColor();}">
+                    <input id="newColorInput" placeholder="لون مخصص (أو كود زي #ff0000) واضغط Enter" onkeydown="if(event.key==='Enter'){event.preventDefault();addCustomColor();}">
                     <button type="button" onclick="addCustomColor()" class="btn-ghost">+ إضافة لون</button>
                 </div>
 
@@ -233,7 +208,7 @@ main{max-width:1200px;margin:auto;padding:24px 20px 60px}
 
             <div id="imagesSection" class="img-section" style="display:none">
                 <h4>صور المنتج <span class="en" id="imgProductId" style="font-size:12px;color:var(--muted)"></span></h4>
-                <p class="hint">الصورة الأساسية هي اللي بتظهر كصورة المنتج، والإضافية بتظهر في السلايدر. بعد الرفع هيظهر على الموقع خلال دقيقة تقريباً.</p>
+                <p class="hint">الصورة الأساسية هي اللي بتظهر كصورة المنتج، والإضافية بتظهر في السلايدر. بعد الرفع استنى دقيقة واعمل Refresh للموقع (Ctrl+F5).</p>
                 <div id="imageSlots"></div>
             </div>
         </div>
@@ -245,9 +220,16 @@ main{max-width:1200px;margin:auto;padding:24px 20px 60px}
 const API_URL = 'https://script.google.com/macros/s/AKfycbyuLyCqPmG1a2w7Vpgu2hGFFG44tlmW4N9AuNwa-YHRupXRPhxBF-_mEOhPgjpSBwM9/exec';
 const IMG_URL = 'https://axentro-official.github.io/Last-piece-/images/';
 const GH = { owner: 'axentro-official', repo: 'Last-piece-' };
+const V = Date.now().toString(36);
 
-const SIZES = ['XS','S','M','L','XL','XXL','28','30','32','34','36','38','40'];
-const COLORS = ['black','white','red','blue','beige','brown','gray','navy'];
+// ✅ كل أنواع المقاسات + مقاس واحد
+const SIZES = ['مقاس واحد','XS','S','M','L','XL','XXL','3XL','4XL','5XL','26','28','30','32','34','35','36','37','38','39','40','41','42','43','44','45','2-3 سنوات','4-5 سنوات','6-7 سنوات','8-9 سنوات','10-11 سنوات','12-13 سنوات'];
+
+// ✅ باليت ألوان كبيرة (عربي + إنجليزي)
+const COLORS = ['أسود','أبيض','رمادي','رمادي فاتح','رمادي غامق','فحمي','فضي','بيج','كريمي','أوف وايت','كاميل','بني','بني فاتح','بني غامق','شوكولاتة','كحلي','أزرق','أزرق فاتح','سماوي','تركواز','أزرق ملكي','أخضر','أخضر فاتح','أخضر غامق','زيتي','نعناعي','خاكي','أصفر','خردلي','ذهبي','برتقالي','مشمشي','أحمر','أحمر غامق','عنابي','نبيتي','وردي','وردي فاتح','فوشيا','بنفسجي','لافندر','بمبي','متعدد الألوان','black','white','gray','light gray','dark gray','charcoal','silver','beige','cream','off white','camel','brown','light brown','dark brown','chocolate','navy','blue','light blue','sky blue','turquoise','royal blue','green','light green','dark green','olive','mint','khaki','yellow','mustard','gold','orange','peach','red','dark red','maroon','burgundy','pink','light pink','fuchsia','purple','lavender','multicolor'];
+
+// ✅ فئات كثيرة (بنفس ترتيب بريفكسات الـ SKU في code.gs)
+const CATEGORIES = ['تيشرت نص كم','تيشرت بكم','بولو','قميص','قميص كتان','هودي','سويت شيرت','سويت بانت','جاكيت','بلوفر','جينز','بنطلون','كارجو','شورت','جوارب','اكسسوارات','كاب','حزام','شال','صندل','توب','ملابس داخلية','فستان','تنورة'];
 
 let products = [];
 let orders = [];
@@ -259,12 +241,27 @@ const $ = id => document.getElementById(id);
 const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const getPass = () => localStorage.getItem('lp_admin_pass') || '';
 
+// ✅ بناء قائمة الفئات في الـ datalist
+ $('catList') && ($('catList').outerHTML = '<datalist id="catList">' + CATEGORIES.map(c => '<option value="' + c + '">').join('') + '</datalist>');
+
+const PH = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="400" height="600"><rect width="400" height="600" fill="#ececec"/><text x="200" y="310" font-family="Arial" font-size="24" fill="#9a9a9a" text-anchor="middle" letter-spacing="4">LAST PIECE</text></svg>');
+
+function imgSrc(name) { return IMG_URL + encodeURIComponent(name) + '?v=' + V; }
+
+function getColorCode(c) {
+    if (!c) return '#cccccc';
+    c = String(c).trim();
+    if (c.startsWith('#')) return c;
+    const map = {
+        'black':'#141414','white':'#ffffff','gray':'#808080','light gray':'#d3d3d3','dark gray':'#4a4a4a','charcoal':'#36454f','silver':'#c0c0c0','beige':'#e8dcc8','cream':'#f5ecd7','off white':'#faf9f6','camel':'#c19a6b','brown':'#7a4a2b','light brown':'#a5713f','dark brown':'#4e2f1c','chocolate':'#4a2c1a','navy':'#1f2a44','blue':'#2b5c8a','light blue':'#a8c4dd','sky blue':'#87ceeb','turquoise':'#3aa6a0','royal blue':'#4169e1','green':'#3a6b4f','light green':'#90ee90','dark green':'#1d4d2b','olive':'#6b7150','mint':'#98ff98','khaki':'#b6a271','yellow':'#e6c229','mustard':'#d4a017','gold':'#c9a227','orange':'#d97b29','peach':'#f2b48c','red':'#b03a3a','dark red':'#7a1f1f','maroon':'#6e1423','burgundy':'#5c0a1e','pink':'#d98ca6','light pink':'#f2c4d4','fuchsia':'#c33c64','purple':'#6a4c93','lavender':'#b57edc','multicolor':'linear-gradient(135deg,#e74c3c,#f1c40f,#2ecc71,#3498db)',
+        'أسود':'#141414','أبيض':'#ffffff','ابيض':'#ffffff','رمادي':'#808080','رمادي فاتح':'#d3d3d3','رمادي غامق':'#4a4a4a','فحمي':'#36454f','فضي':'#c0c0c0','بيج':'#e8dcc8','كريمي':'#f5ecd7','أوف وايت':'#faf9f6','اوف وايت':'#faf9f6','كاميل':'#c19a6b','بني':'#7a4a2b','بني فاتح':'#a5713f','بني غامق':'#4e2f1c','شوكولاتة':'#4a2c1a','كحلي':'#1f2a44','أزرق':'#2b5c8a','ازرق':'#2b5c8a','أزرق فاتح':'#a8c4dd','سماوي':'#a8c4dd','تركواز':'#3aa6a0','أزرق ملكي':'#4169e1','أخضر':'#3a6b4f','اخضر':'#3a6b4f','أخضر فاتح':'#90ee90','أخضر غامق':'#1d4d2b','زيتي':'#6b7150','نعناعي':'#98ff98','خاكي':'#b6a271','أصفر':'#e6c229','اصفر':'#e6c229','خردلي':'#d4a017','ذهبي':'#c9a227','برتقالي':'#d97b29','مشمشي':'#f2b48c','أحمر':'#b03a3a','احمر':'#b03a3a','أحمر غامق':'#7a1f1f','عنابي':'#6e1423','نبيتي':'#5c0a1e','وردي':'#d98ca6','وردي فاتح':'#f2c4d4','فوشيا':'#c33c64','بنفسجي':'#6a4c93','لافندر':'#b57edc','بمبي':'#f4c2c2','متعدد الألوان':'linear-gradient(135deg,#e74c3c,#f1c40f,#2ecc71,#3498db)'
+    };
+    return map[c.toLowerCase()] || map[c] || '#cccccc';
+}
+
 // ═══════════ API ═══════════
 async function api(action, payload) {
-    const res = await fetch(API_URL, {
-        method: 'POST',
-        body: JSON.stringify(Object.assign({ action: action, password: getPass() }, payload || {}))
-    });
+    const res = await fetch(API_URL, { method: 'POST', body: JSON.stringify(Object.assign({ action: action, password: getPass() }, payload || {})) });
     return res.json();
 }
 
@@ -276,35 +273,18 @@ async function doLogin() {
     try {
         const res = await fetch(API_URL, { method: 'POST', body: JSON.stringify({ action: 'verifyAdmin', password: pass }) });
         const j = await res.json();
-        if (j.valid) {
-            localStorage.setItem('lp_admin_pass', pass);
-            showApp();
-        } else {
-            $('loginErr').textContent = 'الباسورد غلط';
-        }
-    } catch (e) {
-        $('loginErr').textContent = 'تعذر الاتصال — راجع نشر السكريبت';
-    }
+        if (j.valid) { localStorage.setItem('lp_admin_pass', pass); showApp(); }
+        else { $('loginErr').textContent = 'الباسورد غلط'; }
+    } catch (e) { $('loginErr').textContent = 'تعذر الاتصال — راجع نشر السكريبت'; }
 }
 
-function showApp() {
-    $('loginScreen').style.display = 'none';
-    $('app').style.display = 'block';
-    loadProducts();
-}
+function showApp() { $('loginScreen').style.display = 'none'; $('app').style.display = 'block'; loadProducts(); }
+function logout() { localStorage.removeItem('lp_admin_pass'); location.reload(); }
 
-function logout() {
-    localStorage.removeItem('lp_admin_pass');
-    location.reload();
-}
-
-// Auto-login
 (function () {
     if (getPass()) {
         fetch(API_URL, { method: 'POST', body: JSON.stringify({ action: 'verifyAdmin', password: getPass() }) })
-            .then(r => r.json())
-            .then(j => { if (j.valid) showApp(); })
-            .catch(() => {});
+            .then(r => r.json()).then(j => { if (j.valid) showApp(); }).catch(() => {});
     }
 })();
 
@@ -331,20 +311,17 @@ async function loadProducts() {
 }
 
 function renderProducts() {
-    if (!products.length) {
-        $('productsTable').innerHTML = '<p class="empty">لا توجد منتجات — اضغط "+ إضافة منتج"</p>';
-        return;
-    }
+    if (!products.length) { $('productsTable').innerHTML = '<p class="empty">لا توجد منتجات — اضغط "+ إضافة منتج"</p>'; return; }
     let html = '<table class="tbl"><thead><tr><th>صورة</th><th>الكود</th><th>الاسم</th><th>الفئة</th><th>السعر</th><th>بعد الخصم</th><th>الحالة</th><th>إجراءات</th></tr></thead><tbody>';
     products.forEach(p => {
         html += '<tr>' +
-            '<td><img class="thumb" src="' + IMG_URL + p.id + '.webp" onerror="this.style.opacity=.15"></td>' +
+            '<td><img class="thumb" src="' + imgSrc(p.id + '.webp') + '" onerror="this.onerror=null;this.src=PH"></td>' +
             '<td class="en">' + esc(p.id) + '</td>' +
             '<td>' + esc(p.name) + '</td>' +
             '<td>' + esc(p.category) + '</td>' +
             '<td>' + p.price + '</td>' +
             '<td>' + (p.discount_price || '-') + '</td>' +
-            '<td>' + (p.active ? '<span class="badge ok">متاح</span>' : '<span class="badge no">نفذ</span>') +
+            '<td>' + (p.active ? '<span class="badge ok">متاح</span>' : '<span class="badge no" style="background:#fdecea;color:#c0392b">نفذ</span>') +
                 (p.featured ? ' <span class="badge feat">مميز</span>' : '') + '</td>' +
             '<td><button class="mini" onclick="editProduct(\'' + p.id + '\')">تعديل</button> ' +
                 '<button class="mini danger" onclick="deleteProduct(\'' + p.id + '\')">حذف</button></td>' +
@@ -359,8 +336,9 @@ function renderChips() {
     $('sizesChips').innerHTML = SIZES.map(s =>
         '<button type="button" class="chip' + (selectedSizes.has(s) ? ' sel' : '') + '" onclick="toggleSize(\'' + s + '\',this)">' + s + '</button>'
     ).join('');
-    $('colorsChips').innerHTML = Array.from(selectedColors).concat(COLORS.filter(c => !selectedColors.has(c))).map(c =>
-        '<button type="button" class="chip' + (selectedColors.has(c) ? ' sel' : '') + '" onclick="toggleColor(\'' + c + '\',this)">' + esc(c) + '</button>'
+    const allColors = Array.from(selectedColors).concat(COLORS.filter(c => !selectedColors.has(c)));
+    $('colorsChips').innerHTML = allColors.map(c =>
+        '<button type="button" class="chip' + (selectedColors.has(c) ? ' sel' : '') + '" onclick="toggleColor(\'' + c + '\',this)"><span class="sw" style="background:' + getColorCode(c) + '"></span>' + esc(c) + '</button>'
     ).join('');
 }
 function toggleSize(s, el) {
@@ -399,6 +377,8 @@ function editProduct(id) {
     $('pfCat').value = p.category;
     $('pfPrice').value = p.price;
     $('pfDiscount').value = p.discount_price || '';
+    $('pfSku').value = p.id;
+    $('pfSku').disabled = true; // الكود ميتغيرش في التعديل
     $('pfActive').checked = p.active !== false;
     $('pfFeatured').checked = !!p.featured;
     selectedSizes = new Set(p.sizes || []);
@@ -410,7 +390,10 @@ function editProduct(id) {
     $('productModal').classList.add('open');
 }
 
-function closeModal() { $('productModal').classList.remove('open'); }
+function closeModal() {
+    $('productModal').classList.remove('open');
+    $('pfSku').disabled = false;
+}
 
 async function saveProduct(e) {
     e.preventDefault();
@@ -438,6 +421,8 @@ async function saveProduct(e) {
                 loadProducts();
             } else { $('saveStatus').style.color = 'var(--no)'; $('saveStatus').textContent = '✗ ' + (j.error || 'خطأ'); }
         } else {
+            const customSku = $('pfSku').value.trim();
+            if (customSku) payload.sku = customSku;
             const j = await api('addProduct', payload);
             if (j.success) {
                 editingId = j.id;
@@ -467,46 +452,49 @@ async function deleteProduct(id) {
 function renderImageSlots() {
     $('imgProductId').textContent = '— ' + editingId;
     const slots = [
-        { s: '', label: 'الصورة الأساسية' },
+        { s: '', label: 'الصورة الأساسية (الرئيسية)' },
         { s: '-2', label: 'صورة إضافية 2' },
         { s: '-3', label: 'صورة إضافية 3' },
-        { s: '-4', label: 'صورة إضافية 4' }
+        { s: '-4', label: 'صورة إضافية 4' },
+        { s: '-5', label: 'صورة إضافية 5' },
+        { s: '-6', label: 'صورة إضافية 6' }
     ];
-    $('imageSlots').innerHTML = slots.map(function(slot) {
+    $('imageSlots').innerHTML = slots.map(function (slot) {
         const name = editingId + slot.s + '.webp';
+        const id = slot.s === '' ? 'main' : slot.s.replace('-', 'x');
         return '<div class="img-slot">' +
-            '<div class="img-preview"><img src="' + IMG_URL + name + '?t=' + Date.now() + '" onerror="this.style.opacity=.1"></div>' +
+            '<div class="img-preview"><img src="' + imgSrc(name) + '" onerror="this.onerror=null;this.src=PH"></div>' +
             '<div class="img-info"><b>' + slot.label + '</b><small>' + name + '</small>' +
             '<label class="btn-ghost" style="display:inline-block;padding:8px 18px">رفع صورة' +
             '<input type="file" accept="image/*" hidden onchange="uploadImage(\'' + slot.s + '\', this)"></label>' +
-            '<span class="up-status" id="up' + (slot.s || 'main') + '"></span></div></div>';
+            '<span class="up-status" id="up' + id + '"></span></div></div>';
     }).join('');
 }
 
 function convertToWebp(file, maxW, quality) {
     maxW = maxW || 1200; quality = quality || 0.85;
-    return new Promise(function(resolve, reject) {
+    return new Promise(function (resolve, reject) {
         const img = new Image();
         const url = URL.createObjectURL(file);
-        img.onload = function() {
+        img.onload = function () {
             const canvas = document.createElement('canvas');
             let w = img.width, h = img.height;
             if (w > maxW) { h = Math.round(h * maxW / w); w = maxW; }
             canvas.width = w; canvas.height = h;
             canvas.getContext('2d').drawImage(img, 0, 0, w, h);
-            canvas.toBlob(function(blob) {
+            canvas.toBlob(function (blob) {
                 URL.revokeObjectURL(url);
                 if (blob && blob.type === 'image/webp') resolve(blob);
                 else reject(new Error('المتصفح مش بيدعم تحويل WebP — استخدم Chrome'));
             }, 'image/webp', quality);
         };
-        img.onerror = function() { URL.revokeObjectURL(url); reject(new Error('ملف صورة غير صالح')); };
+        img.onerror = function () { URL.revokeObjectURL(url); reject(new Error('ملف صورة غير صالح')); };
         img.src = url;
     });
 }
 
 function blobToBase64(blob) {
-    return new Promise(function(resolve, reject) {
+    return new Promise(function (resolve, reject) {
         const r = new FileReader();
         r.onload = () => resolve(r.result.split(',')[1]);
         r.onerror = reject;
@@ -514,9 +502,7 @@ function blobToBase64(blob) {
     });
 }
 
-function ghHeaders() {
-    return { 'Authorization': 'token ' + (localStorage.getItem('lp_gh_token') || '') };
-}
+function ghHeaders() { return { 'Authorization': 'token ' + (localStorage.getItem('lp_gh_token') || '') }; }
 
 async function ghUpload(filename, b64) {
     const url = 'https://api.github.com/repos/' + GH.owner + '/' + GH.repo + '/contents/images/' + encodeURIComponent(filename);
@@ -538,7 +524,8 @@ async function ghUpload(filename, b64) {
 async function uploadImage(suffix, input) {
     const file = input.files[0];
     if (!file) return;
-    const statusEl = $('up' + (suffix || 'main'));
+    const statusId = suffix === '' ? 'upmain' : 'upx' + suffix.replace('-', '');
+    const statusEl = $(statusId);
     statusEl.style.color = 'var(--muted)';
     statusEl.textContent = 'جاري التحويل والرفع…';
 
@@ -557,10 +544,9 @@ async function uploadImage(suffix, input) {
         const ok = await ghUpload(filename, b64);
         if (ok) {
             statusEl.style.color = 'var(--ok)';
-            statusEl.textContent = '✓ اترفعت — هتظهر على الموقع خلال دقيقة (اعمل refresh)';
+            statusEl.textContent = '✓ اترفعت — اعمل Refresh للموقع بعد دقيقة (Ctrl+F5)';
             const prev = input.closest('.img-slot').querySelector('img');
-            prev.style.opacity = 1;
-            prev.src = IMG_URL + filename + '?t=' + Date.now();
+            prev.src = IMG_URL + encodeURIComponent(filename) + '?t=' + Date.now();
         } else {
             statusEl.style.color = 'var(--no)';
             statusEl.textContent = '✗ فشل الرفع — راجع التوكين أو الصلاحيات';
@@ -584,17 +570,9 @@ async function testToken() {
     $('tokenStatus').textContent = 'جاري الاختبار…';
     try {
         const res = await fetch('https://api.github.com/repos/' + GH.owner + '/' + GH.repo, { headers: ghHeaders() });
-        if (res.ok) {
-            $('tokenStatus').style.color = 'var(--ok)';
-            $('tokenStatus').textContent = '✓ التوكين شغال والاتصال بالريبو تمام';
-        } else {
-            $('tokenStatus').style.color = 'var(--no)';
-            $('tokenStatus').textContent = '✗ التوكين غلط أو مش ليه صلاحية repo';
-        }
-    } catch (e) {
-        $('tokenStatus').style.color = 'var(--no)';
-        $('tokenStatus').textContent = '✗ تعذر الاتصال بـ GitHub';
-    }
+        if (res.ok) { $('tokenStatus').style.color = 'var(--ok)'; $('tokenStatus').textContent = '✓ التوكين شغال والاتصال بالريبو تمام'; }
+        else { $('tokenStatus').style.color = 'var(--no)'; $('tokenStatus').textContent = '✗ التوكين غلط أو مش ليه صلاحية repo'; }
+    } catch (e) { $('tokenStatus').style.color = 'var(--no)'; $('tokenStatus').textContent = '✗ تعذر الاتصال بـ GitHub'; }
 }
 
 // ═══════════ Orders ═══════════
@@ -602,33 +580,24 @@ async function loadOrders() {
     $('ordersList').innerHTML = '<p class="empty">جاري التحميل…</p>';
     try {
         const j = await api('getOrdersList', {});
-        if (!j.success) {
-            $('ordersList').innerHTML = '<p class="empty">' + (j.error || 'خطأ') + '</p>';
-            return;
-        }
+        if (!j.success) { $('ordersList').innerHTML = '<p class="empty">' + (j.error || 'خطأ') + '</p>'; return; }
         orders = j.orders || [];
         renderOrders();
-    } catch (e) {
-        $('ordersList').innerHTML = '<p class="empty">تعذر تحميل الطلبات</p>';
-    }
+    } catch (e) { $('ordersList').innerHTML = '<p class="empty">تعذر تحميل الطلبات</p>'; }
 }
 
 function renderOrders() {
-    if (!orders.length) {
-        $('ordersList').innerHTML = '<p class="empty">لا توجد طلبات بعد</p>';
-        return;
-    }
+    if (!orders.length) { $('ordersList').innerHTML = '<p class="empty">لا توجد طلبات بعد</p>'; return; }
     const groups = {};
     orders.forEach(o => { (groups[o.order_id] = groups[o.order_id] || []).push(o); });
     const ids = Object.keys(groups).sort((a, b) => b.localeCompare(a));
-
-    $('ordersList').innerHTML = ids.map(function(oid) {
+    $('ordersList').innerHTML = ids.map(function (oid) {
         const rows = groups[oid];
         const c = rows[0];
         const total = rows.reduce((s, r) => s + (Number(r.price) * Number(r.qty)), 0);
         return '<div class="order-card">' +
             '<div class="oc-head"><b class="en">' + esc(oid) + '</b><small>' + esc(c.date || '') + '</small>' +
-            '<span class="badge pending">' + esc(c.status || 'pending') + '</span></div>' +
+            '<span class="badge" style="background:var(--paper);color:var(--muted)">' + esc(c.status || 'pending') + '</span></div>' +
             '<div class="oc-body">' +
             '<div class="oc-cust">' +
             '<p><b>' + esc(c.customer_name) + '</b> — <span class="en" dir="ltr">' + esc(String(c.phone)) + '</span></p>' +
