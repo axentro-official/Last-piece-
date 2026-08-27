@@ -321,8 +321,8 @@ textarea.input{resize:vertical;min-height:80px}
 .mnav-badge.show{display:flex}
 
 /* ═══ التوست + المودال ═══ */
-.toast{position:fixed;bottom:92px;right:50%;transform:translate(50%,140%);background:var(--black);color:#fff;padding:13px 28px;font-size:13.5px;font-weight:700;z-index:3000;transition:transform .35s;max-width:90vw;text-align:center;cursor:pointer}
-.toast.show{transform:translate(50%,0)}
+.toast{position:fixed;bottom:92px;right:50%;transform:translate(50%,140%);background:var(--black);color:#fff;padding:13px 28px;font-size:13.5px;font-weight:700;z-index:3000;transition:transform .35s;max-width:90vw;text-align:center;cursor:pointer;display:none}
+.toast.show{display:block;transform:translate(50%,0)}
 .modal{position:fixed;inset:0;z-index:2000;display:flex;align-items:center;justify-content:center;padding:20px;background:rgba(0,0,0,.45);opacity:0;visibility:hidden;transition:.3s}
 .modal.open{opacity:1;visibility:visible}
 .modal-box{background:#fff;max-width:560px;width:100%;padding:28px;max-height:84vh;overflow-y:auto}
