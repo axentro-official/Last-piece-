@@ -470,8 +470,8 @@ function togglePass(inputId, btn) {
     const inp = $(inputId);
     const show = inp.type === 'password';
     inp.type = show ? 'text' : 'password';
-    btn.innerHTML = show ? EYE_OFF : EYE_ON;
-    btn.setAttribute('aria-label', show ? 'إخفاء' : 'إظهار');
+    btn.innerHTML = show ? EYE_ON : EYE_OFF;
+    btn.setAttribute('aria-label', show ? 'إظهار' : 'إخفاء');
 }
 
 // ═══ النسخ ═══
