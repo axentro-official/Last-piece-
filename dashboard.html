@@ -16,6 +16,7 @@ button{font-family:inherit;cursor:pointer;border:none;background:none}
 img{display:block;max-width:100%}
 .btn-dark{background:var(--black);color:#fff;padding:10px 22px;font-weight:800;font-size:13px;border:1px solid var(--black);transition:.2s}
 .btn-dark:hover{background:#fff;color:var(--black)}
+.btn-dark:disabled{opacity:.5;cursor:wait}
 .btn-ghost{background:#fff;border:1px solid #141414;padding:10px 22px;font-weight:800;font-size:13px;transition:.2s;display:inline-block}
 .btn-ghost:hover{background:var(--black);color:#fff}
 .btn-block{width:100%;display:block}
@@ -78,6 +79,7 @@ main{max-width:1200px;margin:auto;padding:24px 20px 60px}
 .img-section h4{font-size:15px;font-weight:800;margin-bottom:4px}
 .img-section .hint{font-size:11.5px;color:var(--muted);margin-bottom:14px}
 .img-slot{display:flex;gap:14px;align-items:center;border:1px solid var(--line);padding:10px;margin-bottom:10px}
+.img-slot.selected{border-color:var(--black);background:#fffdf5}
 .img-preview{width:70px;height:90px;background:var(--paper);flex-shrink:0;overflow:hidden}
 .img-preview img{width:100%;height:100%;object-fit:cover}
 .img-info{flex:1;min-width:0}
@@ -107,7 +109,6 @@ main{max-width:1200px;margin:auto;padding:24px 20px 60px}
 .settings-box .row{display:flex;gap:8px}
 #tokenStatus{font-size:13px;font-weight:700;margin-top:10px;min-height:18px}
 .settings-box ol{margin:10px 20px 16px;color:var(--muted);font-size:12.5px}
-/* ✅ التوست الاحترافي */
 .toast{position:fixed;bottom:24px;right:24px;z-index:4000;display:flex;flex-direction:column;gap:10px;pointer-events:none}
 .toast-item{background:var(--black);color:#fff;padding:14px 20px;font-size:13.5px;font-weight:700;min-width:240px;max-width:360px;display:flex;align-items:center;gap:10px;animation:tIn .3s cubic-bezier(.2,.9,.3,1.2);border-left:4px solid #fff}
 .toast-item.t-ok{border-left-color:#2ecc71}
@@ -116,7 +117,6 @@ main{max-width:1200px;margin:auto;padding:24px 20px 60px}
 .toast-item.t-out{animation:tOut .3s forwards}
 @keyframes tIn{from{opacity:0;transform:translateY(16px)}}
 @keyframes tOut{to{opacity:0;transform:translateY(10px)}}
-/* ✅ مودال التأكيد الاحترافي */
 .confirm-modal{position:fixed;inset:0;z-index:5000;background:rgba(10,10,10,.55);display:none;align-items:center;justify-content:center;padding:20px}
 .confirm-modal.open{display:flex}
 .confirm-box{background:#fff;max-width:420px;width:100%;padding:28px;text-align:center;animation:tIn .25s}
@@ -246,23 +246,23 @@ main{max-width:1200px;margin:auto;padding:24px 20px 60px}
                     <label><input type="checkbox" id="pfFeatured"> منتج مميز (الرئيسية)</label>
                 </div>
 
-                <button type="submit" class="btn-dark btn-block">حفظ المنتج</button>
+                <div id="imagesSection" class="img-section">
+                    <h4>صور المنتج <span class="en" id="imgProductId" style="font-size:12px;color:var(--muted)"></span></h4>
+                    <p class="hint">اختار الصور من جهازك واضغط "حفظ المنتج" مرة واحدة — كل حاجة هتترفع مع بعض تلقائياً. الصورة الأساسية هي اللي بتظهر كصورة المنتج، والإضافية بتظهر في السلايدر.</p>
+                    <div id="imageSlots"></div>
+                </div>
+
+                <button type="submit" class="btn-dark btn-block" style="margin-top:14px">حفظ المنتج</button>
                 <p id="saveStatus"></p>
             </form>
-
-            <div id="imagesSection" class="img-section" style="display:none">
-                <h4>صور المنتج <span class="en" id="imgProductId" style="font-size:12px;color:var(--muted)"></span></h4>
-                <p class="hint">الصورة الأساسية هي اللي بتظهر كصورة المنتج، والإضافية بتظهر في السلايدر. بعد الرفع أو الحذف استنى دقيقة واعمل Refresh للموقع (Ctrl+F5).</p>
-                <div id="imageSlots"></div>
-            </div>
         </div>
     </div>
 </div>
 
-<!-- ✅ التوست -->
+<!-- التوست -->
 <div class="toast" id="toastBox"></div>
 
-<!-- ✅ مودال التأكيد الاحترافي -->
+<!-- مودال التأكيد الاحترافي -->
 <div class="confirm-modal" id="confirmModal">
     <div class="confirm-box">
         <div class="c-icon" id="cIcon">⚠</div>
@@ -304,7 +304,9 @@ let selectedSizes = new Set();
 let selectedColors = new Set();
 let orderFilter = 'all';
 let orderSearch = '';
-let ghImageSet = null; // ✅ قائمة الصور الفعلية من GitHub
+let ghImageSet = null;      // قائمة الصور الفعلية من GitHub
+let pendingImages = {};     // ✅ الصور المختارة من الجهاز — بتترفع كلها مع "حفظ المنتج"
+let recentUploads = new Set(); // ✅ صور اترفعت في الجلسة — بنستنى بناء GitHub Pages من غير طلبات فاشلة
 
 const $ = id => document.getElementById(id);
 const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -314,7 +316,7 @@ const PH = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent('<svg xmlns=
 
 function imgSrc(name) { return IMG_URL + encodeURIComponent(name) + '?v=' + V; }
 
-// ═══════════ ✅ التوست الاحترافي ═══════════
+// ═══════════ التوست الاحترافي ═══════════
 function toast(msg, type) {
     const box = $('toastBox');
     const el = document.createElement('div');
@@ -324,7 +326,7 @@ function toast(msg, type) {
     setTimeout(() => { el.classList.add('t-out'); setTimeout(() => el.remove(), 300); }, 3200);
 }
 
-// ═══════════ ✅ مودال التأكيد (بديل confirm/alert) ═══════════
+// ═══════════ مودال التأكيد ═══════════
 let _cResolve = null;
 function lpConfirm(opts) {
     return new Promise(function (resolve) {
@@ -336,7 +338,7 @@ function lpConfirm(opts) {
         $('cOkBtn').textContent = opts.okText || 'تأكيد';
         const needPass = !!opts.needPassword;
         $('cPassWrap').style.display = needPass ? 'block' : 'none';
-        if (needPass) { $('cPass').value = ''; }
+        if (needPass) { $('cPass').value = ''; $('cPass').placeholder = 'اكتب باسورد الإدارة للتأكيد'; }
         $('confirmModal').classList.add('open');
         if (needPass) setTimeout(() => $('cPass').focus(), 100);
     });
@@ -357,13 +359,13 @@ function cResolve(ok) {
     if (_cResolve) { _cResolve(ok ? (needPass ? passInput.value.trim() : true) : false); _cResolve = null; }
 }
 
-// Enter في خانة الباسورد = تأكيد
  $('cPass').addEventListener('keydown', function (e) { if (e.key === 'Enter') cResolve(true); });
 
-// ═══════════ ✅ قائمة الصور الحقيقية من GitHub (صفر 404) ═══════════
+// ═══════════ قائمة الصور الحقيقية من GitHub ═══════════
 async function loadGitHubImages() {
     try {
-        const res = await fetch('https://api.github.com/repos/' + GH.owner + '/' + GH.repo + '/contents/images?per_page=1000');
+        const h = localStorage.getItem('lp_gh_token') ? ghHeaders() : {};
+        const res = await fetch('https://api.github.com/repos/' + GH.owner + '/' + GH.repo + '/contents/images?per_page=1000', { headers: h });
         if (res.ok) {
             const arr = await res.json();
             ghImageSet = new Set(arr.filter(f => f.type === 'file').map(f => f.name));
@@ -372,12 +374,13 @@ async function loadGitHubImages() {
 }
 
 function imageExists(name) {
-    if (ghImageSet === null) return true; // لو القائمة مش متاحة، نظهر كل الخانات (وضع احتياطي)
+    if (ghImageSet === null) return true;
     return ghImageSet.has(name);
 }
 
 function refreshImageSet(name, add) {
     if (ghImageSet) { if (add) ghImageSet.add(name); else ghImageSet.delete(name); }
+    if (add) recentUploads.add(name); else recentUploads.delete(name);
 }
 
 // ═══════════ الفئات ═══════════
@@ -445,11 +448,12 @@ async function doLogin() {
     } catch (e) { $('loginErr').textContent = 'تعذر الاتصال — راجع نشر السكريبت'; }
 }
 
-function showApp() {
+// ✅ الترتيب الصح: قائمة الصور الأول وبعدين الجدول — عشان مفيش 404
+async function showApp() {
     $('loginScreen').style.display = 'none';
     $('app').style.display = 'block';
+    await loadGitHubImages();
     loadProducts();
-    loadGitHubImages();
 }
 function logout() { localStorage.removeItem('lp_admin_pass'); location.reload(); }
 
@@ -482,12 +486,19 @@ async function loadProducts() {
     }
 }
 
+// ✅ صفر 404: بنطلب بس الصور الموجودة فعلاً (والجديدة بنستنى بناء Pages بصمت)
 function renderProducts() {
     if (!products.length) { $('productsTable').innerHTML = '<p class="empty">لا توجد منتجات — اضغط "+ إضافة منتج"</p>'; return; }
     let html = '<table class="tbl"><thead><tr><th>صورة</th><th>الكود</th><th>الاسم</th><th>الفئة</th><th>السعر</th><th>بعد الخصم</th><th>الحالة</th><th>إجراءات</th></tr></thead><tbody>';
     products.forEach(p => {
+        const fname = p.id + '.webp';
+        const waitingBuild = recentUploads.has(fname);
+        const hasImg = waitingBuild ? false : (ghImageSet === null ? true : ghImageSet.has(fname));
+        const thumbCell = hasImg
+            ? '<td><img class="thumb" src="' + imgSrc(fname) + '" onerror="this.onerror=null;this.src=PH"></td>'
+            : '<td><img class="thumb" src="' + PH + '" style="opacity:.3"></td>';
         html += '<tr>' +
-            '<td><img class="thumb" src="' + imgSrc(p.id + '.webp') + '" onerror="this.onerror=null;this.src=PH"></td>' +
+            thumbCell +
             '<td class="en">' + esc(p.id) + '</td>' +
             '<td>' + esc(p.name) + '</td>' +
             '<td>' + esc(p.category) + '</td>' +
@@ -528,6 +539,7 @@ function addCustomColor() {
 
 // ═══════════ Modal ═══════════
 function openNewProduct() {
+    clearAllPendingImages();
     editingId = null;
     $('modalTitle').textContent = 'إضافة منتج جديد';
     $('productForm').reset();
@@ -535,15 +547,17 @@ function openNewProduct() {
     selectedSizes = new Set();
     selectedColors = new Set();
     $('pfActive').checked = true;
-    $('imagesSection').style.display = 'none';
+    $('pfSku').disabled = false;
     renderChips();
     renderCatChips();
+    renderImageSlots(); // ✅ قسم الصور ظاهر من الأول ومستني اختيارك
     $('productModal').classList.add('open');
 }
 
 function editProduct(id) {
     const p = products.find(x => x.id === id);
     if (!p) return;
+    clearAllPendingImages();
     editingId = id;
     $('modalTitle').textContent = 'تعديل: ' + p.name;
     $('pfName').value = p.name;
@@ -559,21 +573,27 @@ function editProduct(id) {
     $('saveStatus').textContent = '';
     renderChips();
     renderCatChips();
-    $('imagesSection').style.display = 'block';
     renderImageSlots();
     $('productModal').classList.add('open');
 }
 
 function closeModal() {
+    clearAllPendingImages();
     $('productModal').classList.remove('open');
     $('pfSku').disabled = false;
 }
 
+// ═══════════ ✅ حفظ المنتج — بيانات + صور مرة واحدة ═══════════
 async function saveProduct(e) {
     e.preventDefault();
 
     const cat = $('pfCat').value.trim();
     if (!cat) { $('saveStatus').style.color = 'var(--no)'; $('saveStatus').textContent = '✗ لازم تختار أو تكتب الفئة'; return; }
+
+    const pendingCount = Object.keys(pendingImages).filter(s => !pendingImages[s].uploaded).length;
+    const saveBtn = e.target.querySelector('button[type="submit"]');
+    saveBtn.disabled = true;
+    saveBtn.textContent = pendingCount ? 'جاري الحفظ ورفع ' + pendingCount + ' صورة…' : 'جاري الحفظ…';
 
     const payload = {
         name: $('pfName').value.trim(),
@@ -591,38 +611,53 @@ async function saveProduct(e) {
 
     try {
         if (editingId) {
+            // ═══ وضع التعديل ═══
             payload.id = editingId;
             const j = await api('updateProduct', payload);
             if (j.success) {
+                const up = await uploadPendingImages(editingId);
                 $('saveStatus').style.color = 'var(--ok)';
-                $('saveStatus').textContent = '✓ تم حفظ التعديلات';
-                toast('تم حفظ تعديلات ' + editingId + ' ✓', 'ok');
+                $('saveStatus').textContent = '✓ تم حفظ التعديلات' + (up.total ? ' + اترفعت ' + up.uploaded + '/' + up.total + ' صور' : '');
+                toast('تم حفظ تعديلات ' + editingId + (up.total ? ' + ' + up.uploaded + '/' + up.total + ' صور ✓' : ' ✓'), up.failed ? 'err' : 'ok');
                 loadProducts();
-            } else { $('saveStatus').style.color = 'var(--no)'; $('saveStatus').textContent = '✗ ' + (j.error || 'خطأ'); toast(j.error || 'خطأ في الحفظ', 'err'); }
+            } else {
+                $('saveStatus').style.color = 'var(--no)';
+                $('saveStatus').textContent = '✗ ' + (j.error || 'خطأ');
+                toast(j.error || 'خطأ في الحفظ', 'err');
+            }
         } else {
+            // ═══ وضع الإضافة ═══
             const customSku = $('pfSku').value.trim();
             if (customSku) payload.sku = customSku;
             const j = await api('addProduct', payload);
             if (j.success) {
                 editingId = j.id;
+                $('pfSku').value = j.id;
+                $('pfSku').disabled = true;
+                const up = await uploadPendingImages(j.id);
                 $('saveStatus').style.color = 'var(--ok)';
-                $('saveStatus').textContent = '✓ تم الإضافة — كود المنتج: ' + j.id + ' — ارفع الصور تحت';
-                toast('تم إضافة المنتج — الكود: ' + j.id + ' ✓', 'ok');
-                $('imagesSection').style.display = 'block';
-                renderImageSlots();
+                $('saveStatus').textContent = '✓ تم إضافة المنتج — الكود: ' + j.id +
+                    (up.total ? ' + اترفعت ' + up.uploaded + '/' + up.total + ' صور' : '') + ' — تقدر تقفل دلوقتي';
+                toast('تم إضافة ' + j.id + (up.total ? ' + ' + up.uploaded + ' صورة ✓' : ' ✓'), up.failed ? 'err' : 'ok');
                 loadProducts();
-            } else { $('saveStatus').style.color = 'var(--no)'; $('saveStatus').textContent = '✗ ' + (j.error || 'خطأ'); toast(j.error || 'خطأ في الإضافة', 'err'); }
+            } else {
+                $('saveStatus').style.color = 'var(--no)';
+                $('saveStatus').textContent = '✗ ' + (j.error || 'خطأ');
+                toast(j.error || 'خطأ في الإضافة', 'err');
+            }
         }
     } catch (err) {
         $('saveStatus').style.color = 'var(--no)';
         $('saveStatus').textContent = '✗ تعذر الاتصال بالسيرفر';
         toast('تعذر الاتصال بالسيرفر', 'err');
     }
+
+    saveBtn.disabled = false;
+    saveBtn.textContent = 'حفظ المنتج';
 }
 
-// ═══════════ ✅ حذف منتج نهائي (بيانات + كل صوره من GitHub) ═══════════
+// ═══════════ حذف منتج (بيانات + صور + باسورد) ═══════════
 async function deleteProduct(id) {
-    // عدّ الصور اللي هتتمسح (لو قائمة GitHub متاحة)
     let imgCount = 0;
     if (ghImageSet) {
         imgCount = Array.from(ghImageSet).filter(n =>
@@ -630,7 +665,7 @@ async function deleteProduct(id) {
         ).length;
     }
 
-        const ok = await lpConfirm({
+    const ok = await lpConfirm({
         title: 'حذف منتج نهائي',
         msg: 'هتحذف المنتج ' + id + ' نهائياً: كل بياناته من الشيت' +
              (imgCount > 0 ? ' + ' + imgCount + ' صورة من GitHub' : ' + صوره من GitHub (لو موجودة)') +
@@ -643,13 +678,13 @@ async function deleteProduct(id) {
 
     toast('جاري حذف ' + id + '…', 'info');
 
-    // 1) حذف بيانات المنتج من الشيت
+    // 1) حذف البيانات من الشيت
     try {
         const j = await api('deleteProduct', { id: id });
         if (!j.success) { toast(j.error || 'حدث خطأ في حذف البيانات', 'err'); return; }
     } catch (e) { toast('تعذر الاتصال بالسيرفر', 'err'); return; }
 
-    // 2) حذف كل صور المنتج من GitHub
+    // 2) حذف كل الصور من GitHub
     if (!localStorage.getItem('lp_gh_token')) {
         toast('اتحذفت بيانات ' + id + ' ✓ — لكن الصور ماتمسحتش (مفيش GitHub Token)', 'err');
         loadProducts();
@@ -658,38 +693,31 @@ async function deleteProduct(id) {
 
     const r = await deleteAllProductImages(id);
 
-    if (r.deleted > 0 && r.failed === 0) {
-        toast('تم حذف ' + id + ' + ' + r.deleted + ' صورة من GitHub ✓', 'ok');
-    } else if (r.deleted > 0 && r.failed > 0) {
-        toast('اتحذف ' + id + ' و' + r.deleted + ' صورة — لكن ' + r.failed + ' صورة فشلت', 'err');
-    } else if (r.failed > 0) {
-        toast('اتحذف المنتج لكن فشل حذف ' + r.failed + ' صورة', 'err');
-    } else {
-        toast('تم حذف ' + id + ' ✓ (مكانش ليه صور)', 'ok');
-    }
+    if (r.deleted > 0 && r.failed === 0) toast('تم حذف ' + id + ' + ' + r.deleted + ' صورة من GitHub ✓', 'ok');
+    else if (r.deleted > 0 && r.failed > 0) toast('اتحذف ' + id + ' و' + r.deleted + ' صورة — لكن ' + r.failed + ' صورة فشلت', 'err');
+    else if (r.failed > 0) toast('اتحذف المنتج لكن فشل حذف ' + r.failed + ' صورة', 'err');
+    else toast('تم حذف ' + id + ' ✓ (مكانش ليه صور)', 'ok');
 
     loadProducts();
 }
 
-// ✅ حذف كل صور منتج من GitHub (الأساسية + كل الإضافية)
+// حذف كل صور منتج من GitHub
 async function deleteAllProductImages(id) {
     const result = { deleted: 0, failed: 0 };
 
     let targets;
     if (ghImageSet) {
-        // من القائمة الفعلية — بيلقط أي صورة للمنتج حتى لو -7 أو -9
         targets = Array.from(ghImageSet).filter(n =>
             n === id + '.webp' || (n.startsWith(id + '-') && n.endsWith('.webp'))
         );
     } else {
-        // احتياطي لو القائمة مش متاحة: نجرّب كل الخانات المعروفة
         targets = ['', '-2', '-3', '-4', '-5', '-6', '-7', '-8', '-9'].map(s => id + s + '.webp');
     }
 
     for (const filename of targets) {
         try {
             const sha = await ghGetSha(filename);
-            if (!sha) continue; // الصورة مش موجودة أصلاً — مش خطأ
+            if (!sha) continue;
             const res = await fetch('https://api.github.com/repos/' + GH.owner + '/' + GH.repo + '/contents/images/' + encodeURIComponent(filename), {
                 method: 'DELETE',
                 headers: Object.assign(ghHeaders(), { 'Accept': 'application/vnd.github.v3+json' }),
@@ -702,9 +730,11 @@ async function deleteAllProductImages(id) {
     return result;
 }
 
-// ═══════════ الصور — رفع + حذف من GitHub ═══════════
+// ═══════════ ✅ خانات الصور — اختيار محلي + معاينة محلية (صفر طلبات شبكة) ═══════════
 function renderImageSlots() {
-    $('imgProductId').textContent = '— ' + editingId;
+    const isAddMode = !editingId;
+    $('imgProductId').textContent = isAddMode ? '— الكود هيتولد تلقائياً بعد الحفظ' : '— ' + editingId;
+
     const slots = [
         { s: '', label: 'الصورة الأساسية (الرئيسية)' },
         { s: '-2', label: 'صورة إضافية 2' },
@@ -713,28 +743,105 @@ function renderImageSlots() {
         { s: '-5', label: 'صورة إضافية 5' },
         { s: '-6', label: 'صورة إضافية 6' }
     ];
-    $('imageSlots').innerHTML = slots.map(function (slot) {
-        const name = editingId + slot.s + '.webp';
-        const id = slot.s === '' ? 'main' : slot.s.replace('-', 'x');
-        const exists = imageExists(name);
-        const preview = exists
-            ? '<img src="' + imgSrc(name) + '">'
-            : '<img src="' + PH + '" style="opacity:.35">';
 
-        let btns = '<label class="btn-ghost" style="display:inline-block;padding:8px 18px">' + (exists ? 'تغيير الصورة' : 'رفع صورة') +
-            '<input type="file" accept="image/*" hidden onchange="uploadImage(\'' + slot.s + '\', this)"></label>';
-        if (exists) {
-            btns += ' <button type="button" class="mini danger" onclick="deleteImage(\'' + slot.s + '\')">🗑 حذف</button>';
+    $('imageSlots').innerHTML = slots.map(function (slot) {
+        const name = isAddMode ? ('(كود المنتج)' + slot.s + '.webp') : (editingId + slot.s + '.webp');
+        const pend = pendingImages[slot.s];
+
+        let preview, btns, statusHtml;
+
+        if (pend) {
+            // ✅ ملف مختار من الجهاز — معاينة محلية، صفر طلبات شبكة
+            preview = '<img src="' + pend.url + '">';
+            if (pend.uploaded) {
+                btns = '';
+                statusHtml = '<span class="up-status" style="color:var(--ok)">✓ اترفعت مع الحفظ</span>';
+            } else {
+                btns = '<button type="button" class="mini danger" onclick="clearPendingImage(\'' + slot.s + '\')">✕ إزالة الاختيار</button>';
+                statusHtml = '<span class="up-status" style="color:var(--muted)">• هتترفع مع حفظ المنتج</span>';
+            }
+        } else if (!isAddMode && imageExists(editingId + slot.s + '.webp') && !recentUploads.has(editingId + slot.s + '.webp')) {
+            // صورة موجودة على GitHub (وضع التعديل)
+            preview = '<img src="' + imgSrc(editingId + slot.s + '.webp') + '">';
+            btns = '<label class="btn-ghost" style="display:inline-block;padding:8px 18px">تغيير' +
+                '<input type="file" accept="image/*" hidden onchange="selectImage(\'' + slot.s + '\', this)"></label>' +
+                ' <button type="button" class="mini danger" onclick="deleteImage(\'' + slot.s + '\')">🗑 حذف</button>';
+            statusHtml = '';
+        } else if (!isAddMode && recentUploads.has(editingId + slot.s + '.webp')) {
+            // اترفعت للتو في الجلسة — معاينة صامتة لحد بناء Pages
+            preview = '<img src="' + PH + '" style="opacity:.3">';
+            btns = '<label class="btn-ghost" style="display:inline-block;padding:8px 18px">تغيير' +
+                '<input type="file" accept="image/*" hidden onchange="selectImage(\'' + slot.s + '\', this)"></label>' +
+                ' <button type="button" class="mini danger" onclick="deleteImage(\'' + slot.s + '\')">🗑 حذف</button>';
+            statusHtml = '<span class="up-status" style="color:var(--muted)">• هتظهر بعد ~دقيقة (بناء GitHub)</span>';
+        } else {
+            // خانة فاضية — صفر طلبات شبكة
+            preview = '<img src="' + PH + '" style="opacity:.3">';
+            btns = '<label class="btn-ghost" style="display:inline-block;padding:8px 18px">' + (isAddMode ? 'اختيار صورة' : 'رفع صورة') +
+                '<input type="file" accept="image/*" hidden onchange="selectImage(\'' + slot.s + '\', this)"></label>';
+            statusHtml = '';
         }
 
-        return '<div class="img-slot">' +
+        return '<div class="img-slot' + (pend && !pend.uploaded ? ' selected' : '') + '">' +
             '<div class="img-preview">' + preview + '</div>' +
-            '<div class="img-info"><b>' + slot.label + (exists ? ' <span style="color:var(--ok)">✓</span>' : '') + '</b><small>' + name + '</small>' +
+            '<div class="img-info"><b>' + slot.label + (pend && !pend.uploaded ? ' <span style="color:var(--ok)">• مختارة</span>' : '') + '</b><small>' + name + '</small>' +
             '<div class="img-btns">' + btns + '</div>' +
-            '<span class="up-status" id="up' + id + '"></span></div></div>';
+            statusHtml + '</div></div>';
     }).join('');
 }
 
+// ✅ اختيار صورة من الجهاز — بتتخزن محلياً لحد ما تدوس حفظ
+function selectImage(suffix, input) {
+    const file = input.files[0];
+    if (!file) return;
+    if (pendingImages[suffix] && pendingImages[suffix].url) URL.revokeObjectURL(pendingImages[suffix].url);
+    pendingImages[suffix] = { file: file, url: URL.createObjectURL(file), uploaded: false };
+    renderImageSlots();
+    input.value = '';
+}
+
+function clearPendingImage(suffix) {
+    if (pendingImages[suffix]) {
+        if (pendingImages[suffix].url) URL.revokeObjectURL(pendingImages[suffix].url);
+        delete pendingImages[suffix];
+    }
+    renderImageSlots();
+}
+
+function clearAllPendingImages() {
+    Object.keys(pendingImages).forEach(function (s) {
+        if (pendingImages[s] && pendingImages[s].url) URL.revokeObjectURL(pendingImages[s].url);
+    });
+    pendingImages = {};
+}
+
+// ✅ رفع كل الصور المختارة — بتتنادى جوه saveProduct بعد نجاح حفظ البيانات
+async function uploadPendingImages(sku) {
+    const suffixes = Object.keys(pendingImages).filter(s => !pendingImages[s].uploaded);
+    const result = { total: suffixes.length, uploaded: 0, failed: 0 };
+    if (!suffixes.length) return result;
+
+    if (!localStorage.getItem('lp_gh_token')) {
+        toast('المنتج اتحفظ ✓ — لكن الصور ماترفعتش (حط GitHub Token من الإعدادات واحفظ تاني)', 'err');
+        return result;
+    }
+
+    for (const suffix of suffixes) {
+        const item = pendingImages[suffix];
+        const filename = sku + suffix + '.webp';
+        try {
+            const blob = await convertToWebp(item.file);
+            const b64 = await blobToBase64(blob);
+            const ok = await ghUpload(filename, b64);
+            if (ok) { result.uploaded++; item.uploaded = true; refreshImageSet(filename, true); }
+            else result.failed++;
+        } catch (e) { result.failed++; }
+    }
+    renderImageSlots();
+    return result;
+}
+
+// ═══════════ أدوات الصور ═══════════
 function convertToWebp(file, maxW, quality) {
     maxW = maxW || 1200; quality = quality || 0.85;
     return new Promise(function (resolve, reject) {
@@ -776,15 +883,20 @@ async function ghGetSha(filename) {
     return null;
 }
 
+// ✅ رفع مباشر من غير فحص وجود (كان بيعمل 404) — ولو GitHub قال "موجود" نجيب sha ونعيد
 async function ghUpload(filename, b64) {
-    const sha = await ghGetSha(filename);
+    const path = 'https://api.github.com/repos/' + GH.owner + '/' + GH.repo + '/contents/images/' + encodeURIComponent(filename);
+    const headers = Object.assign(ghHeaders(), { 'Accept': 'application/vnd.github.v3+json' });
+
     const body = { message: 'Upload ' + filename, content: b64, branch: 'main' };
-    if (sha) body.sha = sha;
-    const res = await fetch('https://api.github.com/repos/' + GH.owner + '/' + GH.repo + '/contents/images/' + encodeURIComponent(filename), {
-        method: 'PUT',
-        headers: Object.assign(ghHeaders(), { 'Accept': 'application/vnd.github.v3+json' }),
-        body: JSON.stringify(body)
-    });
+    let res = await fetch(path, { method: 'PUT', headers: headers, body: JSON.stringify(body) });
+    if (res.ok) return true;
+
+    // الملف موجود فعلاً (كاش قديم) → نجيب sha ونحاول تاني
+    const sha = await ghGetSha(filename);
+    if (!sha) return false;
+    body.sha = sha;
+    res = await fetch(path, { method: 'PUT', headers: headers, body: JSON.stringify(body) });
     return res.ok;
 }
 
@@ -799,49 +911,13 @@ async function ghDelete(filename) {
     return res.ok;
 }
 
-async function uploadImage(suffix, input) {
-    const file = input.files[0];
-    if (!file) return;
-    const statusId = suffix === '' ? 'upmain' : 'upx' + suffix.replace('-', '');
-    const statusEl = $(statusId);
-    statusEl.style.color = 'var(--muted)';
-    statusEl.textContent = 'جاري التحويل والرفع…';
-
-    if (!localStorage.getItem('lp_gh_token')) {
-        statusEl.style.color = 'var(--no)';
-        statusEl.textContent = '✗ حط GitHub Token الأول من تبويب الإعدادات';
-        toast('حط GitHub Token الأول من الإعدادات', 'err');
-        input.value = '';
-        return;
-    }
-
-    try {
-        const blob = await convertToWebp(file);
-        const b64 = await blobToBase64(blob);
-        const filename = editingId + suffix + '.webp';
-        const ok = await ghUpload(filename, b64);
-        if (ok) {
-            refreshImageSet(filename, true);
-            statusEl.style.color = 'var(--ok)';
-            statusEl.textContent = '✓ اترفعت';
-            toast('اترفعت ' + filename + ' ✓', 'ok');
-            renderImageSlots();
-        } else {
-            statusEl.style.color = 'var(--no)';
-            statusEl.textContent = '✗ فشل الرفع';
-            toast('فشل الرفع — راجع التوكين', 'err');
-        }
-    } catch (e) {
-        statusEl.style.color = 'var(--no)';
-        statusEl.textContent = '✗ ' + e.message;
-        toast(e.message, 'err');
-    }
-    input.value = '';
-}
-
-// ✅ حذف صورة من GitHub
+// حذف صورة واحدة موجودة (وضع التعديل)
 async function deleteImage(suffix) {
     const filename = editingId + suffix + '.webp';
+    if (ghImageSet !== null && !ghImageSet.has(filename)) {
+        toast('الصورة دي مش موجودة أصلاً', 'err');
+        return;
+    }
     const ok = await lpConfirm({
         title: 'حذف الصورة',
         msg: 'متأكد من حذف "' + filename + '" من الريبو نهائياً؟',
@@ -922,7 +998,6 @@ async function setOrderStatus(oid, newStatus) {
     } catch (e) { toast('تعذر الاتصال', 'err'); }
 }
 
-// ✅ حذف طلب — بتأكيد الباسورد
 async function deleteOrder(oid) {
     const ok = await lpConfirm({
         title: 'حذف طلب نهائي',
