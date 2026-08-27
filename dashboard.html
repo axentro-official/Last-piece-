@@ -32,7 +32,20 @@ input:focus{outline:none;border-color:var(--black)}
 .icon-act svg{width:15px;height:15px}
 .icon-act:hover{border-color:var(--black);background:var(--paper)}
 .icon-act.danger:hover{border-color:var(--no);color:var(--no);background:#fdf2f2}
-.icon-act.done{color:var(--ok);border-color:var(--ok)}
+
+/* ═══ إظهار/إخفاء الباسورد ═══ */
+.pass-wrap{position:relative}
+.pass-wrap input{padding-left:44px}
+.eye-btn{position:absolute;top:50%;transform:translateY(-50%);left:8px;width:32px;height:32px;display:flex;align-items:center;justify-content:center;color:var(--muted);transition:.15s}
+.eye-btn:hover{color:var(--black)}
+.eye-btn svg{width:18px;height:18px}
+
+/* ═══ شاشة التحقق (بدل وميض الدخول) ═══ */
+.boot-wrap{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;background:var(--black);color:#fff}
+.boot-logo{font-family:'Inter',sans-serif;font-weight:800;letter-spacing:.15em;direction:ltr;font-size:18px;animation:bootPulse 1.2s ease-in-out infinite}
+.boot-logo small{display:block;text-align:center;font-size:10px;letter-spacing:.3em;opacity:.6}
+@keyframes bootPulse{0%,100%{opacity:1}50%{opacity:.45}}
+.boot-txt{font-size:13px;color:rgba(255,255,255,.7);font-weight:700}
 
 /* ═══ الدخول ═══ */
 .login-wrap{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px;background:var(--black)}
@@ -40,7 +53,8 @@ input:focus{outline:none;border-color:var(--black)}
 @keyframes lIn{from{opacity:0;transform:translateY(14px)}}
 .login-box h1{font-size:22px;font-weight:800;margin-bottom:4px}
 .login-box p{color:var(--muted);font-size:13px;margin-bottom:20px}
-.login-box input{margin-bottom:12px;text-align:center}
+.login-box .pass-wrap{margin-bottom:12px}
+.login-box .pass-wrap input{text-align:center;padding-left:44px}
 .logo-txt{font-family:'Inter',sans-serif;font-weight:800;letter-spacing:.15em;direction:ltr;font-size:18px}
 .logo-txt small{font-size:10px;letter-spacing:.3em;opacity:.6}
 
@@ -59,23 +73,30 @@ main{max-width:1240px;margin:auto;padding:24px 20px 60px}
 .tab-head>div{display:flex;gap:8px}
 .empty{text-align:center;color:var(--muted);padding:60px 0;background:#fff;border:1px solid var(--line)}
 
-/* ═══ ✅ شريط الإحصائيات ═══ */
+/* ═══ الإحصائيات ═══ */
 .stats-bar{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;margin-bottom:16px}
-.stat-card{background:#fff;border:1px solid var(--line);padding:14px 16px;text-align:center;transition:.2s;position:relative;overflow:hidden}
+.stat-card{background:#fff;border:1px solid var(--line);padding:14px 16px;text-align:center;transition:.2s}
 .stat-card:hover{border-color:var(--black)}
 .stat-card.primary{background:var(--black);color:#fff;border-color:var(--black)}
 .stat-num{font-size:26px;font-weight:800;line-height:1.2}
 .stat-lbl{font-size:11.5px;color:var(--muted);font-weight:700;margin-top:2px}
 .stat-card.primary .stat-lbl{color:rgba(255,255,255,.65)}
 
-/* ═══ شريط الأدوات ═══ */
+/* ═══ الأدوات ═══ */
 .toolbar{background:#fff;border:1px solid var(--line);padding:14px 16px;margin-bottom:16px}
 .toolbar-input{display:flex;gap:10px}
 .toolbar-input input{flex:1;min-width:0}
-.of-chips{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}
-.of-chip{border:1px solid var(--line);background:#fff;padding:7px 18px;font-size:12px;font-weight:700;transition:.15s}
-.of-chip:hover{border-color:var(--black)}
-.of-chip.active{background:var(--black);color:#fff;border-color:var(--black)}
+/* ═══ ✅ فلاتر الطلبات — Pills بألوان الحالة زي صفحة المنتجات ═══ */
+.of-chips{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.of-chip{border:1.5px solid var(--line);background:#fff;padding:7px 18px;font-size:12.5px;font-weight:800;border-radius:50px;transition:.18s;display:inline-flex;align-items:center;gap:8px}
+.of-chip .dot{width:8px;height:8px;border-radius:50%;background:currentColor;flex-shrink:0}
+.of-chip:hover{border-color:currentColor}
+.of-chip.fc-all{color:var(--black);--cbg:var(--black)}
+.of-chip.fc-pending{color:#666;--cbg:#666}
+.of-chip.fc-completed{color:var(--ok);--cbg:var(--ok)}
+.of-chip.fc-returned{color:var(--warn);--cbg:var(--warn)}
+.of-chip.fc-cancelled{color:var(--no);--cbg:var(--no)}
+.of-chip.active{background:var(--cbg,var(--black));color:#fff !important;border-color:var(--cbg,var(--black))}
 
 /* ═══ جدول المنتجات ═══ */
 .tbl-wrap{background:#fff;border:1px solid var(--line);overflow-x:auto}
@@ -98,7 +119,13 @@ main{max-width:1240px;margin:auto;padding:24px 20px 60px}
 .st-returned{background:#fff3e0;color:var(--warn)}
 .st-cancelled{background:#fdecea;color:var(--no)}
 
-/* ═══ ✅ كروت الطلبات ═══ */
+/* ═══ ✅ زر النسخ الواضح ═══ */
+.copy-pill{display:inline-flex;align-items:center;gap:6px;border:1.5px solid var(--line);background:#fff;padding:5px 12px;font-size:11.5px;font-weight:800;color:var(--muted);transition:.18s;border-radius:50px}
+.copy-pill svg{width:13px;height:13px}
+.copy-pill:hover{border-color:var(--black);color:var(--black)}
+.copy-pill.copied{border-color:var(--ok);color:var(--ok);background:#f0fff4}
+
+/* ═══ كروت الطلبات ═══ */
 .order-card{background:#fff;border:1px solid var(--line);margin-bottom:12px;transition:border-color .2s}
 .order-card:hover{border-color:#bbb}
 .oc-head{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:14px 16px;cursor:pointer;user-select:none}
@@ -111,18 +138,14 @@ main{max-width:1240px;margin:auto;padding:24px 20px 60px}
 .oc-total-brief{font-weight:800;font-size:14px}
 .oc-body{display:none;padding:0 16px 16px;border-top:1px solid var(--paper)}
 .order-card.open .oc-body{display:block;animation:tabIn .25s ease}
-/* بطاقة العميل */
 .cust-card{background:var(--paper);padding:16px;margin:14px 0;display:grid;grid-template-columns:1fr auto;gap:12px;align-items:start}
 .cust-info p{font-size:13px;margin-bottom:4px;color:#444}
 .cust-info b{color:var(--text)}
 .cust-phone-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
 .cust-actions{display:flex;flex-direction:column;gap:6px}
-.wa-btn{background:#1a7f37;color:#fff;padding:9px 16px;font-size:12.5px;font-weight:800;display:inline-flex;align-items:center;gap:8px;transition:.2s;border:none;font-family:inherit;cursor:pointer}
+.wa-btn{background:#1a7f37;color:#fff;padding:9px 16px;font-size:12.5px;font-weight:800;display:inline-flex;align-items:center;gap:8px;transition:.2s}
 .wa-btn:hover{background:#14602b}
 .wa-btn svg{width:16px;height:16px}
-.copy-btn{border:1px solid var(--line);background:#fff;padding:5px 10px;font-size:11px;font-weight:700;color:var(--muted);transition:.15s;font-family:inherit;cursor:pointer}
-.copy-btn:hover{border-color:var(--black);color:var(--black)}
-/* عناصر الطلب */
 .oi-list{display:flex;flex-direction:column;gap:8px;margin:12px 0}
 .oi-row{display:flex;gap:12px;align-items:center;background:#fff;border:1px solid var(--line);padding:10px}
 .oi-row img{width:52px;height:64px;object-fit:cover;background:var(--paper);flex-shrink:0}
@@ -141,11 +164,9 @@ main{max-width:1240px;margin:auto;padding:24px 20px 60px}
 .modal-head h3{font-size:19px;font-weight:800}
 .modal-x{width:36px;height:36px;display:flex;align-items:center;justify-content:center;font-size:18px;transition:.15s}
 .modal-x:hover{background:var(--paper)}
-/* ✅ شريط التقدم */
 .save-progress{height:4px;background:var(--paper);margin-bottom:18px;display:none;overflow:hidden}
 .save-progress.show{display:block}
 .save-progress-bar{height:100%;background:var(--black);width:0;transition:width .4s ease}
-/* أقسام مرقمة */
 .f-sec{margin-bottom:22px}
 .f-sec-head{display:flex;align-items:center;gap:10px;margin-bottom:14px;padding-bottom:8px;border-bottom:1px solid var(--line)}
 .f-sec-num{width:26px;height:26px;background:var(--black);color:#fff;display:flex;align-items:center;justify-content:center;font-size:12.5px;font-weight:800;flex-shrink:0}
@@ -161,16 +182,17 @@ main{max-width:1240px;margin:auto;padding:24px 20px 60px}
 .chip.sel{background:var(--black);color:#fff;border-color:var(--black)}
 .chip .sw{display:inline-block;width:11px;height:11px;border-radius:50%;border:1px solid rgba(0,0,0,.2)}
 #saveStatus{font-size:12.5px;font-weight:700;margin-top:10px;min-height:18px}
-/* ✅ خانات الصور */
 .img-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
 .img-slot{border:1px solid var(--line);padding:12px;text-align:center;transition:.2s}
 .img-slot.selected{border-color:var(--black);background:#fffdf5}
+.img-slot.empty-slot{border-style:dashed;border-color:#ccc}
 .img-preview-lg{width:100%;aspect-ratio:3/4;background:var(--paper);overflow:hidden;margin-bottom:10px}
 .img-preview-lg img{width:100%;height:100%;object-fit:cover}
 .img-slot b{display:block;font-size:12.5px;margin-bottom:2px}
 .img-slot small{display:block;color:var(--muted);font-size:10px;direction:ltr;margin-bottom:10px}
 .up-status{display:block;font-size:11px;font-weight:700;margin-top:8px;min-height:15px}
 .img-btns{display:flex;gap:6px;justify-content:center;flex-wrap:wrap}
+.add-more-hint{grid-column:1/-1;text-align:center;font-size:11.5px;color:var(--muted);padding:4px}
 
 /* ═══ الإعدادات ═══ */
 .settings-box{background:#fff;border:1px solid var(--line);padding:24px;max-width:560px}
@@ -197,7 +219,7 @@ main{max-width:1240px;margin:auto;padding:24px 20px 60px}
 .confirm-box .c-icon.warn{border-color:var(--no);color:var(--no)}
 .confirm-box h3{font-size:18px;font-weight:800;margin-bottom:8px}
 .confirm-box p{font-size:13.5px;color:var(--muted);margin-bottom:8px}
-.confirm-box .c-pass{margin:14px 0 18px;text-align:center}
+.confirm-box .c-pass{margin:14px 0 18px}
 .confirm-box .c-btns{display:flex;gap:10px;justify-content:center}
 
 @media(max-width:768px){
@@ -214,12 +236,22 @@ main{max-width:1240px;margin:auto;padding:24px 20px 60px}
 </head>
 <body>
 
-<div id="loginScreen" class="login-wrap">
+<!-- ═══ شاشة التحقق (بدل وميض الدخول) ═══ -->
+<div id="bootScreen" class="boot-wrap">
+    <div class="boot-logo">LAST PIECE <small>ADMIN</small></div>
+    <div class="boot-txt">جاري التحقق…</div>
+</div>
+
+<!-- ═══ الدخول ═══ -->
+<div id="loginScreen" class="login-wrap" style="display:none">
     <div class="login-box">
         <span class="logo-txt">LAST PIECE <small>ADMIN</small></span>
         <h1 style="margin-top:14px">لوحة التحكم</h1>
         <p>ادخل باسورد الإدارة</p>
-        <input type="password" id="loginPass" placeholder="••••••••" onkeydown="if(event.key==='Enter')doLogin()">
+        <div class="pass-wrap">
+            <input type="password" id="loginPass" placeholder="••••••••" onkeydown="if(event.key==='Enter')doLogin()">
+            <button class="eye-btn" onclick="togglePass('loginPass',this)" aria-label="إظهار الباسورد"></button>
+        </div>
         <button onclick="doLogin()" class="btn-dark btn-block">دخول</button>
         <p id="loginErr" style="color:var(--no);font-weight:700;font-size:12px;margin-top:10px;min-height:16px"></p>
     </div>
@@ -242,7 +274,6 @@ main{max-width:1240px;margin:auto;padding:24px 20px 60px}
     </header>
 
     <main>
-        <!-- ═══ المنتجات ═══ -->
         <section id="tab-products" class="tab active">
             <div class="tab-head">
                 <h2>المنتجات</h2>
@@ -260,7 +291,6 @@ main{max-width:1240px;margin:auto;padding:24px 20px 60px}
             <div id="productsTable" class="tbl-wrap"><p class="empty">جاري التحميل…</p></div>
         </section>
 
-        <!-- ═══ الطلبات ═══ -->
         <section id="tab-orders" class="tab">
             <div class="tab-head">
                 <h2>الطلبات</h2>
@@ -272,17 +302,16 @@ main{max-width:1240px;margin:auto;padding:24px 20px 60px}
                     <input id="orderSearch" placeholder="🔍 ابحث برقم الطلب أو اسم العميل أو رقم الموبايل…" oninput="onOrderSearch(this.value)">
                 </div>
                 <div class="of-chips">
-                    <button class="of-chip active" onclick="setOrderFilter('all', this)">الكل</button>
-                    <button class="of-chip" onclick="setOrderFilter('pending', this)">قيد التنفيذ</button>
-                    <button class="of-chip" onclick="setOrderFilter('completed', this)">تم التسليم</button>
-                    <button class="of-chip" onclick="setOrderFilter('returned', this)">مرتجع</button>
-                    <button class="of-chip" onclick="setOrderFilter('cancelled', this)">ملغي</button>
+                    <button class="of-chip fc-all active" onclick="setOrderFilter('all', this)"><span class="dot"></span>الكل</button>
+                    <button class="of-chip fc-pending" onclick="setOrderFilter('pending', this)"><span class="dot"></span>قيد التنفيذ</button>
+                    <button class="of-chip fc-completed" onclick="setOrderFilter('completed', this)"><span class="dot"></span>تم التسليم</button>
+                    <button class="of-chip fc-returned" onclick="setOrderFilter('returned', this)"><span class="dot"></span>مرتجع</button>
+                    <button class="of-chip fc-cancelled" onclick="setOrderFilter('cancelled', this)"><span class="dot"></span>ملغي</button>
                 </div>
             </div>
             <div id="ordersList"><p class="empty">اضغط تحديث لعرض الطلبات</p></div>
         </section>
 
-        <!-- ═══ الإعدادات ═══ -->
         <section id="tab-settings" class="tab">
             <div class="settings-box">
                 <h3>GitHub — لرفع الصور</h3>
@@ -292,7 +321,10 @@ main{max-width:1240px;margin:auto;padding:24px 20px 60px}
                     <li>Personal access tokens → Tokens (classic) → Generate new token</li>
                     <li>علّم على <b>repo</b> → Generate → انسخ التوكين</li>
                 </ol>
-                <input type="password" id="ghToken" placeholder="ghp_..." style="direction:ltr">
+                <div class="pass-wrap">
+                    <input type="password" id="ghToken" placeholder="ghp_..." style="direction:ltr">
+                    <button class="eye-btn" onclick="togglePass('ghToken',this)" aria-label="إظهار التوكين"></button>
+                </div>
                 <div class="row" style="margin-top:10px">
                     <button onclick="saveToken()" class="btn-dark">حفظ</button>
                     <button onclick="testToken()" class="btn-ghost">اختبار الاتصال</button>
@@ -302,7 +334,6 @@ main{max-width:1240px;margin:auto;padding:24px 20px 60px}
         </section>
     </main>
 
-    <!-- ═══ مودال المنتج ═══ -->
     <div id="productModal" class="modal" onclick="if(event.target===this)closeModal()">
         <div class="modal-box">
             <div class="modal-head">
@@ -312,7 +343,6 @@ main{max-width:1240px;margin:auto;padding:24px 20px 60px}
             <div class="save-progress" id="saveProgress"><div class="save-progress-bar" id="saveProgressBar"></div></div>
 
             <form id="productForm" onsubmit="saveProduct(event)">
-                <!-- القسم 1 -->
                 <div class="f-sec">
                     <div class="f-sec-head"><div class="f-sec-num">1</div><div class="f-sec-title">البيانات الأساسية</div></div>
                     <div class="f-row">
@@ -329,7 +359,6 @@ main{max-width:1240px;margin:auto;padding:24px 20px 60px}
                     </div>
                 </div>
 
-                <!-- القسم 2 -->
                 <div class="f-sec">
                     <div class="f-sec-head"><div class="f-sec-num">2</div><div class="f-sec-title">الفئة <span id="catSelectedHint" style="font-weight:400;color:var(--muted);font-size:12px"></span></div></div>
                     <input type="hidden" id="pfCat">
@@ -340,12 +369,15 @@ main{max-width:1240px;margin:auto;padding:24px 20px 60px}
                     </div>
                 </div>
 
-                <!-- القسم 3 -->
                 <div class="f-sec">
                     <div class="f-sec-head"><div class="f-sec-num">3</div><div class="f-sec-title">المقاسات والألوان</div></div>
-                    <p class="sec-label" style="font-size:12.5px;font-weight:700;margin-bottom:8px">المقاسات</p>
+                    <p style="font-size:12.5px;font-weight:700;margin-bottom:8px">المقاسات</p>
                     <div id="sizesChips" class="chips"></div>
-                    <p class="sec-label" style="font-size:12.5px;font-weight:700;margin-bottom:8px">الألوان</p>
+                    <div class="f-row" style="grid-template-columns:2fr 1fr">
+                        <input id="newSizeInput" placeholder="مقاس مخصص + Enter (مثال: 44.5 أو XXXL)" onkeydown="if(event.key==='Enter'){event.preventDefault();addCustomSize();}">
+                        <button type="button" onclick="addCustomSize()" class="btn-ghost">+ إضافة مقاس</button>
+                    </div>
+                    <p style="font-size:12.5px;font-weight:700;margin-bottom:8px">الألوان</p>
                     <div id="colorsChips" class="chips"></div>
                     <div class="f-row" style="grid-template-columns:2fr 1fr">
                         <input id="newColorInput" placeholder="لون مخصص (أو #ff0000) + Enter" onkeydown="if(event.key==='Enter'){event.preventDefault();addCustomColor();}">
@@ -353,10 +385,9 @@ main{max-width:1240px;margin:auto;padding:24px 20px 60px}
                     </div>
                 </div>
 
-                <!-- القسم 4 -->
                 <div class="f-sec">
                     <div class="f-sec-head"><div class="f-sec-num">4</div><div class="f-sec-title">صور المنتج <span class="en" id="imgProductId" style="font-size:11px;color:var(--muted);font-weight:400"></span></div></div>
-                    <p style="font-size:11.5px;color:var(--muted);margin-bottom:12px">اختار الصور دلوقتي — هتترفع كلها تلقائياً مع "حفظ المنتج" مرة واحدة</p>
+                    <p style="font-size:11.5px;color:var(--muted);margin-bottom:12px">اختار الصور دلوقتي — هتترفع كلها تلقائياً مع "حفظ المنتج" — <b>مفيش حد أقصى للصور</b>، كل ما تختار صورة خانة جديدة هتظهر</p>
                     <div id="imageSlots" class="img-grid"></div>
                 </div>
 
@@ -375,7 +406,10 @@ main{max-width:1240px;margin:auto;padding:24px 20px 60px}
         <h3 id="cTitle">تأكيد</h3>
         <p id="cMsg">متأكد؟</p>
         <div class="c-pass" id="cPassWrap" style="display:none">
-            <input type="password" id="cPass" placeholder="باسورد الإدارة" style="text-align:center">
+            <div class="pass-wrap">
+                <input type="password" id="cPass" placeholder="باسورد الإدارة" style="text-align:center">
+                <button class="eye-btn" onclick="togglePass('cPass',this)" aria-label="إظهار الباسورد"></button>
+            </div>
         </div>
         <div class="c-btns">
             <button class="btn-ghost" onclick="cResolve(false)">إلغاء</button>
@@ -405,12 +439,13 @@ function statusInfo(s) { return STATUS_MAP[s] || STATUS_MAP['pending']; }
 
 let products = [], orders = [], editingId = null;
 let selectedSizes = new Set(), selectedColors = new Set();
-let orderFilter = 'all', orderSearch = '', prodSearchTerm = '';
+let orderFilter = 'all', orderSearch = '';
 let ghImageSet = null, pendingImages = {}, recentUploads = new Set();
 let expandedOrders = new Set();
 
 const $ = id => document.getElementById(id);
 const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const escapeRegex = s => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 const getPass = () => localStorage.getItem('lp_admin_pass') || '';
 const fmt = n => Number(n || 0).toLocaleString('en-US');
 
@@ -418,9 +453,37 @@ const PH = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent('<svg xmlns=
 
 function imgSrc(name) { return IMG_URL + encodeURIComponent(name) + '?v=' + V; }
 
-// ✅ نسخ + واتساب
-function copyText(txt, label) {
-    const done = () => toast('تم نسخ ' + (label || '') + ' ✓', 'ok');
+// ═══ أيقونات SVG ═══
+const WA_SVG = '<svg viewBox="0 0 24 24" fill="#fff"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg>';
+const EDIT_SVG = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>';
+const TRASH_SVG = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>';
+const COPY_SVG = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>';
+const CHECK_SVG = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>';
+const EYE_ON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>';
+const EYE_OFF = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>';
+
+// ═══ ✅ إظهار/إخفاء الباسورد ═══
+function initEyeButtons() {
+    document.querySelectorAll('.eye-btn').forEach(b => { b.innerHTML = EYE_ON; });
+}
+function togglePass(inputId, btn) {
+    const inp = $(inputId);
+    const show = inp.type === 'password';
+    inp.type = show ? 'text' : 'password';
+    btn.innerHTML = show ? EYE_OFF : EYE_ON;
+    btn.setAttribute('aria-label', show ? 'إخفاء' : 'إظهار');
+}
+
+// ═══ ✅ النسخ ═══
+function copyText(txt, label, btn) {
+    const done = () => {
+        toast('تم نسخ ' + (label || '') + ' ✓', 'ok');
+        if (btn) {
+            btn.classList.add('copied');
+            btn.innerHTML = CHECK_SVG + '<span>تم</span>';
+            setTimeout(() => { btn.classList.remove('copied'); btn.innerHTML = COPY_SVG + '<span>نسخ</span>'; }, 1200);
+        }
+    };
     if (navigator.clipboard && navigator.clipboard.writeText) {
         navigator.clipboard.writeText(txt).then(done).catch(() => fallbackCopy(txt, done));
     } else fallbackCopy(txt, done);
@@ -438,7 +501,6 @@ function waNumber(phone) {
     if (p.startsWith('0')) return '20' + p.slice(1);
     return p;
 }
-const WA_SVG = '<svg viewBox="0 0 24 24" fill="#fff"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg>';
 
 // ═══ التوست ═══
 function toast(msg, type) {
@@ -462,7 +524,11 @@ function lpConfirm(opts) {
         $('cOkBtn').textContent = opts.okText || 'تأكيد';
         const needPass = !!opts.needPassword;
         $('cPassWrap').style.display = needPass ? 'block' : 'none';
-        if (needPass) { $('cPass').value = ''; $('cPass').placeholder = 'باسورد الإدارة'; }
+        if (needPass) {
+            $('cPass').value = '';
+            $('cPass').type = 'password';
+            $('cPass').placeholder = 'باسورد الإدارة';
+        }
         $('confirmModal').classList.add('open');
         if (needPass) setTimeout(() => $('cPass').focus(), 100);
     });
@@ -471,7 +537,7 @@ function cResolve(ok) {
     const passInput = $('cPass');
     const needPass = $('cPassWrap').style.display !== 'none';
     if (ok && needPass && passInput.value.trim() !== getPass()) {
-        passInput.value = ''; passInput.placeholder = 'الباسورد غلط — حاول تاني'; passInput.focus();
+        passInput.value = ''; passInput.type = 'password'; passInput.placeholder = 'الباسورد غلط — حاول تاني'; passInput.focus();
         return;
     }
     $('confirmModal').classList.remove('open');
@@ -540,7 +606,12 @@ async function api(action, payload) {
     return res.json();
 }
 
-// ═══ الدخول ═══
+// ═══ ✅ الدخول (بدون وميض) ═══
+function showLogin() {
+    $('bootScreen').style.display = 'none';
+    $('loginScreen').style.display = 'flex';
+    setTimeout(() => $('loginPass').focus(), 50);
+}
 async function doLogin() {
     const pass = $('loginPass').value.trim();
     if (!pass) return;
@@ -553,17 +624,22 @@ async function doLogin() {
     } catch (e) { $('loginErr').textContent = 'تعذر الاتصال — راجع نشر السكريبت'; }
 }
 async function showApp() {
+    $('bootScreen').style.display = 'none';
     $('loginScreen').style.display = 'none';
     $('app').style.display = 'block';
     await loadGitHubImages();
     loadProducts();
 }
 function logout() { localStorage.removeItem('lp_admin_pass'); location.reload(); }
-(function () {
-    if (getPass()) {
-        fetch(API_URL, { method: 'POST', body: JSON.stringify({ action: 'verifyAdmin', password: getPass() }) })
-            .then(r => r.json()).then(j => { if (j.valid) showApp(); }).catch(() => {});
-    }
+
+// ✅ فحص الباسورد المحفوظ — شاشة boot بتفضل ظاهرة لحد ما يتأكد
+(function bootCheck() {
+    const p = getPass();
+    if (!p) { showLogin(); return; }
+    fetch(API_URL, { method: 'POST', body: JSON.stringify({ action: 'verifyAdmin', password: p }) })
+        .then(r => r.json())
+        .then(j => { if (j.valid) showApp(); else showLogin(); })
+        .catch(() => showLogin());
 })();
 
 function switchTab(name, btn) {
@@ -574,14 +650,13 @@ function switchTab(name, btn) {
     if (name === 'orders' && !orders.length) loadOrders();
 }
 
-// ═══════════ ✅ المنتجات ═══════════
+// ═══ المنتجات ═══
 async function loadProducts() {
     $('productsTable').innerHTML = '<p class="empty">جاري التحميل…</p>';
     try {
         const r = await fetch(API_URL + '?action=getProducts');
         const j = await r.json();
         products = j.products || [];
-        renderProdStats();
         renderProducts();
     } catch (e) {
         $('productsTable').innerHTML = '<p class="empty">تعذر تحميل المنتجات — تأكد من رابط النشر</p>';
@@ -591,18 +666,13 @@ async function loadProducts() {
 function renderProdStats() {
     const total = products.length;
     const active = products.filter(p => p.active !== false).length;
-    const sold = total - active;
     const sale = products.filter(p => p.discount_price && p.discount_price < p.price).length;
     $('prodStats').innerHTML =
         '<div class="stat-card primary"><div class="stat-num">' + total + '</div><div class="stat-lbl">إجمالي المنتجات</div></div>' +
         '<div class="stat-card"><div class="stat-num" style="color:var(--ok)">' + active + '</div><div class="stat-lbl">متاح للبيع</div></div>' +
-        '<div class="stat-card"><div class="stat-num" style="color:var(--no)">' + sold + '</div><div class="stat-lbl">نفذت الكمية</div></div>' +
+        '<div class="stat-card"><div class="stat-num" style="color:var(--no)">' + (total - active) + '</div><div class="stat-lbl">نفذت الكمية</div></div>' +
         '<div class="stat-card"><div class="stat-num" style="color:var(--warn)">' + sale + '</div><div class="stat-lbl">عليها خصم</div></div>';
 }
-
-const EDIT_SVG = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>';
-const TRASH_SVG = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>';
-const COPY_SVG = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>';
 
 function renderProducts() {
     renderProdStats();
@@ -640,9 +710,11 @@ function renderProducts() {
     $('productsTable').innerHTML = html;
 }
 
-// ═══ Chips ═══
+// ═══ Chips (مقاسات + ألوان) ═══
 function renderChips() {
-    $('sizesChips').innerHTML = SIZES.map(s =>
+    // ✅ المقاسات — المخصصة المختارة الأول ثم الجاهزة
+    const allSizes = Array.from(selectedSizes).concat(SIZES.filter(s => !selectedSizes.has(s)));
+    $('sizesChips').innerHTML = allSizes.map(s =>
         '<button type="button" class="chip' + (selectedSizes.has(s) ? ' sel' : '') + '" onclick="toggleSize(\'' + s + '\',this)">' + s + '</button>'
     ).join('');
     const allColors = Array.from(selectedColors).concat(COLORS.filter(c => !selectedColors.has(c)));
@@ -653,6 +725,14 @@ function renderChips() {
 function toggleSize(s, el) { if (selectedSizes.has(s)) { selectedSizes.delete(s); el.classList.remove('sel'); } else { selectedSizes.add(s); el.classList.add('sel'); } }
 function toggleColor(c, el) { if (selectedColors.has(c)) { selectedColors.delete(c); el.classList.remove('sel'); } else { selectedColors.add(c); el.classList.add('sel'); } }
 function addCustomColor() { const v = $('newColorInput').value.trim(); if (v) { selectedColors.add(v); $('newColorInput').value = ''; renderChips(); } }
+// ✅ مقاس مخصص
+function addCustomSize() {
+    const v = $('newSizeInput').value.trim();
+    if (!v) return;
+    selectedSizes.add(v);
+    $('newSizeInput').value = '';
+    renderChips();
+}
 
 // ═══ المودال ═══
 function openNewProduct() {
@@ -686,8 +766,6 @@ function editProduct(id) {
     $('productModal').classList.add('open');
 }
 function closeModal() { clearAllPendingImages(); $('productModal').classList.remove('open'); $('pfSku').disabled = false; }
-
-// ✅ شريط التقدم
 function setProgress(pct) { $('saveProgressBar').style.width = Math.min(100, pct) + '%'; }
 
 // ═══ حفظ المنتج ═══
@@ -732,7 +810,6 @@ async function saveProduct(e) {
             setProgress(40);
         }
 
-        // رفع الصور
         const suffixes = Object.keys(pendingImages).filter(s => !pendingImages[s].uploaded);
         let uploaded = 0, failed = 0;
         if (suffixes.length) {
@@ -752,9 +829,7 @@ async function saveProduct(e) {
                     setProgress(40 + (55 * (uploaded + failed) / suffixes.length));
                 }
             }
-        } else {
-            setProgress(95);
-        }
+        } else setProgress(95);
 
         renderImageSlots();
         setProgress(100);
@@ -808,7 +883,7 @@ async function deleteAllProductImages(id) {
     const result = { deleted: 0, failed: 0 };
     let targets = ghImageSet
         ? Array.from(ghImageSet).filter(n => n === id + '.webp' || (n.startsWith(id + '-') && n.endsWith('.webp')))
-        : ['', '-2', '-3', '-4', '-5', '-6', '-7', '-8', '-9'].map(s => id + s + '.webp');
+        : ['', '-2', '-3', '-4', '-5', '-6', '-7', '-8', '-9', '-10', '-11', '-12', '-13', '-14', '-15'].map(s => id + s + '.webp');
     for (const filename of targets) {
         try {
             const sha = await ghGetSha(filename);
@@ -824,47 +899,99 @@ async function deleteAllProductImages(id) {
     return result;
 }
 
-// ═══ خانات الصور ═══
+// ═══ ✅ الصور — بلا ليميت ═══
+function existingSuffixes() {
+    const out = [];
+    if (!editingId) return out;
+    if (ghImageSet) {
+        if (ghImageSet.has(editingId + '.webp')) out.push('');
+        const nums = [];
+        for (const n of ghImageSet) {
+            const m = n.match(new RegExp('^' + escapeRegex(editingId) + '(-\\d+)\\.webp$'));
+            if (m) nums.push(m[1]);
+        }
+        nums.sort((a, b) => parseInt(a.slice(1)) - parseInt(b.slice(1))).forEach(s => out.push(s));
+    } else {
+        out.push('');
+        ['-2','-3','-4','-5','-6'].forEach(s => { if (imageExists(editingId + s + '.webp')) out.push(s); });
+    }
+    return out;
+}
+
+function nextFreeSuffix() {
+    const used = new Set(Object.keys(pendingImages));
+    if (editingId && ghImageSet) {
+        for (const n of ghImageSet) {
+            const m = n.match(new RegExp('^' + escapeRegex(editingId) + '(-\\d+)\\.webp$'));
+            if (m) used.add(m[1]);
+        }
+    }
+    let i = 2;
+    while (used.has('-' + i)) i++;
+    return '-' + i;
+}
+
 function renderImageSlots() {
     const isAdd = !editingId;
     $('imgProductId').textContent = isAdd ? '(هيتولد تلقائياً)' : editingId;
-    const slots = [
-        { s: '', label: 'الصورة الأساسية' }, { s: '-2', label: 'صورة إضافية 2' },
-        { s: '-3', label: 'صورة إضافية 3' }, { s: '-4', label: 'صورة إضافية 4' },
-        { s: '-5', label: 'صورة إضافية 5' }, { s: '-6', label: 'صورة إضافية 6' }
-    ];
-    $('imageSlots').innerHTML = slots.map(function (slot) {
-        const name = isAdd ? '(كود)' + slot.s + '.webp' : editingId + slot.s + '.webp';
-        const pend = pendingImages[slot.s];
-        let preview, btns, status;
+
+    const slots = [];
+    if (isAdd) {
+        slots.push('');
+        Object.keys(pendingImages).forEach(s => { if (s !== '' && !slots.includes(s)) slots.push(s); });
+        if (pendingImages['']) slots.push(nextFreeSuffix());
+    } else {
+        const ex = existingSuffixes();
+        if (!ex.includes('')) slots.push('');
+        ex.forEach(s => slots.push(s));
+        Object.keys(pendingImages).forEach(s => { if (!slots.includes(s)) slots.push(s); });
+        slots.push(nextFreeSuffix());
+    }
+
+    const isLast = i => i === slots.length - 1;
+
+    $('imageSlots').innerHTML = slots.map(function (suffix, idx) {
+        const num = suffix === '' ? '' : suffix.replace('-', '');
+        const label = suffix === '' ? 'الصورة الأساسية' : 'صورة إضافية ' + num;
+        const name = isAdd ? '(كود)' + suffix + '.webp' : editingId + suffix + '.webp';
+        const pend = pendingImages[suffix];
+        const isFreeEmpty = !pend && (isAdd || editingId) && (suffix !== '' || !existingSuffixes().includes('') || isAdd) && isLast(idx) && !(!isAdd && existingSuffixes().includes(suffix));
+        const showAsEmpty = !pend && !(!isAdd && existingSuffixes().includes(suffix));
+
+        let preview, btns, status, cls = 'img-slot';
 
         if (pend) {
+            cls += ' selected';
             preview = '<img src="' + pend.url + '">';
             if (pend.uploaded) { btns = ''; status = '<span class="up-status" style="color:var(--ok)">✓ اترفعت</span>'; }
             else {
-                btns = '<button type="button" class="icon-act danger" title="إزالة" onclick="clearPendingImage(\'' + slot.s + '\')">✕</button>';
+                btns = '<button type="button" class="icon-act danger" title="إزالة" onclick="clearPendingImage(\'' + suffix + '\')">✕</button>';
                 status = '<span class="up-status" style="color:var(--muted)">• هتترفع مع الحفظ</span>';
             }
-        } else if (!isAdd && imageExists(editingId + slot.s + '.webp') && !recentUploads.has(editingId + slot.s + '.webp')) {
-            preview = '<img src="' + imgSrc(editingId + slot.s + '.webp') + '">';
-            btns = '<label class="btn-ghost" style="padding:7px 14px;font-size:11.5px">تغيير<input type="file" accept="image/*" hidden onchange="selectImage(\'' + slot.s + '\',this)"></label>' +
-                   '<button type="button" class="icon-act danger" title="حذف" onclick="deleteImage(\'' + slot.s + '\')">' + TRASH_SVG + '</button>';
-            status = '<span class="up-status" style="color:var(--ok)">✓ موجودة</span>';
-        } else if (!isAdd && recentUploads.has(editingId + slot.s + '.webp')) {
-            preview = '<img src="' + PH + '" style="opacity:.3">';
-            btns = '<label class="btn-ghost" style="padding:7px 14px;font-size:11.5px">تغيير<input type="file" accept="image/*" hidden onchange="selectImage(\'' + slot.s + '\',this)"></label>' +
-                   '<button type="button" class="icon-act danger" title="حذف" onclick="deleteImage(\'' + slot.s + '\')">' + TRASH_SVG + '</button>';
-            status = '<span class="up-status" style="color:var(--muted)">• بناء GitHub…</span>';
+        } else if (!isAdd && existingSuffixes().includes(suffix)) {
+            const fname = editingId + suffix + '.webp';
+            if (recentUploads.has(fname)) {
+                preview = '<img src="' + PH + '" style="opacity:.3">';
+                status = '<span class="up-status" style="color:var(--muted)">• بناء GitHub…</span>';
+            } else {
+                preview = '<img src="' + imgSrc(fname) + '" onerror="this.onerror=null;this.src=PH">';
+                status = '<span class="up-status" style="color:var(--ok)">✓ موجودة</span>';
+            }
+            btns = '<label class="btn-ghost" style="padding:7px 14px;font-size:11.5px">تغيير<input type="file" accept="image/*" hidden onchange="selectImage(\'' + suffix + '\',this)"></label>' +
+                   '<button type="button" class="icon-act danger" title="حذف" onclick="deleteImage(\'' + suffix + '\')">' + TRASH_SVG + '</button>';
         } else {
+            cls += ' empty-slot';
             preview = '<img src="' + PH + '" style="opacity:.25">';
-            btns = '<label class="btn-ghost" style="padding:7px 14px;font-size:11.5px">' + (isAdd ? 'اختيار' : 'رفع') + '<input type="file" accept="image/*" hidden onchange="selectImage(\'' + slot.s + '\',this)"></label>';
+            btns = '<label class="btn-ghost" style="padding:7px 14px;font-size:11.5px">اختيار صورة<input type="file" accept="image/*" hidden onchange="selectImage(\'' + suffix + '\',this)"></label>';
             status = '';
         }
-        return '<div class="img-slot' + (pend && !pend.uploaded ? ' selected' : '') + '">' +
+
+        return '<div class="' + cls + '">' +
             '<div class="img-preview-lg">' + preview + '</div>' +
-            '<b>' + slot.label + (pend && !pend.uploaded ? ' <span style="color:var(--ok)">•</span>' : '') + '</b><small>' + name + '</small>' +
+            '<b>' + label + (pend && !pend.uploaded ? ' <span style="color:var(--ok)">•</span>' : '') + '</b><small>' + name + '</small>' +
             '<div class="img-btns">' + btns + '</div>' + status + '</div>';
-    }).join('');
+    }).join('') +
+    '<div class="add-more-hint">💡 خانة فاضية جديدة بتظهر تلقائياً بعد كل صورة تختارها — أضف ما شئت من الصور</div>';
 }
 
 function selectImage(suffix, input) {
@@ -969,7 +1096,7 @@ async function testToken() {
     } catch (e) { $('tokenStatus').style.color = 'var(--no)'; $('tokenStatus').textContent = '✗ تعذر الاتصال'; }
 }
 
-// ═══════════ ✅ الطلبات ═══════════
+// ═══ الطلبات ═══
 async function loadOrders() {
     $('ordersList').innerHTML = '<p class="empty">جاري التحميل…</p>';
     try {
@@ -1000,14 +1127,11 @@ function setOrderFilter(f, btn) {
     renderOrders();
 }
 function onOrderSearch(v) { orderSearch = v.trim().toLowerCase(); renderOrders(); }
-
-// ✅ فتح/قفل طلب
 function toggleOrder(oid, el) {
     el.classList.toggle('open');
     if (expandedOrders.has(oid)) expandedOrders.delete(oid); else expandedOrders.add(oid);
 }
 
-// ✅ تغيير الحالة / الحذف
 async function setOrderStatus(oid, newStatus) {
     const info = statusInfo(newStatus);
     const ok = await lpConfirm({ title: 'تغيير حالة الطلب', msg: oid + ' → "' + info.label + '"؟', okText: 'تغيير' });
@@ -1059,10 +1183,7 @@ function renderOrders() {
         return oid.toLowerCase().includes(orderSearch) || String(c.customer_name || '').toLowerCase().includes(orderSearch) || String(c.phone || '').includes(orderSearch);
     });
 
-    if (!ids.length) {
-        $('ordersList').innerHTML = '<p class="empty">لا توجد طلبات مطابقة للبحث/الفلتر</p>';
-        return;
-    }
+    if (!ids.length) { $('ordersList').innerHTML = '<p class="empty">لا توجد طلبات مطابقة للبحث/الفلتر</p>'; return; }
 
     $('ordersList').innerHTML = ids.map(function (oid) {
         const rows = groups[oid];
@@ -1073,7 +1194,6 @@ function renderOrders() {
         const itemsCount = rows.reduce((s, r) => s + Number(r.qty), 0);
         const isOpen = expandedOrders.has(oid);
 
-        // صور العناصر
         const itemsHtml = rows.map(r =>
             '<div class="oi-row">' +
                 '<img src="' + orderImg(r.product_id) + '" onerror="this.onerror=null;this.src=PH">' +
@@ -1083,7 +1203,6 @@ function renderOrders() {
             '</div>'
         ).join('');
 
-        // أزرار الحالة
         let actions = '';
         Object.keys(STATUS_MAP).forEach(function (key) {
             if (key === st) return;
@@ -1098,7 +1217,7 @@ function renderOrders() {
             '<div class="oc-head" onclick="toggleOrder(\'' + oid + '\',this.closest(\'.order-card\'))">' +
                 '<span class="oc-toggle">▾</span>' +
                 '<span class="oc-num en">' + esc(oid) + '</span>' +
-                '<button class="copy-btn" onclick="event.stopPropagation();copyText(\'' + esc(oid) + '\',\'رقم الطلب\')" title="نسخ">' + COPY_SVG + '</button>' +
+                '<button class="copy-pill" onclick="event.stopPropagation();copyText(\'' + esc(oid) + '\',\'رقم الطلب\',this)">' + COPY_SVG + '<span>نسخ</span></button>' +
                 '<span class="oc-date">' + esc(c.date || '') + '</span>' +
                 '<span class="badge ' + info.cls + '">' + info.label + '</span>' +
                 '<div class="oc-brief">' +
@@ -1114,7 +1233,7 @@ function renderOrders() {
                         '<p><b>👤 ' + esc(c.customer_name || '—') + '</b></p>' +
                         '<div class="cust-phone-row">' +
                             '<span class="en" dir="ltr" style="font-weight:700">' + esc(String(c.phone || '')) + '</span>' +
-                            '<button class="copy-btn" onclick="copyText(\'' + esc(String(c.phone || '')) + '\',\'الموبايل\')">' + COPY_SVG + '</button>' +
+                            '<button class="copy-pill" onclick="copyText(\'' + esc(String(c.phone || '')) + '\',\'الموبايل\',this)">' + COPY_SVG + '<span>نسخ</span></button>' +
                         '</div>' +
                         '<p>📍 <b>' + esc(c.governorate || '') + '</b> — ' + esc(c.area || '') + '</p>' +
                         '<p>🏠 ' + esc(c.address || '') + '</p>' +
@@ -1132,6 +1251,9 @@ function renderOrders() {
         '</div>';
     }).join('');
 }
+
+// ═══ تشغيل أزرار العين ═══
+initEyeButtons();
 </script>
 </body>
 </html>
