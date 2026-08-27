@@ -1145,17 +1145,22 @@ async function initGovernorates() {
         s.innerHTML += '<option value="__other__">أخرى…</option>';
         s.onchange = async function () {
             const val = this.value;
-            if (val === '__other__') {
-                // ✅ محافظة يدوية → المنطقة تبقى يدوية برضه
+                        if (val === '__other__') {
+                // ✅ محافظة يدوية → المنطقة تبقى يدوية برضه + نعمل reset لوضع التحقق
                 $('govOther').style.display = 'block';
                 $('areaSelect').style.display = 'none';
                 $('areaSelect').value = '';
                 $('areaOther').style.display = 'block';
                 $('areaOther').value = '';
+                $('areaOther').required = true;
+                // ✅ مهم: نحط قيمة وهمية في select عشان التحقق يعرف إننا في وضع يدوي
+                $('areaSelect').innerHTML = '<option value="">اختر المنطقة</option><option value="__other__" selected>أخرى…</option>';
+                $('areaSelect').value = '__other__';
             } else {
                 $('govOther').style.display = 'none';
                 $('areaSelect').style.display = 'block';
                 $('areaOther').style.display = 'none';
+                $('areaOther').required = false;
                 $('areaSelect').innerHTML = '<option value="">جاري تحميل المناطق…</option>';
                 try {
                     const ar = await fetch(API_URL + '?action=getAreas&governorate=' + val);
@@ -1164,6 +1169,7 @@ async function initGovernorates() {
                     (ad.areas || []).forEach(a => $('areaSelect').innerHTML += '<option value="' + a + '">' + a + '</option>');
                     $('areaSelect').innerHTML += '<option value="__other__">أخرى…</option>';
                 } catch (e) { $('areaSelect').innerHTML = '<option value="__other__">أخرى…</option>'; }
+                $('areaSelect').value = '';
             }
         };
     } catch (e) {}
@@ -1189,11 +1195,17 @@ async function handleSubmit(e) {
     const govOther = f.governorateOther.value.trim();
     const governorate = govSel === '__other__' ? govOther : govSel;
     if (!governorate) { setErr('f-gov', true); $('err-gov').textContent = govSel === '__other__' ? 'اكتب اسم المحافظة في الخانة' : 'اختر المحافظة من القائمة أو اكتبها يدوياً'; ok = false; } else setErr('f-gov', false);
-    // المنطقة
+       // ✅ المنطقة — واعية بوضع "أخرى" اليدوي
     const areaSel = f.area.value;
     const areaOther = f.areaOther.value.trim();
-    const area = areaSel === '__other__' ? areaOther : areaSel;
-    if (!area) { setErr('f-area', true); $('err-area').textContent = (areaSel === '__other__' || $('areaOther').style.display === 'block') ? 'اكتب اسم المنطقة في الخانة' : 'اختر المنطقة أو اكتبها يدوياً'; ok = false; } else setErr('f-area', false);
+    // لو وضع يدوي: نقرا من الخانة اليدوية الظاهرة
+    const areaIsManual = (areaSel === '__other__') || ($('areaSelect').style.display === 'none' && $('areaOther').style.display === 'block');
+    const area = areaIsManual ? areaOther : areaSel;
+    if (!area) {
+        setErr('f-area', true);
+        $('err-area').textContent = areaIsManual ? 'اكتب اسم المنطقة في الخانة الظاهرة' : 'اختر المنطقة من القائمة أو اختر "أخرى" واكتبها';
+        ok = false;
+    } else setErr('f-area', false);
     // العنوان
     const address = f.address.value.trim();
     if (address.length < 5) { setErr('f-address', true); ok = false; } else setErr('f-address', false);
