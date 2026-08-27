@@ -81,12 +81,14 @@ main{max-width:1240px;margin:auto;padding:24px 20px 60px}
 .stat-num{font-size:26px;font-weight:800;line-height:1.2}
 .stat-lbl{font-size:11.5px;color:var(--muted);font-weight:700;margin-top:2px}
 .stat-card.primary .stat-lbl{color:rgba(255,255,255,.65)}
+.stat-sub{font-size:10px;color:rgba(255,255,255,.45);margin-top:2px}
+.stat-actions{display:flex;flex-direction:column;gap:6px;justify-content:center}
+.stat-actions .btn-ghost{padding:9px 12px;font-size:11.5px;justify-content:center}
 
 /* ═══ الأدوات ═══ */
 .toolbar{background:#fff;border:1px solid var(--line);padding:14px 16px;margin-bottom:16px}
 .toolbar-input{display:flex;gap:10px}
 .toolbar-input input{flex:1;min-width:0}
-/* ═══ ✅ فلاتر الطلبات — Pills بألوان الحالة زي صفحة المنتجات ═══ */
 .of-chips{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
 .of-chip{border:1.5px solid var(--line);background:#fff;padding:7px 18px;font-size:12.5px;font-weight:800;border-radius:50px;transition:.18s;display:inline-flex;align-items:center;gap:8px}
 .of-chip .dot{width:8px;height:8px;border-radius:50%;background:currentColor;flex-shrink:0}
@@ -119,7 +121,7 @@ main{max-width:1240px;margin:auto;padding:24px 20px 60px}
 .st-returned{background:#fff3e0;color:var(--warn)}
 .st-cancelled{background:#fdecea;color:var(--no)}
 
-/* ═══ ✅ زر النسخ الواضح ═══ */
+/* ═══ زر النسخ الواضح ═══ */
 .copy-pill{display:inline-flex;align-items:center;gap:6px;border:1.5px solid var(--line);background:#fff;padding:5px 12px;font-size:11.5px;font-weight:800;color:var(--muted);transition:.18s;border-radius:50px}
 .copy-pill svg{width:13px;height:13px}
 .copy-pill:hover{border-color:var(--black);color:var(--black)}
@@ -140,7 +142,7 @@ main{max-width:1240px;margin:auto;padding:24px 20px 60px}
 .order-card.open .oc-body{display:block;animation:tabIn .25s ease}
 .cust-card{background:var(--paper);padding:16px;margin:14px 0;display:grid;grid-template-columns:1fr auto;gap:12px;align-items:start}
 .cust-info p{font-size:13px;margin-bottom:4px;color:#444}
-.cust-info b{color:var(--text)}
+.cust-info b{color:#141414}
 .cust-phone-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
 .cust-actions{display:flex;flex-direction:column;gap:6px}
 .wa-btn{background:#1a7f37;color:#fff;padding:9px 16px;font-size:12.5px;font-weight:800;display:inline-flex;align-items:center;gap:8px;transition:.2s}
@@ -462,10 +464,8 @@ const CHECK_SVG = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" st
 const EYE_ON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>';
 const EYE_OFF = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>';
 
-// ═══ ✅ إظهار/إخفاء الباسورد ═══
-function initEyeButtons() {
-    document.querySelectorAll('.eye-btn').forEach(b => { b.innerHTML = EYE_ON; });
-}
+// ═══ إظهار/إخفاء الباسورد ═══
+function initEyeButtons() { document.querySelectorAll('.eye-btn').forEach(b => { b.innerHTML = EYE_ON; }); }
 function togglePass(inputId, btn) {
     const inp = $(inputId);
     const show = inp.type === 'password';
@@ -474,7 +474,7 @@ function togglePass(inputId, btn) {
     btn.setAttribute('aria-label', show ? 'إخفاء' : 'إظهار');
 }
 
-// ═══ ✅ النسخ ═══
+// ═══ النسخ ═══
 function copyText(txt, label, btn) {
     const done = () => {
         toast('تم نسخ ' + (label || '') + ' ✓', 'ok');
@@ -524,11 +524,7 @@ function lpConfirm(opts) {
         $('cOkBtn').textContent = opts.okText || 'تأكيد';
         const needPass = !!opts.needPassword;
         $('cPassWrap').style.display = needPass ? 'block' : 'none';
-        if (needPass) {
-            $('cPass').value = '';
-            $('cPass').type = 'password';
-            $('cPass').placeholder = 'باسورد الإدارة';
-        }
+        if (needPass) { $('cPass').value = ''; $('cPass').type = 'password'; $('cPass').placeholder = 'باسورد الإدارة'; }
         $('confirmModal').classList.add('open');
         if (needPass) setTimeout(() => $('cPass').focus(), 100);
     });
@@ -606,7 +602,7 @@ async function api(action, payload) {
     return res.json();
 }
 
-// ═══ ✅ الدخول (بدون وميض) ═══
+// ═══ الدخول (بدون وميض) ═══
 function showLogin() {
     $('bootScreen').style.display = 'none';
     $('loginScreen').style.display = 'flex';
@@ -632,7 +628,6 @@ async function showApp() {
 }
 function logout() { localStorage.removeItem('lp_admin_pass'); location.reload(); }
 
-// ✅ فحص الباسورد المحفوظ — شاشة boot بتفضل ظاهرة لحد ما يتأكد
 (function bootCheck() {
     const p = getPass();
     if (!p) { showLogin(); return; }
@@ -712,7 +707,6 @@ function renderProducts() {
 
 // ═══ Chips (مقاسات + ألوان) ═══
 function renderChips() {
-    // ✅ المقاسات — المخصصة المختارة الأول ثم الجاهزة
     const allSizes = Array.from(selectedSizes).concat(SIZES.filter(s => !selectedSizes.has(s)));
     $('sizesChips').innerHTML = allSizes.map(s =>
         '<button type="button" class="chip' + (selectedSizes.has(s) ? ' sel' : '') + '" onclick="toggleSize(\'' + s + '\',this)">' + s + '</button>'
@@ -725,7 +719,6 @@ function renderChips() {
 function toggleSize(s, el) { if (selectedSizes.has(s)) { selectedSizes.delete(s); el.classList.remove('sel'); } else { selectedSizes.add(s); el.classList.add('sel'); } }
 function toggleColor(c, el) { if (selectedColors.has(c)) { selectedColors.delete(c); el.classList.remove('sel'); } else { selectedColors.add(c); el.classList.add('sel'); } }
 function addCustomColor() { const v = $('newColorInput').value.trim(); if (v) { selectedColors.add(v); $('newColorInput').value = ''; renderChips(); } }
-// ✅ مقاس مخصص
 function addCustomSize() {
     const v = $('newSizeInput').value.trim();
     if (!v) return;
@@ -899,7 +892,7 @@ async function deleteAllProductImages(id) {
     return result;
 }
 
-// ═══ ✅ الصور — بلا ليميت ═══
+// ═══ الصور — بلا ليميت ═══
 function existingSuffixes() {
     const out = [];
     if (!editingId) return out;
@@ -948,16 +941,12 @@ function renderImageSlots() {
         slots.push(nextFreeSuffix());
     }
 
-    const isLast = i => i === slots.length - 1;
-
-    $('imageSlots').innerHTML = slots.map(function (suffix, idx) {
+    $('imageSlots').innerHTML = slots.map(function (suffix) {
         const num = suffix === '' ? '' : suffix.replace('-', '');
         const label = suffix === '' ? 'الصورة الأساسية' : 'صورة إضافية ' + num;
         const name = isAdd ? '(كود)' + suffix + '.webp' : editingId + suffix + '.webp';
         const pend = pendingImages[suffix];
-        const isFreeEmpty = !pend && (isAdd || editingId) && (suffix !== '' || !existingSuffixes().includes('') || isAdd) && isLast(idx) && !(!isAdd && existingSuffixes().includes(suffix));
-        const showAsEmpty = !pend && !(!isAdd && existingSuffixes().includes(suffix));
-
+        const existing = !isAdd && existingSuffixes().includes(suffix);
         let preview, btns, status, cls = 'img-slot';
 
         if (pend) {
@@ -968,7 +957,7 @@ function renderImageSlots() {
                 btns = '<button type="button" class="icon-act danger" title="إزالة" onclick="clearPendingImage(\'' + suffix + '\')">✕</button>';
                 status = '<span class="up-status" style="color:var(--muted)">• هتترفع مع الحفظ</span>';
             }
-        } else if (!isAdd && existingSuffixes().includes(suffix)) {
+        } else if (existing) {
             const fname = editingId + suffix + '.webp';
             if (recentUploads.has(fname)) {
                 preview = '<img src="' + PH + '" style="opacity:.3">';
@@ -991,7 +980,7 @@ function renderImageSlots() {
             '<b>' + label + (pend && !pend.uploaded ? ' <span style="color:var(--ok)">•</span>' : '') + '</b><small>' + name + '</small>' +
             '<div class="img-btns">' + btns + '</div>' + status + '</div>';
     }).join('') +
-    '<div class="add-more-hint">💡 خانة فاضية جديدة بتظهر تلقائياً بعد كل صورة تختارها — أضف ما شئت من الصور</div>';
+    '<div class="add-more-hint">💡 خانة فاضية جديدة بتظهر تلقائياً بعد كل صورة — أضف ما شئت من الصور</div>';
 }
 
 function selectImage(suffix, input) {
@@ -1107,17 +1096,131 @@ async function loadOrders() {
     } catch (e) { $('ordersList').innerHTML = '<p class="empty">تعذر تحميل الطلبات</p>'; }
 }
 
+// ✅ المبيعات الذكية — بس الطلبات "تم التسليم" + تحترم التصفير الشهري
+function getSalesCutoff() {
+    const v = localStorage.getItem('lp_sales_cutoff');
+    return v ? new Date(v) : null;
+}
+function orderDateObj(o) {
+    const d = String(o.date || '');
+    const m = d.match(/(\d{4})-(\d{2})-(\d{2})/);
+    if (m) return new Date(+m[1], +m[2] - 1, +m[3]);
+    return null;
+}
+function calcTrueSales(groups, ids) {
+    const cutoff = getSalesCutoff();
+    let sales = 0, count = 0;
+    ids.forEach(function (oid) {
+        const rows = groups[oid];
+        const st = rows[0].status || 'pending';
+        if (st !== 'completed') return; // المبيعات = تم التسليم بس
+        if (cutoff) {
+            const od = orderDateObj(rows[0]);
+            if (od && od < cutoff) return; // قبل التصفير = مش محسوبة
+        }
+        sales += rows.reduce((a, r) => a + Number(r.price) * Number(r.qty), 0);
+        count++;
+    });
+    return { sales, count };
+}
+
 function renderOrdersStats(groups, ids) {
     const total = ids.length;
-    const rev = ids.reduce((s, oid) => s + groups[oid].reduce((a, r) => a + Number(r.price) * Number(r.qty), 0), 0);
     const bySt = st => ids.filter(oid => (groups[oid][0].status || 'pending') === st).length;
+    const s = calcTrueSales(groups, ids);
+    const cutoff = getSalesCutoff();
+    const periodLbl = cutoff ? 'من ' + cutoff.toLocaleDateString('ar-EG') : 'الكل';
+
     $('ordersStats').innerHTML =
-        '<div class="stat-card primary"><div class="stat-num">' + total + '</div><div class="stat-lbl">إجمالي الطلبات</div></div>' +
+        '<div class="stat-card primary"><div class="stat-num" style="font-size:21px">' + fmt(s.sales) + ' ج.م</div><div class="stat-lbl">إجمالي المبيعات (' + s.count + ' مُسلَّم)</div><div class="stat-sub">' + periodLbl + '</div></div>' +
+        '<div class="stat-card"><div class="stat-num">' + total + '</div><div class="stat-lbl">إجمالي الطلبات</div></div>' +
         '<div class="stat-card"><div class="stat-num" style="color:#555">' + bySt('pending') + '</div><div class="stat-lbl">قيد التنفيذ</div></div>' +
         '<div class="stat-card"><div class="stat-num" style="color:var(--ok)">' + bySt('completed') + '</div><div class="stat-lbl">تم التسليم</div></div>' +
         '<div class="stat-card"><div class="stat-num" style="color:var(--warn)">' + bySt('returned') + '</div><div class="stat-lbl">مرتجع</div></div>' +
         '<div class="stat-card"><div class="stat-num" style="color:var(--no)">' + bySt('cancelled') + '</div><div class="stat-lbl">ملغي</div></div>' +
-        '<div class="stat-card"><div class="stat-num" style="font-size:19px">' + fmt(rev) + ' ج.م</div><div class="stat-lbl">إجمالي المبيعات</div></div>';
+        '<div class="stat-card stat-actions">' +
+            '<button class="btn-ghost" onclick="exportOrdersExcel()">📥 تصدير Excel</button>' +
+            '<button class="btn-ghost" style="color:var(--no);border-color:var(--no)" onclick="resetMonthlySales()">🔄 تصفير شهري</button>' +
+        '</div>';
+}
+
+// ✅ تصفير المبيعات الشهري — بأرشفة تلقائية
+async function resetMonthlySales() {
+    const ok = await lpConfirm({
+        title: 'تصفير المبيعات الشهرية',
+        msg: 'هينزل أرشيف Excel لكل الطلبات تلقائياً، وبعدها عدّاد المبيعات يبدأ من الصفر. سجل الطلبات كله هيفضل موجود زي ما هو. اكتب الباسورد للتأكيد.',
+        okText: 'تصفير', danger: true, needPassword: true
+    });
+    if (!ok) return;
+    exportOrdersExcel(true); // أرشفة قبل التصفير
+    localStorage.setItem('lp_sales_cutoff', new Date().toISOString());
+    renderOrders();
+    toast('تم أرشفة الشهر + تصفير المبيعات ✓', 'ok');
+}
+
+// ✅ تصدير Excel لكل الطلبات
+function exportOrdersExcel(isAuto) {
+    if (!orders.length) { toast('مفيش طلبات للتصدير', 'err'); return; }
+
+    const groups = {};
+    orders.forEach(o => { (groups[o.order_id] = groups[o.order_id] || []).push(o); });
+    const ids = Object.keys(groups).sort((a, b) => a.localeCompare(b));
+
+    const headers = ['رقم الطلب','التاريخ','الحالة','اسم العميل','الموبايل','المحافظة','المنطقة','العنوان','طريقة الدفع','ملاحظات','كود المنتج','اسم المنتج','المقاس','اللون','الكمية','السعر','إجمالي السطر','إجمالي الطلب'];
+    const statusLabels = { pending: 'قيد التنفيذ', completed: 'تم التسليم', returned: 'مرتجع', cancelled: 'ملغي' };
+
+    let rows = ['<tr>' + headers.map(h => '<th style="background:#0a0a0a;color:#fff;padding:8px;border:1px solid #999;font-size:12px">' + h + '</th>').join('') + '</tr>'];
+
+    ids.forEach(function (oid) {
+        const rowsOrder = groups[oid];
+        const c = rowsOrder[0];
+        const total = rowsOrder.reduce((s2, r) => s2 + Number(r.price) * Number(r.qty), 0);
+        const st = statusLabels[c.status] || c.status || 'قيد التنفيذ';
+
+        rowsOrder.forEach(function (r, idx) {
+            const lineTotal = Number(r.price || 0) * Number(r.qty || 0);
+            const cells = [
+                idx === 0 ? oid : '',
+                idx === 0 ? esc(c.date || '') : '',
+                idx === 0 ? st : '',
+                idx === 0 ? esc(c.customer_name || '') : '',
+                idx === 0 ? esc(String(c.phone || '')) : '',
+                idx === 0 ? esc(c.governorate || '') : '',
+                idx === 0 ? esc(c.area || '') : '',
+                idx === 0 ? esc(c.address || '') : '',
+                idx === 0 ? esc(c.payment_method || '') : '',
+                idx === 0 ? esc(c.notes || '') : '',
+                esc(r.product_id || ''),
+                esc(r.product_name || ''),
+                esc(r.size || ''),
+                esc(r.color || ''),
+                r.qty || '',
+                r.price || '',
+                lineTotal,
+                idx === rowsOrder.length - 1 ? total : ''
+            ];
+            rows.push('<tr>' + cells.map(v => '<td style="padding:6px 8px;border:1px solid #ccc;font-size:12px">' + v + '</td>').join('') + '</tr>');
+        });
+    });
+
+    // صف المبيعات المحققة (تم التسليم) + الإجمالي العام
+    const delivered = ids.filter(oid => (groups[oid][0].status || 'pending') === 'completed');
+    const deliveredTotal = delivered.reduce((s2, oid) => s2 + groups[oid].reduce((a, r) => a + Number(r.price) * Number(r.qty), 0), 0);
+    const grandTotal = ids.reduce((s2, oid) => s2 + groups[oid].reduce((a, r) => a + Number(r.price) * Number(r.qty), 0), 0);
+
+    rows.push('<tr><td colspan="16" style="padding:8px;border:1px solid #999;font-weight:bold;background:#e6f4ea">إجمالي المبيعات المحققة (تم التسليم فقط)</td><td colspan="2" style="padding:8px;border:1px solid #999;font-weight:bold;background:#e6f4ea;color:#1a7f37">' + deliveredTotal.toLocaleString() + ' ج.م</td></tr>');
+    rows.push('<tr><td colspan="16" style="padding:8px;border:1px solid #999;font-weight:bold">الإجمالي العام (كل الطلبات)</td><td colspan="2" style="padding:8px;border:1px solid #999;font-weight:bold;font-size:14px">' + grandTotal.toLocaleString() + ' ج.م</td></tr>');
+
+    const html = '<html xmlns:x="urn:schemas-microsoft-com:office:excel"><head><meta charset="UTF-8"></head><body dir="rtl"><table>' + rows.join('') + '</table></body></html>';
+    const blob = new Blob(['\ufeff' + html], { type: 'application/vnd.ms-excel;charset=utf-8' });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    const d = new Date();
+    a.download = 'LastPiece_Orders_' + d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0') + '.xls';
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    if (!isAuto) toast('تم تصدير ' + ids.length + ' طلب لملف Excel ✓', 'ok');
 }
 
 function setOrderFilter(f, btn) {
@@ -1175,7 +1278,7 @@ function renderOrders() {
     const groups = {};
     orders.forEach(o => { (groups[o.order_id] = groups[o.order_id] || []).push(o); });
     let ids = Object.keys(groups).sort((a, b) => b.localeCompare(a));
-    renderOrdersStats(groups, ids);
+    renderOrdersStats(groups, ids); // الإحصائيات دايماً على كل الطلبات قبل الفلترة
 
     if (orderFilter !== 'all') ids = ids.filter(oid => (groups[oid][0].status || 'pending') === orderFilter);
     if (orderSearch) ids = ids.filter(oid => {
@@ -1190,8 +1293,8 @@ function renderOrders() {
         const c = rows[0];
         const st = c.status || 'pending';
         const info = statusInfo(st);
-        const total = rows.reduce((s, r) => s + Number(r.price) * Number(r.qty), 0);
-        const itemsCount = rows.reduce((s, r) => s + Number(r.qty), 0);
+        const total = rows.reduce((s2, r) => s2 + Number(r.price) * Number(r.qty), 0);
+        const itemsCount = rows.reduce((s2, r) => s2 + Number(r.qty), 0);
         const isOpen = expandedOrders.has(oid);
 
         const itemsHtml = rows.map(r =>
@@ -1211,7 +1314,20 @@ function renderOrders() {
         actions += '<button class="btn-ghost" style="padding:8px 16px;font-size:12px;color:var(--no);border-color:var(--no)" onclick="deleteOrder(\'' + oid + '\')">🗑 حذف الطلب</button>';
 
         const wa = waNumber(c.phone);
-        const waMsg = encodeURIComponent('أهلاً ' + (c.customer_name || '') + ' 👋\nمعك فريق Last Piece — بخصوص طلبك رقم: ' + oid);
+        const waLines = [
+            'أهلاً ' + (c.customer_name || 'عميلنا العزيز') + ' 👋',
+            '',
+            'معك فريق *LAST PIECE*',
+            '',
+            'بخصوص طلبك رقم:',
+            '*' + oid + '*',
+            '',
+            'الإجمالي: *' + fmt(total) + ' ج.م*',
+            'طريقة الدفع: ' + esc(c.payment_method || '—'),
+            '',
+            'برجاء الرد لتأكيد الطلب أو لأي استفسار 🙏'
+        ];
+        const waMsg = encodeURIComponent(waLines.join('\n'));
 
         return '<div class="order-card' + (isOpen ? ' open' : '') + '">' +
             '<div class="oc-head" onclick="toggleOrder(\'' + oid + '\',this.closest(\'.order-card\'))">' +
