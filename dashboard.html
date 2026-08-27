@@ -620,19 +620,86 @@ async function saveProduct(e) {
     }
 }
 
+// ═══════════ ✅ حذف منتج نهائي (بيانات + كل صوره من GitHub) ═══════════
 async function deleteProduct(id) {
-    const ok = await lpConfirm({
-        title: 'حذف منتج',
-        msg: 'متأكد من حذف المنتج ' + id + ' نهائياً؟ المنتج هيتشال من الشيت (الصور مش هتتمسح من GitHub).',
+    // عدّ الصور اللي هتتمسح (لو قائمة GitHub متاحة)
+    let imgCount = 0;
+    if (ghImageSet) {
+        imgCount = Array.from(ghImageSet).filter(n =>
+            n === id + '.webp' || (n.startsWith(id + '-') && n.endsWith('.webp'))
+        ).length;
+    }
+
+        const ok = await lpConfirm({
+        title: 'حذف منتج نهائي',
+        msg: 'هتحذف المنتج ' + id + ' نهائياً: كل بياناته من الشيت' +
+             (imgCount > 0 ? ' + ' + imgCount + ' صورة من GitHub' : ' + صوره من GitHub (لو موجودة)') +
+             '. مفيش رجوع في الحذف. اكتب باسورد الإدارة للتأكيد.',
         okText: 'حذف نهائي',
-        danger: true
+        danger: true,
+        needPassword: true
     });
     if (!ok) return;
+
+    toast('جاري حذف ' + id + '…', 'info');
+
+    // 1) حذف بيانات المنتج من الشيت
     try {
         const j = await api('deleteProduct', { id: id });
-        if (j.success) { toast('تم حذف ' + id + ' ✓', 'ok'); loadProducts(); }
-        else toast(j.error || 'حدث خطأ', 'err');
-    } catch (e) { toast('تعذر الاتصال', 'err'); }
+        if (!j.success) { toast(j.error || 'حدث خطأ في حذف البيانات', 'err'); return; }
+    } catch (e) { toast('تعذر الاتصال بالسيرفر', 'err'); return; }
+
+    // 2) حذف كل صور المنتج من GitHub
+    if (!localStorage.getItem('lp_gh_token')) {
+        toast('اتحذفت بيانات ' + id + ' ✓ — لكن الصور ماتمسحتش (مفيش GitHub Token)', 'err');
+        loadProducts();
+        return;
+    }
+
+    const r = await deleteAllProductImages(id);
+
+    if (r.deleted > 0 && r.failed === 0) {
+        toast('تم حذف ' + id + ' + ' + r.deleted + ' صورة من GitHub ✓', 'ok');
+    } else if (r.deleted > 0 && r.failed > 0) {
+        toast('اتحذف ' + id + ' و' + r.deleted + ' صورة — لكن ' + r.failed + ' صورة فشلت', 'err');
+    } else if (r.failed > 0) {
+        toast('اتحذف المنتج لكن فشل حذف ' + r.failed + ' صورة', 'err');
+    } else {
+        toast('تم حذف ' + id + ' ✓ (مكانش ليه صور)', 'ok');
+    }
+
+    loadProducts();
+}
+
+// ✅ حذف كل صور منتج من GitHub (الأساسية + كل الإضافية)
+async function deleteAllProductImages(id) {
+    const result = { deleted: 0, failed: 0 };
+
+    let targets;
+    if (ghImageSet) {
+        // من القائمة الفعلية — بيلقط أي صورة للمنتج حتى لو -7 أو -9
+        targets = Array.from(ghImageSet).filter(n =>
+            n === id + '.webp' || (n.startsWith(id + '-') && n.endsWith('.webp'))
+        );
+    } else {
+        // احتياطي لو القائمة مش متاحة: نجرّب كل الخانات المعروفة
+        targets = ['', '-2', '-3', '-4', '-5', '-6', '-7', '-8', '-9'].map(s => id + s + '.webp');
+    }
+
+    for (const filename of targets) {
+        try {
+            const sha = await ghGetSha(filename);
+            if (!sha) continue; // الصورة مش موجودة أصلاً — مش خطأ
+            const res = await fetch('https://api.github.com/repos/' + GH.owner + '/' + GH.repo + '/contents/images/' + encodeURIComponent(filename), {
+                method: 'DELETE',
+                headers: Object.assign(ghHeaders(), { 'Accept': 'application/vnd.github.v3+json' }),
+                body: JSON.stringify({ message: 'Delete ' + filename, sha: sha, branch: 'main' })
+            });
+            if (res.ok) { result.deleted++; refreshImageSet(filename, false); }
+            else result.failed++;
+        } catch (e) { result.failed++; }
+    }
+    return result;
 }
 
 // ═══════════ الصور — رفع + حذف من GitHub ═══════════
