@@ -334,9 +334,22 @@ main{max-width:1240px;margin:auto;padding:24px 20px 60px}
             <textarea id="nlBody" rows="8" style="width:100%;padding:11px 14px;border:1px solid var(--line);font-family:inherit;font-size:14px;resize:vertical" placeholder="الصق القالب هنا أو اكتب رسالتك…"></textarea>
         </div>
 
-        <div style="margin-bottom:14px">
-            <label style="display:block;font-size:12.5px;font-weight:700;margin-bottom:6px">رابط صورة (اختياري)</label>
-            <input id="nlImage" placeholder="https://example.com/banner.jpg" style="direction:ltr">
+       <div style="margin-bottom:14px">
+            <label style="display:block;font-size:12.5px;font-weight:700;margin-bottom:6px">صورة الإيميل (اختياري)</label>
+            <div style="display:flex;gap:12px;align-items:flex-start">
+                <div id="nlImgPreview" style="width:110px;height:140px;border:1px solid var(--line);background:var(--paper);display:none;overflow:hidden;flex-shrink:0">
+                    <img id="nlImgPreviewImg" style="width:100%;height:100%;object-fit:cover">
+                </div>
+                <div style="flex:1">
+                    <label class="btn-ghost" style="padding:10px 18px;font-size:12.5px;cursor:pointer;display:inline-flex">📁 اختر صورة من جهازك<input type="file" accept="image/*" id="nlImgFile" hidden onchange="selectNlImage(this)"></label>
+                    <p id="nlImgStatus" style="font-size:11.5px;color:var(--muted);font-weight:700;margin-top:8px;min-height:16px">بتضغط تلقائياً لعرض 1200px — هتترفع مع الإرسال</p>
+                    <button type="button" id="nlImgRemove" onclick="removeNlImage()" class="btn-ghost" style="display:none;padding:6px 14px;font-size:11px;color:var(--no);border-color:var(--no)">✕ إزالة الصورة</button>
+                </div>
+            </div>
+            <details style="margin-top:10px">
+                <summary style="font-size:11.5px;color:var(--muted);cursor:pointer;font-weight:700">أو الصق رابط صورة جاهزة من الإنترنت</summary>
+                <input id="nlImage" placeholder="https://…" style="direction:ltr;margin-top:8px">
+            </details>
         </div>
 
         <div style="margin-bottom:18px">
@@ -1485,7 +1498,27 @@ async function sendNewsletterNow() {
         msg: 'هتبعت لرقم ' + from + ' إلى ' + to + ' (' + thisBatch + ' إيميل). متأكد؟',
         okText: 'إرسال', danger: true
     });
-    if (!ok) return;
+        if (!ok) return;
+
+    // رفع صورة النشرة لو مختارة (مرة واحدة بس لكل حملة)
+    let imageUrl = '';
+    if (nlImgBlob) {
+        if (nlImgUploadedUrl) {
+            imageUrl = nlImgUploadedUrl;
+        } else {
+            try {
+                               imageUrl = await uploadNlImage();
+                nlImgUploadedUrl = imageUrl;
+                localStorage.setItem('lp_nl_last_image', imageUrl);
+            } catch (err) {
+                toast(err.message || 'فشل رفع الصورة', 'err');
+                return;
+            }
+        }
+        } else {
+        imageUrl = $('nlImage').value.trim();
+        if (!imageUrl) imageUrl = localStorage.getItem('lp_nl_last_image') || '';
+    }
 
     const btn = $('nlSendBtn');
     btn.disabled = true; btn.textContent = '⏳ جاري الإرسال…';
@@ -1496,7 +1529,7 @@ async function sendNewsletterNow() {
         const j = await api('sendNewsletter', {
             subject: subject,
             body: body,
-            imageUrl: $('nlImage').value.trim(),
+            imageUrl: imageUrl,
             isSale: $('nlIsSale').checked,
             startIndex: startIndex,
             limit: 100
@@ -1532,12 +1565,93 @@ async function sendNewsletterNow() {
     btn.disabled = false; btn.textContent = '📤 إرسال الدفعة';
 }
 
-function resetNewsletterProgress() {
+async function resetNewsletterProgress() {
+    // معرفة صورة الحملة الحالية (لو فيه)
+    let imgFile = localStorage.getItem('lp_nl_image_file');
+    const hasImage = !!(imgFile || nlImgUploadedUrl);
+
+    const ok = await lpConfirm({
+        title: 'بدء حملة جديدة',
+        msg: 'هيتصفّر العداد ويبدأ من رقم 1' + (hasImage ? ' + صورة الحملة الحالية هتتمسح نهائياً من GitHub' : '') + '. متأكد؟',
+        okText: 'تصفير', danger: hasImage
+    });
+    if (!ok) return;
+
+    // حذف صورة الحملة القديمة من GitHub
+    if (imgFile && localStorage.getItem('lp_gh_token')) {
+        try {
+            $('nlStatus').style.color = 'var(--muted)';
+            $('nlStatus').textContent = '⏳ جاري حذف صورة الحملة القديمة من GitHub…';
+            if (await ghDelete(imgFile)) {
+                refreshImageSet(imgFile, false);
+                toast('صورة الحملة القديمة اتحذفت من GitHub ✓', 'ok');
+            }
+        } catch (e) { console.log(e); }
+    }
+
     localStorage.removeItem('lp_nl_progress');
+    localStorage.removeItem('lp_nl_last_image');
+    localStorage.removeItem('lp_nl_image_file');
+    removeNlImage();
     loadSubscribers();
     $('nlProgress').style.display = 'none';
     $('nlStatus').textContent = '';
-    toast('تم تصفير العداد — هتبدأ من رقم 1', 'ok');
+    toast('تم تصفير العداد — حملة جديدة نضيفة 🖤', 'ok');
+}
+    // ═══ صورة النشرة — رفع مباشر ═══
+let nlImgBlob = null;
+let nlImgUploadedUrl = null;
+
+function selectNlImage(input) {
+    const file = input.files[0];
+    if (!file) return;
+    if (!localStorage.getItem('lp_gh_token')) {
+        toast('محتاج GitHub Token الأول — من تبويب الإعدادات', 'err');
+        input.value = '';
+        return;
+    }
+    $('nlImgStatus').style.color = 'var(--muted)';
+    $('nlImgStatus').textContent = '⏳ جاري ضغط الصورة…';
+    convertToWebp(file, 1200, 0.85).then(function (blob) {
+        nlImgBlob = blob;
+        nlImgUploadedUrl = null;
+        $('nlImgPreviewImg').src = URL.createObjectURL(blob);
+        $('nlImgPreview').style.display = 'block';
+        $('nlImgRemove').style.display = 'inline-flex';
+        $('nlImage').value = '';
+        $('nlImgStatus').style.color = 'var(--ok)';
+        $('nlImgStatus').textContent = '✓ الصورة جاهزة (' + Math.round(blob.size / 1024) + ' KB) — هتترفع مع الإرسال';
+    }).catch(function (err) {
+        $('nlImgStatus').style.color = 'var(--no)';
+        $('nlImgStatus').textContent = '✗ ' + (err.message || 'فشل ضغط الصورة');
+    });
+    input.value = '';
+}
+
+function removeNlImage() {
+    nlImgBlob = null;
+    nlImgUploadedUrl = null;
+    $('nlImgPreview').style.display = 'none';
+    $('nlImgPreviewImg').src = '';
+    $('nlImgRemove').style.display = 'none';
+    $('nlImgStatus').style.color = 'var(--muted)';
+    $('nlImgStatus').textContent = 'بتضغط تلقائياً لعرض 1200px — هتترفع مع الإرسال';
+}
+
+async function uploadNlImage() {
+    if (!nlImgBlob) return null;
+    if (!localStorage.getItem('lp_gh_token')) throw new Error('محتاج GitHub Token — من تبويب الإعدادات');
+    $('nlImgStatus').style.color = 'var(--muted)';
+    $('nlImgStatus').textContent = '⏳ جاري رفع الصورة…';
+    const filename = 'nl-' + Date.now() + '.webp';
+    const b64 = await blobToBase64(nlImgBlob);
+    const ok = await ghUpload(filename, b64);
+    if (!ok) throw new Error('فشل رفع الصورة على GitHub — اتأكد من التوكين');
+     refreshImageSet(filename, true);
+    localStorage.setItem('lp_nl_image_file', filename);
+    $('nlImgStatus').style.color = 'var(--ok)';
+    $('nlImgStatus').textContent = '✓ الصورة اترفعت ✓';
+    return IMG_URL + filename;
 }
 // ═══ تشغيل أزرار العين ═══
 initEyeButtons();
