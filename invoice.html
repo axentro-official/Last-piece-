@@ -26,11 +26,19 @@ input:read-only{background:var(--paper);color:#555}
 
 .btn-dark{background:var(--black);color:#fff;padding:12px 24px;font-weight:800;font-size:14px;border:1px solid var(--black);transition:.2s;display:inline-flex;align-items:center;justify-content:center;gap:8px}
 .btn-dark:hover{background:#fff;color:var(--black)}
+.btn-dark:disabled{opacity:.5;cursor:wait}
 .btn-ghost{background:#fff;border:1.5px solid var(--text);padding:11px 22px;font-weight:800;font-size:13px;transition:.2s;display:inline-flex;align-items:center;justify-content:center;gap:8px}
 .btn-ghost:hover{background:var(--black);color:#fff}
 .btn-block{width:100%}
 
-/* الشاشات الكاملة */
+/* الباسورد + العين */
+.pass-wrap{position:relative}
+.pass-wrap input{padding-left:44px;text-align:center}
+.eye-btn{position:absolute;top:50%;transform:translateY(-50%);left:8px;width:32px;height:32px;display:flex;align-items:center;justify-content:center;color:var(--muted);transition:.15s}
+.eye-btn:hover{color:var(--black)}
+.eye-btn svg{width:18px;height:18px}
+
+/* الشاشات */
 .full-box{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;padding:20px}
 .boot-wrap{background:var(--black);color:#fff;flex-direction:column;gap:16px}
 .boot-logo{font-family:'Inter',sans-serif;font-weight:800;letter-spacing:.15em;direction:ltr;font-size:18px;animation:bootPulse 1.2s ease-in-out infinite}
@@ -43,11 +51,15 @@ input:read-only{background:var(--paper);color:#555}
 @keyframes lIn{from{opacity:0;transform:translateY(14px)}}
 .center-card h1{font-size:22px;font-weight:800;margin:14px 0 4px}
 .center-card p{color:var(--muted);font-size:13px;margin-bottom:20px}
-.state-ic{width:60px;height:60px;border:2px solid var(--black);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto}
+.center-card .err-line{color:var(--err);font-weight:700;font-size:12px;margin-top:10px;min-height:16px}
+.state-ic{width:60px;height:60px;border:2px solid var(--black);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:18px auto 0}
 .state-ic svg{width:26px;height:26px}
 .state-ic.red{border-color:var(--err);color:var(--err)}
+.lic-key{font-family:'Inter',sans-serif;letter-spacing:2px;text-align:center;direction:ltr}
+.mini-link{background:none;border:none;color:var(--muted);font-size:12px;font-weight:700;text-decoration:underline;cursor:pointer;margin-top:14px}
+.mini-link:hover{color:var(--black)}
 
-/* المودال التحذيري */
+/* التحذير */
 .warn-modal{position:fixed;inset:0;background:rgba(10,10,10,.55);z-index:5000;display:none;align-items:center;justify-content:center;padding:20px}
 .warn-modal.open{display:flex}
 .warn-box{background:#fff;max-width:420px;width:100%;text-align:center;animation:lIn .25s}
@@ -59,6 +71,7 @@ input:read-only{background:var(--paper);color:#555}
 /* التطبيق */
 .topbar{background:#fff;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:100}
 .topbar-inner{max-width:1180px;margin:auto;display:flex;justify-content:space-between;align-items:center;padding:12px 20px;gap:12px;flex-wrap:wrap}
+.top-key{font-size:11px;color:var(--muted);font-weight:700}
 .wrap{max-width:1180px;margin:auto;padding:24px 20px 60px}
 .card{background:#fff;border:1px solid var(--line);padding:24px;margin-bottom:16px}
 .card h2{font-size:17px;font-weight:800;margin-bottom:16px;padding-bottom:10px;border-bottom:1px solid var(--line)}
@@ -81,21 +94,54 @@ td strong{font-weight:800}
 .topbar-inner{justify-content:center}
 }
 @media(max-width:480px){.grid-4{grid-template-columns:1fr}}
-
-@media print{body{background:#fff}.topbar,.site-footer,button{display:none!important}.card{border:none;box-shadow:none}}
+@media print{body{background:#fff}.topbar,.site-footer,button{display:none!important}.card{border:none}}
 </style>
 </head>
 <body>
 
-<!-- 1. فحص الترخيص -->
+<!-- 1. فحص الترخيص المحفوظ -->
 <div id="loaderBox" class="full-box boot-wrap">
   <div class="boot-logo">LAST PIECE <small>INVOICES</small></div>
-  <div class="boot-txt">جاري التحقق من الترخيص…</div>
+  <div class="boot-txt">جاري التحقق…</div>
 </div>
 
-<!-- 2. شاشة انتهاء الترخيص -->
+<!-- 2. إدخال كود الترخيص -->
+<div id="licenseBox" class="full-box center-wrap" style="display:none">
+  <div class="center-card">
+    <span class="logo-txt">LAST PIECE <small>INVOICES</small></span>
+    <h1>تفعيل النظام</h1>
+    <p>ادخل كود الترخيص الخاص باشتراكك</p>
+    <form id="licenseForm">
+      <input type="text" id="licenseInput" class="lic-key" placeholder="XXXX-XXXX" autocomplete="off">
+      <button type="submit" class="btn-dark btn-block" id="licBtn" style="margin-top:12px">تحقق وتفعيل</button>
+    </form>
+    <p class="err-line" id="licenseErr"></p>
+    <p style="margin:14px 0 0;font-size:11px;color:#999">© 2024 Axentro – All Rights Reserved</p>
+  </div>
+</div>
+
+<!-- 3. تسجيل الدخول -->
+<div id="loginBox" class="full-box center-wrap" style="display:none">
+  <div class="center-card">
+    <span class="logo-txt">LAST PIECE <small>INVOICES</small></span>
+    <h1>لوحة الفواتير</h1>
+    <p>ادخل رمز الدخول</p>
+    <form id="loginForm">
+      <div class="pass-wrap">
+        <input type="password" id="passInput" placeholder="••••••••" autocomplete="off">
+        <button type="button" class="eye-btn" onclick="togglePass('passInput',this)" aria-label="إظهار الرمز"></button>
+      </div>
+      <button type="submit" class="btn-dark btn-block" style="margin-top:12px">دخول</button>
+    </form>
+    <p class="err-line" id="loginErr"></p>
+    <button class="mini-link" onclick="changeLicense()">تغيير كود الترخيص</button>
+  </div>
+</div>
+
+<!-- 4. انتهاء الاشتراك -->
 <div id="expiredBox" class="full-box center-wrap" style="display:none">
   <div class="center-card">
+    <span class="logo-txt">LAST PIECE <small>INVOICES</small></span>
     <div class="state-ic red"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div>
     <h1>انتهى الاشتراك</h1>
     <p>لتجديد الاشتراك أو الشراء تواصل معنا الآن</p>
@@ -106,41 +152,25 @@ td strong{font-weight:800}
   </div>
 </div>
 
-<!-- 3. تسجيل الدخول -->
-<div id="loginBox" class="full-box center-wrap" style="display:none">
-  <div class="center-card">
-    <span class="logo-txt">LAST PIECE <small>INVOICES</small></span>
-    <h1>نظام الفواتير</h1>
-    <p>ادخل رمز الدخول</p>
-    <form id="loginForm">
-      <input type="password" id="passInput" placeholder="••••" autocomplete="off" style="text-align:center">
-      <button type="submit" class="btn-dark btn-block" style="margin-top:12px">دخول</button>
-    </form>
-    <p style="margin:18px 0 4px;font-size:11px;color:#999">© 2024 Axentro – By Axentro Team</p>
-    <a href="https://axentro-official.github.io/axentro-website/links.html" target="_blank"><img src="https://axentro-official.github.io/Last-piece-/images/qr.png" style="width:80px;height:80px;border:1.5px solid var(--black);padding:5px;background:#fff" alt="QR"></a>
-    <div style="font-size:10px;color:#999;margin-top:6px;font-weight:700;letter-spacing:.05em">Scan Me &gt; Click On Me</div>
-  </div>
-</div>
-
-<!-- 4. تحذير قرب الانتهاء -->
+<!-- 5. تحذير قرب الانتهاء -->
 <div id="warningModal" class="warn-modal">
   <div class="warn-box">
     <div class="warn-head"><h3>⚠️ اشتراكك على وشك الانتهاء</h3></div>
     <div class="warn-body">
       <p style="font-size:14px;color:#555">باقي على انتهاء اشتراكك:</p>
       <p class="days en" id="daysLeftWarning"></p>
-      <p style="font-size:13px;color:#666;margin-bottom:16px">جدّد الآن أو رقّي لـ <b>مدى الحياة</b></p>
       <a href="https://axentro-official.github.io/axentro-website/links.html" target="_blank"><button class="btn-dark btn-block">💬 تواصل للتجديد</button></a>
       <button class="btn-ghost btn-block" style="margin-top:8px" onclick="dismissWarning()">المتابعة الآن</button>
     </div>
   </div>
 </div>
 
-<!-- 5. التطبيق -->
+<!-- 6. التطبيق -->
 <div id="app" style="display:none">
   <header class="topbar">
     <div class="topbar-inner">
       <span class="logo-txt">LAST PIECE <small>INVOICES</small></span>
+      <span class="top-key en" id="topKey"></span>
       <button onclick="logout()" class="btn-ghost" style="padding:8px 18px;font-size:12px">خروج</button>
     </div>
   </header>
@@ -204,13 +234,19 @@ td strong{font-weight:800}
 </footer>
 
 <script>
-const ADMIN_PASSWORD = "1407";
 const API_URL = 'https://script.google.com/macros/s/AKfycbyuLyCqPmG1a2w7Vpgu2hGFFG44tlmW4N9AuNwa-YHRupXRPhxBF-_mEOhPgjpSBwM9/exec';
 const IMG_URL = 'https://axentro-official.github.io/Last-piece-/images/';
 const LICENSE_API_URL = 'https://script.google.com/macros/s/AKfycbyFueLWNvOm8DJjR2Hf_cQO9rkroG-sGltx_-iyCLtjDLFGtN4fgLgsgXlD2z_b3oUb8w/exec';
 const PH = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="400" height="600"><rect width="400" height="600" fill="#ececec"/><text x="200" y="310" font-family="Arial" font-size="24" fill="#9a9a9a" text-anchor="middle" letter-spacing="4">LAST PIECE</text></svg>');
 
-/* ═══ إعادة المحاولة ═══ */
+const EYE_ON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>';
+const EYE_OFF = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>';
+
+const $ = id => document.getElementById(id);
+const getPass = () => localStorage.getItem('lp_inv_pass') || '';
+const getLicense = () => localStorage.getItem('lp_inv_license') || '';
+
+/* ═══ Retry ═══ */
 function fetchWithRetry(url, opts, retries) {
     retries = (retries === undefined) ? 2 : retries;
     return new Promise(function (resolve, reject) {
@@ -230,97 +266,187 @@ function fetchWithRetry(url, opts, retries) {
     });
 }
 
+/* ═══ العين ═══ */
+function togglePass(inputId, btn) {
+    const inp = $(inputId);
+    const hidden = inp.type === 'password';
+    inp.type = hidden ? 'text' : 'password';
+    btn.innerHTML = hidden ? EYE_ON : EYE_OFF;
+}
+document.querySelectorAll('.eye-btn').forEach(b => { b.innerHTML = EYE_OFF; });
+
 /* ═══ الترخيص ═══ */
-async function checkLicense() {
-    const key = new URLSearchParams(window.location.search).get('key');
-    if (!key) return showExpired();
+async function verifyLicense(key) {
     try {
         const res = await fetchWithRetry(LICENSE_API_URL + '?key=' + encodeURIComponent(key));
         const data = await res.json();
-        if (data.status === 'expired' || data.status === 'suspended' || data.status === 'invalid') return showExpired();
-        if (data.status === 'active') {
-            if (!data.is_lifetime && data.days_left === 0) {
-                let parts = [];
-                if (data.hours_left > 0) parts.push(data.hours_left + ' ساعة');
-                if (data.minutes_left > 0) parts.push(data.minutes_left + ' دقيقة');
-                document.getElementById('daysLeftWarning').textContent = parts.join(' و ') || 'أقل من دقيقة';
-                document.getElementById('warningModal').classList.add('open');
-            }
-            showLogin();
-        } else showExpired();
-    } catch (e) { showExpired(); }
+        if (data.status === 'active') return { ok: true, data: data };
+        return { ok: false, status: data.status };
+    } catch (e) { return { ok: false, status: 'error' }; }
 }
-function showExpired() {
-    document.getElementById('loaderBox').style.display = 'none';
-    document.getElementById('expiredBox').style.display = 'flex';
-}
-function showLogin() {
-    document.getElementById('loaderBox').style.display = 'none';
-    document.getElementById('loginBox').style.display = 'flex';
-    document.getElementById('mainFooter').style.display = 'block';
-    setTimeout(() => document.getElementById('passInput').focus(), 60);
-    if (sessionStorage.getItem('LP_ADMIN') === '1') enterApp();
-}
-function dismissWarning() { document.getElementById('warningModal').classList.remove('open'); }
 
-/* ═══ الدخول ═══ */
-document.getElementById('loginForm').addEventListener('submit', function (e) { e.preventDefault(); checkLogin(); });
-function checkLogin() {
-    const inp = document.getElementById('passInput');
-    if (inp.value === ADMIN_PASSWORD) { sessionStorage.setItem('LP_ADMIN', '1'); enterApp(); }
-    else { inp.value = ''; inp.placeholder = 'الرمز غلط — حاول تاني'; }
+function hideAllScreens() {
+    ['loaderBox', 'licenseBox', 'loginBox', 'expiredBox'].forEach(id => $(id).style.display = 'none');
 }
+
+function showLicenseEntry(preErr) {
+    hideAllScreens();
+    $('licenseBox').style.display = 'flex';
+    $('mainFooter').style.display = 'block';
+    $('licenseErr').textContent = preErr || '';
+    setTimeout(() => $('licenseInput').focus(), 60);
+}
+
+function showExpired() {
+    hideAllScreens();
+    $('expiredBox').style.display = 'flex';
+    $('mainFooter').style.display = 'block';
+}
+
+function showLoginScreen(preErr) {
+    hideAllScreens();
+    $('loginBox').style.display = 'flex';
+    $('mainFooter').style.display = 'block';
+    $('loginErr').textContent = preErr || '';
+    setTimeout(() => $('passInput').focus(), 60);
+}
+
+async function bootCheck() {
+    const stored = getLicense();
+    if (!stored) { showLicenseEntry(); return; }
+    $('topKey').textContent = 'License: ' + maskKey(stored);
+    const r = await verifyLicense(stored);
+    if (r.ok) {
+        maybeWarn(r.data);
+        await tryAutoLogin();
+        return;
+    }
+    if (r.status === 'error') { showLicenseEntry('تعذر الاتصال — تحقق من الإنترنت وحاول تاني'); return; }
+    localStorage.removeItem('lp_inv_license');
+    showExpired();
+}
+
+function maskKey(k) {
+    if (k.length <= 6) return k;
+    return k.slice(0, 3) + '•••' + k.slice(-3);
+}
+
+async function submitLicense(e) {
+    e.preventDefault();
+    const key = $('licenseInput').value.trim().toUpperCase();
+    if (!key) return;
+    const btn = $('licBtn'), errEl = $('licenseErr');
+    errEl.textContent = '';
+    btn.disabled = true; btn.textContent = 'جاري التحقق…';
+    const r = await verifyLicense(key);
+    btn.disabled = false; btn.textContent = 'تحقق وتفعيل';
+    if (r.ok) {
+        localStorage.setItem('lp_inv_license', key);
+        $('topKey').textContent = 'License: ' + maskKey(key);
+        maybeWarn(r.data);
+        await tryAutoLogin();
+        return;
+    }
+    if (r.status === 'error') errEl.textContent = 'تعذر الاتصال — حاول تاني';
+    else if (r.status === 'expired') errEl.textContent = 'هذا الكود انتهت صلاحيته';
+    else if (r.status === 'suspended') errEl.textContent = 'هذا الكود موقوف — تواصل معنا';
+    else errEl.textContent = 'كود ترخيص غير صحيح';
+}
+ $('licenseForm').addEventListener('submit', submitLicense);
+
+function maybeWarn(data) {
+    if (data && !data.is_lifetime && Number(data.days_left) === 0) {
+        let parts = [];
+        if (Number(data.hours_left) > 0) parts.push(data.hours_left + ' ساعة');
+        if (Number(data.minutes_left) > 0) parts.push(data.minutes_left + ' دقيقة');
+        $('daysLeftWarning').textContent = parts.join(' و ') || 'أقل من دقيقة';
+        $('warningModal').classList.add('open');
+    }
+}
+function dismissWarning() { $('warningModal').classList.remove('open'); }
+
+/* ═══ الدخول — زي الداش بورد ═══ */
+async function tryAutoLogin() {
+    const p = getPass();
+    if (!p) { showLoginScreen(); return; }
+    try {
+        const res = await fetchWithRetry(LICENSE_API_URL, { method: 'POST', body: JSON.stringify({ action: 'verifyAdmin', password: p }) });
+        const j = await res.json();
+        if (j.valid) return enterApp();
+    } catch (e) {}
+    showLoginScreen();
+}
+
+ $('loginForm').addEventListener('submit', async function (e) {
+    e.preventDefault();
+    const pass = $('passInput').value.trim();
+    if (!pass) return;
+    $('loginErr').style.color = 'var(--muted)';
+    $('loginErr').textContent = 'جاري التحقق…';
+    try {
+        const res = await fetchWithRetry(LICENSE_API_URL, { method: 'POST', body: JSON.stringify({ action: 'verifyAdmin', password: pass }) });
+        const j = await res.json();
+        if (j.valid) { localStorage.setItem('lp_inv_pass', pass); enterApp(); }
+        else { $('loginErr').style.color = 'var(--err)'; $('loginErr').textContent = 'الرمز غلط'; $('passInput').value = ''; }
+    } catch (err) {
+        $('loginErr').style.color = 'var(--err)';
+        $('loginErr').textContent = 'تعذر الاتصال — حاول تاني';
+    }
+});
+
 function enterApp() {
-    document.getElementById('loginBox').style.display = 'none';
-    document.getElementById('app').style.display = 'block';
-    document.getElementById('mainFooter').style.display = 'block';
+    hideAllScreens();
+    $('app').style.display = 'block';
+    $('mainFooter').style.display = 'block';
     initInvoice();
 }
-function logout() { sessionStorage.removeItem('LP_ADMIN'); location.reload(); }
+function logout() { localStorage.removeItem('lp_inv_pass'); location.reload(); }
+function changeLicense() {
+    localStorage.removeItem('lp_inv_license');
+    localStorage.removeItem('lp_inv_pass');
+    location.reload();
+}
 
 /* ═══ الفاتورة ═══ */
 function generateInvoiceID() {
     const d = new Date();
-    const y = d.getFullYear().toString().substr(-2);
-    const m = String(d.getMonth() + 1).padStart(2, '0');
-    const day = String(d.getDate()).padStart(2, '0');
-    return 'INV-LP-' + y + m + day + '-' + Math.floor(1000 + Math.random() * 9000);
+    return 'INV-LP-' + d.getFullYear().toString().substr(-2) + String(d.getMonth() + 1).padStart(2, '0') + String(d.getDate()).padStart(2, '0') + '-' + Math.floor(1000 + Math.random() * 9000);
 }
 function initInvoice() {
     const now = new Date();
-    document.getElementById('invNo').value = generateInvoiceID();
-    document.getElementById('invDate').value = now.toISOString().split('T')[0];
-    document.getElementById('invTime').value = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true });
+    $('invNo').value = generateInvoiceID();
+    $('invDate').value = now.toISOString().split('T')[0];
+    $('invTime').value = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true });
 }
 
 async function fetchOrder() {
-    const oid = document.getElementById('orderIdInput').value.trim();
+    const oid = $('orderIdInput').value.trim();
     if (!oid) return;
-    document.getElementById('fetchHint').textContent = '⏳ جاري جلب الطلب…';
+    $('fetchHint').textContent = '⏳ جاري جلب الطلب…';
     try {
         const res = await fetchWithRetry(API_URL + '?action=getOrder&orderId=' + encodeURIComponent(oid));
         const data = await res.json();
-        if (data.ok && data.order) { fillForm(data.order); document.getElementById('fetchHint').textContent = '✓ تم جلب الطلب ' + oid; }
-        else { document.getElementById('fetchHint').textContent = '✗ لم يتم العثور على الطلب — تأكد من الرقم'; }
-    } catch (e) { document.getElementById('fetchHint').textContent = '✗ خطأ في الاتصال — حاول تاني'; }
+        if (data.ok && data.order) { fillForm(data.order); $('fetchHint').textContent = '✓ تم جلب الطلب ' + oid; }
+        else { $('fetchHint').textContent = '✗ لم يتم العثور على الطلب — تأكد من الرقم'; }
+    } catch (e) { $('fetchHint').textContent = '✗ خطأ في الاتصال — حاول تاني'; }
 }
 
 function fillForm(order) {
-    document.getElementById('custName').value = order.customer_name || '-';
-    document.getElementById('custPhone').value = order.phone || '-';
-    document.getElementById('payMethod').value = order.payment_method || '-';
-    document.getElementById('custNotes').value = order.notes || '-';
-    document.getElementById('custAddress').value = (order.governorate || '') + ' - ' + (order.area || '') + ' - ' + (order.address || '');
+    $('custName').value = order.customer_name || '-';
+    $('custPhone').value = order.phone || '-';
+    $('payMethod').value = order.payment_method || '-';
+    $('custNotes').value = order.notes || '-';
+    $('custAddress').value = (order.governorate || '') + ' - ' + (order.area || '') + ' - ' + (order.address || '');
 
     if (order.date) {
         const dt = new Date(order.date);
         if (!isNaN(dt.getTime())) {
-            document.getElementById('invDate').value = dt.toISOString().split('T')[0];
-            document.getElementById('invTime').value = dt.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true });
+            $('invDate').value = dt.toISOString().split('T')[0];
+            $('invTime').value = dt.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true });
         }
     }
 
-    const tbody = document.getElementById('itemsBody');
+    const tbody = $('itemsBody');
     tbody.innerHTML = '';
     let total = 0;
     order.items.forEach(function (item, i) {
@@ -336,9 +462,9 @@ function fillForm(order) {
             '<td><strong>' + subtotal.toFixed(2) + '</strong></td></tr>';
     });
 
-    document.getElementById('totalsBox').style.display = 'block';
-    document.getElementById('grandTotalTxt').textContent = total.toFixed(2) + ' ج.م';
-    document.getElementById('amountWords').textContent = numberToArabicWords(total);
+    $('totalsBox').style.display = 'block';
+    $('grandTotalTxt').textContent = total.toFixed(2) + ' ج.م';
+    $('amountWords').textContent = numberToArabicWords(total);
 }
 
 function numberToArabicWords(n) {
@@ -356,25 +482,13 @@ function numberToArabicWords(n) {
 /* ═══ الطباعة ═══ */
 function getInvoiceData() {
     return {
-        invNo: document.getElementById('invNo').value,
-        date: document.getElementById('invDate').value,
-        time: document.getElementById('invTime').value,
-        customer: document.getElementById('custName').value,
-        phone: document.getElementById('custPhone').value,
-        address: document.getElementById('custAddress').value,
-        notes: document.getElementById('custNotes').value,
-        payment: document.getElementById('payMethod').value,
+        invNo: $('invNo').value, date: $('invDate').value, time: $('invTime').value,
+        customer: $('custName').value, phone: $('custPhone').value,
+        address: $('custAddress').value, notes: $('custNotes').value, payment: $('payMethod').value,
         items: Array.from(document.querySelectorAll('#itemsBody tr')).filter(r => r.dataset.id).map(function (r) {
-            return {
-                id: r.dataset.id,
-                name: r.children[3].innerText,
-                img: r.querySelector('img') ? r.querySelector('img').src : '',
-                size: r.children[4].innerText, color: r.children[5].innerText,
-                qty: r.children[6].innerText, price: r.children[7].innerText, total: r.children[8].innerText
-            };
+            return { id: r.dataset.id, name: r.children[3].innerText, size: r.children[4].innerText, color: r.children[5].innerText, qty: r.children[6].innerText, price: r.children[7].innerText, total: r.children[8].innerText };
         }),
-        grandTotal: document.getElementById('grandTotalTxt').textContent,
-        words: document.getElementById('amountWords').textContent
+        grandTotal: $('grandTotalTxt').textContent, words: $('amountWords').textContent
     };
 }
 
@@ -383,7 +497,7 @@ function buildA4Html(d) {
 @page{size:A4;margin:0}
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:'Segoe UI',Tahoma,Arial,sans-serif;background:#fff;color:#141414;direction:rtl;display:flex;justify-content:center}
-.page{width:210mm;min-height:297mm;padding:14mm;background:#fff;position:relative}
+.page{width:210mm;min-height:297mm;padding:14mm;background:#fff}
 .hdr{border-bottom:3px solid #0a0a0a;padding-bottom:18px;margin-bottom:22px;display:flex;justify-content:space-between;align-items:center}
 .brand{font-size:34px;font-weight:900;letter-spacing:6px;direction:ltr}
 .brand sup{font-size:12px}
@@ -483,7 +597,7 @@ function printInvoice(type) {
     setTimeout(function () { win.focus(); win.print(); }, 500);
 }
 
-window.onload = checkLicense;
+bootCheck();
 </script>
 </body>
 </html>
