@@ -78,6 +78,7 @@ a{color:inherit;text-decoration:none}
 .hero-slide{position:absolute;inset:0;opacity:0;transition:opacity 1s ease;pointer-events:none}
 .hero-slide.active{opacity:1;pointer-events:auto}
 .hero-slide img{width:100%;height:100%;object-fit:cover;object-position:center 22%}
+.hero-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0}
 .hero-brand-fallback{position:absolute;inset:0;background:var(--black);color:#fff;display:flex;align-items:center;justify-content:center;font-size:clamp(26px,6vw,58px);font-weight:800;letter-spacing:.25em;direction:ltr}
 .hero-overlay{position:absolute;inset:0;z-index:5;display:flex;align-items:center;justify-content:center;background:linear-gradient(180deg,rgba(0,0,0,.22) 0%,rgba(0,0,0,.06) 42%,rgba(0,0,0,.44) 100%)}
 .hero-cta{background:transparent;color:#fff;border:1.5px solid rgba(255,255,255,.85);padding:16px clamp(42px,7vw,66px);font-size:clamp(14px,1.8vw,17px);font-weight:800;letter-spacing:.1em;display:inline-flex;align-items:center;gap:12px;transition:.25s;direction:ltr}
@@ -525,7 +526,10 @@ textarea.input{resize:vertical;min-height:80px}
 <main>
     <div class="page active" id="homePage">
         <section class="hero" id="heroSection">
-            <div id="heroSlides"></div>
+    <video class="hero-video" id="heroVideo" autoplay muted loop playsinline preload="auto" disablepictureinpicture>
+        <source src="https://axentro-official.github.io/Last-piece-/images/hero7.mp4" type="video/mp4">
+    </video>
+    <div id="heroSlides"></div>
             <div class="hero-overlay">
                 <button class="hero-cta" onclick="goCat('الكل')">SHOP NOW<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></button>
             </div>
@@ -847,6 +851,19 @@ function goHero(n) {
 }
 function heroNext() { const s = document.querySelectorAll('.hero-slide'); if (s.length) goHero((heroSlide + 1) % s.length); }
 function heroPrev() { const s = document.querySelectorAll('.hero-slide'); if (s.length) goHero((heroSlide - 1 + s.length) % s.length); }
+    
+/* ✅ فيديو الهيرو — لو موجود يبقى هو الخلفية وبتخفي السلايدات */
+(function initHeroVideo() {
+    const vid = $('heroVideo');
+    if (!vid) return;
+    vid.addEventListener('loadeddata', function () {
+        vid.play().catch(function(){});
+        const sl = $('heroSlides'); if (sl) sl.style.display = 'none';
+        const dt = $('heroDots'); if (dt) dt.style.display = 'none';
+        document.querySelectorAll('.hero-arrows').forEach(function (a) { a.style.display = 'none'; });
+        if (heroInterval) { clearInterval(heroInterval); heroInterval = null; }
+    });
+})();
 
 /* زر المحادثة */
 let contactOpen = false;
