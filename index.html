@@ -107,7 +107,7 @@ a{color:inherit;text-decoration:none}
 
 /* ═══ كروت المنتجات ═══ */
 .products-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
-.product-card{position:relative;background:#fff;display:flex;flex-direction:column;border:1px solid var(--line);transition:box-shadow .25s}
+.product-card{position:relative;background:#fff;display:flex;flex-direction:column;border:1px solid var(--line);transition:box-shadow .25s;cursor:pointer}
 .product-card:hover{box-shadow:0 8px 28px rgba(0,0,0,.08)}
 .prod-media{position:relative;aspect-ratio:3/4;background:var(--paper);overflow:hidden;width:100%}
 .p-slide{position:absolute;inset:0;opacity:0;transition:opacity .18s ease}
@@ -128,7 +128,7 @@ a{color:inherit;text-decoration:none}
 .fav-btn{position:absolute;top:10px;left:10px;z-index:7;width:36px;height:36px;background:rgba(255,255,255,.95);display:flex;align-items:center;justify-content:center;transition:.2s}
 .fav-btn:hover{transform:scale(1.1)}
 .fav-btn svg{width:16px;height:16px;fill:none;stroke:#111;stroke-width:2}
-.fav-btn.active svg{fill:var(--black);stroke:var(--black)}
+.fav-btn.active svg{fill:#e0245e;stroke:#e0245e}
 /* ✅ زرار السلة — دايرة بأسفل الصورة زي الريفرنس */
 .card-cart-btn{position:absolute;bottom:10px;left:50%;transform:translateX(-50%);z-index:8;width:42px;height:42px;background:var(--black);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;transition:.22s;box-shadow:0 3px 10px rgba(0,0,0,.25);opacity:0}
 .product-card:hover .card-cart-btn{opacity:1}
@@ -403,6 +403,16 @@ textarea.input{resize:vertical;min-height:80px}
 .acc-st.returned{background:#fff3e0;color:#b2600b}
 .acc-st.cancelled{background:#fdecea;color:#c0392b}
     
+    /* ✅ حذف طلب من الحساب + بادج المفضلة */
+.cart-badge.favc{background:#e0245e}
+.acc-trash{width:30px;height:30px;border:1.5px solid var(--line);display:inline-flex;align-items:center;justify-content:center;color:#999;transition:.15s;background:#fff;flex-shrink:0;cursor:pointer}
+.acc-trash:hover{border-color:var(--err);color:var(--err);background:#fdf2f2}
+.acc-trash svg{width:14px;height:14px}
+.acc-trash .t-lid{transition:transform .28s cubic-bezier(.34,1.56,.64,1);transform-box:fill-box;transform-origin:center}
+.acc-trash:hover .t-lid{transform:translate(-2px,-3px) rotate(-20deg)}
+.acc-trash.confirm{width:auto;padding:0 12px;border-color:var(--err);color:#fff;background:var(--err);font-size:11px;font-weight:800;white-space:nowrap}
+.acc-trash.confirm svg{display:none}
+    
 /* ريسبونسف */
 @media(max-width:1024px){.products-grid{grid-template-columns:repeat(3,1fr)}}
 @media(max-width:860px){.nav-links{display:none}.menu-toggle{display:flex !important}}
@@ -459,12 +469,14 @@ textarea.input{resize:vertical;min-height:80px}
                 <a onclick="showPage('homePage')">الرئيسية</a>
                 <a onclick="goCat('الكل')">المنتجات</a>
                 <a onclick="showPage('discountsPage')">التخفيضات</a>
+                <a onclick="showPage('favoritesPage')">المفضلة</a>
                 <a onclick="openPolicy('contact')">تواصل معنا</a>
             </nav>
         </div>
         <div class="brand-logo"><span class="logo-txt">LAST PIECE<sup>®</sup></span></div>
         <div class="hd-end">
             <button class="icon-btn" onclick="openSearch()" aria-label="بحث"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></button>
+            <button class="icon-btn" onclick="showPage('favoritesPage')" aria-label="المفضلة"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg><span class="cart-badge favc" id="favBadge">0</span></button>
             <button class="icon-btn" onclick="openAccount()" aria-label="الحساب"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></button>
             <button class="icon-btn" onclick="openCart()" aria-label="السلة"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg><span class="cart-badge" id="cartBadge">0</span></button>
         </div>
@@ -479,6 +491,7 @@ textarea.input{resize:vertical;min-height:80px}
         <a onclick="showPage('homePage')">الرئيسية</a>
         <a onclick="goCat('الكل')">المنتجات</a>
         <a onclick="showPage('discountsPage')">التخفيضات</a>
+        <a onclick="showPage('favoritesPage')">المفضلة</a>
         <a onclick="openPolicy('contact')">تواصل معنا</a>
         <a onclick="openPolicy('privacy')">سياسة الخصوصية</a>
         <a onclick="openPolicy('refund')">سياسة الاسترجاع</a>
@@ -530,6 +543,10 @@ textarea.input{resize:vertical;min-height:80px}
     <div class="page" id="discountsPage">
         <div class="page-head"><p class="overline">SALE</p><h1>التخفيضات</h1><p class="prod-count">خصومات حقيقية على قطع مختارة</p></div>
         <div class="grid-wrap"><div class="products-grid" id="discountsList"></div></div>
+    </div>
+        <div class="page" id="favoritesPage">
+        <div class="page-head"><p class="overline">WISHLIST</p><h1>المفضلة</h1><p class="prod-count" id="favCount"></p></div>
+        <div class="grid-wrap"><div class="products-grid" id="favoritesList"></div></div>
     </div>
 
     <div class="page" id="checkoutPage">
@@ -831,6 +848,7 @@ document.addEventListener('DOMContentLoaded', async function () {
     await loadData();
     initGovernorates();
     loadCart();
+    updateFavBadge();
     initScrollEffects();
     const track = $('mqTrack'); const group = track.children[0]; let guard = 0;
     while (track.scrollWidth < window.innerWidth * 2 && guard++ < 8) track.appendChild(group.cloneNode(true));
@@ -875,8 +893,7 @@ function createCard(p, context) {
     });
     if (!gal.length) slides = '<div class="p-slide active"><img src="' + PH + '"></div>';
 
-    return '<div class="product-card" data-id="' + p.id + '" data-card="' + cardId + '" onmouseenter="startHover(\'' + cardId + '\')" onmouseleave="stopHover(\'' + cardId + '\')">' +
-        (!isActive ? '<div class="sold-overlay"><span class="sold-badge">نفذت الكمية</span></div>' : '') +
+    return '<div class="product-card" data-id="' + p.id + '" data-card="' + cardId + '" onclick="openPD(\'' + p.id + '\')" onmouseenter="startHover(\'' + cardId + '\')" onmouseleave="stopHover(\'' + cardId + '\')">' +        (!isActive ? '<div class="sold-overlay"><span class="sold-badge">نفذت الكمية</span></div>' : '') +
         '<div class="prod-media">' +
             slides +
             (gal.length > 1 ? '<button class="media-nav prev" onclick="event.stopPropagation();navSlide(\'' + cardId + '\',-1)" aria-label="السابق"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="13 5 20 12 13 19"/></svg></button><button class="media-nav next" onclick="event.stopPropagation();navSlide(\'' + cardId + '\',1)" aria-label="التالي"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="20" y1="12" x2="4" y2="12"/><polyline points="11 5 4 12 11 19"/></svg></button>' : '') +
@@ -1008,8 +1025,21 @@ function goCat(c) { currentCat = c; renderChips(); renderFilteredList(); showPag
 
 function toggleFav(id, el) {
     const i = favorites.indexOf(id);
-    if (i > -1) { favorites.splice(i, 1); el.classList.remove('active'); } else { favorites.push(id); el.classList.add('active'); }
+    if (i > -1) { favorites.splice(i, 1); if (el) el.classList.remove('active'); showToast('اتشالت من المفضلة'); }
+    else { favorites.push(id); if (el) el.classList.add('active'); showToast('اتضافت للمفضلة ❤'); }
     localStorage.setItem('lp_fav', JSON.stringify(favorites));
+    updateFavBadge();
+    if ($('favoritesPage') && $('favoritesPage').classList.contains('active')) renderFavorites();
+}
+function renderFavorites() {
+    const list = products.filter(p => favorites.includes(p.id));
+    $('favCount').textContent = list.length + ' منتج';
+    $('favoritesList').innerHTML = list.length ? list.map(p => createCard(p, 'fav')).join('') : '<p class="empty-msg">مفيش حاجة في المفضلة — دوس على القلب 🤍 في أي منتج وهتلاقيه هنا</p>';
+    updateFavBadge();
+}
+function updateFavBadge() {
+    const b = $('favBadge');
+    if (b) { b.textContent = favorites.length; b.classList.toggle('show', favorites.length > 0); }
 }
 
 function getColorCode(c) {
@@ -1108,6 +1138,7 @@ function showPage(id) {
     document.querySelectorAll('.mobile-nav-btn').forEach(b => b.classList.toggle('active', b.dataset.page === id));
     window.scrollTo(0, 0);
     if (id === 'checkoutPage') renderCheckoutSummary();
+    if (id === 'favoritesPage') renderFavorites();
 }
 
 /* ✅ الحساب — تسجيل دخول بالإيميل وكود تحقق */
@@ -1283,9 +1314,12 @@ async function fetchMyOrders(user) {
         const stLbl = { pending: 'قيد التنفيذ', completed: 'تم التسليم', returned: 'مرتجع', cancelled: 'ملغي' };
         box.innerHTML = j.orders.map(function (o) {
             return '<div class="acc-ord">' +
-                '<div class="acc-ord-head">' +
+                                '<div class="acc-ord-head">' +
                     '<span class="acc-ord-num">' + esc(o.orderId) + '</span>' +
-                    '<span class="acc-st ' + esc(o.status) + '">' + (stLbl[o.status] || esc(o.status)) + '</span>' +
+                    '<div style="display:flex;align-items:center;gap:8px;margin-right:auto">' +
+                        '<span class="acc-st ' + esc(o.status) + '">' + (stLbl[o.status] || esc(o.status)) + '</span>' +
+                        '<button class="acc-trash" onclick="deleteUserOrder(\'' + esc(o.orderId) + '\', this)" aria-label="حذف الطلب">' + TRASH_SVG + '</button>' +
+                    '</div>' +
                 '</div>' +
                 '<small style="color:#999;font-size:11px">' + esc(o.date) + '</small>' +
                 '<div class="acc-ord-items">' +
@@ -1297,6 +1331,40 @@ async function fetchMyOrders(user) {
             '</div>';
         }).join('');
     } catch (e) { box.innerHTML = '<p class="acc-empty">تعذر الاتصال</p>'; }
+}
+    let _delTimers = {};
+async function deleteUserOrder(orderId, btn) {
+    // ضغطة أولى = تأكيد (الزرار بيتحول أحمر "تأكيد؟") — ولو سبته 4 ثواني بيرجع عادي
+    if (!btn.classList.contains('confirm')) {
+        btn.classList.add('confirm');
+        btn.innerHTML = 'تأكيد؟';
+        _delTimers[orderId] = setTimeout(function () {
+            btn.classList.remove('confirm');
+            btn.innerHTML = TRASH_SVG;
+        }, 4000);
+        return;
+    }
+    clearTimeout(_delTimers[orderId]);
+    btn.disabled = true;
+    const user = JSON.parse(localStorage.getItem('lp_user') || 'null');
+    if (!user || !user.token) { renderAccount(); return; }
+    try {
+        const res = await fetch(API_URL, { method: 'POST', body: JSON.stringify({ action: 'deleteUserOrder', token: user.token, orderId: orderId }) });
+        const j = await res.json();
+        if (j.success) {
+            showToast('تم حذف الطلب');
+            fetchMyOrders(user);
+        } else if (j.error === 'session_expired') {
+            localStorage.setItem('lp_user', JSON.stringify({ email: user.email }));
+            renderAccount();
+        } else {
+            showToast(j.error || 'تعذر الحذف', 'err');
+            btn.classList.remove('confirm'); btn.innerHTML = TRASH_SVG; btn.disabled = false;
+        }
+    } catch (e) {
+        showToast('تعذر الاتصال', 'err');
+        btn.classList.remove('confirm'); btn.innerHTML = TRASH_SVG; btn.disabled = false;
+    }
 }
 
 function logoutUser() { localStorage.removeItem('lp_user'); renderAccount(); showToast('تم تسجيل الخروج'); }
