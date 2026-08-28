@@ -744,7 +744,7 @@ textarea.input{resize:vertical;min-height:80px}
 const API_URL = 'https://script.google.com/macros/s/AKfycbyuLyCqPmG1a2w7Vpgu2hGFFG44tlmW4N9AuNwa-YHRupXRPhxBF-_mEOhPgjpSBwM9/exec';
 const IMG_URL = 'https://axentro-official.github.io/Last-piece-/images/';
 const GH_API = 'https://api.github.com/repos/axentro-official/Last-piece-/contents/images';
-const V = Date.now().toString(36);
+const V = Math.floor(Date.now() / 3600000).toString(36);
 const PH = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="400" height="600"><rect width="400" height="600" fill="#ececec"/><text x="200" y="310" font-family="Arial" font-size="24" fill="#9a9a9a" text-anchor="middle" letter-spacing="4">LAST PIECE</text></svg>');
 
 let products = [], cart = [], currentCat = 'الكل', imageIndex = null;
@@ -755,6 +755,24 @@ let pdProduct = null, pdQtyVal = 1;
 
 const $ = id => document.getElementById(id);
 const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+    function fetchWithRetry(url, opts, retries) {
+    retries = (retries === undefined) ? 2 : retries;
+    return new Promise(function (resolve, reject) {
+        let attempt = 0;
+        function go() {
+            const ctrl = new AbortController();
+            const to = setTimeout(function () { ctrl.abort(); }, 25000);
+            fetch(url, Object.assign({}, opts || {}, { signal: ctrl.signal }))
+                .then(function (res) { clearTimeout(to); resolve(res); })
+                .catch(function (err) {
+                    clearTimeout(to);
+                    if (attempt < retries) { attempt++; setTimeout(go, 1500 * attempt); }
+                    else reject(err);
+                });
+        }
+        go();
+    });
+}
 
 let toastTimeout;
 function showToast(msg) {
@@ -774,10 +792,10 @@ function showSkeletons() { $('productsList').innerHTML = skeletonHTML(8); $('dis
 async function loadImageIndex() {
     try {
         const cached = JSON.parse(localStorage.getItem('lp_imgs') || 'null');
-        if (cached && Date.now() - cached.ts < 60000) { imageIndex = new Set(cached.files); return; }
+        if (cached && Date.now() - cached.ts < 300000) { imageIndex = new Set(cached.files); return; }
     } catch (e) {}
     try {
-        const res = await fetch(GH_API);
+        const res = await fetchWithRetry(GH_API);
         if (res.ok) {
             const arr = await res.json();
             imageIndex = new Set(arr.filter(f => f.type === 'file').map(f => f.name));
@@ -870,12 +888,12 @@ async function loadData() {
         if (cached && cached.length) { products = cached; renderProducts(); showedCache = true; }
     } catch (e) {}
     try {
-        const r = await fetch(API_URL + '?action=getProducts');
+        const r = await fetchWithRetry(API_URL + '?action=getProducts');
         products = (await r.json()).products || [];
         try { localStorage.setItem('lp_site_prods', JSON.stringify(products)); } catch (e) {}
         renderProducts();
     } catch (e) {
-        if (!showedCache) $('productsList').innerHTML = '<p class="empty-msg">تعذر تحميل المنتجات — حاول تحديث الصفحة</p>';
+      if (!showedCache) $('productsList').innerHTML = '<p class="empty-msg">تعذر تحميل المنتجات<br><button class="btn-ghost" style="margin-top:14px" onclick="loadData()">↻ إعادة المحاولة</button></p>';
     }
 }
 
@@ -1187,7 +1205,7 @@ async function accRequestCode(e) {
     const btn = e.target.querySelector('button');
     btn.disabled = true; btn.textContent = 'جاري الإرسال…';
     try {
-        const res = await fetch(API_URL, { method: 'POST', body: JSON.stringify({ action: 'requestLoginCode', email: accEmail }) });
+               const res = await fetchWithRetry(API_URL, { method: 'POST', body: JSON.stringify(payload) });
         const j = await res.json();
         if (j.success) {
             showToast('الكود اتبعت على إيميلك ✓');
@@ -1261,7 +1279,7 @@ async function accVerifyCode() {
     const btn = $('accVerifyBtn');
     btn.disabled = true; btn.textContent = 'جاري التحقق…';
     try {
-        const res = await fetch(API_URL, { method: 'POST', body: JSON.stringify({ action: 'verifyLoginCode', email: accEmail, code: code }) });
+        const res = await fetchWithRetry(API_URL, { method: 'POST', body: JSON.stringify(payload) });
         const j = await res.json();
         if (j.success) {
             localStorage.setItem('lp_user', JSON.stringify({ email: accEmail, token: j.token }));
@@ -1283,7 +1301,7 @@ async function accVerifyCode() {
 
 async function accResend() {
     try {
-        const res = await fetch(API_URL, { method: 'POST', body: JSON.stringify({ action: 'requestLoginCode', email: accEmail }) });
+        const res = await fetchWithRetry(API_URL, { method: 'POST', body: JSON.stringify(payload) });
         const j = await res.json();
         if (j.success) showToast('كود جديد اتبعت ✓');
         else showToast(j.error || 'استنى شوية وبعدين جرب', 'err');
@@ -1304,7 +1322,7 @@ async function fetchMyOrders(user) {
     const box = $('myOrdersBox');
     if (!box) return;
     try {
-        const res = await fetch(API_URL, { method: 'POST', body: JSON.stringify({ action: 'getUserOrders', token: user.token }) });
+        const res = await fetchWithRetry(API_URL, { method: 'POST', body: JSON.stringify(payload) });
         const j = await res.json();
         if (j.success === false && j.error === 'session_expired') {
             localStorage.setItem('lp_user', JSON.stringify({ email: user.email }));
@@ -1484,7 +1502,7 @@ async function handleSubmit(e) {
 
     showToast('جاري إرسال الطلب…');
     try {
-        const res = await fetch(API_URL, { method: 'POST', body: JSON.stringify(payload) });
+        const res = await fetchWithRetry(API_URL, { method: 'POST', body: JSON.stringify(payload) });
         const json = await res.json();
         if (json.success) {
             const orders = JSON.parse(localStorage.getItem('lp_orders') || '[]');
