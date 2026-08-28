@@ -86,7 +86,8 @@ a{color:inherit;text-decoration:none}
 .hero-dots{position:absolute;bottom:clamp(16px,3vh,26px);left:50%;transform:translateX(-50%);display:flex;gap:9px;z-index:6}
 .hero-dot{width:26px;height:3px;background:rgba(255,255,255,.45);cursor:pointer;transition:.3s;border:none;padding:0}
 .hero-dot.active{background:#fff}
-.hero-arrows{position:absolute;top:50%;transform:translateY(-50%);width:44px;height:44px;background:rgba(255,255,255,.92);display:flex;align-items:center;justify-content:center;z-index:7;transition:.25s;font-size:22px;color:#000;opacity:0}
+.hero-arrows{position:absolute;top:50%;transform:translateY(-50%);width:46px;height:46px;background:rgba(255,255,255,.92);display:flex;align-items:center;justify-content:center;z-index:7;transition:.25s;color:#000;opacity:0;border:none;cursor:pointer}
+.hero-arrows svg{width:24px;height:24px}
 .hero:hover .hero-arrows{opacity:1}
 .hero-arrows:hover{background:var(--black);color:#fff}
 .hero-arrows.prev{right:14px}.hero-arrows.next{left:14px}
@@ -109,14 +110,15 @@ a{color:inherit;text-decoration:none}
 .product-card{position:relative;background:#fff;display:flex;flex-direction:column;border:1px solid var(--line);transition:box-shadow .25s}
 .product-card:hover{box-shadow:0 8px 28px rgba(0,0,0,.08)}
 .prod-media{position:relative;aspect-ratio:3/4;background:var(--paper);overflow:hidden;width:100%}
-.p-slide{position:absolute;inset:0;opacity:0;transition:opacity .4s ease}
+.p-slide{position:absolute;inset:0;opacity:0;transition:opacity .18s ease}
 .p-slide.active{opacity:1}
 .p-slide img{width:100%;height:100%;object-fit:cover;transition:transform .5s ease}
 .product-card:hover .p-slide.active img{transform:scale(1.03)}
 .badge-sale{position:absolute;top:10px;right:10px;background:#c0392b;color:#fff;font-size:11px;font-weight:800;padding:4px 10px;z-index:6}
 .sold-overlay{position:absolute;inset:0;background:rgba(255,255,255,.85);display:flex;align-items:center;justify-content:center;z-index:12}
 .sold-badge{background:var(--black);color:#fff;padding:8px 20px;font-size:12px;font-weight:800}
-.media-nav{position:absolute;top:50%;transform:translateY(-50%);width:34px;height:34px;background:rgba(255,255,255,.92);display:flex;align-items:center;justify-content:center;z-index:7;opacity:0;transition:.25s;font-size:18px;color:#000}
+.media-nav{position:absolute;top:50%;transform:translateY(-50%);width:34px;height:34px;background:rgba(255,255,255,.92);display:flex;align-items:center;justify-content:center;z-index:7;opacity:0;transition:.25s;color:#000;border:none;cursor:pointer}
+.media-nav svg{width:17px;height:17px}
 .product-card:hover .media-nav{opacity:1}
 .media-nav:hover{background:var(--black);color:#fff}
 .media-nav.prev{right:8px}.media-nav.next{left:8px}
@@ -216,7 +218,9 @@ a{color:inherit;text-decoration:none}
 /* ✅ زرار الحذف — سلة مهملات */
 .ci-trash{width:34px;height:34px;border:1.5px solid var(--line);display:flex;align-items:center;justify-content:center;color:#999;transition:.15s;background:#fff}
 .ci-trash:hover{border-color:var(--err);color:var(--err);background:#fdf2f2}
-.ci-trash svg{width:15px;height:15px}
+.ci-trash svg{width:16px;height:16px}
+.ci-trash .t-lid{transition:transform .28s cubic-bezier(.34,1.56,.64,1);transform-box:fill-box;transform-origin:center}
+.ci-trash:hover .t-lid{transform:translate(-2px,-3px) rotate(-20deg)}
 .ci-price-col{display:flex;flex-direction:column;align-items:flex-end;gap:2px}
 .ci-price{font-size:15px;font-weight:800}
 .ci-price-old{font-size:12px;color:var(--muted);text-decoration:line-through}
@@ -489,8 +493,8 @@ textarea.input{resize:vertical;min-height:80px}
             <div class="hero-overlay">
                 <button class="hero-cta" onclick="goCat('الكل')">SHOP NOW<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></button>
             </div>
-            <button class="hero-arrows prev" onclick="heroPrev()">›</button>
-            <button class="hero-arrows next" onclick="heroNext()">‹</button>
+           <button class="hero-arrows prev" onclick="heroPrev()" aria-label="السابق"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="13 5 20 12 13 19"/></svg></button>
+           <button class="hero-arrows next" onclick="heroNext()" aria-label="التالي"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="20" y1="12" x2="4" y2="12"/><polyline points="11 5 4 12 11 19"/></svg></button>
             <div class="hero-dots" id="heroDots"></div>
         </section>
     </div>
@@ -840,9 +844,10 @@ function createCard(p, context) {
     const pct = discountPct(p.price, p.discount_price);
     const cardId = context + '-' + p.id;
 
-    let slides = '', dots = '';
+        let slides = '', dots = '';
     gal.forEach(function (suf, i) {
-        slides += '<div class="p-slide' + (i === 0 ? ' active' : '') + '"><img src="' + imgSrc(p.id, suf) + '" loading="lazy"></div>';
+        const loadAttr = i <= 1 ? '' : ' loading="lazy"';
+        slides += '<div class="p-slide' + (i === 0 ? ' active' : '') + '"><img src="' + imgSrc(p.id, suf) + '"' + loadAttr + '></div>';
         dots += '<button class="prod-dot' + (i === 0 ? ' active' : '') + '" onclick="event.stopPropagation();goToSlide(\'' + cardId + '\',' + i + ')"></button>';
     });
     if (!gal.length) slides = '<div class="p-slide active"><img src="' + PH + '"></div>';
@@ -851,7 +856,7 @@ function createCard(p, context) {
         (!isActive ? '<div class="sold-overlay"><span class="sold-badge">نفذت الكمية</span></div>' : '') +
         '<div class="prod-media">' +
             slides +
-            (gal.length > 1 ? '<button class="media-nav prev" onclick="event.stopPropagation();navSlide(\'' + cardId + '\',-1)">›</button><button class="media-nav next" onclick="event.stopPropagation();navSlide(\'' + cardId + '\',1)">‹</button>' : '') +
+            (gal.length > 1 ? '<button class="media-nav prev" onclick="event.stopPropagation();navSlide(\'' + cardId + '\',-1)" aria-label="السابق"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="13 5 20 12 13 19"/></svg></button><button class="media-nav next" onclick="event.stopPropagation();navSlide(\'' + cardId + '\',1)" aria-label="التالي"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="20" y1="12" x2="4" y2="12"/><polyline points="11 5 4 12 11 19"/></svg></button>' : '') +
             '<div class="prod-dots">' + dots + '</div>' +
             (pct ? '<span class="badge-sale">SALE -' + pct + '%</span>' : '') +
             '<button class="fav-btn ' + (isFav ? 'active' : '') + '" onclick="event.stopPropagation();toggleFav(\'' + p.id + '\',this)"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></button>' +
@@ -864,23 +869,16 @@ function createCard(p, context) {
     '</div>';
 }
 
-/* ✅ Hover cycling */
+/* ✅ Hover — الصورة التانية فوراً (بدون لف) + رجوع فوري */
 function startHover(cardId) {
-    stopHover(cardId);
     const card = document.querySelector('[data-card="' + cardId + '"]');
     if (!card) return;
     const slides = card.querySelectorAll('.p-slide');
     if (slides.length < 2) return;
-    let idx = 0;
-    hoverTimers[cardId] = setInterval(function () {
-        slides.forEach(s => s.classList.remove('active'));
-        idx = (idx + 1) % slides.length;
-        slides[idx].classList.add('active');
-        syncDots(card, idx);
-    }, 1500);
+    slides.forEach((s, i) => s.classList.toggle('active', i === 1));
+    syncDots(card, 1);
 }
 function stopHover(cardId) {
-    if (hoverTimers[cardId]) { clearInterval(hoverTimers[cardId]); delete hoverTimers[cardId]; }
     const card = document.querySelector('[data-card="' + cardId + '"]');
     if (!card) return;
     const slides = card.querySelectorAll('.p-slide');
@@ -897,7 +895,6 @@ function goToSlide(cardId, n) {
     syncDots(card, n);
 }
 function navSlide(cardId, dir) {
-    stopHover(cardId);
     const card = document.querySelector('[data-card="' + cardId + '"]');
     if (!card) return;
     const slides = card.querySelectorAll('.p-slide');
@@ -1018,8 +1015,8 @@ function updateCart() {
     renderCartItems();
     renderCheckoutSummary();
 }
-const TRASH_SVG = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>';
-function renderCartItems() {
+const TRASH_SVG = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><g class="t-lid"><line x1="4.5" y1="7" x2="19.5" y2="7"/><line x1="9.5" y1="4" x2="14.5" y2="4"/></g><path d="M18.5 7l-1 12.5a1.8 1.8 0 0 1-1.8 1.5H8.3a1.8 1.8 0 0 1-1.8-1.5L5.5 7"/><line x1="10" y1="11" x2="10" y2="17.5"/><line x1="14" y1="11" x2="14" y2="17.5"/></svg>';
+    function renderCartItems() {
     const it = $('cartBody');
     if (!cart.length) {
         it.innerHTML = '<div class="cart-empty"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.55L23 6H6"/></svg><h4>السلة فارغة</h4><button class="btn-dark" onclick="closeAllDrawers()">متابعة التسوق</button></div>';
