@@ -32,6 +32,8 @@ input:focus{outline:none;border-color:var(--black)}
 .icon-act svg{width:15px;height:15px}
 .icon-act:hover{border-color:var(--black);background:var(--paper)}
 .icon-act.danger:hover{border-color:var(--no);color:var(--no);background:#fdf2f2}
+.t-lid{transition:transform .28s cubic-bezier(.34,1.56,.64,1);transform-box:fill-box;transform-origin:center}
+button:hover .t-lid{transform:translate(-2px,-3px) rotate(-20deg)}
 
 /* ═══ إظهار/إخفاء الباسورد ═══ */
 .pass-wrap{position:relative}
@@ -514,7 +516,7 @@ function imgSrc(name) { return IMG_URL + encodeURIComponent(name) + '?v=' + V; }
 // ═══ أيقونات SVG ═══
 const WA_SVG = '<svg viewBox="0 0 24 24" fill="#fff"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg>';
 const EDIT_SVG = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>';
-const TRASH_SVG = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>';
+const TRASH_SVG = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><g class="t-lid"><line x1="4.5" y1="7" x2="19.5" y2="7"/><line x1="9.5" y1="4" x2="14.5" y2="4"/></g><path d="M18.5 7l-1 12.5a1.8 1.8 0 0 1-1.8 1.5H8.3a1.8 1.8 0 0 1-1.8-1.5L5.5 7"/><line x1="10" y1="11" x2="10" y2="17.5"/><line x1="14" y1="11" x2="14" y2="17.5"/></svg>';
 const COPY_SVG = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>';
 const CHECK_SVG = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>';
 const EYE_ON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>';
@@ -602,7 +604,7 @@ function ghHeaders() { return { 'Authorization': 'token ' + (localStorage.getIte
 async function loadGitHubImages() {
     try {
         const h = localStorage.getItem('lp_gh_token') ? ghHeaders() : {};
-        const res = await fetch('https://api.github.com/repos/' + GH.owner + '/' + GH.repo + '/contents/images?per_page=1000', { headers: h });
+        const res = await fetchWithRetry('https://api.github.com/repos/' + GH.owner + '/' + GH.repo + '/contents/images?per_page=1000', { headers: h });
         if (res.ok) {
             const arr = await res.json();
             ghImageSet = new Set(arr.filter(f => f.type === 'file').map(f => f.name));
@@ -652,9 +654,27 @@ function getColorCode(c) {
     return map[c.toLowerCase()] || map[c] || '#cccccc';
 }
 
-// ═══ API ═══
+// ═══ API — مع إعادة محاولة تلقائية وحد زمني ═══
+function fetchWithRetry(url, opts, retries) {
+    retries = (retries === undefined) ? 2 : retries;
+    return new Promise(function (resolve, reject) {
+        let attempt = 0;
+        function go() {
+            const ctrl = new AbortController();
+            const to = setTimeout(function () { ctrl.abort(); }, 25000);
+            fetch(url, Object.assign({}, opts || {}, { signal: ctrl.signal }))
+                .then(function (res) { clearTimeout(to); resolve(res); })
+                .catch(function (err) {
+                    clearTimeout(to);
+                    if (attempt < retries) { attempt++; setTimeout(go, 1500 * attempt); }
+                    else reject(err);
+                });
+        }
+        go();
+    });
+}
 async function api(action, payload) {
-    const res = await fetch(API_URL, { method: 'POST', body: JSON.stringify(Object.assign({ action: action, password: getPass() }, payload || {})) });
+    const res = await fetchWithRetry(API_URL, { method: 'POST', body: JSON.stringify(Object.assign({ action: action, password: getPass() }, payload || {})) });
     return res.json();
 }
 
@@ -669,7 +689,7 @@ async function doLogin() {
     if (!pass) return;
     $('loginErr').textContent = 'جاري التحقق…';
     try {
-        const res = await fetch(API_URL, { method: 'POST', body: JSON.stringify({ action: 'verifyAdmin', password: pass }) });
+        const res = await fetchWithRetry(API_URL, { method: 'POST', body: JSON.stringify({ action: 'verifyAdmin', password: pass }) });
         const j = await res.json();
         if (j.valid) { localStorage.setItem('lp_admin_pass', pass); showApp(); }
         else { $('loginErr').textContent = 'الباسورد غلط'; }
@@ -687,7 +707,7 @@ function logout() { localStorage.removeItem('lp_admin_pass'); location.reload();
 (function bootCheck() {
     const p = getPass();
     if (!p) { showLogin(); return; }
-    fetch(API_URL, { method: 'POST', body: JSON.stringify({ action: 'verifyAdmin', password: p }) })
+    fetchWithRetry(API_URL, { method: 'POST', body: JSON.stringify({ action: 'verifyAdmin', password: p }) })
         .then(r => r.json())
         .then(j => { if (j.valid) showApp(); else showLogin(); })
         .catch(() => showLogin());
@@ -706,7 +726,7 @@ if (name === 'newsletter' && !subscribers.length) loadSubscribers();
 async function loadProducts() {
     $('productsTable').innerHTML = '<p class="empty">جاري التحميل…</p>';
     try {
-        const r = await fetch(API_URL + '?action=getProducts');
+        const r = await fetchWithRetry(API_URL + '?action=getProducts');
         const j = await r.json();
         products = j.products || [];
         renderProducts();
@@ -1381,7 +1401,7 @@ function renderOrders() {
             if (key === st) return;
             actions += '<button class="btn-ghost" style="padding:8px 16px;font-size:12px" onclick="setOrderStatus(\'' + oid + '\',\'' + key + '\')">' + STATUS_MAP[key].label + '</button>';
         });
-        actions += '<button class="btn-ghost" style="padding:8px 16px;font-size:12px;color:var(--no);border-color:var(--no)" onclick="deleteOrder(\'' + oid + '\')">🗑 حذف الطلب</button>';
+        actions += '<button class="btn-ghost" style="padding:8px 16px;font-size:12px;color:var(--no);border-color:var(--no)" onclick="deleteOrder(\'' + oid + '\')">' + TRASH_SVG + ' حذف الطلب</button>';
 
         const wa = waNumber(c.phone);
         const waLines = [
