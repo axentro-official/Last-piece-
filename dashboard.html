@@ -267,6 +267,7 @@ main{max-width:1240px;margin:auto;padding:24px 20px 60px}
                 <button class="tab-btn active" onclick="switchTab('products', this)">المنتجات</button>
                 <button class="tab-btn" onclick="switchTab('orders', this)">الطلبات</button>
                 <button class="tab-btn" onclick="switchTab('settings', this)">الإعدادات</button>
+                <button class="tab-btn" onclick="switchTab('newsletter', this)">📩 النشرة</button>
             </nav>
             <div style="display:flex;gap:8px">
                 <a href="https://axentro-official.github.io/Last-piece-/" target="_blank" class="btn-ghost" style="padding:8px 16px;font-size:12px">الموقع ↗</a>
@@ -313,6 +314,48 @@ main{max-width:1240px;margin:auto;padding:24px 20px 60px}
             </div>
             <div id="ordersList"><p class="empty">اضغط تحديث لعرض الطلبات</p></div>
         </section>
+        <section id="tab-newsletter" class="tab">
+    <div class="tab-head">
+        <h2>النشرة البريدية</h2>
+        <button onclick="loadSubscribers()" class="btn-ghost">↻ تحديث</button>
+    </div>
+    <div id="nlStats" class="stats-bar"></div>
+    <div style="background:#fff;border:1px solid var(--line);padding:24px;margin-bottom:16px">
+        <h3 style="font-size:17px;font-weight:800;margin-bottom:6px">إرسال رسالة 📩</h3>
+        <p style="font-size:12px;color:var(--muted);margin-bottom:18px">الإرسال بيتم على دفعات (100 إيميل/يوم حسب حدود جوجل)</p>
+
+        <div style="margin-bottom:14px">
+            <label style="display:block;font-size:12.5px;font-weight:700;margin-bottom:6px">العنوان *</label>
+            <input id="nlSubject" placeholder="مثال: تشكيلة الصيف وصلت 🌞">
+        </div>
+
+        <div style="margin-bottom:14px">
+            <label style="display:block;font-size:12.5px;font-weight:700;margin-bottom:6px">المحتوى *</label>
+            <textarea id="nlBody" rows="8" style="width:100%;padding:11px 14px;border:1px solid var(--line);font-family:inherit;font-size:14px;resize:vertical" placeholder="الصق القالب هنا أو اكتب رسالتك…"></textarea>
+        </div>
+
+        <div style="margin-bottom:14px">
+            <label style="display:block;font-size:12.5px;font-weight:700;margin-bottom:6px">رابط صورة (اختياري)</label>
+            <input id="nlImage" placeholder="https://example.com/banner.jpg" style="direction:ltr">
+        </div>
+
+        <div style="margin-bottom:18px">
+            <label style="display:flex;align-items:center;gap:8px;font-size:13px;font-weight:700;cursor:pointer">
+                <input type="checkbox" id="nlIsSale" style="width:16px;height:16px;accent-color:var(--black)">
+                ده عرض خصم؟ (شارة حمرا بدل السودا)
+            </label>
+        </div>
+
+        <button onclick="sendNewsletterNow()" class="btn-dark btn-block" id="nlSendBtn" style="padding:14px;font-size:14px">📤 إرسال الدفعة</button>
+        <button onclick="resetNewsletterProgress()" class="btn-ghost btn-block" style="margin-top:8px;padding:10px;font-size:12px;color:var(--warn);border-color:var(--warn)">🔄 تصفير العداد (حملة جديدة)</button>
+        <p id="nlStatus" style="font-size:12.5px;font-weight:700;margin-top:10px;min-height:18px"></p>
+        <div id="nlProgress" style="display:none;margin-top:14px;padding:14px;background:#fff3cd;border:1px solid #ffec99;font-size:13px;color:#856404"></div>
+    </div>
+    <div class="tab-head" style="margin-bottom:12px">
+        <h2 style="font-size:19px">قائمة المشتركين</h2>
+    </div>
+    <div id="subsList" class="tbl-wrap"><p class="empty">اضغط تحديث</p></div>
+</section>
 
         <section id="tab-settings" class="tab">
             <div class="settings-box">
@@ -643,6 +686,7 @@ function switchTab(name, btn) {
     document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
     if (name === 'orders' && !orders.length) loadOrders();
+if (name === 'newsletter' && !subscribers.length) loadSubscribers();
 }
 
 // ═══ المنتجات ═══
@@ -1368,6 +1412,133 @@ function renderOrders() {
     }).join('');
 }
 
+    // ═══ النشرة البريدية ═══
+let subscribers = [];
+
+async function loadSubscribers() {
+    $('subsList').innerHTML = '<p class="empty">جاري التحميل…</p>';
+    $('nlStats').innerHTML = '';
+    try {
+        const j = await api('getSubscribersList', {});
+        if (!j.success) { $('subsList').innerHTML = '<p class="empty">' + (j.error || 'خطأ') + '</p>'; return; }
+        subscribers = j.subscribers || [];
+        renderSubscribers();
+    } catch (e) { $('subsList').innerHTML = '<p class="empty">تعذر التحميل</p>'; }
+}
+
+function renderSubscribers() {
+    const total = subscribers.length;
+    const progress = JSON.parse(localStorage.getItem('lp_nl_progress') || '{}');
+    const lastSent = progress.lastSent || 0;
+    const sentCount = Math.min(lastSent, total);
+    const remaining = Math.max(0, total - sentCount);
+
+    $('nlStats').innerHTML =
+        '<div class="stat-card primary"><div class="stat-num">' + total + '</div><div class="stat-lbl">إجمالي المشتركين</div></div>' +
+        '<div class="stat-card"><div class="stat-num" style="color:var(--ok)">' + sentCount + '</div><div class="stat-lbl">تم الإرسال لهم</div></div>' +
+        '<div class="stat-card"><div class="stat-num" style="color:var(--warn)">' + remaining + '</div><div class="stat-lbl">متبقّي</div></div>';
+
+    if (!total) { $('subsList').innerHTML = '<p class="empty">لا يوجد مشتركين بعد</p>'; return; }
+
+    let html = '<table class="tbl"><thead><tr><th style="width:50px">#</th><th>البريد الإلكتروني</th><th>تاريخ الاشتراك</th><th>الحالة</th><th></th></tr></thead><tbody>';
+    subscribers.forEach(function (s, i) {
+        const isSent = i < sentCount;
+        html += '<tr' + (isSent ? ' style="background:#f0fff4"' : '') + '>' +
+            '<td style="font-weight:800;color:' + (isSent ? 'var(--ok)' : '#999') + '">' + (i + 1) + '</td>' +
+            '<td class="en" dir="ltr" style="font-size:12.5px">' + esc(s.email) + '</td>' +
+            '<td style="font-size:12px;color:var(--muted)">' + esc(s.date || '—') + '</td>' +
+            '<td>' + (isSent ? '<span class="badge ok">✓ أُرسل</span>' : '<span class="badge no">لم يُرسل</span>') + '</td>' +
+            '<td><button class="icon-act" title="نسخ" onclick="copyText(\'' + esc(s.email) + '\',\'الإيميل\',this)">' + COPY_SVG + '</button></td>' +
+        '</tr>';
+    });
+    html += '</tbody></table>';
+    $('subsList').innerHTML = html;
+
+    // تحديث خانة "من أين نكمل"
+    const nextEl = document.getElementById('nlStartFrom');
+    if (nextEl && remaining > 0) nextEl.value = sentCount + 1;
+}
+
+async function sendNewsletterNow() {
+    const subject = $('nlSubject').value.trim();
+    const body = $('nlBody').value.trim();
+    if (!subject || !body) { toast('اكتب العنوان والمحتوى', 'err'); return; }
+    if (!subscribers.length) await loadSubscribers();
+    if (!subscribers.length) { toast('لا يوجد مشتركين', 'err'); return; }
+
+    const progress = JSON.parse(localStorage.getItem('lp_nl_progress') || '{}');
+    const lastSent = progress.lastSent || 0;
+    const startIndex = lastSent; // من حيث توقفنا
+    const remaining = subscribers.length - startIndex;
+
+    if (remaining <= 0) {
+        toast('خلاص بعتّ للكل! لو عايز تعيد الإرسال اضغط "تصفير العداد"', 'err');
+        return;
+    }
+
+    const thisBatch = Math.min(100, remaining);
+    const from = startIndex + 1;
+    const to = startIndex + thisBatch;
+
+    const ok = await lpConfirm({
+        title: 'إرسال الدفعة',
+        msg: 'هتبعت لرقم ' + from + ' إلى ' + to + ' (' + thisBatch + ' إيميل). متأكد؟',
+        okText: 'إرسال', danger: true
+    });
+    if (!ok) return;
+
+    const btn = $('nlSendBtn');
+    btn.disabled = true; btn.textContent = '⏳ جاري الإرسال…';
+    $('nlStatus').style.color = 'var(--muted)';
+    $('nlStatus').textContent = 'جاري إرسال ' + thisBatch + ' إيميل — استنى…';
+
+    try {
+        const j = await api('sendNewsletter', {
+            subject: subject,
+            body: body,
+            imageUrl: $('nlImage').value.trim(),
+            isSale: $('nlIsSale').checked,
+            startIndex: startIndex,
+            limit: 100
+        });
+
+        if (j.success) {
+            // حفظ التقدم
+            localStorage.setItem('lp_nl_progress', JSON.stringify({ lastSent: j.nextIndex }));
+
+            $('nlStatus').style.color = 'var(--ok)';
+            $('nlStatus').textContent = '✓ تم إرسال ' + j.sent + ' إيميل (' + from + '–' + to + ')';
+
+            if (j.remaining > 0) {
+                $('nlProgress').style.display = 'block';
+                $('nlProgress').innerHTML = '⚠️ <b>متبقّي ' + j.remaining + ' مشترك</b> — بكرة اضغط "إرسال الدفعة" تاني وهيكمل من رقم ' + (to + 1) + ' تلقائياً';
+            } else {
+                $('nlProgress').style.display = 'block';
+                $('nlProgress').innerHTML = '🎉 <b>خلصت الحملة!</b> بعتّ لكل ' + j.totalSubs + ' مشترك. لو عايز حملة جديدة، اضغط "تصفير العداد"';
+            }
+
+            toast('تم إرسال ' + j.sent + ' إيميل ✓', 'ok');
+            renderSubscribers();
+        } else {
+            $('nlStatus').style.color = 'var(--no)';
+            $('nlStatus').textContent = '✗ ' + (j.error || 'خطأ');
+            toast(j.error || 'خطأ', 'err');
+        }
+    } catch (e) {
+        $('nlStatus').style.color = 'var(--no)';
+        $('nlStatus').textContent = '✗ تعذر الاتصال';
+        toast('تعذر الاتصال', 'err');
+    }
+    btn.disabled = false; btn.textContent = '📤 إرسال الدفعة';
+}
+
+function resetNewsletterProgress() {
+    localStorage.removeItem('lp_nl_progress');
+    loadSubscribers();
+    $('nlProgress').style.display = 'none';
+    $('nlStatus').textContent = '';
+    toast('تم تصفير العداد — هتبدأ من رقم 1', 'ok');
+}
 // ═══ تشغيل أزرار العين ═══
 initEyeButtons();
 </script>
