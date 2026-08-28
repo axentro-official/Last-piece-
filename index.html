@@ -848,6 +848,8 @@ document.addEventListener('DOMContentLoaded', async function () {
     await loadData();
     initGovernorates();
     loadCart();
+    favorites = favorites.filter(id => products.some(p => p.id === id));
+    localStorage.setItem('lp_fav', JSON.stringify(favorites));
     updateFavBadge();
     initScrollEffects();
     const track = $('mqTrack'); const group = track.children[0]; let guard = 0;
