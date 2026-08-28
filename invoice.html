@@ -94,6 +94,16 @@ td strong{font-weight:800}
 .topbar-inner{justify-content:center}
 }
 @media(max-width:480px){.grid-4{grid-template-columns:1fr}}
+ /* ✅ QR موحد — قابل للضغط بينبض بالهوفر */
+.qr-link{display:inline-block;text-decoration:none}
+.qr-frame{display:inline-block;padding:8px;border:1.5px solid var(--black);background:#fff;transition:.25s}
+.qr-link:hover .qr-frame{transform:scale(1.08);box-shadow:0 8px 24px rgba(0,0,0,.18)}
+.qr-frame img{width:80px;height:80px;display:block}
+.qr-scan{font-size:10px;color:var(--muted);margin-top:8px;font-weight:700;letter-spacing:.05em;direction:ltr}
+.qr-wrap{margin-top:18px;padding-top:16px;border-top:1px solid var(--line)}
+.center-wrap .qr-wrap{border-color:rgba(255,255,255,.15)}
+.center-wrap .qr-scan{color:#999}
+  
 @media print{body{background:#fff}.topbar,.site-footer,button{display:none!important}.card{border:none}}
 </style>
 </head>
@@ -116,7 +126,13 @@ td strong{font-weight:800}
       <button type="submit" class="btn-dark btn-block" id="licBtn" style="margin-top:12px">تحقق وتفعيل</button>
     </form>
     <p class="err-line" id="licenseErr"></p>
-    <p style="margin:14px 0 0;font-size:11px;color:#999">© 2024 Axentro – All Rights Reserved</p>
+        <p style="margin:14px 0 0;font-size:11px;color:#999">© 2024 Axentro – All Rights Reserved</p>
+    <div class="qr-wrap">
+      <a class="qr-link" href="https://axentro-official.github.io/axentro-website/links.html" target="_blank">
+        <span class="qr-frame"><img src="https://axentro-official.github.io/Last-piece-/images/qr.png" alt="QR"></span>
+        <div class="qr-scan">Scan Me &gt; Click On Me</div>
+      </a>
+    </div>
   </div>
 </div>
 
@@ -133,8 +149,14 @@ td strong{font-weight:800}
       </div>
       <button type="submit" class="btn-dark btn-block" style="margin-top:12px">دخول</button>
     </form>
-    <p class="err-line" id="loginErr"></p>
+       <p class="err-line" id="loginErr"></p>
     <button class="mini-link" onclick="changeLicense()">تغيير كود الترخيص</button>
+    <div class="qr-wrap">
+      <a class="qr-link" href="https://axentro-official.github.io/axentro-website/links.html" target="_blank">
+        <span class="qr-frame"><img src="https://axentro-official.github.io/Last-piece-/images/qr.png" alt="QR"></span>
+        <div class="qr-scan">Scan Me &gt; Click On Me</div>
+      </a>
+    </div>
   </div>
 </div>
 
@@ -147,8 +169,12 @@ td strong{font-weight:800}
     <p>لتجديد الاشتراك أو الشراء تواصل معنا الآن</p>
     <a href="https://axentro-official.github.io/axentro-website/links.html" target="_blank" style="text-decoration:none"><button class="btn-dark btn-block">💬 تواصل للتجديد</button></a>
     <p style="margin:18px 0 4px;font-size:11px;color:#999">© 2024 Axentro – All Rights Reserved</p>
-    <a href="https://axentro-official.github.io/axentro-website/links.html" target="_blank"><img src="https://axentro-official.github.io/Last-piece-/images/qr.png" style="width:80px;height:80px;border:1.5px solid var(--black);padding:5px;background:#fff" alt="QR"></a>
-    <div style="font-size:10px;color:#999;margin-top:6px;font-weight:700;letter-spacing:.05em">Scan Me &gt; Click On Me</div>
+    <div class="qr-wrap">
+      <a class="qr-link" href="https://axentro-official.github.io/axentro-website/links.html" target="_blank">
+        <span class="qr-frame"><img src="https://axentro-official.github.io/Last-piece-/images/qr.png" alt="QR"></span>
+        <div class="qr-scan">Scan Me &gt; Click On Me</div>
+      </a>
+    </div>
   </div>
 </div>
 
