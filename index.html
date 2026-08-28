@@ -379,7 +379,30 @@ textarea.input{resize:vertical;min-height:80px}
 .pol-contact-card{border:1px solid var(--line);padding:16px;margin-top:14px;background:var(--paper)}
 .pol-contact-card p{margin-bottom:8px;font-size:14px}
 .pol-contact-card b{color:var(--text)}
-
+    /* ✅ الحساب — تسجيل دخول بالإيميل */
+.acc-box{text-align:center}
+.acc-logo-ic{width:56px;height:56px;border:2px solid var(--black);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 14px}
+.acc-logo-ic svg{width:24px;height:24px}
+.acc-title{font-size:18px;font-weight:800;margin-bottom:4px}
+.acc-sub2{font-size:13px;color:var(--muted);margin-bottom:18px}
+.acc-err{display:none;background:#fdecea;color:var(--err);font-size:12.5px;font-weight:700;padding:10px 12px;margin-bottom:12px}
+.acc-err.show{display:block}
+.otp-row{display:flex;gap:8px;justify-content:center;direction:ltr;margin:18px 0}
+.otp-box{width:46px;height:56px;border:1.5px solid var(--line);font-size:22px;font-weight:800;text-align:center;font-family:'Inter',sans-serif;background:#fff;transition:border .15s;padding:0}
+.otp-box:focus{outline:none;border-color:var(--black)}
+.acc-timer{font-size:12px;color:var(--muted);margin:12px 0 8px}
+.acc-link{background:none;border:none;color:var(--black);font-size:13px;font-weight:800;text-decoration:underline;cursor:pointer;padding:4px;margin:0 6px}
+.acc-ord{border:1px solid var(--line);padding:14px;margin-bottom:10px;text-align:right}
+.acc-ord-head{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:6px}
+.acc-ord-num{font-family:'Inter',sans-serif;font-weight:800;font-size:13px;direction:ltr}
+.acc-ord-items{border-top:1px solid var(--paper);padding-top:8px;margin-top:6px}
+.acc-ord-item{display:flex;justify-content:space-between;font-size:12.5px;color:#555;padding:3px 0;gap:8px}
+.acc-st{font-size:10.5px;font-weight:800;padding:3px 10px}
+.acc-st.pending{background:#f0f0f0;color:#555}
+.acc-st.completed{background:#e6f4ea;color:#1a7f37}
+.acc-st.returned{background:#fff3e0;color:#b2600b}
+.acc-st.cancelled{background:#fdecea;color:#c0392b}
+    
 /* ريسبونسف */
 @media(max-width:1024px){.products-grid{grid-template-columns:repeat(3,1fr)}}
 @media(max-width:860px){.nav-links{display:none}.menu-toggle{display:flex !important}}
@@ -1087,22 +1110,195 @@ function showPage(id) {
     if (id === 'checkoutPage') renderCheckoutSummary();
 }
 
-/* الحساب */
+/* ✅ الحساب — تسجيل دخول بالإيميل وكود تحقق */
+let accEmail = '';
+
 function renderAccount() {
     const user = JSON.parse(localStorage.getItem('lp_user') || 'null');
-    const orders = JSON.parse(localStorage.getItem('lp_orders') || '[]');
-    const oh = orders.length ? orders.map(o => '<div class="acc-order"><span class="en" dir="ltr">' + esc(o.orderNumber) + '</span><span>' + o.total + ' ج.م</span><small>' + esc(o.date) + '</small></div>').join('') : '<p class="acc-empty">لا توجد طلبات بعد.</p>';
-    $('accountBody').innerHTML = user
-        ? '<p style="font-size:15px;font-weight:800">أهلاً بك 👋</p><p class="en" dir="ltr" style="color:#7a7a7a;font-size:13px;margin:2px 0 6px">' + user.phone + '</p><h4 class="acc-sub">طلباتي</h4>' + oh + '<button class="btn-ghost btn-block" style="margin-top:16px" onclick="logoutUser()">تسجيل الخروج</button>'
-        : '<p class="acc-note">سجل رقم موبايلك لتتبع طلباتك.</p><form onsubmit="accountLogin(event)"><input class="input" id="accPhone" type="tel" dir="ltr" placeholder="01xxxxxxxxx" required><button class="btn-dark btn-block" style="margin-top:12px">تسجيل الدخول</button></form><h4 class="acc-sub">طلباتي</h4>' + oh;
+    if (user && user.email && user.token) {
+        renderAccountHome(user);
+    } else if (user && user.email) {
+        // الجلسة انتهت
+        $('accountBody').innerHTML =
+            '<div class="acc-box">' +
+                '<div class="acc-logo-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>' +
+                '<p class="acc-title">انتهت مدة الجلسة</p>' +
+                '<p class="acc-sub2">سجل دخول تاني بكود جديد للإيميل<br><b class="en" dir="ltr">' + esc(user.email) + '</b></p>' +
+                '<button class="btn-dark btn-block" onclick="renderEmailStep(\'' + esc(user.email) + '\')">تسجيل دخول من جديد</button>' +
+            '</div>';
+    } else {
+        renderEmailStep('');
+    }
 }
-function accountLogin(e) {
+
+function renderEmailStep(prefill) {
+    $('accountBody').innerHTML =
+        '<div class="acc-box">' +
+            '<div class="acc-logo-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>' +
+            '<p class="acc-title">تسجيل الدخول / حساب جديد</p>' +
+            '<p class="acc-sub2">اكتب بريدك الإلكتروني وهيوصلك كود تحقق فوري</p>' +
+            '<div class="acc-err" id="accErr"></div>' +
+            '<form onsubmit="accRequestCode(event)">' +
+                '<input class="input en" id="accEmail" type="email" dir="ltr" placeholder="your@email.com" value="' + esc(prefill || '') + '" required style="text-align:center">' +
+                '<button class="btn-dark btn-block" style="margin-top:12px">إرسال كود التحقق</button>' +
+            '</form>' +
+            '<p class="acc-sub2" style="margin:14px 0 0">بالتسجيل هتتابع كل طلباتك في مكان واحد 🖤</p>' +
+        '</div>';
+}
+
+async function accRequestCode(e) {
     e.preventDefault();
-    const phone = $('accPhone').value.trim();
-    if (!/^01[0125][0-9]{8}$/.test(phone)) return showToast('رقم موبايل مصري غير صحيح');
-    localStorage.setItem('lp_user', JSON.stringify({ phone }));
-    renderAccount(); showToast('تم تسجيل الدخول ✓');
+    accEmail = $('accEmail').value.trim().toLowerCase();
+    const errEl = $('accErr');
+    errEl.classList.remove('show');
+    const btn = e.target.querySelector('button');
+    btn.disabled = true; btn.textContent = 'جاري الإرسال…';
+    try {
+        const res = await fetch(API_URL, { method: 'POST', body: JSON.stringify({ action: 'requestLoginCode', email: accEmail }) });
+        const j = await res.json();
+        if (j.success) {
+            showToast('الكود اتبعت على إيميلك ✓');
+            renderCodeStep();
+        } else {
+            errEl.textContent = j.error || 'حدث خطأ';
+            errEl.classList.add('show');
+            btn.disabled = false; btn.textContent = 'إرسال كود التحقق';
+        }
+    } catch (err) {
+        errEl.textContent = 'تعذر الاتصال — تحقق من الإنترنت';
+        errEl.classList.add('show');
+        btn.disabled = false; btn.textContent = 'إرسال كود التحقق';
+    }
 }
+
+function renderCodeStep() {
+    const masked = maskEmail(accEmail);
+    $('accountBody').innerHTML =
+        '<div class="acc-box">' +
+            '<div class="acc-logo-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>' +
+            '<p class="acc-title">اكتب كود التحقق</p>' +
+            '<p class="acc-sub2">بعتنا كود من 6 أرقام على<br><b class="en" dir="ltr">' + masked + '</b></p>' +
+            '<div class="acc-err" id="accErr"></div>' +
+            '<div class="otp-row">' +
+                '<input class="otp-box" type="text" inputmode="numeric" maxlength="1">' +
+                '<input class="otp-box" type="text" inputmode="numeric" maxlength="1">' +
+                '<input class="otp-box" type="text" inputmode="numeric" maxlength="1">' +
+                '<input class="otp-box" type="text" inputmode="numeric" maxlength="1">' +
+                '<input class="otp-box" type="text" inputmode="numeric" maxlength="1">' +
+                '<input class="otp-box" type="text" inputmode="numeric" maxlength="1">' +
+            '</div>' +
+            '<button class="btn-dark btn-block" id="accVerifyBtn" onclick="accVerifyCode()">تأكيد الدخول</button>' +
+            '<p class="acc-timer">⏳ الكود صالح لمدة 10 دقايق</p>' +
+            '<button class="acc-link" onclick="renderEmailStep(\'' + esc(accEmail) + '\')">تغيير الإيميل</button>' +
+            '<button class="acc-link" onclick="accResend()">إعادة إرسال الكود</button>' +
+        '</div>';
+
+    const boxes = $('accountBody').querySelectorAll('.otp-box');
+    boxes.forEach(function (b, i) {
+        b.addEventListener('input', function () {
+            b.value = b.value.replace(/\D/g, '');
+            if (b.value && i < 5) boxes[i + 1].focus();
+        });
+        b.addEventListener('keydown', function (ev) {
+            if (ev.key === 'Backspace' && !b.value && i > 0) boxes[i - 1].focus();
+            if (ev.key === 'Enter') accVerifyCode();
+        });
+        b.addEventListener('paste', function (ev) {
+            ev.preventDefault();
+            const txt = (ev.clipboardData.getData('text') || '').replace(/\D/g, '').slice(0, 6);
+            txt.split('').forEach(function (ch, k) { if (boxes[k]) boxes[k].value = ch; });
+            boxes[Math.min(txt.length, 5)].focus();
+        });
+    });
+    boxes[0].focus();
+}
+
+function maskEmail(em) {
+    const parts = em.split('@');
+    const name = parts[0] || '', dom = parts[1] || '';
+    return name.slice(0, 2) + '***@' + dom;
+}
+
+async function accVerifyCode() {
+    const boxes = $('accountBody').querySelectorAll('.otp-box');
+    const code = Array.from(boxes).map(b => b.value).join('');
+    const errEl = $('accErr');
+    if (code.length !== 6) { errEl.textContent = 'اكتب الـ 6 أرقام كلها'; errEl.classList.add('show'); return; }
+    errEl.classList.remove('show');
+    const btn = $('accVerifyBtn');
+    btn.disabled = true; btn.textContent = 'جاري التحقق…';
+    try {
+        const res = await fetch(API_URL, { method: 'POST', body: JSON.stringify({ action: 'verifyLoginCode', email: accEmail, code: code }) });
+        const j = await res.json();
+        if (j.success) {
+            localStorage.setItem('lp_user', JSON.stringify({ email: accEmail, token: j.token }));
+            showToast('تم تسجيل الدخول ✓');
+            renderAccount();
+        } else {
+            errEl.textContent = j.error || 'الكود غير صحيح';
+            errEl.classList.add('show');
+            btn.disabled = false; btn.textContent = 'تأكيد الدخول';
+            boxes.forEach(b => b.value = '');
+            boxes[0].focus();
+        }
+    } catch (e) {
+        errEl.textContent = 'تعذر الاتصال';
+        errEl.classList.add('show');
+        btn.disabled = false; btn.textContent = 'تأكيد الدخول';
+    }
+}
+
+async function accResend() {
+    try {
+        const res = await fetch(API_URL, { method: 'POST', body: JSON.stringify({ action: 'requestLoginCode', email: accEmail }) });
+        const j = await res.json();
+        if (j.success) showToast('كود جديد اتبعت ✓');
+        else showToast(j.error || 'استنى شوية وبعدين جرب', 'err');
+    } catch (e) { showToast('تعذر الاتصال', 'err'); }
+}
+
+function renderAccountHome(user) {
+    $('accountBody').innerHTML =
+        '<p style="font-size:16px;font-weight:800">أهلاً بك 👋</p>' +
+        '<p class="en" dir="ltr" style="color:#7a7a7a;font-size:13px;margin:2px 0 4px">' + esc(user.email) + '</p>' +
+        '<h4 class="acc-sub">طلباتي</h4>' +
+        '<div id="myOrdersBox"><p class="acc-empty">جاري تحميل طلباتك…</p></div>' +
+        '<button class="btn-ghost btn-block" style="margin-top:16px" onclick="logoutUser()">تسجيل الخروج</button>';
+    fetchMyOrders(user);
+}
+
+async function fetchMyOrders(user) {
+    const box = $('myOrdersBox');
+    if (!box) return;
+    try {
+        const res = await fetch(API_URL, { method: 'POST', body: JSON.stringify({ action: 'getUserOrders', token: user.token }) });
+        const j = await res.json();
+        if (j.success === false && j.error === 'session_expired') {
+            localStorage.setItem('lp_user', JSON.stringify({ email: user.email }));
+            renderAccount();
+            return;
+        }
+        if (!j.success || !j.orders) { box.innerHTML = '<p class="acc-empty">تعذر تحميل الطلبات</p>'; return; }
+        if (!j.orders.length) { box.innerHTML = '<p class="acc-empty">لا توجد طلبات بعد — طلباتك الجاية هتظهر هنا تلقائياً 🖤</p>'; return; }
+        const stLbl = { pending: 'قيد التنفيذ', completed: 'تم التسليم', returned: 'مرتجع', cancelled: 'ملغي' };
+        box.innerHTML = j.orders.map(function (o) {
+            return '<div class="acc-ord">' +
+                '<div class="acc-ord-head">' +
+                    '<span class="acc-ord-num">' + esc(o.orderId) + '</span>' +
+                    '<span class="acc-st ' + esc(o.status) + '">' + (stLbl[o.status] || esc(o.status)) + '</span>' +
+                '</div>' +
+                '<small style="color:#999;font-size:11px">' + esc(o.date) + '</small>' +
+                '<div class="acc-ord-items">' +
+                    o.items.map(function (it) {
+                        return '<div class="acc-ord-item"><span>' + esc(it.name) + ' <small>(' + esc(it.size) + ' • ' + esc(it.color) + ') × ' + it.qty + '</small></span><b>' + (it.price * it.qty).toLocaleString() + ' ج.م</b></div>';
+                    }).join('') +
+                '</div>' +
+                '<div class="acc-ord-item" style="border-top:1px solid var(--paper);margin-top:6px;padding-top:8px;font-weight:800;color:#141414"><span>الإجمالي</span><span>' + o.total.toLocaleString() + ' ج.م</span></div>' +
+            '</div>';
+        }).join('');
+    } catch (e) { box.innerHTML = '<p class="acc-empty">تعذر الاتصال</p>'; }
+}
+
 function logoutUser() { localStorage.removeItem('lp_user'); renderAccount(); showToast('تم تسجيل الخروج'); }
 
 /* ✅ ملخص الطلب في التشيك أوت */
@@ -1213,7 +1409,7 @@ async function handleSubmit(e) {
     const payload = {
         action: 'submitOrder',
         items: cart.map(i => ({ productId: i.id, productName: i.name, size: i.size, color: i.color, quantity: i.qty, price: i.price })),
-        customer: { name, phone, governorate, area, address, payment: payLabels[currentPayMethod], notes: f.notes.value.trim() }
+        customer: { name, phone, governorate, area, address, payment: payLabels[currentPayMethod], notes: f.notes.value.trim(), email: ((JSON.parse(localStorage.getItem('lp_user') || 'null') || {}).email || '') }
     };
 
     showToast('جاري إرسال الطلب…');
