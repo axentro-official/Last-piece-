@@ -1195,9 +1195,10 @@ function renderOrdersStats(groups, ids) {
         '<div class="stat-card"><div class="stat-num" style="color:var(--ok)">' + bySt('completed') + '</div><div class="stat-lbl">تم التسليم</div></div>' +
         '<div class="stat-card"><div class="stat-num" style="color:var(--warn)">' + bySt('returned') + '</div><div class="stat-lbl">مرتجع</div></div>' +
         '<div class="stat-card"><div class="stat-num" style="color:var(--no)">' + bySt('cancelled') + '</div><div class="stat-lbl">ملغي</div></div>' +
-        '<div class="stat-card stat-actions">' +
+                '<div class="stat-card stat-actions">' +
             '<button class="btn-ghost" onclick="exportOrdersExcel()">📥 تصدير Excel</button>' +
             '<button class="btn-ghost" style="color:var(--no);border-color:var(--no)" onclick="resetMonthlySales()">🔄 تصفير شهري</button>' +
+            (cutoff ? '<button class="btn-ghost" style="color:var(--ok);border-color:var(--ok)" onclick="cancelSalesCutoff()">↩ إلغاء التصفير</button>' : '') +
         '</div>';
 }
 
@@ -1214,7 +1215,19 @@ async function resetMonthlySales() {
     renderOrders();
     toast('تم أرشفة الشهر + تصفير المبيعات ✓', 'ok');
 }
-
+    // ✅ إلغاء التصفير — المبيعات ترجع تحسب كل الطلبات المُسلَّمة من البداية
+async function cancelSalesCutoff() {
+    const ok = await lpConfirm({
+        title: 'إلغاء التصفير الشهري',
+        msg: 'هيرجع عدّاد المبيعات يحسب كل الطلبات المُسلَّمة من أول يوم. متأكد؟',
+        okText: 'إلغاء التصفير'
+    });
+    if (!ok) return;
+    localStorage.removeItem('lp_sales_cutoff');
+    renderOrders();
+    toast('اتلغى التصفير — المبيعات بتحسب من البداية ✓', 'ok');
+}
+    
 // ✅ تصدير Excel لكل الطلبات
 function exportOrdersExcel(isAuto) {
     if (!orders.length) { toast('مفيش طلبات للتصدير', 'err'); return; }
