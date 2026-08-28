@@ -1,835 +1,489 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1, maximum-scale=1, user-scalable=no" />
-  <title>إدارة الفواتير - Last Piece</title>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
-  <style>
-    :root{
-      --bg:#FAF9F6; 
-      --card:#ffffff;
-      --text:#0d0d0d; 
-      --muted:#64748b;
-      --stroke:rgba(15,23,42,.10);
-      --shadow:0 18px 50px rgba(2,6,23,.12);
-      --gold:#D4AF37;
-      --gold-dark:#B8860B;
-      --black-deep:#0d0d0d;
-      --radius:20px;
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex">
+<title>الفواتير — Last Piece</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%230a0a0a'/%3E%3Ctext x='16' y='21' font-family='Arial' font-size='13' font-weight='bold' fill='%23fff' text-anchor='middle'%3ELP%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;800&family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--black:#0a0a0a;--paper:#f6f6f6;--line:#e7e7e7;--text:#141414;--muted:#7a7a7a;--err:#e74c3c}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Tajawal',sans-serif;font-size:15px;color:var(--text);background:var(--paper);line-height:1.6}
+.en{font-family:'Inter','Tajawal',sans-serif}
+button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit}
+input{font-family:inherit;font-size:14px;padding:12px 14px;border:1.5px solid var(--line);background:#fff;width:100%;transition:border .2s}
+input:focus{outline:none;border-color:var(--black)}
+input:read-only{background:var(--paper);color:#555}
+::-webkit-scrollbar{width:8px;height:8px}
+::-webkit-scrollbar-thumb{background:#c9c9c9;border-radius:10px}
 
-    *{box-sizing:border-box}
-    html,body{height:100%; margin:0;}
-    body{
-      font-family:'Tajawal', sans-serif;
-      color:var(--text);
-      background: var(--bg);
-      display:flex;
-      flex-direction:column;
-    }
+.logo-txt{font-family:'Inter',sans-serif;font-weight:800;letter-spacing:.15em;direction:ltr;font-size:18px}
+.logo-txt small{font-size:10px;letter-spacing:.3em;opacity:.6}
 
-    .wrap{ max-width:1100px; margin:0 auto; width:100%; flex:1; }
+.btn-dark{background:var(--black);color:#fff;padding:12px 24px;font-weight:800;font-size:14px;border:1px solid var(--black);transition:.2s;display:inline-flex;align-items:center;justify-content:center;gap:8px}
+.btn-dark:hover{background:#fff;color:var(--black)}
+.btn-ghost{background:#fff;border:1.5px solid var(--text);padding:11px 22px;font-weight:800;font-size:13px;transition:.2s;display:inline-flex;align-items:center;justify-content:center;gap:8px}
+.btn-ghost:hover{background:var(--black);color:#fff}
+.btn-block{width:100%}
 
-    /* GENERIC SCREENS */
-    .fullscreen-box {
-      position:fixed; inset:0; background:rgba(13,13,13,0.95);
-      display:flex; align-items:center; justify-content:center; z-index:9999;
-      backdrop-filter:blur(8px); padding: 20px;
-    }
-    .center-card {
-      background:#fff; padding:40px; border-radius:25px;
-      box-shadow:0 25px 50px rgba(0,0,0,0.2);
-      text-align:center; width:100%; max-width:450px;
-      border:2px solid var(--gold);
-    }
-    .logo-circle{ width:90px; height:90px; margin:0 auto 20px; border-radius:50%; border:3px solid var(--gold); padding:5px; background:#fff; }
-    .logo-circle img{ width:100%; height:100%; object-fit:contain; }
-    .main-title{ font-family:'Playfair Display', serif; font-size:28px; font-weight:900; background:linear-gradient(135deg, var(--gold), var(--gold-dark)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; margin-bottom:5px; }
-    .sub-title{ color:var(--muted); font-size:14px; margin-bottom:25px; font-weight:700; }
-    
-    input{
-      width:100%; padding:12px; border-radius:12px; border:2px solid #eee;
-      font-family:'Tajawal'; font-size:16px; margin-bottom:15px;
-      text-align:center; transition:0.2s; outline:none;
-    }
-    input:focus{ border-color:var(--gold); }
-    
-    .btn{
-      display:inline-flex; align-items:center; justify-content:center; gap:8px;
-      padding:12px 25px; border-radius:30px; border:none;
-      font-family:'Tajawal'; font-weight:700; font-size:16px;
-      cursor:pointer; transition:0.3s; width:100%;
-      text-decoration: none;
-    }
-    .btn-gold{ background:linear-gradient(135deg, var(--gold), var(--gold-dark)); color:#fff; box-shadow:0 5px 15px rgba(212,175,55,0.3); }
-    .btn-gold:hover{ transform:translateY(-2px); box-shadow:0 8px 25px rgba(212,175,55,0.5); }
-    .btn-outline{ background:#fff; border:2px solid var(--gold); color:var(--black-deep); }
-    
-    .qr-box{ margin-top:20px; padding-top:20px; border-top:1px solid #eee; }
-    .qr-img { width:110px; height:110px; border-radius:10px; border:2px solid var(--gold); margin:10px auto; display:block; cursor: pointer; transition: 0.3s; }
-    .qr-img:hover { transform: scale(1.05); border-color: var(--black-deep); }
-    .small-text{ font-size:11px; color:#666; margin-top:5px; }
+/* الشاشات الكاملة */
+.full-box{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;padding:20px}
+.boot-wrap{background:var(--black);color:#fff;flex-direction:column;gap:16px}
+.boot-logo{font-family:'Inter',sans-serif;font-weight:800;letter-spacing:.15em;direction:ltr;font-size:18px;animation:bootPulse 1.2s ease-in-out infinite}
+.boot-logo small{display:block;text-align:center;font-size:10px;letter-spacing:.3em;opacity:.6}
+@keyframes bootPulse{0%,100%{opacity:1}50%{opacity:.45}}
+.boot-txt{font-size:13px;color:rgba(255,255,255,.7);font-weight:700}
 
-    /* WARNING MODAL */
-    .warning-modal {
-      position:fixed; inset:0; background:rgba(0,0,0,0.7); z-index:9998;
-      display:flex; align-items:center; justify-content:center; padding:20px;
-    }
-    .warning-content {
-      background:#fff; border-radius:25px; width:100%; max-width:400px; overflow:hidden;
-      box-shadow:0 25px 50px rgba(0,0,0,0.3); border:2px solid #D4AF37;
-    }
-    .warning-header { background: linear-gradient(135deg, var(--gold), var(--gold-dark)); color:#fff; padding:20px; }
-    .warning-body { padding:25px; text-align:center; }
-    .dismiss-btn { background:#eee; color:#333; margin-top:15px; width:auto; padding:8px 20px; font-size:14px; }
-    .renew-btn { width:100%; margin-top:10px; }
+.center-wrap{background:var(--black)}
+.center-card{background:#fff;padding:40px;max-width:400px;width:100%;text-align:center;animation:lIn .3s ease}
+@keyframes lIn{from{opacity:0;transform:translateY(14px)}}
+.center-card h1{font-size:22px;font-weight:800;margin:14px 0 4px}
+.center-card p{color:var(--muted);font-size:13px;margin-bottom:20px}
+.state-ic{width:60px;height:60px;border:2px solid var(--black);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto}
+.state-ic svg{width:26px;height:26px}
+.state-ic.red{border-color:var(--err);color:var(--err)}
 
-    /* APP STYLES */
-    .topbar{
-      display:flex; justify-content:space-between; align-items:center;
-      padding:15px; background:#fff; border-radius:15px;
-      box-shadow:0 5px 15px rgba(0,0,0,0.05); margin-bottom:20px;
-      border: 1px solid rgba(0,0,0,0.03);
-    }
-    .brand{ display:flex; align-items:center; gap:10px; }
-    .brand img{ width:40px; height:40px; border-radius:50%; border:1px solid var(--gold); }
-    .brandName{ font-family:'Playfair Display', serif; font-weight:900; font-size:20px; color:var(--gold); }
-    
-    .logout-btn {
-        background: transparent;
-        color: #666;
-        border: 1px solid #eee;
-        padding: 6px 12px;
-        font-size: 12px;
-        border-radius: 8px;
-        display: flex;
-        align-items: center;
-        gap: 5px;
-        transition: 0.2s;
-        cursor: pointer;
-        font-family: 'Tajawal', sans-serif;
-        font-weight: 700;
-    }
-    .logout-btn:hover {
-        background: #f5f5f5;
-        border-color: #ddd;
-        color: #000;
-    }
+/* المودال التحذيري */
+.warn-modal{position:fixed;inset:0;background:rgba(10,10,10,.55);z-index:5000;display:none;align-items:center;justify-content:center;padding:20px}
+.warn-modal.open{display:flex}
+.warn-box{background:#fff;max-width:420px;width:100%;text-align:center;animation:lIn .25s}
+.warn-head{background:var(--black);color:#fff;padding:18px}
+.warn-head h3{font-size:18px;font-weight:800}
+.warn-body{padding:26px}
+.warn-body .days{font-weight:800;font-size:20px;color:var(--black);margin:8px 0}
 
-    .card{
-      background:#fff; border-radius:var(--radius);
-      padding:20px; margin-bottom:20px;
-      box-shadow:0 10px 30px rgba(0,0,0,0.03);
-      border: 1px solid rgba(0,0,0,0.03);
-    }
-    
-    h2{ font-family:'Playfair Display', serif; color:var(--black-deep); border-bottom:2px solid var(--gold); display:inline-block; padding-bottom:5px; margin:0 0 15px; }
-    
-    label{ display:block; font-size:12px; color:var(--muted); margin-bottom:5px; font-weight:700; }
-    
-    .grid-4{ display:grid; grid-template-columns:repeat(4, 1fr); gap:15px; }
-    .grid-2{ display:grid; grid-template-columns:repeat(2, 1fr); gap:15px; }
-    
-    /* Table */
-    .table-wrap{ overflow:auto; border:1px solid #eee; border-radius:12px; }
-    table{ width:100%; border-collapse:collapse; min-width:800px; }
-    th, td{ padding:10px; text-align:center; border-bottom:1px solid #eee; }
-    th{ background:linear-gradient(135deg, rgba(212,175,55,0.1), #fff); color:var(--black-deep); font-weight:900; }
-    .thumbMini{ width:40px; height:40px; border-radius:8px; object-fit:cover; border:1px solid #eee; }
-    
-    /* Totals */
-    .totalLine{ display:flex; justify-content:space-between; padding:8px 0; border-bottom:1px dashed #eee; }
-    .totalLine.primary{ border-bottom:none; font-size:20px; color:var(--gold-dark); font-weight:900; }
+/* التطبيق */
+.topbar{background:#fff;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:100}
+.topbar-inner{max-width:1180px;margin:auto;display:flex;justify-content:space-between;align-items:center;padding:12px 20px;gap:12px;flex-wrap:wrap}
+.wrap{max-width:1180px;margin:auto;padding:24px 20px 60px}
+.card{background:#fff;border:1px solid var(--line);padding:24px;margin-bottom:16px}
+.card h2{font-size:17px;font-weight:800;margin-bottom:16px;padding-bottom:10px;border-bottom:1px solid var(--line)}
+label{display:block;font-size:12.5px;font-weight:700;margin-bottom:6px}
+.grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.grid-2{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-top:14px}
+.tbl-wrap{border:1px solid var(--line);overflow-x:auto}
+table{width:100%;border-collapse:collapse;min-width:800px}
+th{background:var(--paper);padding:12px;text-align:center;font-size:11.5px;font-weight:800;color:#555}
+td{padding:10px 12px;border-top:1px solid var(--paper);font-size:13px;text-align:center;vertical-align:middle}
+td strong{font-weight:800}
+.thumbMini{width:44px;height:55px;object-fit:cover;background:var(--paper);border:1px solid var(--line)}
+.total-box{max-width:420px;margin:18px 0 0 auto}
+.total-line{display:flex;justify-content:space-between;padding:10px 16px;background:var(--black);color:#fff;font-weight:800;font-size:18px}
+.words{font-size:13px;font-weight:700;color:var(--muted);text-align:center;margin-top:12px;min-height:18px}
+.empty-hint{text-align:center;color:var(--muted);padding:30px 0}
 
-    /* Footer */
-    .site-footer{
-      background: var(--black-deep); padding: 40px 20px; margin-top: auto; color: #fff; font-family: 'Tajawal', sans-serif;
-    }
-    .footer-grid { max-width: 1180px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 30px; align-items: center; }
-    .footer-col-right-spacer { display: none; }
-    @media (min-width: 769px) { .footer-col-right-spacer { display: block; } }
-    .footer-col-center { text-align: center; display: flex; flex-direction: column; align-items: center; }
-    .copyright-text { font-size: 12px; color: var(--gold); font-weight: 700; }
-    .team-text-footer { font-size: 11px; color: #666; margin-bottom: 10px; }
-    .qr-link { display: inline-block; padding: 8px; background: #fff; border-radius: 10px; border: 2px solid var(--gold); transition: transform 0.3s; }
-    .qr-link:hover { transform: scale(1.05); }
-    .qr-link img { width: 90px; height: 90px; display: block; }
-    .footer-col-left { text-align: left; direction: ltr; display: flex; flex-direction: column; align-items: flex-start; }
-    .footer-logo-text { font-family: 'Playfair Display', serif; font-size: 24px; color: var(--gold); font-weight: 900; margin-bottom: 5px; }
-    .footer-inc { color: #888; font-size: 12px; }
+@media(max-width:768px){
+.grid-4{grid-template-columns:1fr 1fr}
+.topbar-inner{justify-content:center}
+}
+@media(max-width:480px){.grid-4{grid-template-columns:1fr}}
 
-    /* Responsive - Desktop Large (NEW FIX) */
-    @media (min-width: 1025px) {
-      body { font-size: 16px; }
-      
-      .topbar {
-        padding: 20px;
-      }
-      
-      .brand img {
-        width: 50px;
-        height: 50px;
-      }
-
-      .brandName {
-        font-size: 24px;
-      }
-
-      .logout-btn {
-        font-size: 14px;
-        padding: 8px 16px;
-      }
-      
-      .card {
-        padding: 30px;
-      }
-
-      h2 {
-        font-size: 24px;
-        margin-bottom: 20px;
-      }
-
-      label {
-        font-size: 14px;
-        margin-bottom: 8px;
-      }
-
-      input {
-        font-size: 16px;
-        padding: 14px;
-      }
-
-      .btn {
-        font-size: 17px;
-        padding: 14px 30px;
-      }
-
-      th, td {
-        font-size: 15px;
-        padding: 12px;
-      }
-
-      .totalLine.primary {
-        font-size: 24px;
-      }
-    }
-
-    /* Responsive - Mobile */
-    @media (max-width: 768px){
-      .grid-4, .grid-2{ grid-template-columns:1fr; }
-      .topbar{ flex-direction:column; gap:10px; }
-      .footer-grid{ grid-template-columns:1fr; text-align:center; gap:20px; }
-      .footer-col-left{ text-align:center; align-items:center; order: 3; }
-      .footer-col-center{ order: 1; }
-      .table-wrap{ border:none; }
-      table, thead, tbody, th, td, tr{ display:block; min-width:0; }
-      thead{ display:none; }
-      tbody tr{ margin-bottom:15px; border:1px solid #eee; border-radius:10px; padding:10px; background:#fff; box-shadow:0 2px 5px rgba(0,0,0,0.05); }
-      td{ display:flex; justify-content:space-between; align-items:center; text-align:right; padding:8px 5px; border-bottom:1px solid #f5f5f5; }
-      td:last-child{ border-bottom:none; }
-      td:before { content: attr(data-label); font-weight:700; color:var(--muted); font-size:12px; }
-      .thumbMini{ width:30px; height:30px; }
-    }
-  
-    @media print{
-      body{background:#fff}
-      .card{box-shadow:none;border:none}
-      button{display:none!important}
-      .topbar, .site-footer{display:none!important}
-    }
-  </style>
+@media print{body{background:#fff}.topbar,.site-footer,button{display:none!important}.card{border:none;box-shadow:none}}
+</style>
 </head>
 <body>
 
-<!-- 1. License Loader Screen -->
-<div id="loaderBox" class="fullscreen-box">
+<!-- 1. فحص الترخيص -->
+<div id="loaderBox" class="full-box boot-wrap">
+  <div class="boot-logo">LAST PIECE <small>INVOICES</small></div>
+  <div class="boot-txt">جاري التحقق من الترخيص…</div>
+</div>
+
+<!-- 2. شاشة انتهاء الترخيص -->
+<div id="expiredBox" class="full-box center-wrap" style="display:none">
   <div class="center-card">
-    <div class="logo-circle"><img src="https://axentro-official.github.io/Last-piece-/images/logo.png" alt="Logo"></div>
-    <div class="main-title">AXENTRO</div>
-    <div class="sub-title">نظام إدارة الفواتير</div>
-    <div style="color:#888; font-size:14px;">جاري التحقق من الترخيص...</div>
+    <div class="state-ic red"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div>
+    <h1>انتهى الاشتراك</h1>
+    <p>لتجديد الاشتراك أو الشراء تواصل معنا الآن</p>
+    <a href="https://axentro-official.github.io/axentro-website/links.html" target="_blank" style="text-decoration:none"><button class="btn-dark btn-block">💬 تواصل للتجديد</button></a>
+    <p style="margin:18px 0 4px;font-size:11px;color:#999">© 2024 Axentro – All Rights Reserved</p>
+    <a href="https://axentro-official.github.io/axentro-website/links.html" target="_blank"><img src="https://axentro-official.github.io/Last-piece-/images/qr.png" style="width:80px;height:80px;border:1.5px solid var(--black);padding:5px;background:#fff" alt="QR"></a>
+    <div style="font-size:10px;color:#999;margin-top:6px;font-weight:700;letter-spacing:.05em">Scan Me &gt; Click On Me</div>
   </div>
 </div>
 
-<!-- 2. Expired Screen -->
-<div id="expiredBox" class="fullscreen-box" style="display:none;">
+<!-- 3. تسجيل الدخول -->
+<div id="loginBox" class="full-box center-wrap" style="display:none">
   <div class="center-card">
-    <div class="logo-circle"><img src="https://axentro-official.github.io/Last-piece-/images/logo.png" alt="Logo"></div>
-    <div class="main-title" style="color:#e74c3c; -webkit-text-fill-color:#e74c3c;">تم انتهاء الأشتراك</div>
-    <div class="sub-title">لتجديد الاشتراك أو الشراء النهائي تواصل معنا الآن.</div>
-    
-    <a href="https://axentro-official.github.io/axentro-website/links.html" target="_blank" style="text-decoration:none;">
-      <button class="btn btn-gold" style="margin-bottom:10px;">💬 تواصل للتجديد</button>
-    </a>
-    
-    <div class="qr-box">
-      <div class="copyright-text">© 2024 Axentro – All Rights Reserved</div>
-      <div class="team-text">Powered by Axentro System</div>
-      <a href="https://axentro-official.github.io/axentro-website/links.html" target="_blank">
-        <img src="https://axentro-official.github.io/Last-piece-/images/qr.png" class="qr-img" alt="QR">
-      </a>
-      <div class="small-text">Scan Me > Click On Me</div>
-    </div>
-  </div>
-</div>
-
-<!-- 3. Login Screen -->
-<div id="loginBox" class="fullscreen-box" style="display:none;">
-  <div class="center-card">
-    <div class="logo-circle"><img src="https://axentro-official.github.io/Last-piece-/images/logo.png" alt="Logo"></div>
-    <div class="main-title">Last Piece</div>
-    <div class="sub-title">نظام إدارة الفواتير</div>
-    
-    <form id="loginForm" onsubmit="return false;">
-      <input type="password" id="passInput" placeholder="رمز الدخول" autocomplete="off">
-      <button type="submit" class="btn btn-gold">دخول</button>
+    <span class="logo-txt">LAST PIECE <small>INVOICES</small></span>
+    <h1>نظام الفواتير</h1>
+    <p>ادخل رمز الدخول</p>
+    <form id="loginForm">
+      <input type="password" id="passInput" placeholder="••••" autocomplete="off" style="text-align:center">
+      <button type="submit" class="btn-dark btn-block" style="margin-top:12px">دخول</button>
     </form>
+    <p style="margin:18px 0 4px;font-size:11px;color:#999">© 2024 Axentro – By Axentro Team</p>
+    <a href="https://axentro-official.github.io/axentro-website/links.html" target="_blank"><img src="https://axentro-official.github.io/Last-piece-/images/qr.png" style="width:80px;height:80px;border:1.5px solid var(--black);padding:5px;background:#fff" alt="QR"></a>
+    <div style="font-size:10px;color:#999;margin-top:6px;font-weight:700;letter-spacing:.05em">Scan Me &gt; Click On Me</div>
+  </div>
+</div>
 
-    <div class="qr-box">
-      <div class="copyright-text">© 2024 Axentro – All Rights Reserved</div>
-      <div class="team-text">By Axentro Team</div>
-      <a href="https://axentro-official.github.io/axentro-website/links.html" target="_blank">
-        <img src="https://axentro-official.github.io/Last-piece-/images/qr.png" class="qr-img" alt="QR">
-      </a>
-      <div class="small-text">Scan Me > Click On Me</div>
+<!-- 4. تحذير قرب الانتهاء -->
+<div id="warningModal" class="warn-modal">
+  <div class="warn-box">
+    <div class="warn-head"><h3>⚠️ اشتراكك على وشك الانتهاء</h3></div>
+    <div class="warn-body">
+      <p style="font-size:14px;color:#555">باقي على انتهاء اشتراكك:</p>
+      <p class="days en" id="daysLeftWarning"></p>
+      <p style="font-size:13px;color:#666;margin-bottom:16px">جدّد الآن أو رقّي لـ <b>مدى الحياة</b></p>
+      <a href="https://axentro-official.github.io/axentro-website/links.html" target="_blank"><button class="btn-dark btn-block">💬 تواصل للتجديد</button></a>
+      <button class="btn-ghost btn-block" style="margin-top:8px" onclick="dismissWarning()">المتابعة الآن</button>
     </div>
   </div>
 </div>
 
-<!-- 4. Warning Modal -->
-<div id="warningModal" class="warning-modal" style="display:none;">
-  <div class="warning-content">
-    <div class="warning-header">
-      <h3 style="margin:0; font-size:20px;">⚠️ تنبيه هام</h3>
-      <p style="margin:5px 0 0; font-size:14px; opacity:0.9;">اشتراكك على وشك الانتهاء!</p>
+<!-- 5. التطبيق -->
+<div id="app" style="display:none">
+  <header class="topbar">
+    <div class="topbar-inner">
+      <span class="logo-txt">LAST PIECE <small>INVOICES</small></span>
+      <button onclick="logout()" class="btn-ghost" style="padding:8px 18px;font-size:12px">خروج</button>
     </div>
-    <div class="warning-body">
-      <p style="font-size:16px; color:#333; line-height:1.6;">
-        باقي على انتهاء اشتراكك في نظام <strong>Last Piece</strong> 
-        <br>
-        <span id="daysLeftWarning" style="color:var(--gold-dark); font-weight:bold; font-size:20px;"></span>
-      </p>
-      <p style="font-size:13px; color:#666; margin-top:10px;">
-        جدد الآن واحصل على <strong style="color:var(--gold)">خصم 20%</strong> أو اشترِ النظام مدى الحياة!
-      </p>
-      
-      <a href="https://axentro-official.github.io/axentro-website/links.html" target="_blank">
-         <button class="btn btn-gold renew-btn">💬 تواصل للتجديد</button>
-      </a>
-      
-      <button class="btn dismiss-btn" onclick="dismissWarning()">المتابعة الآن</button>
-      
-      <div style="margin-top:20px; border-top:1px solid #eee; padding-top:15px;">
-        <a href="https://axentro-official.github.io/axentro-website/links.html" target="_blank">
-          <img src="https://axentro-official.github.io/Last-piece-/images/qr.png" style="width:80px; height:80px; border-radius:8px; border:1px solid var(--gold); cursor:pointer;">
-        </a>
-        <div class="small-text">© 2024 Axentro – All Rights Reserved</div>
+  </header>
+
+  <div class="wrap">
+    <div class="card">
+      <h2>🔎 استعلام طلب</h2>
+      <div class="grid-4" style="margin:0">
+        <div style="grid-column:span 3"><input type="text" id="orderIdInput" placeholder="أدخل رقم الطلب (مثال: LP-240828-1234)" style="direction:ltr;text-align:center" onkeydown="if(event.key==='Enter')fetchOrder()"></div>
+        <button class="btn-dark" onclick="fetchOrder()">جلب الطلب</button>
       </div>
+      <p class="empty-hint" id="fetchHint">اكتب رقم الطلب واضغط جلب — كل البيانات هتتملي تلقائياً بالصور</p>
+    </div>
+
+    <div class="card">
+      <h2>🧾 بيانات الفاتورة</h2>
+      <div class="grid-4" style="margin:0">
+        <div><label>رقم الفاتورة</label><input type="text" id="invNo" readonly style="direction:ltr;text-align:center"></div>
+        <div><label>التاريخ</label><input type="text" id="invDate" readonly></div>
+        <div><label>الوقت</label><input type="text" id="invTime" readonly></div>
+        <div><label>طريقة الدفع</label><input type="text" id="payMethod" readonly></div>
+      </div>
+      <div class="grid-4">
+        <div><label>اسم العميل</label><input type="text" id="custName" readonly></div>
+        <div><label>الهاتف</label><input type="text" id="custPhone" readonly style="direction:ltr;text-align:center"></div>
+        <div style="grid-column:span 2"><label>العنوان</label><input type="text" id="custAddress" readonly></div>
+      </div>
+      <div class="grid-4"><div style="grid-column:span 4"><label>ملاحظات</label><input type="text" id="custNotes" readonly></div></div>
+    </div>
+
+    <div class="card">
+      <h2>📦 المنتجات</h2>
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>#</th><th>صورة</th><th>الكود</th><th>المنتج</th><th>المقاس</th><th>اللون</th><th>الكمية</th><th>السعر</th><th>الإجمالي</th></tr></thead>
+          <tbody id="itemsBody"><tr><td colspan="9" class="empty-hint">لم يتم جلب طلب بعد</td></tr></tbody>
+        </table>
+      </div>
+      <div class="total-box" id="totalsBox" style="display:none"><div class="total-line"><span>الإجمالي</span><span id="grandTotalTxt">0 ج.م</span></div></div>
+      <div class="words" id="amountWords"></div>
+    </div>
+
+    <div class="card">
+      <h2>🖨️ الطباعة والتصدير</h2>
+      <button class="btn-dark btn-block" onclick="printInvoice('A4')" style="padding:15px;font-size:16px">🖨️ طباعة A4 / حفظ PDF</button>
+      <div class="grid-2">
+        <button class="btn-ghost" onclick="printInvoice('Thermal80')">🧾 حراري 80mm</button>
+        <button class="btn-ghost" onclick="printInvoice('Thermal58')">🧾 حراري 58mm</button>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:14px;text-align:center">💡 من نافذة الطباعة اختر "Save as PDF" لحفظ الفاتورة كملف</p>
     </div>
   </div>
 </div>
 
-<!-- 5. Main App -->
-<div class="wrap" id="app" style="display:none; padding: 15px;">
-  
-  <div class="topbar">
-    <div class="brand">
-      <img src="https://axentro-official.github.io/Last-piece-/images/logo.png">
-      <div>
-        <div class="brandName">Last Piece</div>
-        <div style="font-size:12px; color:#888;">لوحة التحكم</div>
-      </div>
-    </div>
-    <button class="logout-btn" onclick="logout()">🔒 خروج</button>
-  </div>
-
-  <div class="card">
-    <h2>استعلام طلب</h2>
-    <div class="grid-4">
-      <div style="grid-column: span 3;">
-        <input type="text" id="orderIdInput" placeholder="أدخل رقم الطلب (مثال: LP-240521-1234)">
-      </div>
-      <button class="btn btn-gold" style="height:48px; box-shadow:none;" onclick="fetchOrder()">🔎 جلب الطلب</button>
-    </div>
-  </div>
-
-  <div class="card">
-    <h2>بيانات الفاتورة</h2>
-    <div class="grid-4">
-      <div><label>رقم الفاتورة</label><input type="text" id="invNo" readonly></div>
-      <div><label>التاريخ</label><input type="text" id="invDate" readonly></div>
-      <div><label>الوقت</label><input type="text" id="invTime" readonly></div>
-      <div><label>طريقة الدفع</label><input type="text" id="payMethod" readonly></div>
-    </div>
-    <div style="height:15px"></div>
-    <div class="grid-4">
-      <div><label>اسم العميل</label><input type="text" id="custName" readonly></div>
-      <div><label>الهاتف</label><input type="text" id="custPhone" readonly></div>
-      <div><label>العنوان</label><input type="text" id="custAddress" readonly></div>
-      <div><label>ملاحظات</label><input type="text" id="custNotes" readonly></div>
-    </div>
-  </div>
-
-  <div class="card">
-    <h2>المنتجات</h2>
-    <div class="table-wrap">
-      <table id="itemsTable">
-        <thead>
-          <tr>
-            <th>#</th><th>صورة</th><th>الكود</th><th>المنتج</th><th>المقاس</th><th>اللون</th><th>الكمية</th><th>السعر</th><th>الإجمالي</th>
-          </tr>
-        </thead>
-        <tbody id="itemsBody">
-          <tr><td colspan="9" style="padding:20px; color:#888">لم يتم جلب طلب بعد</td></tr>
-        </tbody>
-      </table>
-    </div>
-    <div style="max-width:400px; margin:20px auto 0;">
-      <div id="totalsBox"></div>
-      <div style="text-align:center; margin-top:15px; font-weight:700; color:#333" id="amountWords"></div>
-    </div>
-  </div>
-
-  <div class="card">
-    <h2>الطباعة والتصدير</h2>
-    
-    <button class="btn btn-dark" onclick="printInvoice('A4')" style="width: 100%; padding: 15px; font-size: 17px; background: #0d0d0d; color: white;">
-      🖨️ طباعة A4 / حفظ PDF
-    </button>
-    
-    <div class="grid-2" style="margin-top:15px;">
-       <button class="btn btn-outline" onclick="printInvoice('Thermal80')">🧾 طباعة حراري 80mm</button>
-       <button class="btn btn-outline" onclick="printInvoice('Thermal58')">🧾 طباعة حراري 58mm</button>
-    </div>
-    
-    <p style="font-size:12px; color:#888; margin-top:15px; text-align:center;">
-      💡 نصيحة: من نافذة الطباعة، اختر "Save as PDF" لحفظ الفاتورة.
-    </p>
-  </div>
-
-</div>
-
-<!-- Main Footer -->
-<footer class="site-footer" id="mainFooter" style="display:none;">
-  <div class="footer-grid">
-    <div class="footer-col-right-spacer"></div>
-    <div class="footer-col-center">
-      <div class="copyright-text">© 2024 Axentro – All Rights Reserved</div>
-      <div class="team-text-footer">By Axentro Team</div>
-      <a href="https://axentro-official.github.io/axentro-website/links.html" target="_blank" class="qr-link">
-        <img src="https://axentro-official.github.io/Last-piece-/images/qr.png" alt="QR">
-      </a>
-      <div class="small-text">Scan Me > Click On Me</div>
-    </div>
-    <div class="footer-col-left">
-      <div class="footer-logo-text">Last Piece</div>
-      <div class="footer-inc">2026 Last-Piece, Inc.</div>
-    </div>
-  </div>
+<footer class="site-footer" id="mainFooter" style="display:none;background:var(--black);color:#fff;text-align:center;padding:34px 20px">
+  <p style="font-family:'Inter',sans-serif;font-weight:800;letter-spacing:4px;font-size:18px;margin:0 0 4px;direction:ltr">LAST PIECE<span style="font-size:9px;vertical-align:super">®</span></p>
+  <p style="font-size:12px;color:#888;margin:0 0 14px;direction:ltr">2026 Last-Piece, Inc.</p>
+  <p style="font-size:11px;color:#666;margin:0 0 12px;direction:ltr">© 2024 Axentro – All Rights Reserved · By Axentro Team</p>
+  <a href="https://axentro-official.github.io/axentro-website/links.html" target="_blank"><img src="https://axentro-official.github.io/Last-piece-/images/qr.png" style="width:80px;height:80px;border:2px solid #fff;padding:5px;background:#fff" alt="QR"></a>
+  <p style="font-size:10px;color:#666;margin-top:8px;font-weight:700;letter-spacing:1px;direction:ltr">Scan Me &gt; Click On Me</p>
 </footer>
 
 <script>
 const ADMIN_PASSWORD = "1407";
 const API_URL = 'https://script.google.com/macros/s/AKfycbyuLyCqPmG1a2w7Vpgu2hGFFG44tlmW4N9AuNwa-YHRupXRPhxBF-_mEOhPgjpSBwM9/exec';
 const IMG_URL = 'https://axentro-official.github.io/Last-piece-/images/';
-const LICENSE_API_URL = 'https://script.google.com/macros/s/AKfycbyFueLWNvOm8DJjR2Hf_cQO9rkroG-sGltx_-iyCLtjDLFGtN4fgLgsgXlD2z_b3oUb8w/exec'; 
+const LICENSE_API_URL = 'https://script.google.com/macros/s/AKfycbyFueLWNvOm8DJjR2Hf_cQO9rkroG-sGltx_-iyCLtjDLFGtN4fgLgsgXlD2z_b3oUb8w/exec';
+const PH = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="400" height="600"><rect width="400" height="600" fill="#ececec"/><text x="200" y="310" font-family="Arial" font-size="24" fill="#9a9a9a" text-anchor="middle" letter-spacing="4">LAST PIECE</text></svg>');
 
-/* === LICENSE SYSTEM ===*/
-async function checkLicense() {
-    const urlParams = new URLSearchParams(window.location.search);
-    const key = urlParams.get('key');
-
-    if (!key) {
-        showExpired();
-        return;
-    }
-
-    try {
-        const res = await fetch(`${LICENSE_API_URL}?key=${key}`);
-        const data = await res.json();
-
-        if (data.status === 'expired' || data.status === 'suspended') {
-            showExpired();
-        } else if (data.status === 'active') {
-            let timeText = "";
-            let showWarn = false;
-
-            if (data.is_lifetime) {
-                timeText = "اشتراك مدى الحياة";
-            } else {
-                let parts = [];
-                if(data.days_left > 0) parts.push(`${data.days_left} يوم`);
-                if(data.hours_left > 0) parts.push(`${data.hours_left} ساعة`);
-                if(data.minutes_left > 0 && data.days_left === 0) parts.push(`${data.minutes_left} دقيقة`);
-                
-                timeText = "باقي " + parts.join(" و ");
-                
-                if (data.days_left === 0) {
-                    showWarn = true;
-                }
-            }
-
-            if (showWarn) {
-                document.getElementById('daysLeftWarning').innerText = timeText;
-                document.getElementById('warningModal').style.display = 'flex';
-            }
-            
-            showApp();
-        } else {
-            showExpired();
+/* ═══ إعادة المحاولة ═══ */
+function fetchWithRetry(url, opts, retries) {
+    retries = (retries === undefined) ? 2 : retries;
+    return new Promise(function (resolve, reject) {
+        let attempt = 0;
+        function go() {
+            const ctrl = new AbortController();
+            const to = setTimeout(function () { ctrl.abort(); }, 25000);
+            fetch(url, Object.assign({}, opts || {}, { signal: ctrl.signal }))
+                .then(function (res) { clearTimeout(to); resolve(res); })
+                .catch(function (err) {
+                    clearTimeout(to);
+                    if (attempt < retries) { attempt++; setTimeout(go, 1500 * attempt); }
+                    else reject(err);
+                });
         }
-    } catch (e) {
-        console.error(e);
-        showExpired();
-    }
+        go();
+    });
 }
 
+/* ═══ الترخيص ═══ */
+async function checkLicense() {
+    const key = new URLSearchParams(window.location.search).get('key');
+    if (!key) return showExpired();
+    try {
+        const res = await fetchWithRetry(LICENSE_API_URL + '?key=' + encodeURIComponent(key));
+        const data = await res.json();
+        if (data.status === 'expired' || data.status === 'suspended' || data.status === 'invalid') return showExpired();
+        if (data.status === 'active') {
+            if (!data.is_lifetime && data.days_left === 0) {
+                let parts = [];
+                if (data.hours_left > 0) parts.push(data.hours_left + ' ساعة');
+                if (data.minutes_left > 0) parts.push(data.minutes_left + ' دقيقة');
+                document.getElementById('daysLeftWarning').textContent = parts.join(' و ') || 'أقل من دقيقة';
+                document.getElementById('warningModal').classList.add('open');
+            }
+            showLogin();
+        } else showExpired();
+    } catch (e) { showExpired(); }
+}
 function showExpired() {
     document.getElementById('loaderBox').style.display = 'none';
     document.getElementById('expiredBox').style.display = 'flex';
 }
-
-function showApp() {
+function showLogin() {
     document.getElementById('loaderBox').style.display = 'none';
     document.getElementById('loginBox').style.display = 'flex';
     document.getElementById('mainFooter').style.display = 'block';
-    
-    if(sessionStorage.getItem('LP_ADMIN') === '1'){
-        document.getElementById('loginBox').style.display = 'none';
-        document.getElementById('app').style.display = 'block';
-        initInvoice();
-    }
+    setTimeout(() => document.getElementById('passInput').focus(), 60);
+    if (sessionStorage.getItem('LP_ADMIN') === '1') enterApp();
 }
+function dismissWarning() { document.getElementById('warningModal').classList.remove('open'); }
 
-function dismissWarning() {
-    document.getElementById('warningModal').style.display = 'none';
+/* ═══ الدخول ═══ */
+document.getElementById('loginForm').addEventListener('submit', function (e) { e.preventDefault(); checkLogin(); });
+function checkLogin() {
+    const inp = document.getElementById('passInput');
+    if (inp.value === ADMIN_PASSWORD) { sessionStorage.setItem('LP_ADMIN', '1'); enterApp(); }
+    else { inp.value = ''; inp.placeholder = 'الرمز غلط — حاول تاني'; }
 }
-
-/* === LOGIN === */
-const loginForm = document.getElementById('loginForm');
-const passInput = document.getElementById('passInput');
-
-loginForm.addEventListener('submit', function(e) {
-  e.preventDefault();
-  checkLogin();
-});
-
-function checkLogin(){
-  if(passInput.value === ADMIN_PASSWORD){
-    sessionStorage.setItem('LP_ADMIN', '1');
+function enterApp() {
     document.getElementById('loginBox').style.display = 'none';
     document.getElementById('app').style.display = 'block';
+    document.getElementById('mainFooter').style.display = 'block';
     initInvoice();
-  } else {
-    alert('خطأ في الرمز');
-    passInput.value = '';
-  }
+}
+function logout() { sessionStorage.removeItem('LP_ADMIN'); location.reload(); }
+
+/* ═══ الفاتورة ═══ */
+function generateInvoiceID() {
+    const d = new Date();
+    const y = d.getFullYear().toString().substr(-2);
+    const m = String(d.getMonth() + 1).padStart(2, '0');
+    const day = String(d.getDate()).padStart(2, '0');
+    return 'INV-LP-' + y + m + day + '-' + Math.floor(1000 + Math.random() * 9000);
+}
+function initInvoice() {
+    const now = new Date();
+    document.getElementById('invNo').value = generateInvoiceID();
+    document.getElementById('invDate').value = now.toISOString().split('T')[0];
+    document.getElementById('invTime').value = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true });
 }
 
-function logout(){
-  sessionStorage.removeItem('LP_ADMIN');
-  location.reload();
+async function fetchOrder() {
+    const oid = document.getElementById('orderIdInput').value.trim();
+    if (!oid) return;
+    document.getElementById('fetchHint').textContent = '⏳ جاري جلب الطلب…';
+    try {
+        const res = await fetchWithRetry(API_URL + '?action=getOrder&orderId=' + encodeURIComponent(oid));
+        const data = await res.json();
+        if (data.ok && data.order) { fillForm(data.order); document.getElementById('fetchHint').textContent = '✓ تم جلب الطلب ' + oid; }
+        else { document.getElementById('fetchHint').textContent = '✗ لم يتم العثور على الطلب — تأكد من الرقم'; }
+    } catch (e) { document.getElementById('fetchHint').textContent = '✗ خطأ في الاتصال — حاول تاني'; }
 }
 
-/* === INVOICE ===*/
-function generateInvoiceID(){
-  const d = new Date();
-  const y = d.getFullYear().toString().substr(-2);
-  const m = String(d.getMonth()+1).padStart(2,'0');
-  const day = String(d.getDate()).padStart(2,'0');
-  const rand = Math.floor(1000 + Math.random() * 9000);
-  return `INV-LP-${y}${m}${day}-${rand}`;
-}
+function fillForm(order) {
+    document.getElementById('custName').value = order.customer_name || '-';
+    document.getElementById('custPhone').value = order.phone || '-';
+    document.getElementById('payMethod').value = order.payment_method || '-';
+    document.getElementById('custNotes').value = order.notes || '-';
+    document.getElementById('custAddress').value = (order.governorate || '') + ' - ' + (order.area || '') + ' - ' + (order.address || '');
 
-function initInvoice(){
-  const now = new Date();
-  document.getElementById('invNo').value = generateInvoiceID();
-  document.getElementById('invDate').value = now.toISOString().split('T')[0];
-  document.getElementById('invTime').value = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true });
-}
-
-async function fetchOrder(){
-  const oid = document.getElementById('orderIdInput').value.trim();
-  if(!oid) return alert('أدخل رقم الطلب');
-  
-  try {
-    const res = await fetch(`${API_URL}?action=getOrder&orderId=${oid}`);
-    const data = await res.json();
-    if(data.ok && data.order) fillForm(data.order);
-    else alert('لم يتم العثور على الطلب');
-  } catch(e){ alert('خطأ في الاتصال'); console.error(e); }
-}
-
-function fillForm(order){
-  document.getElementById('custName').value = order.customer_name || '-';
-  document.getElementById('custPhone').value = order.phone || '-';
-  document.getElementById('payMethod').value = order.payment_method || '-';
-  document.getElementById('custNotes').value = order.notes || '-';
-  document.getElementById('custAddress').value = `${order.governorate || ''} - ${order.area || ''} - ${order.address || ''}`;
-
-  if(order.date){
-    let dt = new Date(order.date);
-    if(!isNaN(dt.getTime())){
-        document.getElementById('invDate').value = dt.toISOString().split('T')[0];
-        document.getElementById('invTime').value = dt.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true });
+    if (order.date) {
+        const dt = new Date(order.date);
+        if (!isNaN(dt.getTime())) {
+            document.getElementById('invDate').value = dt.toISOString().split('T')[0];
+            document.getElementById('invTime').value = dt.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true });
+        }
     }
-  }
 
-  const tbody = document.getElementById('itemsBody');
-  tbody.innerHTML = '';
-  let total = 0;
+    const tbody = document.getElementById('itemsBody');
+    tbody.innerHTML = '';
+    let total = 0;
+    order.items.forEach(function (item, i) {
+        const subtotal = item.qty * item.price;
+        total += subtotal;
+        tbody.innerHTML += '<tr data-id="' + item.product_id + '">' +
+            '<td>' + (i + 1) + '</td>' +
+            '<td><img class="thumbMini" src="' + IMG_URL + encodeURIComponent(item.product_id) + '.webp" onerror="this.onerror=null;this.src=PH"></td>' +
+            '<td class="en"><strong>' + item.product_id + '</strong></td>' +
+            '<td>' + item.product_name + '</td>' +
+            '<td>' + item.size + '</td><td>' + item.color + '</td><td>' + item.qty + '</td>' +
+            '<td>' + item.price.toFixed(2) + '</td>' +
+            '<td><strong>' + subtotal.toFixed(2) + '</strong></td></tr>';
+    });
 
-  order.items.forEach((item, i) => {
-    const subtotal = item.qty * item.price;
-    total += subtotal;
-    // Added data-id attribute and a dedicated column for ID
-    tbody.innerHTML += `
-      <tr data-id="${item.product_id}">
-        <td data-label="#">${i+1}</td>
-        <td data-label="صورة"><img class="thumbMini" src="${IMG_URL}${item.product_id}.webp" onerror="this.src='https://via.placeholder.com/40'"></td>
-        <td data-label="الكود"><strong>${item.product_id}</strong></td>
-        <td data-label="المنتج">${item.product_name}</td>
-        <td data-label="المقاس">${item.size}</td>
-        <td data-label="اللون">${item.color}</td>
-        <td data-label="الكمية">${item.qty}</td>
-        <td data-label="السعر">${item.price.toFixed(2)}</td>
-        <td data-label="الإجمالي"><strong>${subtotal.toFixed(2)}</strong></td>
-      </tr>
-    `;
-  });
-
-  document.getElementById('totalsBox').innerHTML = `<div class="totalLine primary"><span>الإجمالي</span><span>${total.toFixed(2)} ج.م</span></div>`;
-  document.getElementById('amountWords').textContent = numberToArabicWords(total);
+    document.getElementById('totalsBox').style.display = 'block';
+    document.getElementById('grandTotalTxt').textContent = total.toFixed(2) + ' ج.م';
+    document.getElementById('amountWords').textContent = numberToArabicWords(total);
 }
 
-function numberToArabicWords(n){
-  if(n===0) return "صفر جنيه";
-  const ones=["","واحد","اثنان","ثلاثة","أربعة","خمسة","ستة","سبعة","ثمانية","تسعة","عشرة","أحد عشر","اثنا عشر","ثلاثة عشر","أربعة عشر","خمسة عشر","ستة عشر","سبعة عشر","ثمانية عشر","تسعة عشر"];
-  const tens=["","عشرة","عشرون","ثلاثون","أربعون","خمسون","ستون","سبعون","ثمانون","تسعون"];
-  const h=["","مائة","مائتان","ثلاثمائة","أربعمائة","خمسمائة","ستمائة","سبعمائة","ثمانمائة","تسعمائة"];
-  let s="";
-  if(n>=1000){ let t=Math.floor(n/1000); s+=(t===2?"ألفان":(t>2&&t<11)?ones[t]+" آلاف":ones[t]+" ألف"); n%=1000; if(n>0)s+=" و"; }
-  if(n>=100){ s+=h[Math.floor(n/100)]; n%=100; if(n>0)s+=" و"; }
-  if(n>0){ if(n<20) s+=ones[n]; else { let t=Math.floor(n/10); let o=n%10; s+=o?ones[o]+" و "+tens[t]:tens[t]; } }
-  return s+" جنيه مصري فقط لا غير";
+function numberToArabicWords(n) {
+    if (n === 0) return "صفر جنيه";
+    const ones = ["", "واحد", "اثنان", "ثلاثة", "أربعة", "خمسة", "ستة", "سبعة", "ثمانية", "تسعة", "عشرة", "أحد عشر", "اثنا عشر", "ثلاثة عشر", "أربعة عشر", "خمسة عشر", "ستة عشر", "سبعة عشر", "ثمانية عشر", "تسعة عشر"];
+    const tens = ["", "عشرة", "عشرون", "ثلاثون", "أربعون", "خمسون", "ستون", "سبعون", "ثمانون", "تسعون"];
+    const h = ["", "مائة", "مائتان", "ثلاثمائة", "أربعمائة", "خمسمائة", "ستمائة", "سبعمائة", "ثمانمائة", "تسعمائة"];
+    let s = "";
+    if (n >= 1000) { let t = Math.floor(n / 1000); s += (t === 2 ? "ألفان" : (t > 2 && t < 11) ? ones[t] + " آلاف" : ones[t] + " ألف"); n %= 1000; if (n > 0) s += " و"; }
+    if (n >= 100) { s += h[Math.floor(n / 100)]; n %= 100; if (n > 0) s += " و"; }
+    if (n > 0) { if (n < 20) s += ones[n]; else { let t = Math.floor(n / 10); let o = n % 10; s += o ? ones[o] + " و " + tens[t] : tens[t]; } }
+    return s + " جنيه مصري فقط لا غير";
 }
 
-/* === PRINTING ===*/
-function getInvoiceData(){
-  return {
-    invNo: document.getElementById('invNo').value,
-    date: document.getElementById('invDate').value,
-    time: document.getElementById('invTime').value,
-    customer: document.getElementById('custName').value,
-    phone: document.getElementById('custPhone').value,
-    address: document.getElementById('custAddress').value,
-    notes: document.getElementById('custNotes').value,
-    payment: document.getElementById('payMethod').value,
-    items: Array.from(document.querySelectorAll('#itemsBody tr')).map(r => ({
-      id: r.dataset.id || '-', // Get ID from data attribute
-      name: r.children[3] ? r.children[3].innerText : '-', // Name is now index 3
-      img: r.querySelector('img') ? r.querySelector('img').src : '',
-      size: r.children[4] ? r.children[4].innerText : '-',
-      color: r.children[5] ? r.children[5].innerText : '-',
-      qty: r.children[6] ? r.children[6].innerText : '0',
-      price: r.children[7] ? r.children[7].innerText : '0',
-      total: r.children[8] ? r.children[8].innerText : '0'
-    })),
-    grandTotal: document.querySelector('#totalsBox .primary span:last-child') ? document.querySelector('#totalsBox .primary span:last-child').innerText : '0.00 ج.م',
-    words: document.getElementById('amountWords').innerText
-  };
+/* ═══ الطباعة ═══ */
+function getInvoiceData() {
+    return {
+        invNo: document.getElementById('invNo').value,
+        date: document.getElementById('invDate').value,
+        time: document.getElementById('invTime').value,
+        customer: document.getElementById('custName').value,
+        phone: document.getElementById('custPhone').value,
+        address: document.getElementById('custAddress').value,
+        notes: document.getElementById('custNotes').value,
+        payment: document.getElementById('payMethod').value,
+        items: Array.from(document.querySelectorAll('#itemsBody tr')).filter(r => r.dataset.id).map(function (r) {
+            return {
+                id: r.dataset.id,
+                name: r.children[3].innerText,
+                img: r.querySelector('img') ? r.querySelector('img').src : '',
+                size: r.children[4].innerText, color: r.children[5].innerText,
+                qty: r.children[6].innerText, price: r.children[7].innerText, total: r.children[8].innerText
+            };
+        }),
+        grandTotal: document.getElementById('grandTotalTxt').textContent,
+        words: document.getElementById('amountWords').textContent
+    };
 }
 
-function buildA4Html(d){
-  return `
-    <!DOCTYPE html>
-    <html lang="ar" dir="rtl">
-    <head>
-      <meta charset="UTF-8">
-      <title>فاتورة ${d.invNo}</title>
-      <style>
-        @page { size: A4; margin: 0; }
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { font-family: 'Segoe UI', Tahoma, Arial, sans-serif; background: #fff; color: #333; direction: rtl; display: flex; justify-content: center; align-items: flex-start; }
-        .page { width: 210mm; min-height: 297mm; padding: 15mm; background: white; position: relative; }
-        .header { text-align: center; border-bottom: 3px solid #D4AF37; padding-bottom: 20px; margin-bottom: 25px; }
-        .logo { width: 100px; height: 100px; border-radius: 50%; border: 3px solid #D4AF37; margin: 0 auto 15px; display: block; }
-        h1 { font-size: 32px; color: #D4AF37; margin-bottom: 5px; }
-        .subtitle { color: #666; font-size: 14px; }
-        .info-section { display: flex; justify-content: space-between; margin-bottom: 25px; gap: 20px; }
-        .info-box { flex: 1; background: #fafafa; padding: 15px; border-radius: 10px; border: 1px solid #eee; }
-        .info-label { color: #D4AF37; font-weight: bold; font-size: 12px; margin-bottom: 5px; }
-        .info-value { font-size: 14px; line-height: 1.6; }
-        table { width: 100%; border-collapse: collapse; margin-bottom: 25px; table-layout: fixed; }
-        th, td { border: 1px solid #ddd; padding: 12px; text-align: center; word-wrap: break-word; }
-        th { background: #D4AF37; color: white; font-weight: bold; }
-        tr:nth-child(even) { background: #fafafa; }
-        .totals { background: #fffbe6; border: 2px solid #D4AF37; border-radius: 10px; padding: 20px; margin-bottom: 25px; }
-        .total-row { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px dashed #ddd; }
-        .total-row:last-child { border-bottom: none; font-size: 20px; font-weight: bold; color: #B8860B; }
-        .amount-words { text-align: center; font-weight: bold; color: #555; margin-bottom: 25px; }
-        .footer { text-align: center; padding-top: 20px; border-top: 1px solid #eee; }
-        .qr { width: 100px; height: 100px; margin: 15px auto; }
-        .footer-text { font-size: 12px; color: #888; line-height: 1.8; }
-        .brand-footer { position: absolute; bottom: 15mm; left: 15mm; font-size: 11px; color: #888; }
-      </style>
-    </head>
-    <body>
-      <div class="page">
-        <div class="header">
-          <img src="${IMG_URL}logo.png" class="logo" alt="Logo">
-          <h1>Last Piece</h1>
-          <div class="subtitle">أناقة لا تُنسى</div>
-        </div>
-        
-        <div class="info-section">
-          <div class="info-box">
-            <div class="info-label">معلومات الفاتورة</div>
-            <div class="info-value">
-              <strong>رقم الفاتورة:</strong> ${d.invNo}<br>
-              <strong>التاريخ:</strong> ${d.date}<br>
-              <strong>الوقت:</strong> ${d.time}
-            </div>
-          </div>
-          <div class="info-box">
-            <div class="info-label">بيانات العميل</div>
-            <div class="info-value">
-              <strong>الاسم:</strong> ${d.customer}<br>
-              <strong>الهاتف:</strong> ${d.phone}<br>
-              <strong>الدفع:</strong> ${d.payment}
-            </div>
-          </div>
-        </div>
-        
-        <div class="info-box" style="margin-bottom: 25px;">
-          <div class="info-label">العنوان</div>
-          <div class="info-value">${d.address}</div>
-        </div>
-
-        <table>
-          <thead>
-            <tr><th>#</th><th>الكود</th><th>المنتج</th><th>المقاس</th><th>اللون</th><th>الكمية</th><th>السعر</th><th>الإجمالي</th></tr>
-          </thead>
-          <tbody>
-            ${d.items.map((it,i) => `<tr><td>${i+1}</td><td>${it.id}</td><td>${it.name}</td><td>${it.size}</td><td>${it.color}</td><td>${it.qty}</td><td>${it.price}</td><td><strong>${it.total}</strong></td></tr>`).join('')}
-          </tbody>
-        </table>
-
-        <div class="totals">
-          <div class="total-row"><span>الإجمالي</span><span>${d.grandTotal}</span></div>
-        </div>
-        
-        <div class="amount-words">${d.words}</div>
-
-        <div class="footer">
-          <img src="${IMG_URL}qr.png" class="qr" alt="QR">
-          <div style="font-weight: bold;">Scan Me > Click On Me</div>
-          <div class="footer-text">
-            © 2024 Axentro – All Rights Reserved<br>
-            By Axentro Team
-          </div>
-        </div>
-        
-        <div class="brand-footer">Last Piece 2026</div>
-      </div>
-    </body>
-    </html>
-  `;
+function buildA4Html(d) {
+    return `<!DOCTYPE html><html lang="ar" dir="rtl"><head><meta charset="UTF-8"><title>فاتورة ${d.invNo}</title><style>
+@page{size:A4;margin:0}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',Tahoma,Arial,sans-serif;background:#fff;color:#141414;direction:rtl;display:flex;justify-content:center}
+.page{width:210mm;min-height:297mm;padding:14mm;background:#fff;position:relative}
+.hdr{border-bottom:3px solid #0a0a0a;padding-bottom:18px;margin-bottom:22px;display:flex;justify-content:space-between;align-items:center}
+.brand{font-size:34px;font-weight:900;letter-spacing:6px;direction:ltr}
+.brand sup{font-size:12px}
+.tag{color:#777;font-size:12px;margin-top:2px}
+.inv-badge{background:#0a0a0a;color:#fff;padding:10px 18px;text-align:center}
+.inv-badge .lbl{font-size:9px;color:#aaa;letter-spacing:2px;direction:ltr}
+.inv-badge .num{font-size:13px;font-weight:800;direction:ltr}
+.info-sec{display:flex;gap:14px;margin-bottom:22px}
+.info-box{flex:1;border:1px solid #e7e7e7;padding:14px 16px}
+.info-lbl{font-size:10px;color:#999;font-weight:800;letter-spacing:1px;margin-bottom:6px}
+.info-val{font-size:13px;line-height:1.9}
+table{width:100%;border-collapse:collapse;margin-bottom:20px}
+th{background:#0a0a0a;color:#fff;padding:11px;font-size:12px}
+td{border:1px solid #e7e7e7;padding:10px;text-align:center;font-size:12.5px;word-wrap:break-word}
+tr:nth-child(even) td{background:#fafafa}
+.totals{display:flex;justify-content:flex-end;margin-bottom:18px}
+.tot-box{min-width:300px}
+.tot-line{display:flex;justify-content:space-between;padding:10px 16px;background:#0a0a0a;color:#fff;font-weight:800;font-size:18px}
+.words{text-align:center;font-size:12.5px;font-weight:700;color:#555;border:1px dashed #ccc;padding:10px;margin-bottom:22px}
+.ftr{border-top:1px solid #e7e7e7;padding-top:16px;text-align:center}
+.ftr img{width:84px;height:84px;border:2px solid #0a0a0a;padding:4px}
+.scan-lbl{font-size:10px;font-weight:800;letter-spacing:1px;margin:6px 0}
+.ftr-txt{font-size:10.5px;color:#888;line-height:1.9}
+</style></head><body><div class="page">
+<div class="hdr">
+  <div><div class="brand">LAST PIECE<sup>®</sup></div><div class="tag">أناقة لا تُنسى</div></div>
+  <div class="inv-badge"><div class="lbl">INVOICE</div><div class="num">${d.invNo}</div></div>
+</div>
+<div class="info-sec">
+  <div class="info-box"><div class="info-lbl">بيانات الفاتورة</div><div class="info-val"><b>التاريخ:</b> ${d.date}<br><b>الوقت:</b> ${d.time}<br><b>الدفع:</b> ${d.payment}</div></div>
+  <div class="info-box"><div class="info-lbl">بيانات العميل</div><div class="info-val"><b>الاسم:</b> ${d.customer}<br><b>الهاتف:</b> ${d.phone}<br><b>العنوان:</b> ${d.address}</div></div>
+</div>
+<table><thead><tr><th>#</th><th>الكود</th><th>المنتج</th><th>المقاس</th><th>اللون</th><th>الكمية</th><th>السعر</th><th>الإجمالي</th></tr></thead>
+<tbody>${d.items.map((it, i) => `<tr><td>${i + 1}</td><td>${it.id}</td><td>${it.name}</td><td>${it.size}</td><td>${it.color}</td><td>${it.qty}</td><td>${it.price}</td><td><b>${it.total}</b></td></tr>`).join('')}</tbody></table>
+<div class="totals"><div class="tot-box"><div class="tot-line"><span>الإجمالي</span><span>${d.grandTotal}</span></div></div></div>
+<div class="words">${d.words}</div>
+<div class="ftr">
+  <img src="${IMG_URL}qr.png" alt="QR">
+  <div class="scan-lbl">Scan Me &gt; Click On Me</div>
+  <div class="ftr-txt">© 2024 Axentro – All Rights Reserved<br>By Axentro Team · Last Piece 2026</div>
+</div>
+</div></body></html>`;
 }
 
-function buildThermalHtml(d, mm){
-  const w = mm === 58 ? '58mm' : '80mm';
-  return `
-    <!DOCTYPE html>
-    <html lang="ar" dir="rtl">
-    <head>
-      <meta charset="UTF-8">
-      <title>فاتورة ${d.invNo}</title>
-      <style>
-        @page { size: ${w} auto; margin: 0; }
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { font-family: 'Segoe UI', Tahoma, Arial; width: ${w}; background: #fff; color: #000; direction: rtl; display: flex; justify-content: center; }
-        .container { width: ${w}; background: #fff; padding: 3mm; overflow: hidden; }
-        .center { text-align: center; }
-        .bold { font-weight: bold; }
-        .sep { border-top: 1px dashed #000; margin: 8px 0; }
-        .logo { width: 60px; height: 60px; margin: 10px auto; display: block; }
-        .qr { width: 80px; height: 80px; margin: 10px auto; display: block; }
-        .item { margin: 8px 0; padding-bottom: 5px; border-bottom: 1px dotted #ccc; }
-        .total-box { background: #f5f5f5; padding: 8px; margin: 10px 0; }
-        div, span { word-wrap: break-word; overflow-wrap: break-word; }
-      </style>
-    </head>
-    <body>
-      <div class="container">
-        <div class="center">
-          <img src="${IMG_URL}logo.png" class="logo" alt="Logo">
-          <div class="bold" style="font-size: 18px;">Last Piece</div>
-          <div style="font-size: 11px; color: #555;">أناقة لا تُنسى</div>
-        </div>
-        <div class="sep"></div>
-        <div style="font-size: 12px; line-height: 1.6;">
-          <div><span class="bold">فاتورة:</span> ${d.invNo}</div>
-          <div><span class="bold">التاريخ:</span> ${d.date} - ${d.time}</div>
-        </div>
-        <div class="sep"></div>
-        <div style="font-size: 12px; line-height: 1.6;">
-          <div><span class="bold">العميل:</span> ${d.customer}</div>
-          <div><span class="bold">الهاتف:</span> ${d.phone}</div>
-          <div><span class="bold">العنوان:</span> ${d.address}</div>
-        </div>
-        <div class="sep"></div>
-        <div>
-          ${d.items.map(it => `
-            <div class="item">
-              <div class="bold">${it.name} <span style="font-weight:normal; font-size:10px;">(${it.id})</span></div>
-              <div style="font-size: 11px; color: #444;">${it.size} / ${it.color} × ${it.qty}</div>
-              <div style="text-align: left;" class="bold">${it.total}</div>
-            </div>
-          `).join('')}
-        </div>
-        <div class="sep"></div>
-        <div class="total-box center">
-          <div style="font-size: 16px;" class="bold">الإجمالي: ${d.grandTotal}</div>
-          <div style="font-size: 10px;">${d.words}</div>
-        </div>
-        <div class="sep"></div>
-        <div class="center">
-          <img src="${IMG_URL}qr.png" class="qr" alt="QR">
-          <div class="bold" style="font-size: 11px;">Scan Me > Click On Me</div>
-          <div style="font-size: 10px; margin: 5px 0;">
-            © 2024 Axentro – All Rights Reserved<br>
-            By Axentro Team
-          </div>
-          <div class="bold" style="margin-top: 5px;">Last Piece © 2026</div>
-        </div>
-      </div>
-    </body>
-    </html>
-  `;
+function buildThermalHtml(d, mm) {
+    const w = mm === 58 ? '58mm' : '80mm';
+    return `<!DOCTYPE html><html lang="ar" dir="rtl"><head><meta charset="UTF-8"><title>فاتورة ${d.invNo}</title><style>
+@page{size:${w} auto;margin:0}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',Tahoma,Arial;width:${w};background:#fff;color:#000;direction:rtl;display:flex;justify-content:center}
+.container{width:${w};padding:3mm}
+.center{text-align:center}
+.bold{font-weight:bold}
+.sep{border-top:1px dashed #000;margin:7px 0}
+.logo-txt{font-size:16px;font-weight:900;letter-spacing:3px;direction:ltr}
+.qr{width:74px;height:74px;margin:8px auto;display:block;border:2px solid #000;padding:2px}
+.item{margin:7px 0;padding-bottom:5px;border-bottom:1px dotted #ccc}
+.total-box{background:#f2f2f2;padding:8px;margin:8px 0}
+div,span{word-wrap:break-word;overflow-wrap:break-word}
+</style></head><body><div class="container">
+<div class="center"><div class="logo-txt">LAST PIECE</div><div style="font-size:10px;color:#555">أناقة لا تُنسى</div></div>
+<div class="sep"></div>
+<div style="font-size:11.5px;line-height:1.7">
+<div><span class="bold">فاتورة:</span> ${d.invNo}</div>
+<div><span class="bold">التاريخ:</span> ${d.date} - ${d.time}</div>
+<div><span class="bold">الدفع:</span> ${d.payment}</div>
+</div>
+<div class="sep"></div>
+<div style="font-size:11.5px;line-height:1.7">
+<div><span class="bold">العميل:</span> ${d.customer}</div>
+<div><span class="bold">الهاتف:</span> ${d.phone}</div>
+<div><span class="bold">العنوان:</span> ${d.address}</div>
+</div>
+<div class="sep"></div>
+ ${d.items.map(it => `<div class="item"><div class="bold">${it.name} <span style="font-weight:normal;font-size:9.5px">(${it.id})</span></div><div style="font-size:10.5px;color:#444">${it.size} / ${it.color} × ${it.qty}</div><div style="text-align:left" class="bold">${it.total}</div></div>`).join('')}
+<div class="sep"></div>
+<div class="total-box center"><div style="font-size:15px" class="bold">الإجمالي: ${d.grandTotal}</div><div style="font-size:9.5px;margin-top:3px">${d.words}</div></div>
+<div class="sep"></div>
+<div class="center">
+<img src="${IMG_URL}qr.png" class="qr" alt="QR">
+<div class="bold" style="font-size:10px">Scan Me &gt; Click On Me</div>
+<div style="font-size:9px;margin:5px 0">© 2024 Axentro – All Rights Reserved<br>By Axentro Team</div>
+<div class="bold" style="font-size:10px;margin-top:3px">Last Piece © 2026</div>
+</div>
+</div></body></html>`;
 }
 
-function printInvoice(type){
-  const data = getInvoiceData();
-  const html = type === 'A4' ? buildA4Html(data) : buildThermalHtml(data, type === 'Thermal80' ? 80 : 58);
-  
-  const win = window.open('', '_blank');
-  if(!win){ alert("الرجاء السماح بالنوافذ المنبثقة"); return; }
-  
-  win.document.write(html);
-  win.document.close();
-  win.document.title = `فاتورة_${data.invNo}`;
-  
-  setTimeout(() => {
-    win.focus();
-    win.print();
-  }, 500);
+function printInvoice(type) {
+    const data = getInvoiceData();
+    if (!data.items.length) return alert('جلب طلب الأول قبل الطباعة');
+    const html = type === 'A4' ? buildA4Html(data) : buildThermalHtml(data, type === 'Thermal80' ? 80 : 58);
+    const win = window.open('', '_blank');
+    if (!win) return alert("الرجاء السماح بالنوافذ المنبثقة");
+    win.document.write(html);
+    win.document.close();
+    win.document.title = 'فاتورة_' + data.invNo;
+    setTimeout(function () { win.focus(); win.print(); }, 500);
 }
 
-// Start license check immediately
 window.onload = checkLicense;
-
 </script>
 </body>
 </html>
