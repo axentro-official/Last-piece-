@@ -235,6 +235,9 @@ main{max-width:1240px;margin:auto;padding:24px 20px 60px}
 .logout-btn{background:#fff;border:1.5px solid var(--line);padding:8px 18px;font-weight:800;font-size:12px;color:var(--muted);display:inline-flex;align-items:center;gap:7px;transition:.2s}
 .logout-btn:hover{border-color:var(--err);color:var(--err);background:#fdf2f2}
 .logout-btn svg{width:14px;height:14px}
+.logout-btn.confirm{background:var(--no)!important;border-color:var(--no)!important;color:#fff!important}
+.logout-btn.confirm:hover{background:#a93226!important;border-color:#a93226!important;color:#fff!important}
+    
 /* ✅ زر الموقع بأيقونة */
 .site-link{display:inline-flex;align-items:center;gap:6px}
 .site-link svg{width:13px;height:13px}
@@ -752,15 +755,12 @@ async function showApp() {
     loadProducts();
 }
 
-    let _logoutTimer = null;
+let _logoutTimer = null;
 function askLogout() {
     const btn = $('logoutBtn');
     if (!btn.classList.contains('confirm')) {
         btn.classList.add('confirm');
-        btn.innerHTML = 'تأكيد الخروج؟';
-        btn.style.borderColor = 'var(--err)';
-        btn.style.color = '#fff';
-        btn.style.background = 'var(--err)';
+        btn.innerHTML = LOGOUT_SVG + ' تأكيد الخروج؟';
         _logoutTimer = setTimeout(function () { resetLogoutBtn(); }, 4000);
         return;
     }
@@ -773,11 +773,8 @@ function resetLogoutBtn() {
     if (!btn) return;
     btn.classList.remove('confirm');
     btn.innerHTML = LOGOUT_SVG + ' خروج';
-    btn.style.borderColor = '';
-    btn.style.color = '';
-    btn.style.background = '';
 }
-
+    
 (function bootCheck() {
     const p = getPass();
     if (!p) { showLogin(); return; }
@@ -1772,6 +1769,9 @@ async function uploadNlImage() {
 }
 // ═══ تشغيل أزرار العين ═══
 initEyeButtons();
+    const _lb = document.getElementById('logoutBtn');
+if (_lb) _lb.innerHTML = LOGOUT_SVG + ' خروج';
+    
 </script>
 </body>
 </html>
