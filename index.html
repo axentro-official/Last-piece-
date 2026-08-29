@@ -821,8 +821,14 @@ function discountPct(o, n) { if (!o || !n || o <= n) return 0; return Math.round
     let current = va;
     vb.pause(); va.pause();
     va.addEventListener('loadeddata', function () { va.play().catch(function(){}); });
-    function swap() {
+        function swap() {
         const next = (current === va) ? vb : va;
+        // ✅ حماية: لو الفيديو التاني مش محمّل لسه، الأول يكمل بدل ما الشاشة تسود
+        if (next.readyState < 2) {
+            current.currentTime = 0;
+            current.play().catch(function(){});
+            return;
+        }
         next.currentTime = 0;
         next.play().catch(function(){});
         next.style.opacity = '1';
@@ -847,7 +853,6 @@ function toggleContactIcons() {
 document.addEventListener('DOMContentLoaded', async function () {
     showSkeletons();
     await loadImageIndex();
-    initHero();
     await loadData();
     initGovernorates();
     loadCart();
