@@ -51,7 +51,8 @@ button:hover .t-lid{transform:translate(-2px,-3px) rotate(-20deg)}
 
 /* ═══ الدخول ═══ */
 .login-wrap{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px;background:var(--black)}
-.login-box{background:#fff;padding:40px;max-width:380px;width:100%;text-align:center;animation:lIn .35s ease}
+.login-box{background:#fff;max-width:380px;width:100%;text-align:center;animation:lIn .35s ease;overflow:hidden}
+.login-box .lb-body{padding:40px 40px 0}
 @keyframes lIn{from{opacity:0;transform:translateY(14px)}}
 .login-box h1{font-size:22px;font-weight:800;margin-bottom:4px}
 .login-box p{color:var(--muted);font-size:13px;margin-bottom:20px}
@@ -225,7 +226,35 @@ main{max-width:1240px;margin:auto;padding:24px 20px 60px}
 .confirm-box p{font-size:13.5px;color:var(--muted);margin-bottom:8px}
 .confirm-box .c-pass{margin:14px 0 18px}
 .confirm-box .c-btns{display:flex;gap:10px;justify-content:center}
-
+    
+/* ✅ ناف بأيقونات */
+.tab-btn{display:inline-flex;align-items:center;gap:7px}
+.tab-btn svg{width:15px;height:15px;opacity:.75}
+.tab-btn.active svg{opacity:1}
+/* ✅ زر الخروج الاحترافي */
+.logout-btn{background:#fff;border:1.5px solid var(--line);padding:8px 18px;font-weight:800;font-size:12px;color:var(--muted);display:inline-flex;align-items:center;gap:7px;transition:.2s}
+.logout-btn:hover{border-color:var(--err);color:var(--err);background:#fdf2f2}
+.logout-btn svg{width:14px;height:14px}
+/* ✅ زر الموقع بأيقونة */
+.site-link{display:inline-flex;align-items:center;gap:6px}
+.site-link svg{width:13px;height:13px}
+/* ✅ زر التحديث بأيقونة */
+.btn-refresh{display:inline-flex;align-items:center;gap:6px}
+.btn-refresh svg{width:14px;height:14px}
+.btn-refresh:hover svg{transform:rotate(180deg);transition:transform .4s}
+/* ✅ فوتر الكارت في الدخول */
+.login-card-foot{border-top:1px solid var(--line);margin-top:26px;padding:14px 20px 10px;text-align:center}
+.login-card-foot .brand{font-family:'Inter',sans-serif;font-weight:800;letter-spacing:4px;font-size:14px;direction:ltr;margin-bottom:2px}
+.login-card-foot .brand sup{font-size:8px}
+.login-card-foot .inc{font-size:10px;color:#888;direction:ltr;margin-bottom:4px}
+.login-card-foot .ax{font-size:9.5px;color:#999;direction:ltr}
+.login-card-ax{background:var(--black);padding:16px 20px 18px;text-align:center}
+.login-card-ax .qr-link{display:inline-block;text-decoration:none}
+.login-card-ax .qr-frame{display:inline-block;padding:6px;border:2px solid #fff;background:#fff;transition:.25s}
+.login-card-ax .qr-link:hover .qr-frame{transform:scale(1.08);box-shadow:0 8px 24px rgba(255,255,255,.25)}
+.login-card-ax .qr-frame img{width:66px;height:66px;display:block}
+.login-card-ax .qr-scan{font-size:9px;color:#666;margin-top:6px;font-weight:700;letter-spacing:1px;direction:ltr}
+    
 @media(max-width:768px){
 .f-row{grid-template-columns:1fr}
 .img-grid{grid-template-columns:1fr}
@@ -249,31 +278,44 @@ main{max-width:1240px;margin:auto;padding:24px 20px 60px}
 <!-- ═══ الدخول ═══ -->
 <div id="loginScreen" class="login-wrap" style="display:none">
     <div class="login-box">
-        <span class="logo-txt">LAST PIECE <small>ADMIN</small></span>
-        <h1 style="margin-top:14px">لوحة التحكم</h1>
-        <p>ادخل باسورد الإدارة</p>
-        <div class="pass-wrap">
-            <input type="password" id="loginPass" placeholder="••••••••" onkeydown="if(event.key==='Enter')doLogin()">
-            <button class="eye-btn" onclick="togglePass('loginPass',this)" aria-label="إظهار الباسورد"></button>
+        <div class="lb-body">
+            <span class="logo-txt">LAST PIECE <small>ADMIN</small></span>
+            <h1 style="margin-top:14px">لوحة التحكم</h1>
+            <p>ادخل باسورد الإدارة</p>
+            <div class="pass-wrap">
+                <input type="password" id="loginPass" placeholder="••••••••" onkeydown="if(event.key==='Enter')doLogin()">
+                <button class="eye-btn" onclick="togglePass('loginPass',this)" aria-label="إظهار الباسورد"></button>
+            </div>
+            <button onclick="doLogin()" class="btn-dark btn-block">دخول</button>
+            <p id="loginErr" style="color:var(--no);font-weight:700;font-size:12px;margin-top:10px;min-height:16px"></p>
         </div>
-        <button onclick="doLogin()" class="btn-dark btn-block">دخول</button>
-        <p id="loginErr" style="color:var(--no);font-weight:700;font-size:12px;margin-top:10px;min-height:16px"></p>
+        <div class="login-card-foot">
+            <div class="brand">LAST PIECE<sup>®</sup></div>
+            <div class="inc">2026 Last-Piece, Inc.</div>
+            <div class="ax">© 2024 Axentro – All Rights Reserved · By Axentro Team</div>
+        </div>
+        <div class="login-card-ax">
+            <a class="qr-link" href="https://axentro-official.github.io/axentro-website/links.html" target="_blank">
+                <span class="qr-frame"><img src="https://axentro-official.github.io/Last-piece-/images/qr.png" alt="QR"></span>
+                <div class="qr-scan">Scan Me &gt; Click On Me</div>
+            </a>
+        </div>
     </div>
 </div>
-
+    
 <div id="app" style="display:none">
     <header class="dash-header">
         <div class="dh-inner">
             <span class="logo-txt">LAST PIECE <small>ADMIN</small></span>
-            <nav class="dh-nav">
+                 <nav class="dh-nav">
                 <button class="tab-btn active" onclick="switchTab('products', this)">المنتجات</button>
                 <button class="tab-btn" onclick="switchTab('orders', this)">الطلبات</button>
                 <button class="tab-btn" onclick="switchTab('settings', this)">الإعدادات</button>
-                <button class="tab-btn" onclick="switchTab('newsletter', this)">📩 النشرة</button>
+                <button class="tab-btn" onclick="switchTab('newsletter', this)">النشرة</button>
             </nav>
             <div style="display:flex;gap:8px">
-                <a href="https://axentro-official.github.io/Last-piece-/" target="_blank" class="btn-ghost" style="padding:8px 16px;font-size:12px">الموقع ↗</a>
-                <button onclick="logout()" class="btn-ghost" style="padding:8px 18px">خروج</button>
+                <a href="https://axentro-official.github.io/Last-piece-/" target="_blank" class="btn-ghost site-link" style="padding:8px 16px;font-size:12px">الموقع <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></a>
+                <button onclick="askLogout()" class="logout-btn" id="logoutBtn">خروج</button>
             </div>
         </div>
     </header>
@@ -283,7 +325,7 @@ main{max-width:1240px;margin:auto;padding:24px 20px 60px}
             <div class="tab-head">
                 <h2>المنتجات</h2>
                 <div>
-                    <button onclick="loadProducts()" class="btn-ghost">↻ تحديث</button>
+                     <button onclick="loadProducts()" class="btn-ghost btn-refresh">تحديث <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg></button>
                     <button onclick="openNewProduct()" class="btn-dark">+ إضافة منتج</button>
                 </div>
             </div>
@@ -299,7 +341,7 @@ main{max-width:1240px;margin:auto;padding:24px 20px 60px}
         <section id="tab-orders" class="tab">
             <div class="tab-head">
                 <h2>الطلبات</h2>
-                <button onclick="loadOrders()" class="btn-ghost">↻ تحديث</button>
+                <button onclick="loadOrders()" class="btn-ghost btn-refresh">تحديث <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg></button>
             </div>
             <div id="ordersStats" class="stats-bar"></div>
             <div class="toolbar">
@@ -319,7 +361,7 @@ main{max-width:1240px;margin:auto;padding:24px 20px 60px}
         <section id="tab-newsletter" class="tab">
     <div class="tab-head">
         <h2>النشرة البريدية</h2>
-        <button onclick="loadSubscribers()" class="btn-ghost">↻ تحديث</button>
+        <button onclick="loadSubscribers()" class="btn-ghost btn-refresh">تحديث <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg></button>
     </div>
     <div id="nlStats" class="stats-bar"></div>
     <div style="background:#fff;border:1px solid var(--line);padding:24px;margin-bottom:16px">
@@ -519,6 +561,13 @@ const EDIT_SVG = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" str
 const TRASH_SVG = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><g class="t-lid"><line x1="4.5" y1="7" x2="19.5" y2="7"/><line x1="9.5" y1="4" x2="14.5" y2="4"/></g><path d="M18.5 7l-1 12.5a1.8 1.8 0 0 1-1.8 1.5H8.3a1.8 1.8 0 0 1-1.8-1.5L5.5 7"/><line x1="10" y1="11" x2="10" y2="17.5"/><line x1="14" y1="11" x2="14" y2="17.5"/></svg>';
 const COPY_SVG = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>';
 const CHECK_SVG = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>';
+const LOGOUT_SVG = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>';
+const EXT_SVG = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>';
+const REFRESH_SVG = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>';
+const BOX_SVG = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>';
+const ORDERS_SVG = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 10 8 9"/></svg>';
+const GEAR_SVG = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>';
+const MAIL_SVG = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>';    
 const EYE_ON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>';
 const EYE_OFF = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>';
 
@@ -702,7 +751,32 @@ async function showApp() {
     await loadGitHubImages();
     loadProducts();
 }
-function logout() { localStorage.removeItem('lp_admin_pass'); location.reload(); }
+
+    let _logoutTimer = null;
+function askLogout() {
+    const btn = $('logoutBtn');
+    if (!btn.classList.contains('confirm')) {
+        btn.classList.add('confirm');
+        btn.innerHTML = 'تأكيد الخروج؟';
+        btn.style.borderColor = 'var(--err)';
+        btn.style.color = '#fff';
+        btn.style.background = 'var(--err)';
+        _logoutTimer = setTimeout(function () { resetLogoutBtn(); }, 4000);
+        return;
+    }
+    clearTimeout(_logoutTimer);
+    localStorage.removeItem('lp_admin_pass');
+    location.reload();
+}
+function resetLogoutBtn() {
+    const btn = $('logoutBtn');
+    if (!btn) return;
+    btn.classList.remove('confirm');
+    btn.innerHTML = LOGOUT_SVG + ' خروج';
+    btn.style.borderColor = '';
+    btn.style.color = '';
+    btn.style.background = '';
+}
 
 (function bootCheck() {
     const p = getPass();
@@ -712,7 +786,17 @@ function logout() { localStorage.removeItem('lp_admin_pass'); location.reload();
         .then(j => { if (j.valid) showApp(); else showLogin(); })
         .catch(() => showLogin());
 })();
-
+    
+/* ═══ أيقونات التبويبات ═══ */
+(function initTabIcons() {
+    const icons = { products: BOX_SVG, orders: ORDERS_SVG, settings: GEAR_SVG, newsletter: MAIL_SVG };
+    document.querySelectorAll('.tab-btn').forEach(function (btn) {
+        const onclick = btn.getAttribute('onclick') || '';
+        const m = onclick.match(/switchTab\('([^']+)'/);
+        if (m && icons[m[1]]) btn.innerHTML = icons[m[1]] + btn.textContent.trim();
+    });
+})();
+    
 function switchTab(name, btn) {
     document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
     $('tab-' + name).classList.add('active');
