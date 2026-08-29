@@ -31,15 +31,14 @@ input:read-only{background:var(--paper);color:#555}
 .btn-ghost:hover{background:var(--black);color:#fff}
 .btn-block{width:100%}
 
-/* الباسورد + العين */
 .pass-wrap{position:relative}
 .pass-wrap input{padding-left:44px;text-align:center}
 .eye-btn{position:absolute;top:50%;transform:translateY(-50%);left:8px;width:32px;height:32px;display:flex;align-items:center;justify-content:center;color:var(--muted);transition:.15s}
 .eye-btn:hover{color:var(--black)}
 .eye-btn svg{width:18px;height:18px}
 
-/* الشاشات */
-.full-box{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;padding:20px}
+/* ✅ الشاشات — min-height عشان الفوتر يظهر تحتها */
+.full-box{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px}
 .boot-wrap{background:var(--black);color:#fff;flex-direction:column;gap:16px}
 .boot-logo{font-family:'Inter',sans-serif;font-weight:800;letter-spacing:.15em;direction:ltr;font-size:18px;animation:bootPulse 1.2s ease-in-out infinite}
 .boot-logo small{display:block;text-align:center;font-size:10px;letter-spacing:.3em;opacity:.6}
@@ -59,7 +58,6 @@ input:read-only{background:var(--paper);color:#555}
 .mini-link{background:none;border:none;color:var(--muted);font-size:12px;font-weight:700;text-decoration:underline;cursor:pointer;margin-top:14px}
 .mini-link:hover{color:var(--black)}
 
-/* التحذير */
 .warn-modal{position:fixed;inset:0;background:rgba(10,10,10,.55);z-index:5000;display:none;align-items:center;justify-content:center;padding:20px}
 .warn-modal.open{display:flex}
 .warn-box{background:#fff;max-width:420px;width:100%;text-align:center;animation:lIn .25s}
@@ -68,7 +66,6 @@ input:read-only{background:var(--paper);color:#555}
 .warn-body{padding:26px}
 .warn-body .days{font-weight:800;font-size:20px;color:var(--black);margin:8px 0}
 
-/* التطبيق */
 .topbar{background:#fff;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:100}
 .topbar-inner{max-width:1180px;margin:auto;display:flex;justify-content:space-between;align-items:center;padding:12px 20px;gap:12px;flex-wrap:wrap}
 .top-key{font-size:11px;color:var(--muted);font-weight:700}
@@ -94,7 +91,8 @@ td strong{font-weight:800}
 .topbar-inner{justify-content:center}
 }
 @media(max-width:480px){.grid-4{grid-template-columns:1fr}}
- /* ✅ QR موحد — قابل للضغط بينبض بالهوفر */
+
+/* ✅ QR موحد — قابل للضغط بينبض بالهوفر */
 .qr-link{display:inline-block;text-decoration:none}
 .qr-frame{display:inline-block;padding:8px;border:1.5px solid var(--black);background:#fff;transition:.25s}
 .qr-link:hover .qr-frame{transform:scale(1.08);box-shadow:0 8px 24px rgba(0,0,0,.18)}
@@ -103,7 +101,10 @@ td strong{font-weight:800}
 .qr-wrap{margin-top:18px;padding-top:16px;border-top:1px solid var(--line)}
 .center-wrap .qr-wrap{border-color:rgba(255,255,255,.15)}
 .center-wrap .qr-scan{color:#999}
-  
+/* ✅ QR الفوتر — أبيض يناسب الخلفية السودا */
+.site-footer .qr-frame{border-color:#fff}
+.site-footer .qr-scan{color:#aaa}
+
 @media print{body{background:#fff}.topbar,.site-footer,button{display:none!important}.card{border:none}}
 </style>
 </head>
@@ -126,7 +127,7 @@ td strong{font-weight:800}
       <button type="submit" class="btn-dark btn-block" id="licBtn" style="margin-top:12px">تحقق وتفعيل</button>
     </form>
     <p class="err-line" id="licenseErr"></p>
-        <p style="margin:14px 0 0;font-size:11px;color:#999">© 2024 Axentro – All Rights Reserved</p>
+    <p style="margin:14px 0 0;font-size:11px;color:#999">© 2024 Axentro – All Rights Reserved</p>
     <div class="qr-wrap">
       <a class="qr-link" href="https://axentro-official.github.io/axentro-website/links.html" target="_blank">
         <span class="qr-frame"><img src="https://axentro-official.github.io/Last-piece-/images/qr.png" alt="QR"></span>
@@ -149,7 +150,7 @@ td strong{font-weight:800}
       </div>
       <button type="submit" class="btn-dark btn-block" style="margin-top:12px">دخول</button>
     </form>
-       <p class="err-line" id="loginErr"></p>
+    <p class="err-line" id="loginErr"></p>
     <button class="mini-link" onclick="changeLicense()">تغيير كود الترخيص</button>
     <div class="qr-wrap">
       <a class="qr-link" href="https://axentro-official.github.io/axentro-website/links.html" target="_blank">
@@ -255,8 +256,10 @@ td strong{font-weight:800}
   <p style="font-family:'Inter',sans-serif;font-weight:800;letter-spacing:4px;font-size:18px;margin:0 0 4px;direction:ltr">LAST PIECE<span style="font-size:9px;vertical-align:super">®</span></p>
   <p style="font-size:12px;color:#888;margin:0 0 14px;direction:ltr">2026 Last-Piece, Inc.</p>
   <p style="font-size:11px;color:#666;margin:0 0 12px;direction:ltr">© 2024 Axentro – All Rights Reserved · By Axentro Team</p>
-  <a href="https://axentro-official.github.io/axentro-website/links.html" target="_blank"><img src="https://axentro-official.github.io/Last-piece-/images/qr.png" style="width:80px;height:80px;border:2px solid #fff;padding:5px;background:#fff" alt="QR"></a>
-  <p style="font-size:10px;color:#666;margin-top:8px;font-weight:700;letter-spacing:1px;direction:ltr">Scan Me &gt; Click On Me</p>
+  <a class="qr-link" href="https://axentro-official.github.io/axentro-website/links.html" target="_blank">
+    <span class="qr-frame"><img src="https://axentro-official.github.io/Last-piece-/images/qr.png" alt="QR"></span>
+    <div class="qr-scan">Scan Me &gt; Click On Me</div>
+  </a>
 </footer>
 
 <script>
@@ -301,10 +304,22 @@ function togglePass(inputId, btn) {
 }
 document.querySelectorAll('.eye-btn').forEach(b => { b.innerHTML = EYE_OFF; });
 
-/* ═══ الترخيص ═══ */
+/* ═══ ✅ بصمة الجهاز — بتتولد أول مرة وبتتفكر ═══ */
+function getFingerprint() {
+    let fp = localStorage.getItem('lp_inv_fp');
+    if (fp) return fp;
+    const raw = (navigator.userAgent || '') + '|' + (navigator.language || '') + '|' + (screen.width || '') + 'x' + (screen.height || '') + '|' + (new Date().getTimezoneOffset() || 0);
+    let h = 0;
+    for (let i = 0; i < raw.length; i++) { h = ((h << 5) - h) + raw.charCodeAt(i); h |= 0; }
+    fp = 'fp' + Math.abs(h).toString(36) + '-' + Date.now().toString(36).slice(-4);
+    localStorage.setItem('lp_inv_fp', fp);
+    return fp;
+}
+
+/* ═══ الترخيص — ✅ بيبعت البصمة مع التحقق ═══ */
 async function verifyLicense(key) {
     try {
-        const res = await fetchWithRetry(LICENSE_API_URL + '?key=' + encodeURIComponent(key));
+        const res = await fetchWithRetry(LICENSE_API_URL + '?key=' + encodeURIComponent(key) + '&fp=' + encodeURIComponent(getFingerprint()));
         const data = await res.json();
         if (data.status === 'active') return { ok: true, data: data };
         return { ok: false, status: data.status };
@@ -348,10 +363,10 @@ async function bootCheck() {
         return;
     }
     if (r.status === 'error') { showLicenseEntry('تعذر الاتصال — تحقق من الإنترنت وحاول تاني'); return; }
+    if (r.status === 'locked') { showLicenseEntry('هذا المفتاح مرتبط بجهاز آخر — تواصل معنا لإعادة الربط'); return; }
     localStorage.removeItem('lp_inv_license');
     showExpired();
 }
-
 function maskKey(k) {
     if (k.length <= 6) return k;
     return k.slice(0, 3) + '•••' + k.slice(-3);
@@ -376,6 +391,7 @@ async function submitLicense(e) {
     if (r.status === 'error') errEl.textContent = 'تعذر الاتصال — حاول تاني';
     else if (r.status === 'expired') errEl.textContent = 'هذا الكود انتهت صلاحيته';
     else if (r.status === 'suspended') errEl.textContent = 'هذا الكود موقوف — تواصل معنا';
+    else if (r.status === 'locked') errEl.textContent = 'هذا المفتاح مرتبط بجهاز آخر — تواصل معنا لإعادة الربط';
     else errEl.textContent = 'كود ترخيص غير صحيح';
 }
  $('licenseForm').addEventListener('submit', submitLicense);
@@ -624,6 +640,17 @@ function printInvoice(type) {
 }
 
 bootCheck();
+
+/* ═══ ✅ إعادة التحقق كل ساعة — لو الاشتراك انتهى والصفحة مفتوحة، النظام يتقفل ═══ */
+setInterval(async function () {
+    if ($('app').style.display === 'none') return;
+    const key = getLicense();
+    if (!key) return;
+    const r = await verifyLicense(key);
+    if (r.ok) return;
+    localStorage.removeItem('lp_inv_pass');
+    location.reload();
+}, 3600000);
 </script>
 </body>
 </html>
