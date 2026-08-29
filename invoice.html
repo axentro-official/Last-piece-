@@ -12,7 +12,7 @@
 <style>
 :root{--black:#0a0a0a;--paper:#f6f6f6;--line:#e7e7e7;--text:#141414;--muted:#7a7a7a;--err:#e74c3c}
 *{margin:0;padding:0;box-sizing:border-box}
-body{font-family:'Tajawal',sans-serif;font-size:15px;color:var(--text);background:var(--paper);line-height:1.6}
+body{font-family:'Tajawal',sans-serif;font-size:15px;color:var(--text);background:var(--black);line-height:1.6}
 .en{font-family:'Inter','Tajawal',sans-serif}
 button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit}
 input{font-family:inherit;font-size:14px;padding:12px 14px;border:1.5px solid var(--line);background:#fff;width:100%;transition:border .2s}
@@ -21,51 +21,64 @@ input:read-only{background:var(--paper);color:#555}
 ::-webkit-scrollbar{width:8px;height:8px}
 ::-webkit-scrollbar-thumb{background:#c9c9c9;border-radius:10px}
 
-.logo-txt{font-family:'Inter',sans-serif;font-weight:800;letter-spacing:.15em;direction:ltr;font-size:18px}
-.logo-txt small{font-size:10px;letter-spacing:.3em;opacity:.6}
+.logo-txt{font-family:'Inter',sans-serif;font-weight:800;letter-spacing:.15em;direction:ltr;font-size:16px}
+.logo-txt small{font-size:9px;letter-spacing:.3em;opacity:.6}
 
-.btn-dark{background:var(--black);color:#fff;padding:12px 24px;font-weight:800;font-size:14px;border:1px solid var(--black);transition:.2s;display:inline-flex;align-items:center;justify-content:center;gap:8px}
+.btn-dark{background:var(--black);color:#fff;padding:11px 24px;font-weight:800;font-size:13.5px;border:1px solid var(--black);transition:.2s;display:inline-flex;align-items:center;justify-content:center;gap:8px}
 .btn-dark:hover{background:#fff;color:var(--black)}
 .btn-dark:disabled{opacity:.5;cursor:wait}
-.btn-ghost{background:#fff;border:1.5px solid var(--text);padding:11px 22px;font-weight:800;font-size:13px;transition:.2s;display:inline-flex;align-items:center;justify-content:center;gap:8px}
-.btn-ghost:hover{background:var(--black);color:#fff}
 .btn-block{width:100%}
 
 .pass-wrap{position:relative}
-.pass-wrap input{padding-left:44px;text-align:center}
-.eye-btn{position:absolute;top:50%;transform:translateY(-50%);left:8px;width:32px;height:32px;display:flex;align-items:center;justify-content:center;color:var(--muted);transition:.15s}
+.pass-wrap input{padding-left:42px;text-align:center}
+.eye-btn{position:absolute;top:50%;transform:translateY(-50%);left:6px;width:30px;height:30px;display:flex;align-items:center;justify-content:center;color:var(--muted);transition:.15s}
 .eye-btn:hover{color:var(--black)}
-.eye-btn svg{width:18px;height:18px}
+.eye-btn svg{width:17px;height:17px}
 
-/* ✅ الشاشات — min-height عشان الفوتر يظهر تحتها */
-.full-box{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px}
-.boot-wrap{background:var(--black);color:#fff;flex-direction:column;gap:16px}
-.boot-logo{font-family:'Inter',sans-serif;font-weight:800;letter-spacing:.15em;direction:ltr;font-size:18px;animation:bootPulse 1.2s ease-in-out infinite}
+/* ✅ الشاشة الواحدة — الكارت الكبير بكل حاجة */
+.full-box{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:16px}
+.boot-logo{font-family:'Inter',sans-serif;font-weight:800;letter-spacing:.15em;direction:ltr;font-size:18px;animation:bootPulse 1.2s ease-in-out infinite;color:#fff}
 .boot-logo small{display:block;text-align:center;font-size:10px;letter-spacing:.3em;opacity:.6}
 @keyframes bootPulse{0%,100%{opacity:1}50%{opacity:.45}}
 .boot-txt{font-size:13px;color:rgba(255,255,255,.7);font-weight:700}
 
-.center-wrap{background:var(--black)}
-.center-card{background:#fff;padding:40px;max-width:400px;width:100%;text-align:center;animation:lIn .3s ease}
-@keyframes lIn{from{opacity:0;transform:translateY(14px)}}
-.center-card h1{font-size:22px;font-weight:800;margin:14px 0 4px}
-.center-card p{color:var(--muted);font-size:13px;margin-bottom:20px}
-.center-card .err-line{color:var(--err);font-weight:700;font-size:12px;margin-top:10px;min-height:16px}
-.state-ic{width:60px;height:60px;border:2px solid var(--black);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:18px auto 0}
-.state-ic svg{width:26px;height:26px}
-.state-ic.red{border-color:var(--err);color:var(--err)}
+.center-card{background:#fff;max-width:400px;width:100%;text-align:center;animation:lIn .3s ease;overflow:hidden}
+@keyframes lIn{from{opacity:0;transform:translateY(12px)}}
+.center-card .c-body{padding:26px 34px 18px}
+.center-card h1{font-size:20px;font-weight:800;margin:10px 0 4px}
+.center-card p.sub{color:var(--muted);font-size:12.5px;margin-bottom:16px}
+.center-card .err-line{color:var(--err);font-weight:700;font-size:11.5px;margin-top:8px;min-height:15px}
+.state-ic{width:48px;height:48px;border:2px solid var(--err);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto}
+.state-ic svg{width:22px;height:22px;color:var(--err)}
 .lic-key{font-family:'Inter',sans-serif;letter-spacing:2px;text-align:center;direction:ltr}
-.mini-link{background:none;border:none;color:var(--muted);font-size:12px;font-weight:700;text-decoration:underline;cursor:pointer;margin-top:14px}
-.mini-link:hover{color:var(--black)}
 
+/* ✅ فوتر LAST PIECE جوه الكارت */
+.lp-foot{border-top:1px solid var(--line);padding:14px 20px 10px;text-align:center}
+.lp-foot .brand{font-family:'Inter',sans-serif;font-weight:800;letter-spacing:4px;font-size:14px;direction:ltr;margin-bottom:2px}
+.lp-foot .brand sup{font-size:8px}
+.lp-foot .inc{font-size:10px;color:#888;direction:ltr;margin-bottom:4px}
+.lp-foot .ax{font-size:9.5px;color:#999;direction:ltr}
+
+/* ✅ فوتر Axentro + QR — جوه الكارت، خلفية سودا */
+.ax-foot{background:var(--black);padding:16px 20px 18px;text-align:center}
+.ax-foot .ax-copy{font-size:9.5px;color:#666;direction:ltr;margin:0 0 3px}
+.ax-foot .ax-team{font-size:9.5px;color:#666;direction:ltr;margin:0 0 10px}
+.ax-foot .qr-link{display:inline-block;text-decoration:none}
+.ax-foot .qr-frame{display:inline-block;padding:6px;border:2px solid #fff;background:#fff;transition:.25s}
+.ax-foot .qr-link:hover .qr-frame{transform:scale(1.08);box-shadow:0 8px 24px rgba(255,255,255,.25)}
+.ax-foot .qr-frame img{width:66px;height:66px;display:block}
+.ax-foot .qr-scan{font-size:9px;color:#666;margin-top:6px;font-weight:700;letter-spacing:1px;direction:ltr}
+
+/* التحذير */
 .warn-modal{position:fixed;inset:0;background:rgba(10,10,10,.55);z-index:5000;display:none;align-items:center;justify-content:center;padding:20px}
 .warn-modal.open{display:flex}
-.warn-box{background:#fff;max-width:420px;width:100%;text-align:center;animation:lIn .25s}
-.warn-head{background:var(--black);color:#fff;padding:18px}
-.warn-head h3{font-size:18px;font-weight:800}
-.warn-body{padding:26px}
-.warn-body .days{font-weight:800;font-size:20px;color:var(--black);margin:8px 0}
+.warn-box{background:#fff;max-width:380px;width:100%;text-align:center;animation:lIn .25s}
+.warn-head{background:var(--black);color:#fff;padding:16px}
+.warn-head h3{font-size:17px;font-weight:800}
+.warn-body{padding:22px}
+.warn-body .days{font-weight:800;font-size:19px;color:var(--black);margin:8px 0}
 
+/* التطبيق */
 .topbar{background:#fff;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:100}
 .topbar-inner{max-width:1180px;margin:auto;display:flex;justify-content:space-between;align-items:center;padding:12px 20px;gap:12px;flex-wrap:wrap}
 .top-key{font-size:11px;color:var(--muted);font-weight:700}
@@ -92,67 +105,49 @@ td strong{font-weight:800}
 }
 @media(max-width:480px){.grid-4{grid-template-columns:1fr}}
 
-/* ✅ QR موحد — قابل للضغط بينبض بالهوفر */
-.qr-link{display:inline-block;text-decoration:none}
-.qr-frame{display:inline-block;padding:8px;border:1.5px solid var(--black);background:#fff;transition:.25s}
-.qr-link:hover .qr-frame{transform:scale(1.08);box-shadow:0 8px 24px rgba(0,0,0,.18)}
-.qr-frame img{width:80px;height:80px;display:block}
-.qr-scan{font-size:10px;color:var(--muted);margin-top:8px;font-weight:700;letter-spacing:.05em;direction:ltr}
-.qr-wrap{margin-top:18px;padding-top:16px;border-top:1px solid var(--line)}
-.center-wrap .qr-wrap{border-color:rgba(255,255,255,.15)}
-.center-wrap .qr-scan{color:#999}
-/* ✅ QR الفوتر — أبيض يناسب الخلفية السودا */
-.site-footer .qr-frame{border-color:#fff}
-.site-footer .qr-scan{color:#aaa}
-
 @media print{body{background:#fff}.topbar,.site-footer,button{display:none!important}.card{border:none}}
 </style>
 </head>
 <body>
 
 <!-- 1. فحص الترخيص المحفوظ -->
-<div id="loaderBox" class="full-box boot-wrap">
-  <div class="boot-logo">LAST PIECE <small>INVOICES</small></div>
-  <div class="boot-txt">جاري التحقق…</div>
-</div>
-
-<!-- 2. إدخال كود الترخيص -->
-<div id="licenseBox" class="full-box center-wrap" style="display:none">
-  <div class="center-card">
-    <span class="logo-txt">LAST PIECE <small>INVOICES</small></span>
-    <h1>تفعيل النظام</h1>
-    <p>ادخل كود الترخيص الخاص باشتراكك</p>
-    <form id="licenseForm">
-      <input type="text" id="licenseInput" class="lic-key" placeholder="XXXX-XXXX" autocomplete="off">
-      <button type="submit" class="btn-dark btn-block" id="licBtn" style="margin-top:12px">تحقق وتفعيل</button>
-    </form>
-    <p class="err-line" id="licenseErr"></p>
-    <p style="margin:14px 0 0;font-size:11px;color:#999">© 2024 Axentro – All Rights Reserved</p>
-    <div class="qr-wrap">
-      <a class="qr-link" href="https://axentro-official.github.io/axentro-website/links.html" target="_blank">
-        <span class="qr-frame"><img src="https://axentro-official.github.io/Last-piece-/images/qr.png" alt="QR"></span>
-        <div class="qr-scan">Scan Me &gt; Click On Me</div>
-      </a>
-    </div>
+<div id="loaderBox" class="full-box">
+  <div>
+    <div class="boot-logo">LAST PIECE <small>INVOICES</small></div>
+    <div class="boot-txt" style="text-align:center;margin-top:10px">جاري التحقق…</div>
   </div>
 </div>
 
-<!-- 3. تسجيل الدخول -->
-<div id="loginBox" class="full-box center-wrap" style="display:none">
+<!-- 2. ✅ الشاشة الموحدة: انتهاء/تفعيل في كارت واحد -->
+<div id="licenseBox" class="full-box" style="display:none">
   <div class="center-card">
-    <span class="logo-txt">LAST PIECE <small>INVOICES</small></span>
-    <h1>لوحة الفواتير</h1>
-    <p>ادخل رمز الدخول</p>
-    <form id="loginForm">
-      <div class="pass-wrap">
-        <input type="password" id="passInput" placeholder="••••••••" autocomplete="off">
-        <button type="button" class="eye-btn" onclick="togglePass('passInput',this)" aria-label="إظهار الرمز"></button>
+    <div class="c-body">
+      <span class="logo-txt">LAST PIECE <small>INVOICES</small></span>
+      <!-- ✅ تنبيه الانتهاء — بيظهر بس لو فيه مفتاح منتهي -->
+      <div id="expiredAlert" style="display:none">
+        <div class="state-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div>
+        <h1 style="color:var(--err)">انتهى اشتراكك</h1>
+        <p class="sub">لتجديد الاشتراك أو الشراء تواصل معنا</p>
       </div>
-      <button type="submit" class="btn-dark btn-block" style="margin-top:12px">دخول</button>
-    </form>
-    <p class="err-line" id="loginErr"></p>
-    <button class="mini-link" onclick="changeLicense()">تغيير كود الترخيص</button>
-    <div class="qr-wrap">
+      <!-- ✅ العنوان العادي — بيظهر لو مفيش انتهاء -->
+      <div id="normalHead">
+        <h1>تفعيل النظام</h1>
+        <p class="sub">ادخل كود الترخيص الخاص باشتراكك</p>
+      </div>
+      <form id="licenseForm">
+        <input type="text" id="licenseInput" class="lic-key" placeholder="XXXX-XXXX" autocomplete="off">
+        <button type="submit" class="btn-dark btn-block" id="licBtn" style="margin-top:10px">تحقق وتفعيل</button>
+      </form>
+      <p class="err-line" id="licenseErr"></p>
+    </div>
+    <!-- ✅ فوتر LAST PIECE جوه الكارت -->
+    <div class="lp-foot">
+      <div class="brand">LAST PIECE<sup>®</sup></div>
+      <div class="inc">2026 Last-Piece, Inc.</div>
+      <div class="ax">© 2024 Axentro – All Rights Reserved · By Axentro Team</div>
+    </div>
+    <!-- ✅ فوتر Axentro + QR جوه الكارت -->
+    <div class="ax-foot">
       <a class="qr-link" href="https://axentro-official.github.io/axentro-website/links.html" target="_blank">
         <span class="qr-frame"><img src="https://axentro-official.github.io/Last-piece-/images/qr.png" alt="QR"></span>
         <div class="qr-scan">Scan Me &gt; Click On Me</div>
@@ -161,16 +156,29 @@ td strong{font-weight:800}
   </div>
 </div>
 
-<!-- 4. انتهاء الاشتراك -->
-<div id="expiredBox" class="full-box center-wrap" style="display:none">
+<!-- 3. ✅ شاشة الدخول — كارت واحد بكل حاجة -->
+<div id="loginBox" class="full-box" style="display:none">
   <div class="center-card">
-    <span class="logo-txt">LAST PIECE <small>INVOICES</small></span>
-    <div class="state-ic red"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div>
-    <h1>انتهى الاشتراك</h1>
-    <p>لتجديد الاشتراك أو الشراء تواصل معنا الآن</p>
-    <a href="https://axentro-official.github.io/axentro-website/links.html" target="_blank" style="text-decoration:none"><button class="btn-dark btn-block">💬 تواصل للتجديد</button></a>
-    <p style="margin:18px 0 4px;font-size:11px;color:#999">© 2024 Axentro – All Rights Reserved</p>
-    <div class="qr-wrap">
+    <div class="c-body">
+      <span class="logo-txt">LAST PIECE <small>INVOICES</small></span>
+      <h1>لوحة الفواتير</h1>
+      <p class="sub">ادخل رمز الدخول</p>
+      <form id="loginForm">
+        <div class="pass-wrap">
+          <input type="password" id="passInput" placeholder="••••••••" autocomplete="off">
+          <button type="button" class="eye-btn" onclick="togglePass('passInput',this)" aria-label="إظهار الرمز"></button>
+        </div>
+        <button type="submit" class="btn-dark btn-block" style="margin-top:10px">دخول</button>
+      </form>
+      <p class="err-line" id="loginErr"></p>
+      <button class="mini-link" onclick="changeLicense()" style="background:none;border:none;color:var(--muted);font-size:11.5px;font-weight:700;text-decoration:underline;cursor:pointer;margin-top:8px">تغيير كود الترخيص</button>
+    </div>
+    <div class="lp-foot">
+      <div class="brand">LAST PIECE<sup>®</sup></div>
+      <div class="inc">2026 Last-Piece, Inc.</div>
+      <div class="ax">© 2024 Axentro – All Rights Reserved · By Axentro Team</div>
+    </div>
+    <div class="ax-foot">
       <a class="qr-link" href="https://axentro-official.github.io/axentro-website/links.html" target="_blank">
         <span class="qr-frame"><img src="https://axentro-official.github.io/Last-piece-/images/qr.png" alt="QR"></span>
         <div class="qr-scan">Scan Me &gt; Click On Me</div>
@@ -179,7 +187,7 @@ td strong{font-weight:800}
   </div>
 </div>
 
-<!-- 5. تحذير قرب الانتهاء -->
+<!-- 4. تحذير قرب الانتهاء (جوه النظام) -->
 <div id="warningModal" class="warn-modal">
   <div class="warn-box">
     <div class="warn-head"><h3>⚠️ اشتراكك على وشك الانتهاء</h3></div>
@@ -192,7 +200,7 @@ td strong{font-weight:800}
   </div>
 </div>
 
-<!-- 6. التطبيق -->
+<!-- 5. التطبيق -->
 <div id="app" style="display:none">
   <header class="topbar">
     <div class="topbar-inner">
@@ -252,13 +260,14 @@ td strong{font-weight:800}
   </div>
 </div>
 
-<footer class="site-footer" id="mainFooter" style="display:none;background:var(--black);color:#fff;text-align:center;padding:34px 20px">
+<!-- ✅ الفوتر الرئيسي — بس بيظهر جوه النظام بس -->
+<footer class="site-footer" id="mainFooter" style="display:none;background:var(--black);color:#fff;text-align:center;padding:30px 20px">
   <p style="font-family:'Inter',sans-serif;font-weight:800;letter-spacing:4px;font-size:18px;margin:0 0 4px;direction:ltr">LAST PIECE<span style="font-size:9px;vertical-align:super">®</span></p>
   <p style="font-size:12px;color:#888;margin:0 0 14px;direction:ltr">2026 Last-Piece, Inc.</p>
   <p style="font-size:11px;color:#666;margin:0 0 12px;direction:ltr">© 2024 Axentro – All Rights Reserved · By Axentro Team</p>
   <a class="qr-link" href="https://axentro-official.github.io/axentro-website/links.html" target="_blank">
-    <span class="qr-frame"><img src="https://axentro-official.github.io/Last-piece-/images/qr.png" alt="QR"></span>
-    <div class="qr-scan">Scan Me &gt; Click On Me</div>
+    <span class="qr-frame" style="border-color:#fff"><img src="https://axentro-official.github.io/Last-piece-/images/qr.png" alt="QR"></span>
+    <div class="qr-scan" style="color:#aaa">Scan Me &gt; Click On Me</div>
   </a>
 </footer>
 
@@ -275,7 +284,6 @@ const $ = id => document.getElementById(id);
 const getPass = () => localStorage.getItem('lp_inv_pass') || '';
 const getLicense = () => localStorage.getItem('lp_inv_license') || '';
 
-/* ═══ Retry ═══ */
 function fetchWithRetry(url, opts, retries) {
     retries = (retries === undefined) ? 2 : retries;
     return new Promise(function (resolve, reject) {
@@ -295,7 +303,6 @@ function fetchWithRetry(url, opts, retries) {
     });
 }
 
-/* ═══ العين ═══ */
 function togglePass(inputId, btn) {
     const inp = $(inputId);
     const hidden = inp.type === 'password';
@@ -304,7 +311,7 @@ function togglePass(inputId, btn) {
 }
 document.querySelectorAll('.eye-btn').forEach(b => { b.innerHTML = EYE_OFF; });
 
-/* ═══ ✅ بصمة الجهاز — بتتولد أول مرة وبتتفكر ═══ */
+/* ═══ بصمة الجهاز ═══ */
 function getFingerprint() {
     let fp = localStorage.getItem('lp_inv_fp');
     if (fp) return fp;
@@ -316,7 +323,6 @@ function getFingerprint() {
     return fp;
 }
 
-/* ═══ الترخيص — ✅ بيبعت البصمة مع التحقق ═══ */
 async function verifyLicense(key) {
     try {
         const res = await fetchWithRetry(LICENSE_API_URL + '?key=' + encodeURIComponent(key) + '&fp=' + encodeURIComponent(getFingerprint()));
@@ -327,29 +333,23 @@ async function verifyLicense(key) {
 }
 
 function hideAllScreens() {
-    ['loaderBox', 'licenseBox', 'loginBox', 'expiredBox'].forEach(id => $(id).style.display = 'none');
+    ['loaderBox', 'licenseBox', 'loginBox'].forEach(id => $(id).style.display = 'none');
 }
 
-function showLicenseEntry(preErr) {
+/* ═══ ✅ الشاشة الموحدة — showLicenseEntry(bf) بتنادي نفسها في الحالتين ═══ */
+function showLicenseEntry(preErr, expiredMode) {
     hideAllScreens();
     $('licenseBox').style.display = 'flex';
-    $('mainFooter').style.display = 'block';
+    $('mainFooter').style.display = 'none';
+    $('expiredAlert').style.display = expiredMode ? 'block' : 'none';
+    $('normalHead').style.display = expiredMode ? 'none' : 'block';
     $('licenseErr').textContent = preErr || '';
     setTimeout(() => $('licenseInput').focus(), 60);
 }
 
-function showExpired() {
-    hideAllScreens();
-    $('expiredBox').style.display = 'flex';
-    $('mainFooter').style.display = 'block';
-}
-
-function showLoginScreen(preErr) {
-    hideAllScreens();
-    $('loginBox').style.display = 'flex';
-    $('mainFooter').style.display = 'block';
-    $('loginErr').textContent = preErr || '';
-    setTimeout(() => $('passInput').focus(), 60);
+/* ═══ ✅ اتحدد الشاشة الموحدة تظهر في وضع الانتهاء لو المفتاح انتهى ═══ */
+function showLicenseAfterExpiry(preErr) {
+    showLicenseEntry(preErr, true);
 }
 
 async function bootCheck() {
@@ -364,8 +364,9 @@ async function bootCheck() {
     }
     if (r.status === 'error') { showLicenseEntry('تعذر الاتصال — تحقق من الإنترنت وحاول تاني'); return; }
     if (r.status === 'locked') { showLicenseEntry('هذا المفتاح مرتبط بجهاز آخر — تواصل معنا لإعادة الربط'); return; }
+    // ✅ منتهي أو غير صالح — نفس الشاشة لكن مع تنبيه الانتهاء فوق الخانة
     localStorage.removeItem('lp_inv_license');
-    showExpired();
+    showLicenseEntry('الكود انتهت صلاحيته — ادخل كود جديد أو جدّد اشتراكك', true);
 }
 function maskKey(k) {
     if (k.length <= 6) return k;
@@ -407,7 +408,7 @@ function maybeWarn(data) {
 }
 function dismissWarning() { $('warningModal').classList.remove('open'); }
 
-/* ═══ الدخول — زي الداش بورد ═══ */
+/* ═══ الدخول ═══ */
 async function tryAutoLogin() {
     const p = getPass();
     if (!p) { showLoginScreen(); return; }
@@ -641,7 +642,7 @@ function printInvoice(type) {
 
 bootCheck();
 
-/* ═══ ✅ إعادة التحقق كل ساعة — لو الاشتراك انتهى والصفحة مفتوحة، النظام يتقفل ═══ */
+/* ═══ إعادة التحقق كل ساعة ═══ */
 setInterval(async function () {
     if ($('app').style.display === 'none') return;
     const key = getLicense();
