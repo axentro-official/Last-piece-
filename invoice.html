@@ -111,6 +111,28 @@ td strong{font-weight:800}
 .topbar-inner{justify-content:center}
 }
 @media(max-width:480px){.grid-4{grid-template-columns:1fr}}
+  
+  /* ✅ زر الخروج الاحترافي */
+.logout-btn{background:#fff;border:1.5px solid var(--line);padding:9px 20px;font-weight:800;font-size:12.5px;color:var(--muted);display:inline-flex;align-items:center;gap:8px;transition:.2s;border-radius:0}
+.logout-btn:hover{border-color:var(--err);color:var(--err);background:#fdf2f2}
+.logout-btn svg{width:15px;height:15px}
+
+/* ✅ أزرار الطباعة الاحترافية */
+.print-primary{display:flex;flex-direction:column;align-items:center;gap:4px;background:var(--black);color:#fff;border:1.5px solid var(--black);padding:16px;font-weight:800;font-size:15px;width:100%;transition:.22s;cursor:pointer}
+.print-primary:hover{background:#fff;color:var(--black)}
+.print-primary .p-ic{display:flex;align-items:center;justify-content:center;width:44px;height:44px;border:1.5px solid rgba(255,255,255,.35);margin-bottom:4px;transition:.22s}
+.print-primary:hover .p-ic{border-color:var(--black)}
+.print-primary .p-ic svg{width:22px;height:22px}
+.print-primary small{font-size:11px;font-weight:700;opacity:.65}
+.print-cards{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}
+.print-card{display:flex;align-items:center;gap:12px;background:#fff;border:1.5px solid var(--line);padding:12px 14px;cursor:pointer;transition:.2s;text-align:right;font-family:inherit}
+.print-card:hover{border-color:var(--black);background:var(--paper)}
+.print-card .pc-ic{width:40px;height:40px;border:1.5px solid var(--line);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:.2s}
+.print-card:hover .pc-ic{border-color:var(--black);background:var(--black);color:#fff}
+.print-card .pc-ic svg{width:18px;height:18px}
+.print-card b{display:block;font-size:13.5px;font-weight:800;color:var(--text)}
+.print-card small{display:block;font-size:11px;color:var(--muted);font-weight:700}
+@media(max-width:480px){.print-cards{grid-template-columns:1fr}}
 
 @media print{body{background:#fff}.topbar,.site-footer,button{display:none!important}.card{border:none}}
 </style>
@@ -213,7 +235,7 @@ td strong{font-weight:800}
     <div class="topbar-inner">
       <span class="logo-txt">LAST PIECE <small>INVOICES</small></span>
       <span class="top-key en" id="topKey"></span>
-      <button onclick="logout()" class="btn-ghost" style="padding:8px 18px;font-size:12px">خروج</button>
+      <button onclick="askLogout()" class="logout-btn" id="logoutBtn">خروج</button>
     </div>
   </header>
 
@@ -256,26 +278,38 @@ td strong{font-weight:800}
     </div>
 
     <div class="card">
-      <h2>🖨️ الطباعة والتصدير</h2>
-      <button class="btn-dark btn-block" onclick="printInvoice('A4')" style="padding:15px;font-size:16px">🖨️ طباعة A4 / حفظ PDF</button>
-      <div class="grid-2">
-        <button class="btn-ghost" onclick="printInvoice('Thermal80')">🧾 حراري 80mm</button>
-        <button class="btn-ghost" onclick="printInvoice('Thermal58')">🧾 حراري 58mm</button>
+            <h2>🖨️ الطباعة والتصدير</h2>
+      <button class="print-primary" onclick="printInvoice('A4')">
+        <span class="p-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg></span>
+        طباعة A4 / حفظ PDF
+        <small>الفاتورة الرسمية الكاملة</small>
+      </button>
+      <div class="print-cards">
+        <button class="print-card" onclick="printInvoice('Thermal80')">
+          <span class="pc-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 3h16v18l-2-1.5L16 21l-2-1.5L12 21l-2-1.5L8 21l-2-1.5L4 21z"/><line x1="8" y1="8" x2="16" y2="8"/><line x1="8" y1="12" x2="16" y2="12"/><line x1="8" y1="16" x2="13" y2="16"/></svg></span>
+          <span><b>حراري 80mm</b><small>للفواتير النقدية — الطراز الواسع</small></span>
+        </button>
+        <button class="print-card" onclick="printInvoice('Thermal58')">
+          <span class="pc-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 3h16v18l-2-1.5L16 21l-2-1.5L12 21l-2-1.5L8 21l-2-1.5L4 21z"/><line x1="8" y1="8" x2="16" y2="8"/><line x1="8" y1="12" x2="12" y2="12"/></svg></span>
+          <span><b>حراري 58mm</b><small>الطراز الضيق — محافظ صغيرة</small></span>
+        </button>
       </div>
-      <p style="font-size:12px;color:var(--muted);margin-top:14px;text-align:center">💡 من نافذة الطباعة اختر "Save as PDF" لحفظ الفاتورة كملف</p>
+      <p style="font-size:11.5px;color:var(--muted);margin-top:12px;text-align:center">💡 من نافذة الطباعة اختر "Save as PDF" لحفظ الفاتورة كملف</p>
     </div>
   </div>
 </div>
 
-<!-- ✅ الفوتر الرئيسي — بس بيظهر جوه النظام بس -->
-<footer class="site-footer" id="mainFooter" style="display:none;background:var(--black);color:#fff;text-align:center;padding:26px 20px 30px">
-    <div style="display:flex;flex-direction:column;align-items:center;gap:0">
-    <p style="font-family:'Inter',sans-serif;font-weight:800;letter-spacing:4px;font-size:18px;margin:0 0 4px;direction:ltr">LAST PIECE<span style="font-size:9px;vertical-align:super">®</span></p>
-    <p style="font-size:12px;color:#888;margin:0 0 14px;direction:ltr">2026 Last-Piece, Inc.</p>
-    <p style="font-size:11px;color:#666;margin:0 0 12px;direction:ltr">© 2024 Axentro – All Rights Reserved · By Axentro Team</p>
-    <a class="qr-link" href="https://axentro-official.github.io/axentro-website/links.html" target="_blank" style="text-align:center">
-      <span class="qr-frame" style="display:block;margin:0 auto"><img src="https://axentro-official.github.io/Last-piece-/images/qr.png" alt="QR"></span>
-      <span class="qr-scan" style="display:block;margin-top:7px">Scan Me &gt; Click On Me</span>
+<!-- ✅ الفوتر الرئيسي — نفس فوتر شاشة الدخول بالظبط -->
+<footer class="site-footer" id="mainFooter" style="display:none">
+  <div class="lp-foot" style="border-top:none;background:#fff">
+    <div class="brand">LAST PIECE<sup>®</sup></div>
+    <div class="inc">2026 Last-Piece, Inc.</div>
+    <div class="ax">© 2024 Axentro – All Rights Reserved · By Axentro Team</div>
+  </div>
+  <div class="ax-foot">
+    <a class="qr-link" href="https://axentro-official.github.io/axentro-website/links.html" target="_blank">
+      <span class="qr-frame"><img src="https://axentro-official.github.io/Last-piece-/images/qr.png" alt="QR"></span>
+      <div class="qr-scan">Scan Me &gt; Click On Me</div>
     </a>
   </div>
 </footer>
@@ -286,6 +320,10 @@ const IMG_URL = 'https://axentro-official.github.io/Last-piece-/images/';
 const LICENSE_API_URL = 'https://script.google.com/macros/s/AKfycbyFueLWNvOm8DJjR2Hf_cQO9rkroG-sGltx_-iyCLtjDLFGtN4fgLgsgXlD2z_b3oUb8w/exec';
 const PH = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="400" height="600"><rect width="400" height="600" fill="#ececec"/><text x="200" y="310" font-family="Arial" font-size="24" fill="#9a9a9a" text-anchor="middle" letter-spacing="4">LAST PIECE</text></svg>');
 
+ const LOGOUT_SVG = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>';
+const PRINT_SVG = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>';
+const THERMAL_SVG = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 3h16v18l-2-1.5L16 21l-2-1.5L12 21l-2-1.5L8 21l-2-1.5L4 21z"/><line x1="8" y1="8" x2="16" y2="8"/><line x1="8" y1="12" x2="16" y2="12"/><line x1="8" y1="16" x2="13" y2="16"/></svg>'; 
+  
 const EYE_ON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>';
 const EYE_OFF = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>';
 
@@ -319,6 +357,8 @@ function togglePass(inputId, btn) {
     btn.innerHTML = hidden ? EYE_ON : EYE_OFF;
 }
 document.querySelectorAll('.eye-btn').forEach(b => { b.innerHTML = EYE_OFF; });
+  const _lb = document.getElementById('logoutBtn');
+if (_lb) _lb.innerHTML = LOGOUT_SVG + ' خروج';
 
 /* ═══ بصمة الجهاز ═══ */
 function getFingerprint() {
@@ -459,7 +499,33 @@ function enterApp() {
     $('mainFooter').style.display = 'block';
     initInvoice();
 }
-function logout() { localStorage.removeItem('lp_inv_pass'); location.reload(); }
+let _logoutTimer = null;
+function askLogout() {
+    const btn = $('logoutBtn');
+    if (!btn.classList.contains('confirm')) {
+        btn.classList.add('confirm');
+        btn.innerHTML = 'تأكيد الخروج؟';
+        btn.style.borderColor = 'var(--err)';
+        btn.style.color = '#fff';
+        btn.style.background = 'var(--err)';
+        _logoutTimer = setTimeout(function () {
+            resetLogoutBtn();
+        }, 4000);
+        return;
+    }
+    clearTimeout(_logoutTimer);
+    localStorage.removeItem('lp_inv_pass');
+    location.reload();
+}
+function resetLogoutBtn() {
+    const btn = $('logoutBtn');
+    if (!btn) return;
+    btn.classList.remove('confirm');
+    btn.innerHTML = LOGOUT_SVG + ' خروج';
+    btn.style.borderColor = '';
+    btn.style.color = '';
+    btn.style.background = '';
+}
 function changeLicense() {
     localStorage.removeItem('lp_inv_license');
     localStorage.removeItem('lp_inv_pass');
