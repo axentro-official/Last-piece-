@@ -35,7 +35,6 @@ input:read-only{background:var(--paper);color:#555}
 .eye-btn:hover{color:var(--black)}
 .eye-btn svg{width:17px;height:17px}
 
-/* ✅ الشاشة الواحدة — الكارت الكبير بكل حاجة */
 .full-box{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:16px}
 .boot-logo{font-family:'Inter',sans-serif;font-weight:800;letter-spacing:.15em;direction:ltr;font-size:18px;animation:bootPulse 1.2s ease-in-out infinite;color:#fff}
 .boot-logo small{display:block;text-align:center;font-size:10px;letter-spacing:.3em;opacity:.6}
@@ -52,14 +51,12 @@ input:read-only{background:var(--paper);color:#555}
 .state-ic svg{width:22px;height:22px;color:var(--err)}
 .lic-key{font-family:'Inter',sans-serif;letter-spacing:2px;text-align:center;direction:ltr}
 
-/* ✅ فوتر LAST PIECE جوه الكارت */
 .lp-foot{border-top:1px solid var(--line);padding:14px 20px 10px;text-align:center}
 .lp-foot .brand{font-family:'Inter',sans-serif;font-weight:800;letter-spacing:4px;font-size:14px;direction:ltr;margin-bottom:2px}
 .lp-foot .brand sup{font-size:8px}
 .lp-foot .inc{font-size:10px;color:#888;direction:ltr;margin-bottom:4px}
 .lp-foot .ax{font-size:9.5px;color:#999;direction:ltr}
 
-/* ✅ فوتر Axentro + QR — جوه الكارت، خلفية سودا */
 .ax-foot{background:var(--black);padding:16px 20px 18px;text-align:center}
 .ax-foot .ax-copy{font-size:9.5px;color:#666;direction:ltr;margin:0 0 3px}
 .ax-foot .ax-team{font-size:9.5px;color:#666;direction:ltr;margin:0 0 10px}
@@ -68,14 +65,12 @@ input:read-only{background:var(--paper);color:#555}
 .ax-foot .qr-link:hover .qr-frame{transform:scale(1.08);box-shadow:0 8px 24px rgba(255,255,255,.25)}
 .ax-foot .qr-frame img{width:66px;height:66px;display:block}
 .ax-foot .qr-scan{font-size:9px;color:#666;margin-top:6px;font-weight:700;letter-spacing:1px;direction:ltr}
-  /* ✅ QR الفوتر الرئيسي — نفس ستايل الكروت بالظبط */
 .site-footer .qr-link{display:inline-block;text-decoration:none}
 .site-footer .qr-frame{display:inline-block;padding:7px;border:2px solid #fff;background:#fff;transition:.25s}
 .site-footer .qr-link:hover .qr-frame{transform:scale(1.08);box-shadow:0 8px 24px rgba(255,255,255,.25)}
 .site-footer .qr-frame img{width:72px;height:72px;display:block}
 .site-footer .qr-scan{font-size:9.5px;color:#888;margin-top:7px;font-weight:700;letter-spacing:1px;direction:ltr;text-decoration:none}
 
-/* التحذير */
 .warn-modal{position:fixed;inset:0;background:rgba(10,10,10,.55);z-index:5000;display:none;align-items:center;justify-content:center;padding:20px}
 .warn-modal.open{display:flex}
 .warn-box{background:#fff;max-width:380px;width:100%;text-align:center;animation:lIn .25s}
@@ -84,7 +79,6 @@ input:read-only{background:var(--paper);color:#555}
 .warn-body{padding:22px}
 .warn-body .days{font-weight:800;font-size:19px;color:var(--black);margin:8px 0}
 
-/* التطبيق */
 .topbar{background:#fff;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:100}
 .topbar-inner{max-width:1180px;margin:auto;display:flex;justify-content:space-between;align-items:center;padding:12px 20px;gap:12px;flex-wrap:wrap}
 .top-key{font-size:11px;color:var(--muted);font-weight:700}
@@ -106,18 +100,28 @@ td strong{font-weight:800}
 .words{font-size:13px;font-weight:700;color:var(--muted);text-align:center;margin-top:12px;min-height:18px}
 .empty-hint{text-align:center;color:var(--muted);padding:30px 0}
 
+/* ✅ تبويبات الوضع + فاتورة الفرع */
+.mode-tabs{display:flex;border:1.5px solid var(--line);margin-bottom:14px}
+.mode-tab{flex:1;padding:11px;font-weight:800;font-size:13px;background:#fff;color:var(--muted);cursor:pointer;transition:.2s;border:none}
+.mode-tab.active{background:var(--black);color:#fff}
+.manual-bar{display:grid;grid-template-columns:2fr 90px auto;gap:10px;margin-bottom:8px}
+.mi-del{background:transparent;border:none;color:#bbb;font-size:14px;font-weight:800;cursor:pointer;margin-right:6px;transition:.15s;padding:0}
+.mi-del:hover{color:var(--err)}
+.mi-edit{cursor:text;outline:none;min-width:24px;display:inline-block}
+.mi-edit:focus{background:#fff8e1;box-shadow:0 0 0 1.5px var(--black)}
+.save-actions{display:grid;grid-template-columns:2fr 1fr;gap:10px;margin-top:14px}
+.branch-msg{text-align:center;font-weight:800;font-size:13px;margin-top:10px;min-height:18px}
+@media(max-width:768px){.manual-bar{grid-template-columns:1fr}.save-actions{grid-template-columns:1fr}}
 @media(max-width:768px){
 .grid-4{grid-template-columns:1fr 1fr}
 .topbar-inner{justify-content:center}
 }
 @media(max-width:480px){.grid-4{grid-template-columns:1fr}}
-  
-  /* ✅ زر الخروج الاحترافي */
+
 .logout-btn{background:#fff;border:1.5px solid var(--line);padding:9px 20px;font-weight:800;font-size:12.5px;color:var(--muted);display:inline-flex;align-items:center;gap:8px;transition:.2s;border-radius:0}
 .logout-btn:hover{border-color:var(--err);color:var(--err);background:#fdf2f2}
 .logout-btn svg{width:15px;height:15px}
 
-/* ✅ أزرار الطباعة الاحترافية */
 .print-primary{display:flex;flex-direction:column;align-items:center;gap:4px;background:var(--black);color:#fff;border:1.5px solid var(--black);padding:16px;font-weight:800;font-size:15px;width:100%;transition:.22s;cursor:pointer}
 .print-primary:hover{background:#fff;color:var(--black)}
 .print-primary .p-ic{display:flex;align-items:center;justify-content:center;width:44px;height:44px;border:1.5px solid rgba(255,255,255,.35);margin-bottom:4px;transition:.22s}
@@ -147,18 +151,16 @@ td strong{font-weight:800}
   </div>
 </div>
 
-<!-- 2. ✅ الشاشة الموحدة: انتهاء/تفعيل في كارت واحد -->
+<!-- 2. الشاشة الموحدة: انتهاء/تفعيل في كارت واحد -->
 <div id="licenseBox" class="full-box" style="display:none">
   <div class="center-card">
     <div class="c-body">
       <span class="logo-txt">LAST PIECE <small>INVOICES</small></span>
-      <!-- ✅ تنبيه الانتهاء — بيظهر بس لو فيه مفتاح منتهي -->
       <div id="expiredAlert" style="display:none">
         <div class="state-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div>
         <h1 style="color:var(--err)">انتهى اشتراكك</h1>
         <p class="sub">لتجديد الاشتراك أو الشراء تواصل معنا</p>
       </div>
-      <!-- ✅ العنوان العادي — بيظهر لو مفيش انتهاء -->
       <div id="normalHead">
         <h1>تفعيل النظام</h1>
         <p class="sub">ادخل كود الترخيص الخاص باشتراكك</p>
@@ -169,13 +171,11 @@ td strong{font-weight:800}
       </form>
       <p class="err-line" id="licenseErr"></p>
     </div>
-    <!-- ✅ فوتر LAST PIECE جوه الكارت -->
     <div class="lp-foot">
       <div class="brand">LAST PIECE<sup>®</sup></div>
       <div class="inc">2026 Last-Piece, Inc.</div>
       <div class="ax">© 2024 Axentro – All Rights Reserved · By Axentro Team</div>
     </div>
-    <!-- ✅ فوتر Axentro + QR جوه الكارت -->
     <div class="ax-foot">
       <a class="qr-link" href="https://axentro-official.github.io/axentro-website/links.html" target="_blank">
         <span class="qr-frame"><img src="https://axentro-official.github.io/Last-piece-/images/qr.png" alt="QR"></span>
@@ -185,7 +185,7 @@ td strong{font-weight:800}
   </div>
 </div>
 
-<!-- 3. ✅ شاشة الدخول — كارت واحد بكل حاجة -->
+<!-- 3. شاشة الدخول -->
 <div id="loginBox" class="full-box" style="display:none">
   <div class="center-card">
     <div class="c-body">
@@ -216,7 +216,7 @@ td strong{font-weight:800}
   </div>
 </div>
 
-<!-- 4. تحذير قرب الانتهاء (جوه النظام) -->
+<!-- 4. تحذير قرب الانتهاء -->
 <div id="warningModal" class="warn-modal">
   <div class="warn-box">
     <div class="warn-head"><h3>⚠️ اشتراكك على وشك الانتهاء</h3></div>
@@ -241,12 +241,26 @@ td strong{font-weight:800}
 
   <div class="wrap">
     <div class="card">
-      <h2>🔎 استعلام طلب</h2>
-      <div class="grid-4" style="margin:0">
-        <div style="grid-column:span 3"><input type="text" id="orderIdInput" placeholder="أدخل رقم الطلب (مثال: LP-240828-1234)" style="direction:ltr;text-align:center" onkeydown="if(event.key==='Enter')fetchOrder()"></div>
-        <button class="btn-dark" onclick="fetchOrder()">جلب الطلب</button>
+      <h2>🧾 الفاتورة</h2>
+      <div class="mode-tabs">
+        <button class="mode-tab active" id="tabOnline" onclick="setMode('online')">طلب أونلاين</button>
+        <button class="mode-tab" id="tabManual" onclick="setMode('manual')">🏪 فاتورة فرع — عميل مباشر</button>
       </div>
-      <p class="empty-hint" id="fetchHint">اكتب رقم الطلب واضغط جلب — كل البيانات هتتملي تلقائياً بالصور</p>
+      <div id="onlineSec">
+        <div class="grid-4" style="margin:0">
+          <div style="grid-column:span 3"><input type="text" id="orderIdInput" placeholder="أدخل رقم الطلب (مثال: LP-240828-1234)" style="direction:ltr;text-align:center" onkeydown="if(event.key==='Enter')fetchOrder()"></div>
+          <button class="btn-dark" onclick="fetchOrder()">جلب الطلب</button>
+        </div>
+        <p class="empty-hint" id="fetchHint">اكتب رقم الطلب واضغط جلب — كل البيانات هتتملي تلقائياً بالصور</p>
+      </div>
+      <div id="manualSec" style="display:none">
+        <div class="manual-bar">
+          <input type="text" id="mCode" placeholder="كود المنتج (مثال: SH-001)" style="direction:ltr;text-align:center" onkeydown="if(event.key==='Enter')addManualItem()">
+          <input type="number" id="mQty" min="1" value="1" title="الكمية">
+          <button class="btn-dark" onclick="addManualItem()">+ إضافة</button>
+        </div>
+        <p class="empty-hint" id="manualHint" style="padding:16px 0">اكتب كود المنتج والكمية — الاسم والسعر بيجوا تلقائياً من كتالوج متجرك • المقاس واللون والكمية قابلة للتعديل بالضغط عليهم في الجدول</p>
+      </div>
     </div>
 
     <div class="card">
@@ -275,10 +289,15 @@ td strong{font-weight:800}
       </div>
       <div class="total-box" id="totalsBox" style="display:none"><div class="total-line"><span>الإجمالي</span><span id="grandTotalTxt">0 ج.م</span></div></div>
       <div class="words" id="amountWords"></div>
+      <div class="save-actions" id="saveActions" style="display:none">
+        <button class="btn-dark" id="saveBranchBtn" onclick="saveBranchInvoice()">💾 حفظ الفاتورة في النظام</button>
+        <button class="btn-ghost" onclick="newBranchInvoice()">🔄 فاتورة جديدة</button>
+      </div>
+      <p class="branch-msg" id="branchMsg" style="color:var(--muted)"></p>
     </div>
 
     <div class="card">
-            <h2>🖨️ الطباعة والتصدير</h2>
+      <h2>🖨️ الطباعة والتصدير</h2>
       <button class="print-primary" onclick="printInvoice('A4')">
         <span class="p-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg></span>
         طباعة A4 / حفظ PDF
@@ -294,12 +313,11 @@ td strong{font-weight:800}
           <span><b>حراري 58mm</b><small>الطراز الضيق — محافظ صغيرة</small></span>
         </button>
       </div>
-      <p style="font-size:11.5px;color:var(--muted);margin-top:12px;text-align:center">💡 من نافذة الطباعة اختر "Save as PDF" لحفظ الفاتورة كملف</p>
+      <p style="font-size:11.5px;color:var(--muted);margin-top:12px;text-align:center">💡 من نافذة الطباعة اختر "Save as PDF" لحفظ الفاتورة كملف • في فاتورة الفرع: احفظ الأول ليكون رقم الفاتورة مطابقاً للنظام</p>
     </div>
   </div>
 </div>
 
-<!-- ✅ الفوتر الرئيسي — نفس فوتر شاشة الدخول بالظبط -->
 <footer class="site-footer" id="mainFooter" style="display:none">
   <div class="lp-foot" style="border-top:none;background:#fff">
     <div class="brand">LAST PIECE<sup>®</sup></div>
@@ -320,10 +338,7 @@ const IMG_URL = 'https://axentro-official.github.io/Last-piece-/images/';
 const LICENSE_API_URL = 'https://script.google.com/macros/s/AKfycbyFueLWNvOm8DJjR2Hf_cQO9rkroG-sGltx_-iyCLtjDLFGtN4fgLgsgXlD2z_b3oUb8w/exec';
 const PH = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="400" height="600"><rect width="400" height="600" fill="#ececec"/><text x="200" y="310" font-family="Arial" font-size="24" fill="#9a9a9a" text-anchor="middle" letter-spacing="4">LAST PIECE</text></svg>');
 
- const LOGOUT_SVG = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>';
-const PRINT_SVG = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>';
-const THERMAL_SVG = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 3h16v18l-2-1.5L16 21l-2-1.5L12 21l-2-1.5L8 21l-2-1.5L4 21z"/><line x1="8" y1="8" x2="16" y2="8"/><line x1="8" y1="12" x2="16" y2="12"/><line x1="8" y1="16" x2="13" y2="16"/></svg>'; 
-  
+const LOGOUT_SVG = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>';
 const EYE_ON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>';
 const EYE_OFF = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>';
 
@@ -357,10 +372,9 @@ function togglePass(inputId, btn) {
     btn.innerHTML = hidden ? EYE_ON : EYE_OFF;
 }
 document.querySelectorAll('.eye-btn').forEach(b => { b.innerHTML = EYE_OFF; });
-  const _lb = document.getElementById('logoutBtn');
+const _lb = document.getElementById('logoutBtn');
 if (_lb) _lb.innerHTML = LOGOUT_SVG + ' خروج';
 
-/* ═══ بصمة الجهاز ═══ */
 function getFingerprint() {
     let fp = localStorage.getItem('lp_inv_fp');
     if (fp) return fp;
@@ -385,7 +399,6 @@ function hideAllScreens() {
     ['loaderBox', 'licenseBox', 'loginBox'].forEach(id => $(id).style.display = 'none');
 }
 
-/* ═══ ✅ الشاشة الموحدة — showLicenseEntry(bf) بتنادي نفسها في الحالتين ═══ */
 function showLicenseEntry(preErr, expiredMode) {
     hideAllScreens();
     $('licenseBox').style.display = 'flex';
@@ -395,17 +408,12 @@ function showLicenseEntry(preErr, expiredMode) {
     $('licenseErr').textContent = preErr || '';
     setTimeout(() => $('licenseInput').focus(), 60);
 }
-  function showLoginScreen(preErr) {
+function showLoginScreen(preErr) {
     hideAllScreens();
     $('loginBox').style.display = 'flex';
     $('mainFooter').style.display = 'none';
     $('loginErr').textContent = preErr || '';
     setTimeout(() => $('passInput').focus(), 60);
-}
-
-/* ═══ ✅ اتحدد الشاشة الموحدة تظهر في وضع الانتهاء لو المفتاح انتهى ═══ */
-function showLicenseAfterExpiry(preErr) {
-    showLicenseEntry(preErr, true);
 }
 
 async function bootCheck() {
@@ -420,7 +428,6 @@ async function bootCheck() {
     }
     if (r.status === 'error') { showLicenseEntry('تعذر الاتصال — تحقق من الإنترنت وحاول تاني'); return; }
     if (r.status === 'locked') { showLicenseEntry('هذا المفتاح مرتبط بجهاز آخر — تواصل معنا لإعادة الربط'); return; }
-    // ✅ منتهي أو غير صالح — نفس الشاشة لكن مع تنبيه الانتهاء فوق الخانة
     localStorage.removeItem('lp_inv_license');
     showLicenseEntry('الكود انتهت صلاحيته — ادخل كود جديد أو جدّد اشتراكك', true);
 }
@@ -464,7 +471,6 @@ function maybeWarn(data) {
 }
 function dismissWarning() { $('warningModal').classList.remove('open'); }
 
-/* ═══ الدخول ═══ */
 async function tryAutoLogin() {
     const p = getPass();
     if (!p) { showLoginScreen(); return; }
@@ -508,9 +514,7 @@ function askLogout() {
         btn.style.borderColor = 'var(--err)';
         btn.style.color = '#fff';
         btn.style.background = 'var(--err)';
-        _logoutTimer = setTimeout(function () {
-            resetLogoutBtn();
-        }, 4000);
+        _logoutTimer = setTimeout(function () { resetLogoutBtn(); }, 4000);
         return;
     }
     clearTimeout(_logoutTimer);
@@ -590,6 +594,188 @@ function fillForm(order) {
     $('totalsBox').style.display = 'block';
     $('grandTotalTxt').textContent = total.toFixed(2) + ' ج.م';
     $('amountWords').textContent = numberToArabicWords(total);
+}
+
+/* ═══ ✅ فاتورة الفرع — عميل مباشر ═══ */
+let invMode = 'online';
+let _catalog = null;
+let _branchSaved = false;
+
+function setMode(m) {
+    invMode = m;
+    $('tabOnline').classList.toggle('active', m === 'online');
+    $('tabManual').classList.toggle('active', m === 'manual');
+    $('onlineSec').style.display = m === 'online' ? 'block' : 'none';
+    $('manualSec').style.display = m === 'manual' ? 'block' : 'none';
+    $('saveActions').style.display = m === 'manual' ? 'grid' : 'none';
+    $('branchMsg').textContent = '';
+    _branchSaved = false;
+    $('saveBranchBtn').disabled = false;
+    $('saveBranchBtn').textContent = '💾 حفظ الفاتورة في النظام';
+    const manual = m === 'manual';
+    ['custName', 'custPhone', 'payMethod', 'custNotes', 'custAddress'].forEach(id => { $(id).readOnly = manual; });
+    $('itemsBody').innerHTML = '<tr><td colspan="9" class="empty-hint">' + (manual ? 'اضف منتجات من الخانة فوق' : 'لم يتم جلب طلب بعد') + '</td></tr>';
+    $('totalsBox').style.display = 'none';
+    $('amountWords').textContent = '';
+    if (manual) {
+        $('custName').value = '';
+        $('custPhone').value = '';
+        $('custNotes').value = 'فاتورة فرع';
+        $('custAddress').value = 'استلام من الفرع';
+        $('payMethod').value = 'كاش';
+        initInvoice();
+        loadCatalog();
+        manualHint('اكتب كود المنتج والكمية — الاسم والسعر بيجوا تلقائياً من كتالوج متجرك • المقاس واللون والكمية قابلة للتعديل بالضغط عليهم في الجدول');
+        $('mCode').focus();
+    } else {
+        ['custName', 'custPhone', 'payMethod', 'custNotes', 'custAddress'].forEach(id => { $(id).value = ''; });
+        initInvoice();
+        $('fetchHint').textContent = 'اكتب رقم الطلب واضغط جلب — كل البيانات هتتملي تلقائياً بالصور';
+    }
+}
+
+function manualHint(msg, isErr) {
+    const h = $('manualHint');
+    h.textContent = msg;
+    h.style.color = isErr ? 'var(--err)' : 'var(--muted)';
+}
+
+async function loadCatalog() {
+    if (_catalog) return;
+    manualHint('⏳ جاري تحميل كتالوج المنتجات…');
+    try {
+        const r = await fetchWithRetry(API_URL + '?action=getProducts');
+        const j = await r.json();
+        _catalog = (j.products || []).filter(p => p.active !== false);
+    } catch (e) { _catalog = []; }
+}
+
+async function addManualItem() {
+    const code = $('mCode').value.trim().toUpperCase();
+    const qty = Math.max(1, parseInt($('mQty').value) || 1);
+    if (!code) return;
+    await loadCatalog();
+    if (!_catalog || !_catalog.length) { manualHint('✗ تعذر تحميل الكتالوج — اتأكد من الاتصال وحاول تاني', true); return; }
+    const p = _catalog.find(x => String(x.id).toUpperCase() === code);
+    let name, price;
+    if (p) {
+        name = p.name;
+        price = p.discount_price || p.price;
+    } else {
+        const n = prompt('الكود "' + code + '" مش موجود في الكتالوج.\nاكتب اسم المنتج يدوياً (أو اضغط إلغاء):');
+        if (!n) return;
+        const pr = parseFloat(prompt('اكتب سعر الوحدة (ج.م):'));
+        if (!pr || pr <= 0) return;
+        name = n; price = pr;
+    }
+    const ex = document.querySelector('#itemsBody tr[data-id="' + code + '"]');
+    if (ex) {
+        ex.children[6].textContent = (parseInt(ex.children[6].textContent) || 0) + qty;
+    } else {
+        const tbody = $('itemsBody');
+        if (tbody.querySelector('.empty-hint')) tbody.innerHTML = '';
+        const tr = document.createElement('tr');
+        tr.dataset.id = code;
+        tr.innerHTML = '<td><button class="mi-del" onclick="removeManualRow(this)" title="حذف">✕</button><span class="row-num"></span></td>' +
+            '<td><img class="thumbMini" src="' + IMG_URL + encodeURIComponent(code) + '.webp" onerror="this.onerror=null;this.src=PH"></td>' +
+            '<td class="en"><strong>' + code + '</strong></td>' +
+            '<td>' + name + '</td>' +
+            '<td><span class="mi-edit" contenteditable="true">-</span></td>' +
+            '<td><span class="mi-edit" contenteditable="true">-</span></td>' +
+            '<td><span class="mi-edit" contenteditable="true">' + qty + '</span></td>' +
+            '<td>' + price.toFixed(2) + '</td>' +
+            '<td><strong>' + (qty * price).toFixed(2) + '</strong></td>';
+        tbody.appendChild(tr);
+    }
+    $('mCode').value = ''; $('mQty').value = '1';
+    $('mCode').focus();
+    recalcManualTotal();
+}
+
+function removeManualRow(btn) {
+    btn.closest('tr').remove();
+    const tbody = $('itemsBody');
+    if (!tbody.querySelector('tr[data-id]')) {
+        tbody.innerHTML = '<tr><td colspan="9" class="empty-hint">اضف منتجات من الخانة فوق</td></tr>';
+        $('totalsBox').style.display = 'none';
+        $('amountWords').textContent = '';
+        return;
+    }
+    recalcManualTotal();
+}
+
+function recalcManualTotal() {
+    let total = 0;
+    const rows = document.querySelectorAll('#itemsBody tr[data-id]');
+    rows.forEach(function (tr, i) {
+        const q = parseInt(tr.children[6].textContent) || 1;
+        const pr = parseFloat(tr.children[7].textContent) || 0;
+        tr.children[8].innerHTML = '<strong>' + (q * pr).toFixed(2) + '</strong>';
+        tr.querySelector('.row-num').textContent = (i + 1);
+        total += q * pr;
+    });
+    $('totalsBox').style.display = 'block';
+    $('grandTotalTxt').textContent = total.toFixed(2) + ' ج.م';
+    $('amountWords').textContent = numberToArabicWords(total);
+}
+
+ $('itemsBody').addEventListener('input', function () {
+    if (invMode === 'manual') recalcManualTotal();
+});
+
+function newBranchInvoice() {
+    setMode('manual');
+}
+
+async function saveBranchInvoice() {
+    if (_branchSaved) return;
+    const rows = document.querySelectorAll('#itemsBody tr[data-id]');
+    if (!rows.length) { manualHint('✗ ضيف منتجات الأول قبل الحفظ', true); return; }
+    const items = Array.from(rows).map(function (tr) {
+        return {
+            productId: tr.dataset.id,
+            productName: tr.children[3].innerText,
+            size: tr.children[4].innerText.trim() || '-',
+            color: tr.children[5].innerText.trim() || '-',
+            quantity: parseInt(tr.children[6].textContent) || 1,
+            price: parseFloat(tr.children[7].textContent) || 0
+        };
+    });
+    const btn = $('saveBranchBtn');
+    btn.disabled = true; btn.textContent = '⏳ جاري الحفظ…';
+    try {
+        const res = await fetchWithRetry(API_URL, { method: 'POST', body: JSON.stringify({
+            action: 'submitBranchInvoice',
+            items: items,
+            customer: {
+                name: $('custName').value.trim() || 'عميل فرع',
+                phone: $('custPhone').value.trim(),
+                payment: $('payMethod').value.trim() || 'كاش',
+                notes: 'فاتورة فرع'
+            }
+        }) });
+        const j = await res.json();
+        if (j.success) {
+            _branchSaved = true;
+            $('invNo').value = j.orderId; // رقم الفاتورة = رقم النظام — مطابقين
+            $('branchMsg').style.color = 'var(--black)';
+            $('branchMsg').textContent = '✓ اتحفظت في النظام برقم ' + j.orderId + ' — هتلاقيها في الداش بورد (المبيعات) وبتقدر تبحث بيها أو ترجّعها من تغيير الحالة';
+            btn.textContent = '✓ اتحفظت في النظام';
+            showToastSave(j.orderId);
+        } else {
+            btn.disabled = false; btn.textContent = '💾 حفظ الفاتورة في النظام';
+            $('branchMsg').style.color = 'var(--err)';
+            $('branchMsg').textContent = '✗ ' + (j.error || 'تعذر الحفظ — حاول تاني');
+        }
+    } catch (e) {
+        btn.disabled = false; btn.textContent = '💾 حفظ الفاتورة في النظام';
+        $('branchMsg').style.color = 'var(--err)';
+        $('branchMsg').textContent = '✗ تعذر الاتصال — حاول تاني';
+    }
+}
+function showToastSave(id) {
+    const m = $('branchMsg');
+    m.textContent = '✓ اتحفظت في النظام برقم ' + id;
 }
 
 function numberToArabicWords(n) {
@@ -712,7 +898,7 @@ div,span{word-wrap:break-word;overflow-wrap:break-word}
 
 function printInvoice(type) {
     const data = getInvoiceData();
-    if (!data.items.length) return alert('جلب طلب الأول قبل الطباعة');
+    if (!data.items.length) return alert(invMode === 'manual' ? 'ضيف منتجات الأول قبل الطباعة' : 'جلب طلب الأول قبل الطباعة');
     const html = type === 'A4' ? buildA4Html(data) : buildThermalHtml(data, type === 'Thermal80' ? 80 : 58);
     const win = window.open('', '_blank');
     if (!win) return alert("الرجاء السماح بالنوافذ المنبثقة");
@@ -724,7 +910,6 @@ function printInvoice(type) {
 
 bootCheck();
 
-/* ═══ إعادة التحقق كل ساعة ═══ */
 setInterval(async function () {
     if ($('app').style.display === 'none') return;
     const key = getLicense();
