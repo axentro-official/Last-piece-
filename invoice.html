@@ -346,6 +346,13 @@ function showLicenseEntry(preErr, expiredMode) {
     $('licenseErr').textContent = preErr || '';
     setTimeout(() => $('licenseInput').focus(), 60);
 }
+  function showLoginScreen(preErr) {
+    hideAllScreens();
+    $('loginBox').style.display = 'flex';
+    $('mainFooter').style.display = 'none';
+    $('loginErr').textContent = preErr || '';
+    setTimeout(() => $('passInput').focus(), 60);
+}
 
 /* ═══ ✅ اتحدد الشاشة الموحدة تظهر في وضع الانتهاء لو المفتاح انتهى ═══ */
 function showLicenseAfterExpiry(preErr) {
