@@ -68,6 +68,12 @@ input:read-only{background:var(--paper);color:#555}
 .ax-foot .qr-link:hover .qr-frame{transform:scale(1.08);box-shadow:0 8px 24px rgba(255,255,255,.25)}
 .ax-foot .qr-frame img{width:66px;height:66px;display:block}
 .ax-foot .qr-scan{font-size:9px;color:#666;margin-top:6px;font-weight:700;letter-spacing:1px;direction:ltr}
+  /* ✅ QR الفوتر الرئيسي — نفس ستايل الكروت بالظبط */
+.site-footer .qr-link{display:inline-block;text-decoration:none}
+.site-footer .qr-frame{display:inline-block;padding:7px;border:2px solid #fff;background:#fff;transition:.25s}
+.site-footer .qr-link:hover .qr-frame{transform:scale(1.08);box-shadow:0 8px 24px rgba(255,255,255,.25)}
+.site-footer .qr-frame img{width:72px;height:72px;display:block}
+.site-footer .qr-scan{font-size:9.5px;color:#888;margin-top:7px;font-weight:700;letter-spacing:1px;direction:ltr;text-decoration:none}
 
 /* التحذير */
 .warn-modal{position:fixed;inset:0;background:rgba(10,10,10,.55);z-index:5000;display:none;align-items:center;justify-content:center;padding:20px}
@@ -263,13 +269,15 @@ td strong{font-weight:800}
 
 <!-- ✅ الفوتر الرئيسي — بس بيظهر جوه النظام بس -->
 <footer class="site-footer" id="mainFooter" style="display:none;background:var(--black);color:#fff;text-align:center;padding:26px 20px 30px">
-  <p style="font-family:'Inter',sans-serif;font-weight:800;letter-spacing:4px;font-size:18px;margin:0 0 4px;direction:ltr">LAST PIECE<span style="font-size:9px;vertical-align:super">®</span></p>
-  <p style="font-size:12px;color:#888;margin:0 0 14px;direction:ltr">2026 Last-Piece, Inc.</p>
-  <p style="font-size:11px;color:#666;margin:0 0 12px;direction:ltr">© 2024 Axentro – All Rights Reserved · By Axentro Team</p>
-  <a class="qr-link" href="https://axentro-official.github.io/axentro-website/links.html" target="_blank">
-    <span class="qr-frame" style="border-color:#fff"><img src="https://axentro-official.github.io/Last-piece-/images/qr.png" alt="QR" style="width:80px;height:80px;display:block"></span>
-    <div class="qr-scan" style="color:#aaa">Scan Me &gt; Click On Me</div>
-  </a>
+    <div style="display:flex;flex-direction:column;align-items:center;gap:0">
+    <p style="font-family:'Inter',sans-serif;font-weight:800;letter-spacing:4px;font-size:18px;margin:0 0 4px;direction:ltr">LAST PIECE<span style="font-size:9px;vertical-align:super">®</span></p>
+    <p style="font-size:12px;color:#888;margin:0 0 14px;direction:ltr">2026 Last-Piece, Inc.</p>
+    <p style="font-size:11px;color:#666;margin:0 0 12px;direction:ltr">© 2024 Axentro – All Rights Reserved · By Axentro Team</p>
+    <a class="qr-link" href="https://axentro-official.github.io/axentro-website/links.html" target="_blank" style="text-align:center">
+      <span class="qr-frame" style="display:block;margin:0 auto"><img src="https://axentro-official.github.io/Last-piece-/images/qr.png" alt="QR"></span>
+      <span class="qr-scan" style="display:block;margin-top:7px">Scan Me &gt; Click On Me</span>
+    </a>
+  </div>
 </footer>
 
 <script>
