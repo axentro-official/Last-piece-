@@ -253,7 +253,16 @@ main{max-width:1240px;margin:auto;padding:24px 20px 60px}
 .tpl-btn.tpl-sale{border-color:#c0392b;color:#c0392b}
 .tpl-btn.tpl-sale:hover{background:#c0392b;color:#fff}
 .tpl-btn.tpl-blank{border-style:dashed}
-.nl-tbl th{text-align:center}
+.nl-tbl{table-layout:fixed}
+.nl-tbl th{text-align:center;vertical-align:middle}
+.nl-tbl td{text-align:center;vertical-align:middle}
+.nl-tbl th:nth-child(1),.nl-tbl td:nth-child(1){width:44px}
+.nl-tbl th:nth-child(2),.nl-tbl td:nth-child(2){width:44px}
+.nl-tbl th:nth-child(3),.nl-tbl td:nth-child(3){width:auto}
+.nl-tbl th:nth-child(4),.nl-tbl td:nth-child(4){width:150px}
+.nl-tbl th:nth-child(5),.nl-tbl td:nth-child(5){width:110px}
+.nl-tbl th:nth-child(6),.nl-tbl td:nth-child(6){width:70px}
+.nl-tbl th:nth-child(7),.nl-tbl td:nth-child(7){width:70px}
 .sub-ck{width:16px;height:16px;accent-color:var(--black);cursor:pointer}
 .sub-row-sent{background:#f0fff4}
 .sub-row-not{background:#fff5f5}
@@ -1574,96 +1583,62 @@ let selectedSubs = new Set();
 /* ═══ القوالب الجاهزة — محتوى الإيميل فقط (الهيدر والفوتر بيضافوا من السيرفر) ═══ */
 const NL_TEMPLATES = {
 summer: {
-    subject: '🌞 تشكيلة الصيف وصلت — إنت أول من يعرف',
+    subject: 'Summer Edit — تم وصول تشكيلة الصيف',
     isSale: false,
-    body: `<div style="text-align:center;margin:0 0 16px">
-<p style="font-family:Arial,sans-serif;font-size:10px;font-weight:700;letter-spacing:4px;color:#999;margin:0 0 8px;direction:ltr">SUMMER COLLECTION 2026</p>
-<div style="width:36px;height:2px;background:#0a0a0a;margin:0 auto"></div>
+    body: `<div style="text-align:center;margin:0 0 28px">
+<p style="font-family:Arial,sans-serif;font-size:10px;font-weight:700;letter-spacing:6px;color:#999;margin:0 0 10px;direction:ltr">THE SUMMER EDIT</p>
+<div style="width:1px;height:36px;background:#0a0a0a;margin:0 auto"></div>
 </div>
-<p style="font-size:14.5px;color:#444;margin:0 0 20px;text-align:center;line-height:1.9">إنت من أوائل مشتركي <b>LAST PIECE</b> — وده معناه إنك بتشوف الجديد قبل السوق، وبتحجز مقاسك قبل أي حد 🖤</p>
-<div style="background:#0a0a0a;padding:22px 24px;margin:0 0 16px">
-<p style="font-family:Arial,sans-serif;font-size:10px;font-weight:800;letter-spacing:3px;color:#777;margin:0 0 12px;direction:ltr;text-align:center">INSIDE THIS DROP</p>
-<table width="100%" style="border-collapse:collapse">
-<tr><td style="padding:9px 0;border-bottom:1px solid #232323"><p style="font-size:14px;color:#fff;margin:0">☀️ &nbsp;أقمشة كتان وقطن خفيفة — تنفس عالي في أعلى الحر</p></td></tr>
-<tr><td style="padding:9px 0;border-bottom:1px solid #232323"><p style="font-size:14px;color:#fff;margin:0">🎨 &nbsp;ألوان صيفية هادية تناسب الصباح والمساء</p></td></tr>
-<tr><td style="padding:9px 0;border-bottom:1px solid #232323"><p style="font-size:14px;color:#fff;margin:0">👕 &nbsp;قصات مريحة تخليك مرتاح في أي خرجة</p></td></tr>
-<tr><td style="padding:9px 0"><p style="font-size:14px;color:#fff;margin:0">📦 &nbsp;دفع عند الاستلام + استبدال المقاس مجاناً</p></td></tr>
-</table>
+<p style="font-size:15px;color:#333;margin:0 0 26px;text-align:center;line-height:2;letter-spacing:.02em">حين يُفتح الستار على كل جديد، أنت أول من يراه.<br>تشكيلة هذا الموسم وصلت الآن — حصرياً لقائمة أعضائنا قبل أي مكان آخر.</p>
+<div style="text-align:center;margin:0 0 26px">
+<p style="font-size:13px;color:#666;margin:0 0 20px;line-height:2.2">قطع اختيرت بعناية لدلالة الموسم الجديد<br>بإصدار محدود — لا يعود بعد نفاد الكمية</p>
 </div>
-<div style="border:1px solid #e7e7e7;padding:15px 18px;margin:0 0 18px;text-align:center">
-<p style="font-size:14px;font-weight:800;color:#0a0a0a;margin:0 0 3px">⚠️ القطع محدودة — واللي بتخلص مش بترجع</p>
-<p style="font-size:12.5px;color:#777;margin:0">أول دفعة بتتوزع على المشتركين قبل أي إعلان عام</p>
+<div style="text-align:center">
+<p style="font-family:Arial,sans-serif;font-size:10px;font-weight:700;letter-spacing:4px;color:#999;margin:0 0 10px;direction:ltr">AVAILABLE NOW</p>
 </div>
-<p style="font-size:13px;color:#999;margin:0;text-align:center">استعرض التشكيلة كاملة في الصور تحت 👇</p>`
+<p style="font-size:13px;color:#999;margin:0;text-align:center">استعرض الإصدار كاملاً في الصور أدناه</p>`
 },
 winter: {
-    subject: '🧥 تشكيلة الشتاء نزلت — قبل أي حد',
+    subject: 'Winter Drop — وصل إصدار الشتاء',
     isSale: false,
-    body: `<div style="text-align:center;margin:0 0 16px">
-<p style="font-family:Arial,sans-serif;font-size:10px;font-weight:700;letter-spacing:4px;color:#999;margin:0 0 8px;direction:ltr">WINTER COLLECTION 2026</p>
-<div style="width:36px;height:2px;background:#0a0a0a;margin:0 auto"></div>
+    body: `<div style="text-align:center;margin:0 0 28px">
+<p style="font-family:Arial,sans-serif;font-size:10px;font-weight:700;letter-spacing:6px;color:#999;margin:0 0 10px;direction:ltr">WINTER DROP</p>
+<div style="width:1px;height:36px;background:#0a0a0a;margin:0 auto"></div>
 </div>
-<p style="font-size:14.5px;color:#444;margin:0 0 20px;text-align:center;line-height:1.9">كعميل أساسي في <b>LAST PIECE</b> — الإصدار الجديد واصل لإيميلك قبل ما ينزل لأي حد تاني 🖤</p>
-<div style="background:#0a0a0a;padding:22px 24px;margin:0 0 16px">
-<p style="font-family:Arial,sans-serif;font-size:10px;font-weight:800;letter-spacing:3px;color:#777;margin:0 0 12px;direction:ltr;text-align:center">INSIDE THIS DROP</p>
-<table width="100%" style="border-collapse:collapse">
-<tr><td style="padding:9px 0;border-bottom:1px solid #232323"><p style="font-size:14px;color:#fff;margin:0">🧥 &nbsp;هوديز وسويتشيرت بأقمشة دافية تقيلة</p></td></tr>
-<tr><td style="padding:9px 0;border-bottom:1px solid #232323"><p style="font-size:14px;color:#fff;margin:0">🎨 &nbsp;ألوان الشتاء الكلاسيك — كحلي • فحمي • بيج</p></td></tr>
-<tr><td style="padding:9px 0;border-bottom:1px solid #232323"><p style="font-size:14px;color:#fff;margin:0">🧵 &nbsp;خياطة متينة تعدي معاك مواسم مش موسم واحد</p></td></tr>
-<tr><td style="padding:9px 0"><p style="font-size:14px;color:#fff;margin:0">📦 &nbsp;دفع عند الاستلام + استبدال المقاس مجاناً</p></td></tr>
-</table>
+<p style="font-size:15px;color:#333;margin:0 0 26px;text-align:center;line-height:2;letter-spacing:.02em">لكل موسم توقيعه.<br>إصدار الشتاء الجديد يحمل نفس التوقيع — بروح أعمق و حضور أفخم.</p>
+<p style="font-size:13px;color:#666;margin:0 0 26px;text-align:center;line-height:2.2">إصدار أول محدود — مخصص لأعضاء قائمتنا حصراً<br>قبل الإطلاق العام على المتجر</p>
+<div style="text-align:center">
+<p style="font-family:Arial,sans-serif;font-size:10px;font-weight:700;letter-spacing:4px;color:#999;margin:0 0 10px;direction:ltr">MEMBERS FIRST</p>
 </div>
-<div style="border:1px solid #e7e7e7;padding:15px 18px;margin:0 0 18px;text-align:center">
-<p style="font-size:14px;font-weight:800;color:#0a0a0a;margin:0 0 3px">⚠️ أول دفعة محدودة</p>
-<p style="font-size:12.5px;color:#777;margin:0">اللي بيتحرك الأول بياخد الأحسن — واللي بيتأخر بياخد اللي فاضل</p>
-</div>
-<p style="font-size:13px;color:#999;margin:0;text-align:center">شوف التشكيلة كاملة في الصور تحت 👇</p>`
+<p style="font-size:13px;color:#999;margin:0;text-align:center">استعرض الإصدار في الصور أدناه</p>`
 },
 autumn: {
-    subject: '🍂 تشكيلة الخريف وصلت — حصرياً ليك',
+    subject: 'Autumn Capsule — تشكيلة الخريف المحدودة',
     isSale: false,
-    body: `<div style="text-align:center;margin:0 0 16px">
-<p style="font-family:Arial,sans-serif;font-size:10px;font-weight:700;letter-spacing:4px;color:#999;margin:0 0 8px;direction:ltr">AUTUMN COLLECTION 2026</p>
-<div style="width:36px;height:2px;background:#0a0a0a;margin:0 auto"></div>
+    body: `<div style="text-align:center;margin:0 0 28px">
+<p style="font-family:Arial,sans-serif;font-size:10px;font-weight:700;letter-spacing:6px;color:#999;margin:0 0 10px;direction:ltr">AUTUMN CAPSULE</p>
+<div style="width:1px;height:36px;background:#0a0a0a;margin:0 auto"></div>
 </div>
-<p style="font-size:14.5px;color:#444;margin:0 0 20px;text-align:center;line-height:1.9">إنت مسجّل معانا، وده بيخليك من النزلة الأولى دايماً — التشكيلة الجديدة بدأت بيك 🖤</p>
-<div style="background:#0a0a0a;padding:22px 24px;margin:0 0 16px">
-<p style="font-family:Arial,sans-serif;font-size:10px;font-weight:800;letter-spacing:3px;color:#777;margin:0 0 12px;direction:ltr;text-align:center">INSIDE THIS DROP</p>
-<table width="100%" style="border-collapse:collapse">
-<tr><td style="padding:9px 0;border-bottom:1px solid #232323"><p style="font-size:14px;color:#fff;margin:0">🍂 &nbsp;بلوفرات وجاكيتات خفيفة — دفء من غير ثقل</p></td></tr>
-<tr><td style="padding:9px 0;border-bottom:1px solid #232323"><p style="font-size:14px;color:#fff;margin:0">🎨 &nbsp;ألوان الخريف الدافية — عنابي • زيتي • كاميل</p></td></tr>
-<tr><td style="padding:9px 0;border-bottom:1px solid #232323"><p style="font-size:14px;color:#fff;margin:0">🧥 &nbsp;قطع Layering تنفع لوحدها وتنفع فوق بعض</p></td></tr>
-<tr><td style="padding:9px 0"><p style="font-size:14px;color:#fff;margin:0">📦 &nbsp;دفع عند الاستلام + استبدال المقاس مجاناً</p></td></tr>
-</table>
+<p style="font-size:15px;color:#333;margin:0 0 26px;text-align:center;line-height:2;letter-spacing:.02em">تشكيلة رائعة بروح الخريف.<br>أقل عدداً — أعلى انتقاءً. مصممة لمن يعرف ما يريد.</p>
+<p style="font-size:13px;color:#666;margin:0 0 26px;text-align:center;line-height:2.2">تتجدد كل أسبوعين<br>القطع النادرة لا تعود بعد أول ظهور</p>
+<div style="text-align:center">
+<p style="font-family:Arial,sans-serif;font-size:10px;font-weight:700;letter-spacing:4px;color:#999;margin:0 0 10px;direction:ltr">NEW ARRIVAL</p>
 </div>
-<div style="border:1px solid #e7e7e7;padding:15px 18px;margin:0 0 18px;text-align:center">
-<p style="font-size:14px;font-weight:800;color:#0a0a0a;margin:0 0 3px">⚠️ الكولكشن بيتجدد كل أسبوعين</p>
-<p style="font-size:12.5px;color:#777;margin:0">القطع النادرة مش بتعود تاني — اللي عجباك احجزها</p>
-</div>
-<p style="font-size:13px;color:#999;margin:0;text-align:center">التشكيلة كاملة بالصور تحت 👇</p>`
+<p style="font-size:13px;color:#999;margin:0;text-align:center">استعرض التشكيلة في الصور أدناه</p>`
 },
 sale: {
-    subject: '💸 خصومات حقيقية — للمشتركين قبل أي حد',
+    subject: 'Private Sale — الخصم يبدأ من إيميلك',
     isSale: true,
-    body: `<div style="text-align:center;margin:0 0 16px">
-<p style="font-family:Arial,sans-serif;font-size:10px;font-weight:700;letter-spacing:4px;color:#c0392b;margin:0 0 8px;direction:ltr">EXCLUSIVE SALE</p>
-<div style="width:36px;height:2px;background:#c0392b;margin:0 auto"></div>
+    body: `<div style="text-align:center;margin:0 0 28px">
+<p style="font-family:Arial,sans-serif;font-size:10px;font-weight:700;letter-spacing:6px;color:#c0392b;margin:0 0 10px;direction:ltr">PRIVATE SALE</p>
+<div style="width:1px;height:36px;background:#c0392b;margin:0 auto"></div>
 </div>
-<p style="font-size:14.5px;color:#444;margin:0 0 20px;text-align:center;line-height:1.9">الخصم ده مش نازل للسوشيال ميديا — نازل <b>لإيميلك أنت الأول</b>، لأنك مشترك معانا من الناس اللي بتفرق 🖤</p>
-<div style="background:#0a0a0a;padding:22px 24px;margin:0 0 16px">
-<p style="font-family:Arial,sans-serif;font-size:10px;font-weight:800;letter-spacing:3px;color:#777;margin:0 0 12px;direction:ltr;text-align:center">SALE DETAILS</p>
-<table width="100%" style="border-collapse:collapse">
-<tr><td style="padding:9px 0;border-bottom:1px solid #232323"><p style="font-size:14px;color:#fff;margin:0">💸 &nbsp;تخفيضات حقيقية على قطع مختارة — مش شكلية</p></td></tr>
-<tr><td style="padding:9px 0;border-bottom:1px solid #232323"><p style="font-size:14px;color:#fff;margin:0">🖤 &nbsp;الأسعار الجديدة ظاهرة قدامك في الصور تحت</p></td></tr>
-<tr><td style="padding:9px 0;border-bottom:1px solid #232323"><p style="font-size:14px;color:#fff;margin:0">🚚 &nbsp;شحن لكل محافظات مصر + دفع عند الاستلام</p></td></tr>
-<tr><td style="padding:9px 0"><p style="font-size:14px;color:#fff;margin:0">⏳ &nbsp;العرض لحد نفاذ الكميات — وخلاص</p></td></tr>
-</table>
+<p style="font-size:15px;color:#333;margin:0 0 26px;text-align:center;line-height:2;letter-spacing:.02em">هذه الرسالة لن تصل إلى أي قناة أخرى.<br>وصول حصري لبريدك قبل الإعلان — لأنك من بداية القائمة.</p>
+<p style="font-size:13px;color:#666;margin:0 0 26px;text-align:center;line-height:2.2">تخفيضات حقيقية على إصدارات مختارة<br>سارية لحين نفاد الكميات — بدون تمديد</p>
+<div style="text-align:center">
+<p style="font-family:Arial,sans-serif;font-size:10px;font-weight:700;letter-spacing:4px;color:#c0392b;margin:0 0 10px;direction:ltr">PRICE DROP NOW</p>
 </div>
-<div style="border:1px solid #c0392b;padding:15px 18px;margin:0 0 18px;text-align:center;background:#fdf5f5">
-<p style="font-size:14px;font-weight:800;color:#c0392b;margin:0 0 3px">⏰ المقاسات الشائعة بتخلص الأولى</p>
-<p style="font-size:12.5px;color:#777;margin:0">لما مقاسك يخلص، الخصم مش هينفعك — اتحرك دلوقتي</p>
-</div>
-<p style="font-size:13px;color:#999;margin:0;text-align:center">كل القطع المتوفرة بالخصم تحت 👇</p>`
+<p style="font-size:13px;color:#999;margin:0;text-align:center">الإصدارات المتاحة بالخصم في الصور أدناه</p>`
 },
 blank: {
     subject: '',
@@ -1671,7 +1646,6 @@ blank: {
     body: ''
 }
 };
-
 function loadTemplate(key) {
     const t = NL_TEMPLATES[key];
     if (!t) return;
@@ -1954,8 +1928,23 @@ async function uploadNlImage() {
     if (!ok) throw new Error('فشل رفع الصورة على GitHub — اتأكد من التوكين');
     refreshImageSet(filename, true);
     localStorage.setItem('lp_nl_image_file', filename);
-    $('nlImgStatus').style.color = 'var(--ok)';
-    $('nlImgStatus').textContent = '✓ الصورة اترفعت ✓';
+        $('nlImgStatus').style.color = 'var(--ok)';
+    $('nlImgStatus').textContent = '✓ اترفعت — جاري التأكد من جاهزيتها…';
+    // ✅ التأكد إن GitHub Pages نشر الملف فعلاً قبل الإرسال — حتى لا تصل مكسورة في الإيميل
+    let ready = false;
+    for (let i = 0; i < 10; i++) {
+        await new Promise(r => setTimeout(r, 5000)); // انتظار 5 ثواني
+        try {
+            const chk = await fetch(IMG_URL + encodeURIComponent(filename) + '?nocache=' + Date.now());
+            if (chk.ok) { ready = true; break; }
+        } catch (e) {}
+    }
+    if (ready) {
+        $('nlImgStatus').textContent = '✓ الصورة جاهزة ومؤكدة — هتصل سليمة';
+        return IMG_URL + filename;
+    }
+    $('nlImgStatus').style.color = 'var(--warn)';
+    $('nlImgStatus').textContent = '⚠️ اترفعت لكن GitHub بياخد وقت للنشر — الإيميل هيمشي وهيظهر خلال دقائق';
     return IMG_URL + filename;
 }    
     
