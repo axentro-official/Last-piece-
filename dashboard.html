@@ -1864,7 +1864,7 @@ async function sendNewsletterNow() {
     const btn = $('nlSendBtn');
     btn.disabled = true; btn.textContent = '⏳ جاري الإرسال…';
     $('nlStatus').style.color = 'var(--muted)';
-    $('nlStatus').textContent = 'جاري إرسال ' + thisBatch + ' إيميل — استنى…';
+    $('nlStatus').textContent = '⏳ جاري توصيل رسالتك لـ ' + thisBatch + ' مشترك — ثواني وتكون وصلت…';
 
     try {
         const payload = { subject: subject, body: body, imageUrl: imageUrl, isSale: $('nlIsSale').checked, limit: 100 };
